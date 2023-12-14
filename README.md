@@ -1,2 +1,2 @@
-These Projects are for practicing. If the code refernce others, will be remark at the top of the notebook 
+These projects are for practice purposes. If the code references someone else's work, it will be remark on the jupyter notebook.
 
