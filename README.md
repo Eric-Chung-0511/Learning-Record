@@ -28,14 +28,14 @@ curves, and precision-recall curves, I can thoroughly understand the strengths a
 
 # Future Goals and Directions
 
-## Time Series Analysis: 
+### Time Series Analysis: 
 I am currently learning how to use models like ARIMA, SARIMA, and LSTM for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
 
-## Deep Learning: 
+### Deep Learning: 
 I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition. 
 Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
 
-## Natural Language Processing (NLP): 
+### Natural Language Processing (NLP): 
 Utilizing NLP techniques for sentiment analysis of texts, developing smart recommendation systems, and chatbots, unlocking the potential of language data to provide a more personalized and interactive user experience.
 
 # Contact Information
