@@ -1,3 +1,19 @@
-Just a newcomer with a keen interest in Data Science and hope to become proficient in this skill someday :)
+# **專案介紹**
+歡迎來到我的資料科學專案集！我是一名對資料科學充滿熱情的轉職者。透過這些專案，我希望與你分享我在這一領域的探索和學習成果。
 
-These projects are for practice purposes. If the code references someone else's work, it will be remark on the jupyter notebook.
+# 為什麼選擇資料科學？
+資料科學結合了統計、數據分析和機器學習等多個學科，透過解析和處理數據來揭示隱藏的模式和見解。我被這樣的能力所吸引，致力於透過數據驅動決策支持和創新解決方案。
+
+# 專案亮點
+在我的GitHub專案集中，你將找到以下幾類專案：
+
+數據分析：使用Python進行數據清洗、處理和視覺化，揭示數據背後的故事。
+機器學習：應用各種機器學習模型解決分類和回歸問題，目前著重在此方面。
+
+# 未來
+時間序列分析：利用ARIMA和SARIMA模型預測時間序列數據，如股票價格和銷售趨勢。
+聯繫方式
+對我的專案有任何問題或建議，歡迎通過以下方式聯繫我：
+
+Email: [your_email@example.com]
+LinkedIn: [your_linkedin_profile]
