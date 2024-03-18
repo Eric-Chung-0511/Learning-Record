@@ -42,6 +42,7 @@ Utilizing NLP techniques for sentiment analysis of texts, developing smart recom
 For any questions or suggestions about my projects, please feel free to contact me at:
 
 Email: [substantial79@gmail.com]
+
 LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
 
 Thank you for your patience !
