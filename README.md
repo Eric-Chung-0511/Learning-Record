@@ -27,12 +27,16 @@ Finally, by precisely evaluating model performance using tools like confusion ma
 curves, and precision-recall curves, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
 
 # Future Goals and Directions
-Time Series Analysis: I am currently learning how to use models like ARIMA, SARIMA, and LSTM for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
 
-Deep Learning: I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition. 
+## Time Series Analysis: 
+I am currently learning how to use models like ARIMA, SARIMA, and LSTM for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
+
+## Deep Learning: 
+I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition. 
 Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
 
-Natural Language Processing (NLP): Utilizing NLP techniques for sentiment analysis of texts, developing smart recommendation systems, and chatbots, unlocking the potential of language data to provide a more personalized and interactive user experience.
+## Natural Language Processing (NLP): 
+Utilizing NLP techniques for sentiment analysis of texts, developing smart recommendation systems, and chatbots, unlocking the potential of language data to provide a more personalized and interactive user experience.
 
 # Contact Information
 For any questions or suggestions about my projects, please feel free to contact me at:
