@@ -1,30 +1,32 @@
-# 專案介紹
-歡迎來到我的資料科學專案集！我是一名對資料科學充滿熱情的轉職者。透過這些專案，我希望與你分享我在這一領域的探索和學習成果。
+# Project Introduction
+Welcome to my Data Science project collection! I am an enthusiast transitioning into the data science field. Through these projects, I wish to share my explorations and learning outcomes within this domain.
 
-# 為什麼選擇資料科學？
-在這個充斥著龐大且不斷增長的數據的時代，資料科學以其跨學科的特性，融合了統計學、數據分析和機器學習等領域，通過深入挖掘和處理數據來發現隱藏的模式和深層見解。
-這種將數據轉化為決策支持和創新解決方案的能力深深吸引著我，驅使我致力於掌握資料科學的核心技術，以期對這個數據驅動的世界產生影響。
+# Why Data Science？
+In this era filled with vast and ever-growing data, data science merges disciplines such as statistics, data analytics, and machine learning to unearth hidden patterns and deep insights by digging deep into and processing data. 
+This capability to transform data into decision support and innovative solutions deeply attracts me, driving me to master the core technologies of data science, aiming to make an impact in this data-driven world.
 
-# 專案亮點
-在我的GitHub專案集中，你將找到以下幾類專案：
+# Project Highlights
 
-## 數據分析：
-在數據分析方面，我深入應用了Python中的Pandas庫進行數據處理和分析，以及NumPy進行覆雜的數學運算。
-通過Matplotlib和Seaborn庫，我不僅展現了數據的分布和關系，還通過熱力圖、箱型圖和散點圖等可視化技術揭示了潛在的數據模式。
-還有一個很重要的處理就是離群值，我利用了pyod的各種方法去檢測離群值並排除。
+## Data Analysis：
+In the realm of data analysis, I have extensively applied the Python libraries Pandas for data processing and analysis, and NumPy for complex mathematical operations. 
+Through Matplotlib and Seaborn libraries, I have not only showcased data distribution and relationships but also revealed potential data patterns through advanced visualization techniques such as heat maps, box plots, and scatter plots. 
+An important aspect of my work is outlier detection, for which I have utilized various methods from the pyod library to identify and exclude outliers.
 
-## 機器學習：
-在機器學習領域，我利用不僅限於應用邏輯回歸、決策樹和隨機森林等傳統模型處理分類問題，我還探索了支持向量機（SVM）和梯度提升機（Gradient Boosting Machines，如XGBoost、LightGBM）來處理覆雜的非線性問題。
-對於模型調優，我熟練使用交叉驗證和GridSearchCV以及Bayesian Optimization，精確地尋找最優的模型參數。
-最後通過精確地評估模型性能，使用混淆矩陣、ROC曲線和精確率-召回率曲線等工具，我能夠全面地理解模型的強項和弱點，從而在真實世界的問題中做出更加明智的決策。
+## Machine Learning：
+In the field of machine learning, my expertise is not limited to traditional models like logistic regression, decision trees, and random forests for solving classification problems. 
+I have further explored Support Vector Machine (SVM) and Gradient Boosting Machines (GBM) techniques, including XGBoost and AdaBoost, to tackle complex nonlinear problems. 
+SVM optimizes classification boundaries by finding the best hyperplane in high-dimensional space, while GBM enhances model's ability to recognize nonlinear data patterns by iteratively optimizing weak learners, especially when utilizing XGBoost and AdaBoost. For model tuning, I use cross-validation and GridSearchCV along with Bayesian Optimization to accurately find the best model parameters. Finally, by precisely evaluating model performance using tools like confusion matrices, ROC curves, and precision-recall curves, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
 
-# 未來目標與方向
-時間序列分析：我正在學習如何利用ARIMA、SARIMA和LSTM等模型來預測時間序列數據，這對於理解和預測股票市場趨勢、銷售量等具有重要意義。
-深度學習：目前對於深度學習已經有初步探索並運用ANN進行數據分析以及初步運用CNN進行圖像辨識。目前對於生成對抗網絡（GAN）的創新應用充滿興趣。
-自然語言處理（NLP）：運用NLP技術進行文本情感分析、開發智能推薦系統和聊天機器人，以解鎖語言數據的潛力，提供更加個性化和互動性的用戶體驗。
+# Future Goals and Directions
+Time Series Analysis: I am currently learning how to use models like ARIMA, SARIMA, and LSTM for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
+Deep Learning: I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition. 
+Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
+Natural Language Processing (NLP): Utilizing NLP techniques for sentiment analysis of texts, developing smart recommendation systems, and chatbots, unlocking the potential of language data to provide a more personalized and interactive user experience.
 
-# 聯繫方式
-對我的專案有任何問題或建議，歡迎通過以下方式聯繫我：
+# Contact Information
+For any questions or suggestions about my projects, please feel free to contact me at:
 
-Email: [your_email@example.com]
-LinkedIn: [your_linkedin_profile]
+Email: [substantial79@gmail.com]
+LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
+
+Thank you for your patience !
