@@ -21,7 +21,9 @@ In the field of machine learning, my expertise is not limited to traditional mod
 I have further explored Support Vector Machine (SVM) and Gradient Boosting Machines (GBM) techniques, including XGBoost and AdaBoost, to tackle complex nonlinear problems. 
 
 SVM optimizes classification boundaries by finding the best hyperplane in high-dimensional space, while GBM enhances model's ability to recognize nonlinear data patterns by iteratively optimizing weak learners, especially when utilizing XGBoost 
-and AdaBoost. For model tuning, I use cross-validation and GridSearchCV along with Bayesian Optimization to accurately find the best model parameters. Finally, by precisely evaluating model performance using tools like confusion matrices, ROC 
+and AdaBoost. For model tuning, I use cross-validation and GridSearchCV along with Bayesian Optimization to accurately find the best model parameters. 
+
+Finally, by precisely evaluating model performance using tools like confusion matrices, ROC 
 curves, and precision-recall curves, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
 
 # Future Goals and Directions
