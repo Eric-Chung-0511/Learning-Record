@@ -8,14 +8,14 @@ This capability to transform data into decision support and innovative solutions
 
 # Project Highlights
 
-## Data Analysis：
+### Data Analysis：
 In the realm of data analysis, I have extensively applied the Python libraries Pandas for data processing and analysis, and NumPy for complex mathematical operations. 
 
 Through Matplotlib and Seaborn libraries, I have not only showcased data distribution and relationships but also revealed potential data patterns through advanced visualization techniques such as heat maps, box plots, and scatter plots. 
 
 An important aspect of my work is outlier detection, for which I have utilized various methods from the pyod library to identify and exclude outliers.
 
-## Machine Learning：
+### Machine Learning：
 In the field of machine learning, my expertise is not limited to traditional models like logistic regression, decision trees, and random forests for solving classification problems. 
 
 I have further explored Support Vector Machine (SVM) and Gradient Boosting Machines (GBM) techniques, including XGBoost and AdaBoost, to tackle complex nonlinear problems. 
