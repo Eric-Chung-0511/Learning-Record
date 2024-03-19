@@ -9,11 +9,12 @@ This capability to transform data into decision support and innovative solutions
 # Project Highlights
 
 ### Data Analysis：
-In the realm of data analysis, I have extensively applied the Python libraries Pandas for data processing and analysis, and NumPy for complex mathematical operations. 
 
-Through Matplotlib and Seaborn libraries, I have not only showcased data distribution and relationships but also revealed potential data patterns through advanced visualization techniques such as heat maps, box plots, and scatter plots. 
+Delving further into the realm of feature engineering, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repertoire includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and Principal Component Analysis (PCA) for dimensionality reduction. 
 
-An important aspect of my work is outlier detection, for which I have utilized various methods from the pyod library to identify and exclude outliers.
+Additionally, I have utilized a range of methods like encoding categorical variables, imputing missing values, and constructing derived features using domain knowledge. These strategies have significantly enhanced the robustness and efficiency of algorithmic models across diverse data-centric challenges.
+
+A critical component of my analytical repertoire is the detection and handling of outliers, which can skew results and impede model accuracy. To address this, I've employed the robust algorithms provided by the pyod library, adeptly identifying and prudently managing these anomalies to maintain the integrity of the analysis.
 
 ### Machine Learning：
 In the field of machine learning, my expertise is not limited to traditional models like logistic regression, decision trees, and random forests for solving classification problems. 
