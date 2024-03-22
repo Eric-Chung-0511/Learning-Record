@@ -10,7 +10,7 @@ This capability to transform data into decision support and innovative solutions
 
 ### Data Analysis：
 
-Delving further into the realm of feature engineering, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repertoire includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and Principal Component Analysis (PCA) for dimensionality reduction. 
+Delving further into the realm of feature engineering, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repositories includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and Principal Component Analysis (PCA) for dimensionality reduction. 
 
 Additionally, I have utilized a range of methods like encoding categorical variables, imputing missing values, and constructing derived features using domain knowledge. These strategies have significantly enhanced the robustness and efficiency of algorithmic models across diverse data-centric challenges.
 
