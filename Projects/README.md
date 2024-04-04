@@ -16,16 +16,18 @@ I have further explored Support Vector Machine (SVM) and Gradient Boosting Machi
 SVM optimizes classification boundaries by finding the best hyperplane in high-dimensional space, while GBM enhances model's ability to recognize nonlinear data patterns by iteratively optimizing weak learners, especially when utilizing XGBoost 
 and AdaBoost. For model tuning, I use cross-validation and GridSearchCV along with Bayesian Optimization to accurately find the best model parameters. 
 
+Using models like ARIMA, SARIMA, SARIMAX for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
+
 Finally, by precisely evaluating model performance using tools like confusion matrices, ROC 
 curves, and precision-recall curves, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
 
 # Future Goals and Directions
 
 ### Time Series Analysis: 
-I am currently learning how to use models like ARIMA, SARIMA, and LSTM for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
+I am currently learning how to 
 
 ### Deep Learning: 
-I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition. 
+I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition, moreover expect to use LSTM in time series data. 
 Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
 
 ### Natural Language Processing (NLP): 
