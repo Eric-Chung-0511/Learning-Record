@@ -4,7 +4,7 @@
 # Why Data Science
 * In this era filled with vast and ever-growing data, data science merges disciplines such as statistics, data analytics, and machine learning to unearth hidden patterns and deep insights by digging deep into and processing data. 
 
-This capability to transform data into decision support and innovative solutions deeply attracts me, driving me to master the core technologies of data science, aiming to make an impact in this data-driven world.
+* This capability to transform data into decision support and innovative solutions deeply attracts me, driving me to master the core technologies of data science, aiming to make an impact in this data-driven world.
 
 # Projects
 * The Projects folder contains a collection of my hands-on work. 
