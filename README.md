@@ -7,11 +7,11 @@ In this era filled with vast and ever-growing data, data science merges discipli
 This capability to transform data into decision support and innovative solutions deeply attracts me, driving me to master the core technologies of data science, aiming to make an impact in this data-driven world.
 
 # Projects
-The Projects folder contains a collection of my hands-on work. 
+* The Projects folder contains a collection of my hands-on work. 
 
-These projects reflect my practical application of data science concepts, from exploratory data analysis to machine learning and predictive modeling. 
+* These projects reflect my practical application of data science concepts, from exploratory data analysis to machine learning and predictive modeling. 
 
-Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
+* Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
 
 # Certificates
 The Certificates folder is a record of the formal education and training I have completed in the field of Data Science. 
