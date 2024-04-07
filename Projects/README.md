@@ -1,4 +1,4 @@
-# Project Highlights
+# :dizzy: Project Highlights
 
 ### Data Analysis：
 
@@ -21,7 +21,7 @@ and AdaBoost. For model tuning, I use cross-validation and GridSearchCV along wi
 * Finally, by precisely evaluating model performance using tools like confusion matrices, ROC 
 curves, and precision-recall curves, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
 
-# Future Goals and Directions
+# :eyes: Future Goals and Directions
 
 ### Deep Learning: 
 * I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition, moreover expect to use LSTM in time series data. 
