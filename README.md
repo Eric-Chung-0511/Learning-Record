@@ -1,4 +1,4 @@
-# Learning Record Introduction
+# :star: Learning Record Introduction
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
 # Why Data Science
