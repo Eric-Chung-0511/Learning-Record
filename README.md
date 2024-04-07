@@ -30,4 +30,4 @@
 
 * LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
 
-# Thank you for your patience !
+# :raised_hands: Thank you for your patience !
