@@ -1,7 +1,6 @@
 # 👀 Overview：
-Welcome to my Certificates folder! Here, you’ll find a collection of completion certificates from various courses I’ve undertaken to expand my knowledge and skills.
-
-Each certificate represents not just the completion of a course, but a step forward in my professional journey and a testament to my commitment to continuous learning and improvement.
+* Welcome to my Certificates folder! Here, you’ll find a collection of completion certificates from various courses I’ve undertaken to expand my knowledge and skills.
+* Each certificate represents not just the completion of a course, but a step forward in my professional journey and a testament to my commitment to continuous learning and improvement.
 
 ## Data Science and Machine Learning：
 * I've delved deeply into utilizing Python for data science and machine learning, establishing data pipelines for analysis, visualization, and insights extraction. 
@@ -37,3 +36,12 @@ Each certificate represents not just the completion of a course, but a step forw
 * Through learning Tableau, I've gained the ability to perform various analyses and create visualizations like line charts, stacked bar charts, and map-based geographic analyses.  
 
 * My skills extend to formatting data, adding interactive elements like labels and tooltips, and employing advanced Tableau features including calculated fields, parameters, and hierarchies, enhancing my proficiency in BI and data analysis. Moreover use dashboards and storyboards to present overviews.
+
+## The Git & Github Bootcamp
+* Through this course I developed a solid understanding of Git and GitHub, essential for modern software development workflows. I cultivated skills in managing repositories, navigating branches, merging changes efficiently, and resolving merge conflicts.
+  
+* Additionally, I learned effective project collaboration through pull requests and safeguarded my workflow with git restore, git revert, and git reset. This course provided me with the foundational skills necessary for contributing to team projects and confidently handling version control.
+
+
+
+
