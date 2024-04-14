@@ -36,31 +36,31 @@
 * Utilized libraries such as Matplotlib and Seaborn for creating various plots to analyze and present data insights effectively.
   
 ### Data Preprocessing:
-* URL Removal: Extracts and eliminates URLs from the text to minimize noise, ensuring that only relevant textual content is analyzed.
+- **URL Removal**: Extracts and eliminates URLs from the text to minimize noise, ensuring that only relevant textual content is analyzed.
   
-* Character Filtering: Removes all non-alphabetic characters and standardizes whitespace by condensing multiple spaces into a single space. This step helps to focus analysis on meaningful text data and avoids clutter caused by punctuation or numbers.
+- **Character Filtering**: Removes all non-alphabetic characters and standardizes whitespace by condensing multiple spaces into a single space. This step helps to focus analysis on meaningful text data and avoids clutter caused by punctuation or numbers.
   
-* Text Standardization: Converts all text to lowercase to maintain consistency across the dataset and removes words with characters repeated more than twice consecutively to avoid processing errors and reduce noise from misspellings or irrelevant variations.
+- **Text Standardization**: Converts all text to lowercase to maintain consistency across the dataset and removes words with characters repeated more than twice consecutively to avoid processing errors and reduce noise from misspellings or irrelevant variations.
   
-* Lemmatization: Applies lemmatization to reduce words to their base form, aiding in the consistency of textual analysis. This step is dependent on whether stop words are to be removed.
+- **Lemmatization**: Applies lemmatization to reduce words to their base form, aiding in the consistency of textual analysis. This step is dependent on whether stop words are to be removed.
   
-* Stop Words Removal: Optionally removes commonly used words that might dilute the significance of more meaningful words in text analysis.
+- **Stop Words Removal**: Optionally removes commonly used words that might dilute the significance of more meaningful words in text analysis.
   
 ### Feature Engineering:
-* MBTI Personality Indicator Removal: Strips out specific MBTI personality type indicators from the text to prevent bias in the predictive modeling process.
+- **MBTI Personality Indicator Removal**: Strips out specific MBTI personality type indicators from the text to prevent bias in the predictive modeling process.
   
-* Binary and Label Encoding: Converts MBTI types into binary format for clear categorical representation and applies label encoding to these binaries for efficient model training and easier interpretation.
+- **Binary and Label Encoding**: Converts MBTI types into binary format for clear categorical representation and applies label encoding to these binaries for efficient model training and easier interpretation.
 
-* TF-IDF: Assesses word relevance by considering its frequency in a document against its occurrence in the entire corpus. This helps identify how crucial a word is within the document's context, making it essential for distinguishing key words in text analysis.
+- **TF-IDF**: Assesses word relevance by considering its frequency in a document against its occurrence in the entire corpus. This helps identify how crucial a word is within the document's context, making it essential for distinguishing key words in text analysis.
 
-* CountVectorizer: Transforms text into a frequency matrix where each entry denotes the count of times a word appears in a document. This method is vital for models that utilize word frequency as a significant feature for prediction.
+- **CountVectorizer**: Transforms text into a frequency matrix where each entry denotes the count of times a word appears in a document. This method is vital for models that utilize word frequency as a significant feature for prediction.
 
 ### Machine Learning Models:
-* SMOTE: helps tackle class imbalance by generating synthetic samples of the minority class. This not only balances the dataset but also smooths the decision boundaries of classifiers, enhancing model performance and ensuring more equitable outcomes in predictive analytics.
+- **SMOTE**: helps tackle class imbalance by generating synthetic samples of the minority class. This not only balances the dataset but also smooths the decision boundaries of classifiers, enhancing model performance and ensuring more equitable outcomes in predictive analytics.
 
-* Optimization: Bayesian Optimization is a sophisticated strategy for global optimization of complex, non-linear functions where the objective is to find the best input variables that minimize or maximize the function. And reach the optimal parameters.
+- **Optimization**: Bayesian Optimization is a sophisticated strategy for global optimization of complex, non-linear functions where the objective is to find the best input variables that minimize or maximize the function. And reach the optimal parameters.
 
-* Models: Utilized various machine learning algorithms including XGBoost, RandomForest, and more, to accurately classify text into MBTI personality types. 
+- **Models**: Utilized various machine learning algorithms including XGBoost, RandomForest, and more, to accurately classify text into MBTI personality types. 
 
 ## 🎯 Conclusion:
 * Throughout this project, I've honed a variety of skills in text processing to tackle challenges posed by imbalanced data. 
