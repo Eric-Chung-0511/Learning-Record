@@ -8,7 +8,7 @@
 * By analyzing text data, such as essays, tweets, or even daily communications, this model aims to discern the linguistic patterns and word choices that correlate with specific personality types.
 
 ## 🛠️ Skills Used:
-### Python Programming and Data Handling Skills:
+### 🔠 Python Programming and Data Handling Skills:
 * Pandas
 * Numpy
 * Matplotlib
@@ -18,7 +18,7 @@
 * SMOTE
 * WordCloud
 * Label Encoder
-### Machine Learning:
+### 🤖 Machine Learning:
 * XGBoost (Final Choose)
 * RandomForest
 * SGDClassifier
@@ -26,17 +26,17 @@
 * Logistic Regression
 * AdaBoost
 * Bayesian Optimization
-### Natuaral Language Processing:
+### 💻 Natuaral Language Processing:
 * Text Representation Techniques (CountVectorizer, TF-IDF)
 * Text Normalization Techniques (WordNetLemmatizer, Stopwords Removal)
   
 ## 📊 Skills Detail:
-### Data Visualization:
+### 🕵️‍♂️ Data Visualization:
 * Employed visualization tools like WordCloud to visually represent the most frequent terms in the dataset, aiding in the exploratory analysis.
   
 * Utilized libraries such as Matplotlib and Seaborn for creating various plots to analyze and present data insights effectively.
   
-### Data Preprocessing:
+### 🧪 Data Preprocessing:
 - **URL Removal**: Extracts and eliminates URLs from the text to minimize noise, ensuring that only relevant textual content is analyzed.
   
 - **Character Filtering**: Removes all non-alphabetic characters and standardizes whitespace by condensing multiple spaces into a single space. This step helps to focus analysis on meaningful text data and avoids clutter caused by punctuation or numbers.
@@ -47,7 +47,7 @@
   
 - **Stop Words Removal**: Optionally removes commonly used words that might dilute the significance of more meaningful words in text analysis.
   
-### Feature Engineering:
+### 🔄 Feature Engineering:
 - **MBTI Personality Indicator Removal**: Strips out specific MBTI personality type indicators from the text to prevent bias in the predictive modeling process.
   
 - **Binary and Label Encoding**: Converts MBTI types into binary format for clear categorical representation and applies label encoding to these binaries for efficient model training and easier interpretation.
@@ -56,7 +56,7 @@
 
 - **CountVectorizer**: Transforms text into a frequency matrix where each entry denotes the count of times a word appears in a document. This method is vital for models that utilize word frequency as a significant feature for prediction.
 
-### Machine Learning Models:
+### ⚖️ Machine Learning Models:
 - **SMOTE**: helps tackle class imbalance by generating synthetic samples of the minority class. This not only balances the dataset but also smooths the decision boundaries of classifiers, enhancing model performance and ensuring more equitable outcomes in predictive analytics.
 
 - **Optimization**: Bayesian Optimization is a sophisticated strategy for global optimization of complex, non-linear functions where the objective is to find the best input variables that minimize or maximize the function. And reach the optimal parameters.
