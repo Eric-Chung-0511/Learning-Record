@@ -56,4 +56,7 @@
 * Through meticulous data handling, preprocessing, and model evaluation, this project elucidated the key factors that influenced survival on the Titanic.
 * It demonstrated the effectiveness of combining feature engineering with sophisticated machine learning models to make predictions that are not only accurate but also interpretable and meaningful in understanding historical events.
 
+## 📚 Acknowledgments and References:
+* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
+* https://www.kaggle.com/code/volhaleusha/titanic-tutorial-encoding-feature-eng-81-8#Part-8:-Conclusion
