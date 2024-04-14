@@ -16,6 +16,7 @@
 * Regular Expression
 * Pipeline
 * SMOTE
+* WordCloud
 ### Machine Learning:
 * XGBoost (Final Choose)
 * RandomForest
