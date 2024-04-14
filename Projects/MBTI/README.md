@@ -28,7 +28,7 @@
 * Text Representation Techniques (CountVectorizer, TF-IDF)
 * Text Normalization Techniques (WordNetLemmatizer, Stopwords Removal)
   
-## 🧩 Skills Detail:
+## 📊 Skills Detail:
 ### Data Visualization:
 * Employed visualization tools like WordCloud to visually represent the most frequent terms in the dataset, aiding in the exploratory analysis.
   
