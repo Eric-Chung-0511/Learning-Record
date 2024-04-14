@@ -15,6 +15,7 @@
 * ImbPipeline
 * SMOTE
 * PyOD
+* Cross Validation
 * ROC Curve
 * Classification Report
 ### Machine Learning:
@@ -61,9 +62,9 @@
 
 ## 🎯 Conclusion:
 
-* In this Loan Prediction project, I tackled the challenge of selecting the best model from several closely performing options. I evaluated five machine learning models Logistic Regression, RandomForest, XGBoost, AdaBoost, and SVC even two ensemble methods, Voting and Stacking, with SVC as the final estimator.
+* In this Loan Prediction project, I tackled the challenge of selecting the best model from several closely performing options. I evaluated five machine learning models Logistic Regression, RandomForest, XGBoost, AdaBoost, and SVM even two ensemble methods, Voting and Stacking, with SVC as the final estimator.
   
-* This comparative analysis taught me that while SVC topped in accuracy, evaluating models on multiple metrics like Recall and Precision is crucial, particularly with imbalanced datasets where recognizing minority classes and ensuring accurate predictions are equally important.
+* This comparative analysis taught me that while SVM topped in accuracy, evaluating models on multiple metrics like Recall and Precision is crucial, particularly with imbalanced datasets where recognizing minority classes and ensuring accurate predictions are equally important.
 
 * I employed Bayesian Optimization to fine-tune each model’s parameters, which not only boosted their performance but also enhanced my understanding of each model’s sensitivity to different settings.
   
