@@ -15,6 +15,7 @@
 * Seaborn
 * Regular Expression
 * Pipeline
+* SMOTE
 ### Machine Learning:
 * XGBoost (Final Choose)
 * RandomForest
@@ -23,7 +24,6 @@
 * Logistic Regression
 * AdaBoost
 * Bayesian Optimization
-* SMOTE
 ### Natuaral Language Processing:
 * Text Representation Techniques (CountVectorizer, TF-IDF)
 * Text Normalization Techniques (WordNetLemmatizer, Stopwords Removal)
