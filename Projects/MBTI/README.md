@@ -17,6 +17,7 @@
 * Pipeline
 * SMOTE
 * WordCloud
+* Label Encoder
 ### Machine Learning:
 * XGBoost (Final Choose)
 * RandomForest
