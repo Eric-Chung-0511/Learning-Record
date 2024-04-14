@@ -71,6 +71,6 @@
 
 * The decision on which model to use should align with the project's specific objectives. If maximizing accuracy is the goal, SVC is ideal. However, for projects where reducing the risk of missing risky loans is paramount, options with higher Recall should be considered.
   
-* Additional factors such as model interpretability, computational efficiency, and practical viability must also be taken into account to ensure the selected model meets real-world demands effectively.
+* Additional factors such as model interpretability, computational efficiency, and practical viability must also be taken into account to ensure the selected model meets real world demands effectively.
 
 * This experience has underscored the value of domain knowledge in applying machine learning to tackle complex real-world challenges efficiently.
