@@ -54,3 +54,8 @@
 * The use of ACF and PACF for parameter estimation, along with auto_arima for model optimization, provided a robust framework for handling complex time series datasets.
 
 * Despite the low MAE suggesting accurate predictions, visual assessments of the plots revealed discrepancies, highlighting the need for both numerical and visual evaluations to fully gauge model performance.
+
+## 📚 Acknowledgments and References:
+* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+
+* https://www.kaggle.com/code/fatmayousufmohamed/time-serises-analysis#Thanks!
