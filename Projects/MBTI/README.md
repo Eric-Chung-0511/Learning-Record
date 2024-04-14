@@ -1,6 +1,6 @@
 # 🧠 MBTI Type Prediction 
 
-## 🔍Project Overview:
+## 🔍 Project Overview:
 * This project is dedicated to developing a predictive model that utilizes text analysis to determine the MBTI (Myers-Briggs Type Indicator) personality type of an individual based on their written expressions.
   
 * The MBTI is a widely recognized psychological tool that categorizes individuals into 16 distinct personality types based on their preferences in perceiving the world and making decisions.
