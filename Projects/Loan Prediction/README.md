@@ -6,7 +6,7 @@
 * It is expected that the development of ML models that can help the company predict loan approval in accelerating decision-making process for determining whether an applicant is eligible for a loan or not.
 
 ## 🛠️ Skills Used:
-### Python Programming and Data Handling Skills:
+### 🐍 Python Programming and Data Handling Skills:
 * Pandas
 * Numpy
 * Matplotlib
@@ -18,7 +18,7 @@
 * Cross Validation
 * ROC Curve
 * Classification Report
-### Machine Learning:
+### 🖥️ Machine Learning:
 * XGBoost 
 * RandomForest
 * SVM
