@@ -78,3 +78,9 @@
 * Additional factors such as model interpretability, computational efficiency, and practical viability must also be taken into account to ensure the selected model meets real world demands effectively.
 
 * This experience has underscored the value of domain knowledge in applying machine learning to tackle complex real-world challenges efficiently.
+
+## 📚 Acknowledgments and References:
+* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+  
+* https://www.kaggle.com/code/caesarmario/loan-prediction-w-various-ml-models/notebook
+
