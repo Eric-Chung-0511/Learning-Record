@@ -2,19 +2,26 @@
 
 ### 🧮 Data Analysis：
 
-* Delving further into the realm of feature engineering, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repositories includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and Principal Component Analysis (PCA) for dimensionality reduction. 
+* Delving further into the realm of feature engineering, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repositories includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and **Principal Component Analysis (PCA)** for dimensionality reduction. 
 
 * Additionally, I have utilized a range of methods like encoding categorical variables, imputing missing values, and constructing derived features using domain knowledge. These strategies have significantly enhanced the robustness and efficiency of algorithmic models across diverse data-centric challenges.
 
-* A critical component of my analytical repertoire is the detection and handling of outliers, which can skew results and impede model accuracy. To address this, I've employed the robust algorithms provided by the pyod library, adeptly identifying and prudently managing these anomalies to maintain the integrity of the analysis.
+* A critical component of my analytical repertoire is the detection and handling of outliers, which can skew results and impede model accuracy. To address this, I've employed the robust algorithms provided by the **PyOD** library, adeptly identifying and prudently managing these anomalies to maintain the integrity of the analysis.
+
+* I also employed **SMOTE** to address data imbalance issues in the dataset. This method helps to mitigate the problems associated with learning from imbalanced data by artificially synthesizing new examples from the minority class. This approach not only balances the class distribution without losing valuable information but also enhances the model's ability to generalize from underrepresented data points effectively.
 
 ### ⚙️ Machine Learning：
-* In the field of machine learning, my expertise is not limited to traditional models like logistic regression, decision trees, and random forests for solving classification problems. 
+* In the field of machine learning, my expertise is not limited to traditional models like Logistic Regression, Decision Trees, and KNN for solving classification problems.
 
-* I have further explored Support Vector Machine (SVM) and Gradient Boosting Machines (GBM) techniques, including XGBoost and AdaBoost, to tackle complex nonlinear problems. 
+* I've also explored more complex models, such as **Support Vector Machine (SVM)**, **Random Forest**, and **Gradient Boosting Machines (GBM)**. These are advanced methods for tackling complex nonlinear problems.
 
-* SVM optimizes classification boundaries by finding the best hyperplane in high-dimensional space, while GBM enhances model's ability to recognize nonlinear data patterns by iteratively optimizing weak learners, especially when utilizing XGBoost 
-and AdaBoost. For model tuning, I use cross-validation and GridSearchCV along with Bayesian Optimization to accurately find the best model parameters. 
+  - **Support Vector Machine (SVM)**: Is a powerful supervised learning algorithm used primarily for classification and regression challenges. SVM operates by identifying the optimal hyperplane in a high-dimensional space that best separates different classes. This is achieved through the maximization of the margin between data points of the classes, making SVM particularly effective in high-dimensional spaces.
+ 
+  - **Random Forest**: Is an ensemble learning technique that builds multiple decision trees and merges them together to obtain a more accurate and stable prediction. It works by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random Forest is known for its robustness against overfitting, especially in cases where the dataset is very large.
+ 
+  - **Gradient Boosting Machines (GBM)**: Including implementations like XGBoost, are part of a class of machine learning algorithms that enhance the model's ability to identify complex patterns. These techniques build the model in stages, and generalize them by allowing optimization of an arbitrary differentiable loss function. XGBoost, an extension of gradient boosting, provides a scalable and efficient implementation of gradient boosting that has proven effective across a variety of data science competitions and challenges.
+  
+* For precise model tuning, techniques such as cross-validation, GridSearchCV, and Bayesian Optimization are employed to identify optimal parameters effectively.
 
 * Using models like ARIMA, SARIMA, SARIMAX for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
 
