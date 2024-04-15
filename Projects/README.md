@@ -1,6 +1,6 @@
 # :dizzy: Project Highlights
 
-### 🧮 Data Analysis：
+### 📊 Data Analysis：
 
 * In my Exploration of Data Analysis, I utilized these diagrams has enabled a deeper dive into the data, revealing intricate relationships and patterns. These visual tools, such as scatter plots and heat maps, are crucial for uncovering trends, identifying outliers, and understanding data distributions. This approach enhances data interpretability and supports more informed decision making.
 
@@ -17,7 +17,7 @@
 
 * I've also explored more complex models, such as **Support Vector Machine (SVM)**, **Random Forest**, and **Gradient Boosting Machines (GBM)**. These are advanced methods for tackling complex nonlinear problems.
 
-  - **Support Vector Machine (SVM)** is a powerful supervised learning algorithm used primarily for classification and regression challenges. SVM operates by identifying the optimal hyperplane in a high-dimensional space that best separates different classes. This is achieved through the maximization of the margin between data points of the classes, making SVM particularly effective in high-dimensional spaces.
+  - **Support Vector Machine (SVM)** is a powerful supervised learning algorithm used primarily for classification and regression challenges. SVM operates by identifying the optimal hyperplane in a high-dimensional space that best separates different classes. This is achieved through the maximization of the margin between data points of the classes, making SVM particularly effective in high dimensional spaces.
  
   - **Random Forest** is an ensemble learning technique that builds multiple decision trees and merges them together to obtain a more accurate and stable prediction. It works by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random Forest is known for its robustness against overfitting, especially in cases where the dataset is very large.
  
@@ -29,7 +29,7 @@
 
 * I have initiated a project focused on **Natural Language Processing (NLP)**, specifically aimed at predicting Myers-Briggs Type Indicator (MBTI) personality types. This project leverages textual analysis to identify personality traits based on users' written expressions
 
-* Finally, by precisely evaluating model performance using tools like confusion matrices, **ROC curves**, and **Precision-Recall Curves**, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
+* Finally, by precisely evaluating model performance using tools like confusion matrices, **ROC curves**, and **Precision-Recall Curves**, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real world problems.
 
 # :gem: Future Goals and Directions
 
