@@ -2,7 +2,7 @@
 
 ### 📊 Data Analysis：
 
-* In my Exploration of Data Analysis, I utilized these diagrams has enabled a deeper dive into the data, revealing intricate relationships and patterns. These visual tools, such as scatter plots and heat maps, are crucial for uncovering trends, identifying outliers, and understanding data distributions. This approach enhances data interpretability and supports more informed decision making.
+* In my **Exploration of Data Analysis**, I utilized these diagrams has enabled a deeper dive into the data, revealing intricate relationships and patterns. These visual tools, such as scatter plots and heat maps, are crucial for uncovering trends, identifying outliers, and understanding data distributions. This approach enhances data interpretability and supports more informed decision making.
 
 * Delving further into the realm of feature engineering, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repositories includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and **Principal Component Analysis (PCA)** for dimensionality reduction. 
 
