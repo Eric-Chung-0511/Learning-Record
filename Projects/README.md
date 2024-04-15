@@ -21,20 +21,19 @@
  
   - **Gradient Boosting Machines (GBM)**: Including implementations like XGBoost, are part of a class of machine learning algorithms that enhance the model's ability to identify complex patterns. These techniques build the model in stages, and generalize them by allowing optimization of an arbitrary differentiable loss function. XGBoost, an extension of gradient boosting, provides a scalable and efficient implementation of gradient boosting that has proven effective across a variety of data science competitions and challenges.
   
-* For precise model tuning, techniques such as cross-validation, GridSearchCV, and Bayesian Optimization are employed to identify optimal parameters effectively.
+* For precise model tuning, techniques such as **Cross-Validation**, **GridSearchCV**, and **Bayesian Optimization** are employed to identify optimal parameters effectively.
 
-* Using models like ARIMA, SARIMA, SARIMAX for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
+* Using models like **ARIMA**, **SARIMA**, **SARIMAX** for predicting time series data, which is crucial for understanding and forecasting stock market trends and sales volumes.
 
-* I have initiated a project focused on Natural Language Processing (NLP), specifically aimed at predicting Myers-Briggs Type Indicator (MBTI) personality types. This project leverages textual analysis to identify personality traits based on users' written expressions
+* I have initiated a project focused on **Natural Language Processing (NLP)**, specifically aimed at predicting Myers-Briggs Type Indicator (MBTI) personality types. This project leverages textual analysis to identify personality traits based on users' written expressions
 
-* Finally, by precisely evaluating model performance using tools like confusion matrices, ROC 
-curves, and precision-recall curves, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
+* Finally, by precisely evaluating model performance using tools like confusion matrices, **ROC curves**, and **Precision-Recall Curves**, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real-world problems.
 
 # :gem: Future Goals and Directions
 
 ### 🧠 Deep Learning: 
 * I have already made initial explorations in deep learning and applied ANN for data analysis and basic use of CNN for image recognition, moreover expect to use LSTM in time series data. 
-Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
+Currently, I am immensely interested in the innovative applications of **Generative Adversarial Networks (GANs)**.
 
 ### 🗣️ Natural Language Processing (NLP): 
 *  My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.
