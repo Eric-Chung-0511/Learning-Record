@@ -36,6 +36,6 @@
 Currently, I am immensely interested in the innovative applications of **Generative Adversarial Networks (GANs)**.
 
 ### 🗣️ Natural Language Processing (NLP): 
-*  My future goals involve expanding the scope of **NLP** applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.
+*  My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.
 
 *  These advancements will leverage the full potential of language data, enhancing user interaction and delivering personalized experiences based on sophisticated language understanding and processing.
