@@ -12,7 +12,7 @@
 ## MySQL：
 * Through this MySQL course, I deepened my understanding of SQL, expanded my knowledge including foundational queries and advanced features like window functions, CTEs, and subqueries. 
 
-* This exploration significantly enhanced my understanding of database operations and data retrieval, equipping me with the skills necessary for tackling complex data analysis. My growing proficiency lays a solid analytical foundation, improving my ability to extract insights from extensive datasets.
+* This exploration significantly enhanced my understanding of database operations and data retrieval, equipping me with the skills necessary for tackling complex data analysis. 
 
 ## NLP with Python：
 * The course has improved my understanding of text analysis using regular expressions for pattern searching and Spacy for efficient tokenization. 
