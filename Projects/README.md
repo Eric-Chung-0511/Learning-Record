@@ -19,7 +19,7 @@
  
   - **Random Forest** is an ensemble learning technique that builds multiple decision trees and merges them together to obtain a more accurate and stable prediction. It works by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random Forest is known for its robustness against overfitting, especially in cases where the dataset is very large.
  
-  - **Gradient Boosting Machines (GBM)**, including implementations like XGBoost, are part of a class of machine learning algorithms that enhance the model's ability to identify complex patterns. These techniques build the model in stages, and generalize them by allowing optimization of an arbitrary differentiable loss function. XGBoost, an extension of gradient boosting, provides a scalable and efficient implementation of gradient boosting that has proven effective across a variety of data science competitions and challenges.
+  - **Gradient Boosting Machines (GBM)**,  These techniques build the model in stages, and generalize them by allowing optimization of an arbitrary differentiable loss function. XGBoost, an extension of gradient boosting, provides a scalable and efficient implementation of gradient boosting that has proven effective across a variety of data science competitions and challenges.
   
 * For precise model tuning, techniques such as **Cross-Validation**, **GridSearchCV**, and **Bayesian Optimization** are employed to identify optimal parameters effectively.
 
