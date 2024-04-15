@@ -6,7 +6,7 @@
 
 * Delving further into the realm of **feature engineering**, I have meticulously implemented feature selection and transformation to bolster the predictive capabilities of my models. My repositories includes a broad array of feature extraction techniques such as variable transformations, interaction feature creation, and **Principal Component Analysis (PCA)** for dimensionality reduction. 
 
-* Additionally, I have utilized a range of methods like encoding categorical variables, imputing missing values, and constructing derived features using domain knowledge. These strategies have greatly improved the strength and performance of algorithmic models.
+* Additionally, I have utilized a range of methods like **encoding categorical variables**, imputing missing values, and constructing derived features using domain knowledge. These strategies have greatly improved the strength and performance of algorithmic models.
 
 * A critical component of my analytical repertoire is the detection and handling of outliers, which can skew results and impede model accuracy. To address this, I've employed the robust algorithms provided by the **PyOD** library, identifying and prudently managing these anomalies to maintain the integrity of the analysis.
 
