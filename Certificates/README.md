@@ -17,7 +17,9 @@
 ## NLP with Python：
 * The course has improved my understanding of text analysis using regular expressions for pattern searching and Spacy for efficient tokenization. 
 
-* It included learning about stemming, lemmatization, vocabulary matching, and the automated tagging of parts of speech and named entities, with visualization capabilities. Additionally, I gained experience in text classification with SciKit-Learn, delved into topic modeling, non-negative matrix factorization, and the Word2Vec algorithm, and explored sentiment analysis using NLTK.
+* It included learning about stemming, lemmatization, vocabulary matching, and the automated tagging of parts of speech and named entities, with visualization capabilities.
+  
+* Additionally, I gained experience in text classification with SciKit-Learn, delved into topic modeling, non-negative matrix factorization, and the Word2Vec algorithm, and explored sentiment analysis using NLTK.
 
 ## Time Series with Python：
  * The course enhanced my skills in analyzing and forecasting time series data using Pandas and Statsmodels, along with advanced models like ARIMA, SARIMA, and LSTM. These skills are pivotal for deep analysis and prediction in data science.
