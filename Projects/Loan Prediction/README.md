@@ -27,7 +27,6 @@
 * Stakcing
 * Voting
 * Bayesian Optimization
-* SMOTE
 
 ## 📊 Skills Detail:
 ### 👓 Data Handling and Visualization:
