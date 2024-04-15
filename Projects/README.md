@@ -11,7 +11,7 @@
 * I also employed **SMOTE** to address data imbalance issues in the dataset. This method helps to mitigate the problems associated with learning from imbalanced data by artificially synthesizing new examples from the minority class. This approach not only balances the class distribution without losing valuable information but also enhances the model's ability to generalize from underrepresented data points effectively.
 
 ### ⚙️ Machine Learning：
-* In the field of machine learning, my expertise is not limited to traditional models like Logistic Regression, Decision Trees, and KNN for solving classification problems.
+* In the field of machine learning, my expertise is not limited to traditional models like **Logistic Regression**, **Decision Trees**, and **KNN** for solving classification problems.
 
 * I've also explored more complex models, such as **Support Vector Machine (SVM)**, **Random Forest**, and **Gradient Boosting Machines (GBM)**. These are advanced methods for tackling complex nonlinear problems.
 
