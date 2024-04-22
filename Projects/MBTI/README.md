@@ -55,7 +55,7 @@
 
 - **CountVectorizer**: Transforms text into a frequency matrix where each entry denotes the count of times a word appears in a document. This method is vital for models that utilize word frequency as a significant feature for prediction.
 
-### ⚖️ Machine Learning Models:
+### ⚖️ Machine Learning:
 - **SMOTE**: helps tackle class imbalance by generating synthetic samples of the minority class. This not only balances the dataset but also smooths the decision boundaries of classifiers, enhancing model performance and ensuring more equitable outcomes in predictive analytics.
 
 - **Optimization**: Bayesian Optimization is a sophisticated strategy for global optimization of complex, non-linear functions where the objective is to find the best input variables that minimize or maximize the function. And reach the optimal parameters.
