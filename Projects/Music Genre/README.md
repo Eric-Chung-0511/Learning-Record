@@ -19,7 +19,7 @@
 * Classification Report
 * Confusion Matrix
 * Label Encoder
-* 
+  
 ### 🖥️ Machine Learning:
 * RandomForest
 * SVM
