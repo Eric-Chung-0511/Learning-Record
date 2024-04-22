@@ -14,7 +14,6 @@
 * Matplotlib
 * Seaborn
 * Regular Expression
-* Pipeline
 * SMOTE
 * WordCloud
 * Label Encoder
