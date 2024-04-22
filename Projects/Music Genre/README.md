@@ -19,6 +19,7 @@
 * Classification Report
 * Confusion Matrix
 * Label Encoder
+* Principal components analysis(PCA)
   
 ### 🖥️ Machine Learning:
 * RandomForest
@@ -40,7 +41,7 @@
 ### 🧮 Feature Engineering:
  - **Label Encoding**: Transformed categorical labels into numeric formats to prepare data for machine learning models. This conversion ensures effective processing of categorical data by algorithms.
    
- - **Dimensionality Reduction with (PCA)**: Employed PCA to reduce the number of variables in the dataset while retaining the essential information. This step is critical in simplifying the model's complexity, which enhances performance by focusing on the most relevant features.
+ - **Dimensionality Reduction with PCA**: Employed PCA to reduce the number of variables in the dataset while retaining the essential information. This step is critical in simplifying the model's complexity, which enhances performance by focusing on the most relevant features.
 
 ### 🕹️ Machine Learning:
  - **Initial Model Evaluation**: Used cross-validation results, including mean train accuracy, mean test accuracy, and cross-validation errors, to initially evaluate the performance of various models. This step helped identify models that were overfitting.
