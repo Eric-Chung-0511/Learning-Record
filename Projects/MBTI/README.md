@@ -80,7 +80,7 @@
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
 * https://www.kaggle.com/code/rajshreev/mbti-personality-predictor-using-machine-learning/notebook
-
+* https://www.nltk.org/
 
 
 
