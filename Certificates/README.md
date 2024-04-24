@@ -5,7 +5,7 @@
 ## 🤖 Data Science and Machine Learning：
 * I've delved deeply into utilizing Python for data science and machine learning, establishing data pipelines for analysis, visualization, and insights extraction. 
 
-* I've acquired proficiency in handling data and crafting visualizations with tools like NumPy, Pandas, Matplotlib, and Seaborn. My journey included mastering machine learning techniques for building predictive models and regression algorithms. Last but not least, there's also feature engineering, dealing with missing value, cleaning data.
+* I've acquired proficiency in handling data and crafting visualizations with tools like NumPy, Pandas, Matplotlib, Seaborn and Scikit-Learn. My journey included mastering machine learning techniques for building predictive models and regression algorithms. Last but not least, there's also feature engineering, dealing with missing value, cleaning data.
   
 *  Additionally, I explored the application of the TensorFlow deep learning framework, enriching my understanding of the machine learning model lifecycle, including deployment strategies.
 
