@@ -22,7 +22,7 @@
 * Additionally, I gained experience in text classification with SciKit-Learn, delved into topic modeling, non-negative matrix factorization, and the Word2Vec algorithm, and explored sentiment analysis using NLTK.
 
 ## ⌛ Time Series with Python：
- * The course enhanced my skills in analyzing and forecasting time series data using Pandas and Statsmodels, along with advanced models like ARIMA, SARIMA, and LSTM. These skills are pivotal for deep analysis and prediction in data science.
+ * The course enhanced my skills in analyzing and forecasting time series data using Pandas and Statsmodels, along with advanced models like ARIMA, SARIMA, SARIMAX and LSTM. These skills are pivotal for deep analysis and prediction in data science.
 
 ## 🐍 Python：
 * My journey through Python has equipped me with a robust understanding of both fundamental and advanced programming concepts, ranging from command line basics to complex data structures like strings, lists, dictionaries, tuples, and sets. 
