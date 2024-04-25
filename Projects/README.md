@@ -39,7 +39,7 @@
 * Finally, by precisely evaluating model performance using tools like confusion matrices, **ROC curves**, and **Precision-Recall Curves**, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real world problems.
 
 ### 🎛️ Unsupervised Machine Learning - Clustering:
-* In the realm of unsupervised learning, I have already begun implementing techniques like KMeans and DBSCAN, which play crucial roles in discovering inherent structures within unlabelled data.
+* In the realm of unsupervised learning, I have already begun implementing techniques like **KMeans** and **DBSCAN**, which play crucial roles in discovering inherent structures within unlabelled data.
   - **KMeans** excels in identifying clusters based on centroid proximity, making it particularly suitable for applications that require partitioning of data into distinct groups, such as customer segmentation. 
   - **DBSCAN** is a density-based clustering algorithm, suitable for identifying groups of arbitrary shapes and capable of recognizing noise points.
   
