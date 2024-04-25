@@ -12,7 +12,7 @@
 
 * I also employed **SMOTE** to address data imbalance issues in the dataset. This method helps to mitigate the problems associated with learning from imbalanced data by artificially synthesizing new examples from the minority class. This approach not only balances the class distribution without losing valuable information but also enhances the model's ability to generalize from underrepresented data points effectively.
 
-### ⚙️ Machine Learning：
+### ⚙️ Supervised Machine Learning：
 * In the field of machine learning, my expertise is not limited to traditional models like **Logistic Regression**, **Decision Trees**, and **KNN** for solving classification problems.
 
 * I've also explored more complex models, such as **Support Vector Machine (SVM)**, **Random Forest**, and **Gradient Boosting Machines (GBM)**. These are advanced methods for tackling complex nonlinear problems.
@@ -38,6 +38,13 @@
 
 * Finally, by precisely evaluating model performance using tools like confusion matrices, **ROC curves**, and **Precision-Recall Curves**, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real world problems.
 
+### 🎛️ Unsupervised Machine Learning - Clustering:
+* In the realm of unsupervised learning, I have already begun implementing techniques like KMeans and DBSCAN, which play crucial roles in discovering inherent structures within unlabelled data.
+  - **KMeans** excels in identifying clusters based on centroid proximity, making it particularly suitable for applications that require partitioning of data into distinct groups, such as customer segmentation. 
+  - **DBSCAN** is a density-based clustering algorithm, suitable for identifying groups of arbitrary shapes and capable of recognizing noise points.
+  
+* Looking ahead, future advancements will focus on scaling these algorithms to handle larger datasets more efficiently and enhancing their ability to discern more subtle patterns and relationships in the data. This ongoing development and deeper integration of clustering techniques into my analytical toolkit will continue to enhance the robustness and scope of my data analysis capabilities.
+
 # :gem: Future Goals and Directions
 
 ### 🧠 Deep Learning: 
@@ -49,13 +56,7 @@ Currently, I am immensely interested in the innovative applications of **Generat
 
 * These advancements will leverage the full potential of language data, enhancing user interaction and delivering personalized experiences based on sophisticated language understanding and processing.
 
-### 🎛️ Unsupervised Learning - Clustering
-* In the realm of unsupervised learning, I have already begun implementing techniques like KMeans and DBSCAN, which play crucial roles in discovering inherent structures within unlabelled data.
-  - **KMeans** excels in identifying clusters based on centroid proximity, making it particularly suitable for applications that require partitioning of data into distinct groups, such as customer segmentation. My initial practice with KMeans is gainig insights into similarity between countries and regions of the world by experimenting with different cluster amounts.
-    
-  - **DBSCAN** is a density-based clustering algorithm, suitable for identifying groups of arbitrary shapes and capable of recognizing noise points.
-  
-* Looking ahead, future advancements will focus on scaling these algorithms to handle larger datasets more efficiently and enhancing their ability to discern more subtle patterns and relationships in the data. This ongoing development and deeper integration of clustering techniques into my analytical toolkit will continue to enhance the robustness and scope of my data analysis capabilities.
+
 
 
 
