@@ -79,6 +79,10 @@
   
 * This method demonstrated how a detailed analysis of clustering and noise can significantly enhance e-commerce strategies.
 
+## 📚 Acknowledgments and References:
+* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+  
+* https://www.kaggle.com/code/tyatsenk/k-means-e-commerce-customer?rvi=1
 
 
 
