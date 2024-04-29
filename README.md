@@ -2,7 +2,7 @@
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
 # :star2: Why Data Science
-* In this era filled with vast and ever-growing data, data science merges disciplines such as statistics, data analytics, and machine learning to unearth hidden patterns and deep insights by digging deep into and processing data. 
+* In this era of vast and ever-growing data, data science combines disciplines like statistics, data analytics, and machine learning to unearth hidden patterns and insights by delving deeply into and processing data. 
 
 * This capability to transform data into decision support and innovative solutions deeply attracts me, driving me to master the core technologies of data science, aiming to make an impact in this data-driven world.
 
