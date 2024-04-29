@@ -35,9 +35,7 @@
     - **ECOD**: Assumes normal data points follow an elliptical distribution, effectively identifying outliers that deviate from this fit.
       
     - **LOF**: Measures local deviations of density compared to neighbors, which is effective in identifying outliers in a clustered dataset.
-      
-    - **PCA**: Reduces the dimensionality of the data, highlighting anomalies as those points that have large variations in the reduced dimensions.
-   
+       
  - **RFM Analysis**: Conducted Recency, Frequency, and Monetary (RFM) analysis to quantify customer value.
     - **Recency(R)**: Measures how recently a customer has made a purchase. This metric helps identify customers who have engaged with the brand recently, suggesting they are more likely to respond to 
                       new offers.
