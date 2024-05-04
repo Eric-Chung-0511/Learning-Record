@@ -59,7 +59,7 @@
   
 * **Loss Functions and Optimizers**: The choice of loss function and optimizer is crucial for training an ANN effectively. A binary cross-entropy loss function is commonly chosen in conjunction with the sigmoid activation. This loss function calculates the error rate between the predicted probabilities and the actual class outputs.
   
-* **Backpropagation**: The calculated error is then used during backpropagation, a key mechanism in ANN training. This process involves adjusting the weights of the connections in the network in order to minimize prediction errors, enhancing the model's accuracy over iterations, and the goal is find the optimal function.
+* **Backpropagation**: The calculated error is then utilized during backpropagation, a crucial mechanism in ANN training. This process involves adjusting the weights of the connections within the network to minimize prediction errors. By continuously refining these weights over iterations, the network enhances its accuracy, **aiming to find the optimal function for accurate predictions.**
 
 ### 🧭 Model Evaluation:
 * **Precision-Recall Curve Analysis**: Plotted precision-recall curves to find the optimal decision making threshold, which balances recall (sensitivity) and precision, critical in fraud detection where missing a fraudulent transaction (low recall) is more detrimental than a false positive.
