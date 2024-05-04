@@ -26,7 +26,7 @@
 ### ⚒️ Data Preprocessing:
 * **Log Transformation on 'Amount'**: To address skewed distributions typically seen with transaction amounts in fraud data, applied a logarithmic transformation to the 'Amount' feature. This helps normalize the data, reducing the influence of extreme values on the analysis.
   
-* **Innovative Outlier Handling with IQR**: The Interquartile Range (IQR) is a statistical measure used to identify the spread of the middle 50% of data points in a dataset. It is calculated as the difference between the 75th percentile (Q3) and the 25th percentile (Q1) of the data. The IQR helps in identifying outliers by defining thresholds. Typically, any data point that lies more than 1.5 times the IQR below Q1 or above Q3 is considered an outlier.
+* **Innovative Outlier Handling with IQR**: The Interquartile Range (IQR) is a statistical measure used to identify the spread of the middle 50% of data points in a dataset. It is calculated as the difference between the 75th percentile (Q3) and the 25th percentile (Q1) of the data. The IQR helps in identifying outliers by defining thresholds. **Typically, any data point that lies more than 1.5 times the IQR below Q1 or above Q3 is considered an outlier.**
   
 * **Instead of simply removing outliers, implemented a method to handle them by replacing with the median or capping based on quantiles.** This approach, crucial in imbalanced datasets like fraud detection, helps maintain essential data points and avoids bias towards the majority class.
 
