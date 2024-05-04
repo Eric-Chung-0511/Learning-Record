@@ -10,7 +10,12 @@
 
 * A critical component of my analytical repertoire is the detection and handling of outliers, which can skew results and impede model accuracy. To address this, I've employed the robust algorithms provided by the **PyOD** library, identifying and prudently managing these anomalies to maintain the integrity of the analysis.
 
-* I also employed **SMOTE** to address data imbalance issues in the dataset. This method helps to mitigate the problems associated with learning from imbalanced data by artificially synthesizing new examples from the minority class. This approach not only balances the class distribution without losing valuable information but also enhances the model's ability to generalize from underrepresented data points effectively.
+* I employed both **SMOTE (Synthetic Minority Over-sampling Technique) and ADASYN (Adaptive Synthetic Sampling Approach)** to address data imbalance issues in the dataset. These methods help mitigate the problems associated with learning from imbalanced data by artificially synthesizing new examples from the minority class.
+  - **SMOTE** works by creating synthetic samples from the minority class. It does this by finding the k-nearest neighbors for each minority class sample and interpolating new samples between the original ones and their neighbors. This helps to enhance the decision boundary’s definition without losing valuable data.
+ 
+  - **ADASYN**, similar to SMOTE, also generates synthetic samples from the minority class but with an additional adaptive component. It places more synthetic points in regions where the classifier is more likely to make errors. This is particularly useful for enhancing the model's ability to generalize from those underrepresented data points that are close to the decision boundary.
+
+  - Both methods not only balance the class distribution effectively but also enhance the robustness and accuracy of classification models in highly skewed datasets.
 
 ### ⚙️ Supervised Machine Learning：
 * In the field of machine learning, my expertise is not limited to traditional models like **Logistic Regression**, **Decision Trees**, and **KNN** for solving classification problems.
