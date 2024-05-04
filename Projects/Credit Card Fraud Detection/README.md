@@ -71,7 +71,7 @@
 ## 🎯 Conclusion:
 * The project elucidated the importance of preprocessing in handling imbalanced datasets and the effectiveness of ANN in detecting fraudulent transactions. The comparative analysis between different outlier handling methods provided insights into how data preparation significantly affects the outcome, underscoring the need for tailored approaches in fraud detection.
 
-* Particularly in the context of credit card fraud, achieving a high recall is critical, as it is essential to detect as many fraudulent transactions as possible. Missing a fraudulent transaction can have significant financial implications, thus emphasizing recall ensures that fewer fraud cases go undetected, prioritizing the security and trust of the financial system.
+* **Particularly in the context of credit card fraud, achieving a high recall is critical, as it is essential to detect as many fraudulent transactions as possible. Missing a fraudulent transaction can have significant financial implications**, thus emphasizing recall ensures that fewer fraud cases go undetected, prioritizing the security and trust of the financial system.
 
 ## 📚 Acknowledgments and References:
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
