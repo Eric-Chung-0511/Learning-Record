@@ -1,4 +1,4 @@
-# 💵 Loan Prediction 💳
+# 💵 Loan Prediction 💰
 
 ## 🔍 Project Overview:
 * This project is about the company seeks to automate (in real time) the loan qualifying procedure based on information given by customers while filling out an online application form.
