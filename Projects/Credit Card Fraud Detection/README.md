@@ -15,7 +15,7 @@
 * IQR (Handle Outliers)
 * Adasyn
 * classification Report
-* Auc_ROC Score
+* AUC_ROC Score
 ### 🧠 Deep Learning:
 * ANN (Artificial Neural Network)
 
@@ -24,15 +24,15 @@
 * Python Libraries: Used Pandas for data manipulation and analysis, NumPy for numerical operations, and Matplotlib and Seaborn for creating diverse plots like histograms, box plots and more  to visualize data distributions and inter-variable relationships. These visualizations help highlight key features and relationships critical to understanding fraud dynamics.
 
 ### ⚒️ Data Preprocessing:
-* Log Transformation on 'Amount': To address skewed distributions typically seen with transaction amounts in fraud data, applied a logarithmic transformation to the 'Amount' feature. This helps normalize the data, reducing the influence of extreme values on the analysis.
+* **Log Transformation on 'Amount'**: To address skewed distributions typically seen with transaction amounts in fraud data, applied a logarithmic transformation to the 'Amount' feature. This helps normalize the data, reducing the influence of extreme values on the analysis.
   
 * **Innovative Outlier Handling with IQR**: The Interquartile Range (IQR) is a statistical measure used to identify the spread of the middle 50% of data points in a dataset. It is calculated as the difference between the 75th percentile (Q3) and the 25th percentile (Q1) of the data. The IQR helps in identifying outliers by defining thresholds. Typically, any data point that lies more than 1.5 times the IQR below Q1 or above Q3 is considered an outlier.
   
-* Instead of simply removing outliers, implemented a method to handle them by replacing with the median or capping based on quantiles. This approach, crucial in imbalanced datasets like fraud detection, helps maintain essential data points and avoids bias towards the majority class.
+* **Instead of simply removing outliers, implemented a method to handle them by replacing with the median or capping based on quantiles.** This approach, crucial in imbalanced datasets like fraud detection, helps maintain essential data points and avoids bias towards the majority class.
 
-* Data Splitting: Segregated the data into training, validation, and test datasets to ensure a thorough evaluation phase.
+* **Data Splitting**: Segregated the data into training, validation, and test datasets to ensure a thorough evaluation phase.
 
-* Feature Scaling with StandardScaler: Utilized StandardScaler to normalize the features within the dataset, ensuring that each feature contributes equally to the analysis and subsequent model predictions. This is crucial in algorithms that are sensitive to the scale of input data, like most machine learning algorithms, because it enhances their performance by providing a level playing field.
+* **Feature Scaling with StandardScaler**: Utilized StandardScaler to normalize the features within the dataset, ensuring that each feature contributes equally to the analysis and subsequent model predictions. This is crucial in algorithms that are sensitive to the scale of input data, like most machine learning algorithms, because it enhances their performance by providing a level playing field.
 
 * **Balancing data with ADASYN**:
   - **Principle of ADSYN**: ADASYN (Adaptive Synthetic Sampling) is a technique used to create synthetic samples for the minority class in an imbalanced dataset. The fundamental idea behind ADASYN is to use a weighted distribution for different minority class samples according to their level of difficulty in learning, where more synthetic data is generated for harder samples. Specifically, it focuses on generating new samples next to the existing minority samples that are wrongly classified using a k-nearest neighbors algorithm.
