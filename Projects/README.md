@@ -45,6 +45,14 @@
   
 * Looking ahead, future advancements will focus on scaling these algorithms to handle larger datasets more efficiently and enhancing their ability to discern more subtle patterns and relationships in the data. This ongoing development and deeper integration of clustering techniques into my analytical toolkit will continue to enhance the robustness and scope of my data analysis capabilities.
 
+### 🤖 Artificial Neural Networks (ANNs):
+* ANNs are powerful computational models inspired by the human brain's structure, making them exceptionally adept at recognizing subtle patterns and anomalies in large datasets.
+  - **Application in Fraud Detection**: ANNs excel in detecting fraudulent transactions by learning to differentiate between legitimate and fraudulent behaviors through training on a dataset of transaction records. This capability is critical in financial security, where accurate detection can prevent substantial financial losses.
+    
+  - **Architecture and Function**: In this project, the ANN is structured with multiple layers, including an input layer, several hidden layers, and an output layer that employs a sigmoid activation function. This setup is tailored to effectively handle the binary classification task of distinguishing fraudulent transactions.
+    
+  - **Training and Optimization**: The network is trained using a backpropagation algorithm with a binary cross-entropy loss function, which refines the model by minimizing prediction errors. This process is crucial for enhancing the ANN’s ability to accurately identify fraudulent activities in transaction data.
+
 # :gem: Future Goals and Directions
 
 ### 🧠 Deep Learning: 
