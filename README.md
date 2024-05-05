@@ -6,12 +6,17 @@
 
 * The ability to transform data into decision support and innovative solutions deeply attracts me, compelling me to master the core technologies of data science and make a meaningful impact in this data-driven world.
 
-# :dizzy: Projects
+# :dizzy: Data Science Projects
 * The Projects folder contains a collection of my hands-on work. 
 
 * These projects reflect my practical application of data science concepts, from exploratory data analysis to machine learning and predictive modeling. 
 
 * Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
+
+# ☁️ SQL:
+* This section contains a variety of SQL challenges that I have tackled, showcasing my ability to manipulate and query databases effectively.
+
+* Practicing these exercises can enhance my SQL skills, improving my ability to handle structured data efficiently.
 
 # :tada: Certificates
 * The Certificates folder is a record of the formal education and training I have completed in the field of Data Science. 
