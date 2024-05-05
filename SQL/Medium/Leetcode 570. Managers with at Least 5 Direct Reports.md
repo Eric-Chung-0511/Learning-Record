@@ -55,6 +55,16 @@ To find managers with at least five direct reports, you can:
   
 ### 中文:
 目的是找出至少有五名直接下屬的管理者：
-- **使用 JOIN**: `Employee` 表自我連接，將每位員工與他們的管理者關聯起來。
+- **使用 JOIN**: 將`Employee`表 `JOIN`，與每位員工與他們的管理者關聯起來。
 - **分組**: 按 `managerId` 對數據進行分組。
 - **過濾與計算次數**: 使用 `HAVING` 與 `COUNT` 篩選出至少有五名直接下屬的主管。這裡的 `COUNT(*)` 函數計算的是每個 `managerId` 在表中出現的次數，即一位管理者有多少名直接下屬。
+
+
+## SQL Code
+```sql
+SELECT e1.name
+FROM employee e1 
+JOIN employee e2 ON e1.id = e2.managerId
+GROUP BY e1.id
+HAVING COUNT(*) >= 5;
+
