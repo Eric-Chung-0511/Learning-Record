@@ -69,6 +69,9 @@ Query Method:
 LEFT JOIN: This type of join ensures that all records from the Person table are selected. 
 If there is a matching personId in the Address table, the associated city and state are selected; if no match exists, then the city and state are displayed as NULL.
 
+我們需要從 'Person' 
+
+
 _________________________________________________________________________________________________________________________________________________________________________________________________________
 
 # Code
