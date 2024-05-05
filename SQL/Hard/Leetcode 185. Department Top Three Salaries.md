@@ -83,7 +83,7 @@ To tackle this problem, the approach involves:
    - After applying the window function, a subquery is used where we select only those rows where the employee's rank is 3 or less (`D_rank <= 3`). This step effectively filters out all but the top three earners in each department.
 
 
-### 中文（繁體）解題思路:
+### 中文:
 
 要解決這個問題，方法包括：
 - **窗口函數使用**：使用 `DENSE_RANK()` 窗口函數對每個部門內的員工按薪水降序進行排名。
