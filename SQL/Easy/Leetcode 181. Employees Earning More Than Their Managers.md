@@ -48,7 +48,7 @@ To solve this problem, we need to identify employees who are earning more than t
 - **Self-Join on Employee Table**: We join the `Employee` table to itself to pair each employee with their manager.
 - **Comparison Condition**: In the join condition, `managerId` of the first instance of the table (employee) is matched with the `id` of the second instance (manager). The where clause is then used to filter the records where the employee's salary exceeds the manager's salary.
 
-### 中文（繁體）:
+### 中文:
 
 解決這個問題，我們需要識別出薪水高於其各自經理的員工。這需要比較每位員工的薪水與其經理的薪水。
 - **自我連接員工表**：在連接條件中，`Employee e1` 代表員工，表中 `managerId` 與 `Employee e2` 代表經理，表中 `id` 相匹配。這樣的`JOIN`讓我們可以在同一查詢中比較員工與其經理的薪資。
