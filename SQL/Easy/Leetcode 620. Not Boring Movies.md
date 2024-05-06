@@ -55,7 +55,7 @@ The challenge focuses on filtering the `Cinema` table to find non-boring movies 
 - **Description Check**: Include `description != 'boring'` to exclude any movie described as boring.
 - **Ordering**: Sort the results by the `rating` column in descending order to show the highest-rated movies at the top.
 
-### 中文（繁體）解題思路:
+### 中文:
 
 這個題目著重於過濾 `Cinema` 表來找出描述不是 "boring" 且具有奇數 ID 的電影：
 - **模數運算符**：使用 `id % 2 = 1` 篩選具有奇數 ID 的電影。
