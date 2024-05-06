@@ -8,7 +8,7 @@
 Each SQL challenge I've worked on is accompanied by a solution that reflects my current understanding and skills. These solutions are my attempt to not only solve the problem but also to enhance the clarity and efficiency of my code.
 
 ### 💡 Insights and Reflections
-For every problem I solve, I take the time to reflect on my solution, noting why I chose specific SQL techniques or functions and how they apply to the problem at hand. These reflections help me internalize what I've learned and may aid others in understanding SQL's practical uses.
+For every problem I solve, I take the time to reflect on my solution, focusing on how the experience contributes to my understanding of SQL and its practical applications. These reflections not only help me internalize what I've learned but also prepare me to tackle more complex challenges in the future. Sharing these insights may help others see the value of persistence and strategic thinking in programming.
 
 ### 📄 Original Problem Statements
 I begin each section with the original problem statement from LeetCode. This context setting is crucial for grasping the challenge and understanding how my solutions aim to address it.
