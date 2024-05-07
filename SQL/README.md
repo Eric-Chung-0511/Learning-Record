@@ -2,7 +2,7 @@
 
 **Welcome to my journey through SQL challenges on LeetCode!** In this repository, I share my journey of tackling various SQL problems on LeetCode, detailing my approaches and the insights I've gained along the way. This repository serves both as a diary of my learning process and as a resource for those who are also on their path to mastering SQL and database querying.
 
-## 📘 What You'll Find in This Repository
+## 📘 What You'll Find 
 
 ### 🛠 Learning Through Practice
 Each SQL challenge I've worked on is accompanied by a solution that reflects my current understanding and skills. These solutions are my attempt to not only solve the problem but also to enhance the clarity and efficiency of my code.
@@ -17,7 +17,7 @@ I begin each section with the original problem statement from LeetCode. This con
 ### 📝 Tips and Learning Notes
 As I learn, I collect various SQL tips and notes that have helped me along the way. I share these in hopes that they might clarify complex SQL concepts for others or offer ways to enhance query performance.
 
-## 🎯 Goals of This Repository
+## 🎯 Goals 
 
 **📖 Documenting My Learning Journey**: By sharing my solutions and thought processes, I aim to document my progress and development in SQL, showcasing the growth in my analytical and database handling capabilities.
 
