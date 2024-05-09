@@ -15,7 +15,7 @@
  
   - **ADASYN**, similar to SMOTE, also generates synthetic samples from the minority class but with an additional adaptive component. It places more synthetic points in regions where the classifier is more likely to make errors. This is particularly useful for enhancing the model's ability to generalize from those underrepresented data points that are close to the decision boundary.
 
-  - Both methods not only balance the class distribution effectively but also enhance the robustness and accuracy of classification models in highly skewed datasets.
+  - **Both methods not only balance the class distribution effectively but also enhance the robustness and accuracy of classification models in highly skewed datasets.**
 
 ### ⚙️ Supervised Machine Learning：
 * In the field of machine learning, my expertise is not limited to traditional models like **Logistic Regression**, **Decision Trees**, and **KNN** for solving classification problems.
