@@ -55,7 +55,7 @@
 
 * **Information Flow**: Information flows through the network from input to output. Each node processes the input and passes it on to the next layer until the output layer is reached.
   
-* **Activation Functions**: In the output layer, ANNs typically use a sigmoid activation function to map predictions to a probability distribution. This is particularly ideal for binary classification tasks such as fraud detection, where the model predicts either a 'fraud' or 'not fraud' outcome.
+* **Activation Functions**: In the output layer, ANNs typically use a sigmoid activation function to map predictions to a probability distribution. This is particularly ideal for binary classification tasks such as fraud detection, where the model predicts either a 'Fraud' or 'Not Fraud' outcome.
   
 * **Loss Functions and Optimizers**: The choice of loss function and optimizer is crucial for training an ANN effectively. A binary cross-entropy loss function is commonly chosen in conjunction with the sigmoid activation. This loss function calculates the error rate between the predicted probabilities and the actual class outputs.
   
