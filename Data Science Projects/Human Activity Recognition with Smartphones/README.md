@@ -62,7 +62,7 @@
 
 * **Classification Report and ROC Curve**: For the top 5 performing models, we generate and visualize the ROC curve and Classification Report. These metrics provide a detailed view of each model's performance, highlighting areas of strength and potential improvement.
 
-* To prevent overfitting, further evaluation is necessary. Techniques such as regularization, cross-validation on different subsets of data, and ensuring the model's performance on a completely separate test set are critical.
+* **To prevent overfitting, further evaluation is necessary. Techniques such as regularization, cross-validation on different subsets of data, and ensuring the model's performance on a completely separate test set are critical.**
 
 * Overfitting occurs when a model learns the training data too well, including its noise and outliers, which negatively impacts its performance on new, unseen data. Therefore, continuous monitoring and validation against overfitting are essential steps in the model evaluation process.
 
