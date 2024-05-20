@@ -89,3 +89,9 @@
   
 * https://www.kaggle.com/code/caesarmario/loan-prediction-w-various-ml-models/notebook
 
+## 📄 Viewing Jupyter Notebooks
+* Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
+  [Loan Prediction](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Loan%20Prediction/Loan%20Prediction%20_Eric.ipynb)
+
+Thank you for your understanding!😊
+
