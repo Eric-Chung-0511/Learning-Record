@@ -59,3 +59,9 @@
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
 * https://www.kaggle.com/code/fatmayousufmohamed/time-serises-analysis#Thanks!
+
+## 📄 Viewing Jupyter Notebooks
+* Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
+  [Walmart Sales Prediction](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Walmart/Walmart%20sales%20prediction_Eric.ipynb)
+
+  Thank you for your understanding!😊
