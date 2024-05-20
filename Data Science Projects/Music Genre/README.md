@@ -60,3 +60,9 @@
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
 * https://www.kaggle.com/code/aniruddhachoudhury/classify-song-genres-from-audio-data-model
+
+## 📄 Viewing Jupyter Notebooks
+* Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
+  [Classify Song Genres from Audio Data Model](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Music%20Genre/Music%20Classification_Eric.ipynb)
+
+  Thank you for your understanding!😊
