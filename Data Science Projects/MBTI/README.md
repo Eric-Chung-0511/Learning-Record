@@ -82,6 +82,10 @@
 * https://www.kaggle.com/code/rajshreev/mbti-personality-predictor-using-machine-learning/notebook
 * https://www.nltk.org/
 
+## 📄 Viewing Jupyter Notebooks
+* Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
+  [MBTI Prediction](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/MBTI/MBTI%20Prediction_Eric.ipynb)
 
+  Thank you for your understanding!😊
 
 
