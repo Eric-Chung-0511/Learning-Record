@@ -82,6 +82,11 @@
   
 * https://www.kaggle.com/code/tyatsenk/k-means-e-commerce-customer?rvi=1
 
+## 📄 Viewing Jupyter Notebooks
+* Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
+  [E-Commerce Cluster](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Credit%20Card%20Fraud%20Detection/Credit%20Card%20Fraud%20Detection_Eric.ipynb)
+
+Thank you for your understanding!😊
 
 
 
