@@ -84,7 +84,7 @@
 * Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
   [Human Activity Recognition with Smartphones](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Human%20Activity%20Recognition%20with%20Smartphones/Human%20Activity%20Recognition%20with%20Smartphones%20_Eric.ipynb)
 
-Thank you for your understanding!😊
+  Thank you for your understanding!😊
 
 
   
