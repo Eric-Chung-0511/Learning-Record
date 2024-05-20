@@ -60,3 +60,9 @@
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
 * https://www.kaggle.com/code/volhaleusha/titanic-tutorial-encoding-feature-eng-81-8#Part-8:-Conclusion
+
+## 📄 Viewing Jupyter Notebooks
+* Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
+  [Titanic Survival Prediction](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Titanic/Titanic_Final_Eric.ipynb)
+
+  Thank you for your understanding!😊
