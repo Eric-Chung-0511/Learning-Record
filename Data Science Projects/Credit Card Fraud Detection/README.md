@@ -80,6 +80,6 @@
 
 ## 📄 Viewing Jupyter Notebooks
 * Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
-  [Credit Card Fraud Detection](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Credit%20Card%20Fraud%20Detection/Credit%20Card%20Fraud%20Detection_Eric.ipynb)
+  [Credit Card Fraud Detection](https://nbviewer.org/github/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Credit%20Card%20Fraud%20Detection/Credit%20Card%20Fraud%20Detection_Eric.ipynb)
 
   Thank you for your understanding!😊
