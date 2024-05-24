@@ -50,7 +50,9 @@
 - **Model Application**: Employed various models such as RandomForest, Gradient Boosting, KNN, SVM to harness different statistical strengths. Each model was trained using data prepared with different encoders to evaluate the effect of these preprocessing strategies on predictive performance.
 
 ### 📈  Model Assessment:
-- **Evaluation Metrics**: The performance of various machine learning models was evaluated using the mean test score from cv_results_, which reflects the average accuracy across all cross-validation folds. This measure is critical for assessing how well a model generalizes to unseen data and for comparing the effectiveness of different model configurations.
+- **Evaluation Metrics**: The performance of various machine learning models was evaluated using the mean test score from `cv_results_`, which reflects the average accuracy across all cross-validation folds.
+
+- This measure is critical for assessing how well a model generalizes to unseen data and for comparing the effectiveness of different model configurations.
 
 ## 🎯 Conclusion:
 * Through meticulous data handling, preprocessing, and model evaluation, this project elucidated the key factors that influenced survival on the Titanic.
