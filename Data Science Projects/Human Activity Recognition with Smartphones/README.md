@@ -24,7 +24,7 @@
 * PCA
 * FunctionTransformer
 * ColumnTransformer
-* classification Report
+* Classification Report
 * AUC_ROC Score
 ### 🖥️ Machine Learning:
 * XGBoost 
