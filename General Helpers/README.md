@@ -5,3 +5,5 @@ This folder contains various helper functions.
 - `plot_confusion_matrix`: [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Neural_network_classification.ipynb)
 - `plot_random_image`: [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Neural_network_classification.ipynb)
 - `load_and_prep_image`: [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
+- `plot_loss_curves`: [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
+- `pred_and_plot`: [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
