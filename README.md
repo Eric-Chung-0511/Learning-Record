@@ -28,6 +28,17 @@
 
 * This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
 
+# 🔐 General Helpers
+* Here, you'll find a treasure trove of handy functions designed to make your data science and machine learning journey smoother and more enjoyable. Whether you're **crunching numbers, visualizing data, or building models, our collection of helpers is here to save you time and effort.**
+
+* ### Why You'll Love These Helpers ❤️
+* This [General Helpers](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/General%20Helpers) are crafted with care to tackle a variety of tasks, big and small. They’re like your trusty sidekicks, ready to assist you in the most efficient way possible. Forget about repetitive boilerplate code—these functions are tested, optimized, and eager to jump into action.
+
+* ### Dive In! 🚀
+* Imagine having a toolbox filled with all the right tools to get the job done faster and better. Explore the examples provided to see how these helpers can seamlessly fit into your workflow. I've included practical demonstrations to help you get started quickly. Whether you're a beginner or a seasoned pro, you'll find these tools invaluable.
+
+*  Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
+
 # :iphone: Contact Information
 * For any questions or suggestions about my projects, please feel free to contact me at:
 
