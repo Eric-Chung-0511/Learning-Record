@@ -23,11 +23,6 @@
 
 * These certificates represent not just the acquisition of knowledge, but my commitment to continuous learning and professional growth in this rapidly evolving field.
 
-# :speaker: Conclusion
-* Through Data Science, I aspire to make meaningful contributions by transforming raw data into actionable insights.
-
-* This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
-
 # 🔐 General Helpers
 * Here, you'll find a treasure trove of handy functions designed to make your data science and machine learning journey smoother and more enjoyable. Whether you're **crunching numbers, visualizing data, or building models, our collection of helpers is here to save you time and effort.**
 
@@ -38,6 +33,11 @@
 * Imagine having a toolbox filled with all the right tools to get the job done faster and better. Explore the examples provided to see how these helpers can seamlessly fit into your workflow. I've included practical demonstrations to help you get started quickly. Whether you're a beginner or a seasoned pro, you'll find these tools invaluable.
 
 *  Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
+
+#  :speaker: Conclusion
+* Through Data Science, I aspire to make meaningful contributions by transforming raw data into actionable insights.
+
+* This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
 
 # :iphone: Contact Information
 * For any questions or suggestions about my projects, please feel free to contact me at:
