@@ -7,7 +7,7 @@
 # then classes[4] will return 'Coat'.
 # Use this index to get the corresponding class name from the classes list. 
 # For example, if the true label index is 1, it will return "Trouser".
-
+import matplotlib.pyplot as plt
 import random
 
 def plot_random_image(model, images, true_labels, classes):
