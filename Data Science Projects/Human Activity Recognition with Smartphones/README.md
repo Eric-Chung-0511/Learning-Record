@@ -79,6 +79,10 @@
 
 * By saving and reloading our models, we confirmed their ability to generalize well on new data, demonstrating their robustness. This comprehensive approach not only highlights the effectiveness of our preprocessing and evaluation techniques but also underscores the importance of rigorous model validation in achieving accurate and reliable human activity recognition.
 
+## 📚 Acknowledgments and References:
+* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+
+* https://www.kaggle.com/datasets/uciml/human-activity-recognition-with-smartphones
 
 ## 📄 Viewing Jupyter Notebooks
 * Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
