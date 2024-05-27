@@ -14,3 +14,12 @@
 - **create_outlier_transformer**: Generate a function transformer based on the specified method for handling outliers.
 - **create_pipeline**: Create a machine learning pipeline with outlier handling and scaling.
 
+### find_most_common_word([View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/MBTI/MBTI%20Prediction_Eric.ipynb))
+- **This function consists of two functions aimed at analyzing text data to find the most common words.**
+- **find_most_common_words**: Find the most common words in a specified column of a DataFrame.
+- **flatten_list**: Flatten a nested list of words into a single list to facilitate word frequency analysis.
+
+### preprocess_text([View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/MBTI/MBTI%20Prediction_Eric.ipynb))
+- **This function consists of one primary function aimed at preprocessing text data in a DataFrame column.**
+- **preprocess_text**: Preprocess text data by removing links, punctuation, non-words, very short or long words, and optionally special words, while also handling end-of-sentence characters and converting text to lowercase.
+
