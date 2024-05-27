@@ -6,8 +6,8 @@
 
 ### 📚 Functions Overview
 
-- **Data Preprocessing**: Functions to help clean and prepare your data for modeling. This includes tasks such as text preprocessing, handling missing values, and feature scaling.
-- **Model Training**: Functions to assist with setting up and training your machine learning models, including hyperparameter tuning and cross-validation. Moreover, there's Functions to evaluate your models' performance using various metrics and visualization tools.
+- **[Data Preprocessing](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/General%20Helpers/Machine%20Learning/Data%20Preprocessing)**: Functions to help clean and prepare your data for modeling. This includes tasks such as text preprocessing, handling missing values, and feature scaling.
+- **[Model Training](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/General%20Helpers/Machine%20Learning/Model%20Training%20%26%20Evaluation)**: Functions to assist with setting up and training your machine learning models, including hyperparameter tuning and cross-validation. Moreover, there's Functions to evaluate your models' performance using various metrics and visualization tools.
 
 ### 🌟 Benefits
 
