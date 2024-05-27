@@ -3,8 +3,6 @@ This folder contains various helper functions. The Python files include both the
 
 ### Functions 💎
 
-- **plot_confusion_matrix**: Visualize the customized confusion matrix to evaluate the performance of classification models. Helps in identifying misclassifications and understanding model accuracy. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/plot_confusion_matrix_example.ipynb)
-
 - **plot_random_image**: Display a random image from the dataset along with its label. Useful for data exploration and sanity checks. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Neural_network_classification.ipynb)
 
 - **load_and_prep_image**: Load an image from a file, preprocess it, and prepare it for model prediction. This includes resizing and scaling the pixel values. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
