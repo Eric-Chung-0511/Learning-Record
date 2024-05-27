@@ -37,12 +37,3 @@ def find_optimal_k(data, random_state=42, max_k=None):
     plt.title('Elbow Method for Optimal k')
     plt.grid(True)
     plt.show()
-
-# Example usage
-if __name__ == "__main__":
-    # Create sample data
-    from sklearn.datasets import make_blobs
-    data, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
-
-    # Find the optimal number of clusters
-    find_optimal_k(data, max_k=10)
