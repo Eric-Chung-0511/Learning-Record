@@ -1,6 +1,9 @@
 ## General Helpers 🔑✨
 * This folder contains various helper functions. The Python files include both the code and explanations. If you want to see these functions in action, please check out the examples. 🚀
 
+### Table of contents
+1. [plot_random_image](#plot_random_image)
+
 ### 📚 Functions Overview 
 
 - **plot_random_image**: Display a random image from the dataset along with its label. Useful for data exploration and sanity checks. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Neural_network_classification.ipynb)
