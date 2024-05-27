@@ -105,3 +105,31 @@ def create_outlier_transformer(method):
         return FunctionTransformer(outlier_transformer_quantile)
     else:
         raise ValueError("Invalid method provided")
+
+# Make sure you already define X, y and split into X_train, X_test, y_train, y_test
+def create_pipeline(outlier_method, X_train):
+    """
+    Create a machine learning pipeline with outlier handling and scaling.
+
+    Parameters:
+    outlier_method (str): Method to handle outliers ('median' or 'quantile').
+    X_train (pd.DataFrame): Training data.
+
+    Returns:
+    Pipeline: A machine learning pipeline.
+    """
+    outlier_transformer = create_outlier_transformer(outlier_method)
+    
+    numeric_cols = X_train.select_dtypes(include=[np.number]).columns  # Numeric columns
+    preprocessor = ColumnTransformer(transformers=[
+        ('outliers', outlier_transformer, numeric_cols),
+        ('scaler', StandardScaler(), numeric_cols)
+    ])
+    
+    pipeline = Pipeline(steps=[
+        ('preprocessor', preprocessor),
+        ('pca', PCA(n_components=0.95)),
+        ('classifier', 'passthrough')
+    ])
+    
+    return pipeline
