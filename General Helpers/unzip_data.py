@@ -23,5 +23,5 @@ def unzip_data(filename):
     # Close the zip file to free up resources
     zip_ref.close()
 
-# usage way: load unzip file
-unzip_data('somefile.zip')
+# Example Usage
+# unzip_data('somefile.zip')
