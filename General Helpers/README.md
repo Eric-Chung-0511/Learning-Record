@@ -6,6 +6,7 @@
 2. [load_and_prep_image](#load_and_prep_image)
 3. [plot_loss_curves](#plot_loss_curves)
 4. [pred_and_plot](#pred_and_plot)
+5. [unzip_data](#unzip_data)
 
 ### 📚 Functions Overview 
 
@@ -21,6 +22,10 @@
 - #### pred_and_plot:
   Make a prediction using the model and plot the image with the predicted class as the title. Useful for visualizing model predictions in an intuitive way. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
 
+- #### unzip_data:
+  unzip_data: Unzip a specified zip file into the current working directory. This function takes a file path to a zip file, extracts all its contents, and saves them in the current directory.[View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
+
+  
 ### 🌟 Benefits
 
 - **Efficiency**: Reusable functions reduce the need for writing repetitive code.
