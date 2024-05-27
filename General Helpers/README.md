@@ -2,7 +2,7 @@
 * This folder contains various helper functions. The Python files include both the code and explanations. If you want to see these functions in action, please check out the examples. 🚀
 
 ### Table of contents
-1. [pred_and_plot](###pred_and_plot)
+1. [pred_and_plot](#pred_and_plot)
 
 ### 📚 Functions Overview 
 
@@ -12,7 +12,8 @@
 
 - **plot_loss_curves**: Plot the training and validation loss and accuracy curves. Useful for analyzing the performance of the model over epochs and identifying overfitting or underfitting. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
 
-- **pred_and_plot**: Make a prediction using the model and plot the image with the predicted class as the title. Useful for visualizing model predictions in an intuitive way. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
+- #### pred_and_plot:
+  Make a prediction using the model and plot the image with the predicted class as the title. Useful for visualizing model predictions in an intuitive way. [View Example](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Examples/Convolutional_neural_networks_in_tensorflow.ipynb)
 
 ### 🌟 Benefits
 
