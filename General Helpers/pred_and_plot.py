@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def pred_and_plot(model, filename, class_name=class_name):
   """
  Imports an image located at the filename, makes a prediction with the model, and plots the image with the predicted class as the title.
