@@ -2,7 +2,7 @@
 * This folder contains various helper functions. The Python files include both the code and explanations. If you want to see these functions in action, please check out the examples. 🚀
 
 ### Table of contents
-1. [plot_random_image](#plot_random_image)
+1. [pred_and_plot](#pred_and_plot)
 
 ### 📚 Functions Overview 
 
