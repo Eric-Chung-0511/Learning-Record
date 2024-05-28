@@ -1,13 +1,13 @@
 ## 📋 Table of Contents
-- [⭐ Learning Record Introduction](#star-learning-record-introduction)
-- [🌟 Why Data Science](#star2-why-data-science)
-- [💫 Data Science Projects](#dizzy-data-science-projects)
-- [🗃️ SQL](#sql)
-- [🎉 Certificates](#tada-certificates)
-- [🛠️ General Helpers](#general-helpers)
-- [🔈 Conclusion](#speaker-conclusion)
-- [📱 Contact Information](#iphone-contact-information)
-- [🔏 License](#license)
+- [Learning Record Introduction](#star-learning-record-introduction)
+- [Why Data Science](#star2-why-data-science)
+- [Data Science Projects](#dizzy-data-science-projects)
+- [SQL](#sql)
+- [Certificates](#tada-certificates)
+- [General Helpers](#general-helpers)
+- [Conclusion](#speaker-conclusion)
+- [Contact Information](#iphone-contact-information)
+- [License](#license)
 
 <h2 id="star-learning-record-introduction">:star: Learning Record Introduction</h2>
 
