@@ -10,6 +10,8 @@
 - [License](#-license)
 
 # :star: Learning Record Introduction
+[![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
+[![Machine Learning](https://img.shields.io/badge/Machine_Learning-Skilled-yellow.svg?logo=scikit-learn)](https://scikit-learn.org/)
 ![Python](https://img.shields.io/badge/Python-3.11-blue.svg?logo=python)
 [![SQL](https://img.shields.io/badge/SQL-Enthusiast-lightgrey.svg?logo=sqlite)](https://sqlite.org/)
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
