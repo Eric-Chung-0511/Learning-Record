@@ -13,8 +13,8 @@
 
 [![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
 [![Machine Learning](https://img.shields.io/badge/Machine_Learning-Skilled-yellow.svg?logo=scikit-learn)](https://scikit-learn.org/)
-![Python](https://img.shields.io/badge/Python-3.11-blue.svg?logo=python)
-[![SQL](https://img.shields.io/badge/SQL-Enthusiast-lightgrey.svg?logo=sqlite)](https://sqlite.org/)
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg?logo=python)](https://www.python.org/)
+[![SQL](https://img.shields.io/badge/MySQL-Enthusiast-lightgrey.svg?logo=mysql)](https://www.mysql.com/)
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
 
