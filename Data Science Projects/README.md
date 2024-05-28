@@ -1,11 +1,11 @@
 # :dizzy: Project Highlights
 
 ## 📋 Table of Contents
-- [📊 Data Analysis](#data-analysis)
-- [⚙️ Supervised Machine Learning](#supervised-machine-learning)
-- [🎛️ Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
-- [🤖 Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
-- [💎 Future Goals and Directions](#future-goals-and-directions)
+- [Data Analysis](#data-analysis)
+- [Supervised Machine Learning](#supervised-machine-learning)
+- [Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
+- [Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
+- [Future Goals and Directions](#future-goals-and-directions)
 
 
 <h2 id="data-analysis">📊 Data Analysis</h2>
