@@ -1,8 +1,6 @@
 <!-- Add an anchor at the top of the document -->
 <a name="top"></a>
 
-# 💫 Project Highlights
-
 ## 📋 Table of Contents
 - [Data Analysis](#data-analysis)
 - [Supervised Machine Learning](#supervised-machine-learning)
@@ -10,6 +8,7 @@
 - [Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
 - [Future Goals and Directions](#future-goals-and-directions)
 
+## 💫 Project Highlights
 
 <h2 id="data-analysis">📊 Data Analysis</h2>
 
