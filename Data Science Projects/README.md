@@ -1,4 +1,5 @@
-<!-- Add an anchor at the top of the document -->
+# 💫 Project Highlights
+
 <a name="top"></a>
 
 ## 📋 Table of Contents
@@ -7,8 +8,6 @@
 - [Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
 - [Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
 - [Future Goals and Directions](#future-goals-and-directions)
-
-## 💫 Project Highlights
 
 <h2 id="data-analysis">📊 Data Analysis</h2>
 
