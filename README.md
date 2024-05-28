@@ -40,7 +40,7 @@
 * This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
 
 # :iphone: Contact Information
-* For any questions or suggestions about my projects, please feel free to contact me at:
+* For any questions or suggestions about my repo, please feel free to contact me at:
 
 * Email: [substantial79@gmail.com]
 
