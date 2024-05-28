@@ -1,5 +1,5 @@
-<!-- Add an anchor at the top of the document -->
 <a name="top"></a>
+
 ## 📋 Table of Contents
 - [Learning Record Introduction](#star-learning-record-introduction)
 - [Why Data Science](#star2-why-data-science)
