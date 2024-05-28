@@ -10,10 +10,10 @@
 - [License](#-license)
 
 # :star: Learning Record Introduction
-[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
 ![Python](https://img.shields.io/badge/Python-3.11-blue.svg?logo=python)
 [![SQL](https://img.shields.io/badge/SQL-Enthusiast-lightgrey.svg?logo=sqlite)](https://sqlite.org/)
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
+[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
 
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
