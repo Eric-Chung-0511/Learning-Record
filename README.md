@@ -96,7 +96,7 @@
 
 <h2 id="license">🔏 License</h2>
 
-* This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+* This project is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file.
 
 **[⇧ back to top ⇧](#top)**
 
