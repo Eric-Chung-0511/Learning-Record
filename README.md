@@ -31,6 +31,8 @@
 
 * The ability to transform data into decision support and innovative solutions deeply attracts me, compelling me to master the core technologies of data science and make a meaningful impact in this data-driven world.
 
+<a href="#top">back to top</a>
+
 <h2 id="dizzy-data-science-projects">💫 Data Science Projects</h2>
 
 * The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects) contains a collection of my hands-on work. 
@@ -39,17 +41,23 @@
 
 * Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
 
+<a href="#top">back to top</a>
+
 <h2 id="sql">🗃️ SQL</h2>
 
 * This section contains a variety of [SQL challenges](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/SQL) that I have tackled, showcasing my ability to manipulate and query databases effectively.
 
 * Practicing these exercises can enhance my SQL skills, improving my ability to handle structured data efficiently.
 
+<a href="#top">back to top</a>
+
 <h2 id="tada-certificates">🎉 Certificates</h2>
 
 * The Certificates folder is a record of the formal education and training I have completed in the field of Data Science. 
 
 * These certificates represent not just the acquisition of knowledge, but my commitment to continuous learning and professional growth in this rapidly evolving field.
+
+<a href="#top">back to top</a>
 
 <h2 id="general-helpers">🛠️ General Helpers</h2>
 
@@ -62,6 +70,8 @@
 * Imagine having a toolbox filled with all the right tools to get the job done faster and better. Explore the examples provided to see how these helpers can seamlessly fit into your workflow. I've included practical demonstrations to help you get started quickly. Whether you're a beginner or a seasoned pro, you'll find these tools invaluable.
 
 * Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
+
+<a href="#top">back to top</a>
 
 <h2 id="speaker-conclusion">🔈 Conclusion</h2>
 
@@ -77,7 +87,10 @@
 
 * LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
 
+<a href="#top">back to top</a>
+
 <h2 id="license">🔏 License</h2>
 
 * This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+<a href="#top">back to top</a>
