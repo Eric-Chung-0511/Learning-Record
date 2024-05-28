@@ -69,6 +69,11 @@ Currently, I am immensely interested in the innovative applications of **Generat
 
 * These advancements will leverage the full potential of language data, enhancing user interaction and delivering personalized experiences based on sophisticated language understanding and processing.
 
+### 🔄 Transformer Technology:
+* My future goal is to leverage Transformer models to build advanced AI systems. These models will enable me to create sophisticated language models for various applications, including text generation, translation, and more.
+   
+* The aim is to harness the full potential of these cutting-edge technologies to develop AI solutions that can understand and generate human-like text, providing enhanced user interactions and personalized experiences.
+
 
 
 
