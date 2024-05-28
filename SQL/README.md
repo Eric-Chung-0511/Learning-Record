@@ -1,3 +1,4 @@
+<a name="top"></a>
 # 🗃️ SQL Challenges on LeetCode
 
 **Welcome to my journey through SQL challenges on LeetCode!** In this repository, I share my journey of tackling various SQL problems on LeetCode, detailing my approaches and the insights I've gained along the way. This repository serves both as a diary of my learning process and as a resource for those who are also on their path to mastering SQL and database querying.
@@ -25,3 +26,4 @@ As I learn, I collect various SQL tips and notes that have helped me along the w
 
 **🌱 Encouraging Continuous Improvement**: This platform is also a space for me to continuously refine my skills, learn from the community, and stay engaged with the latest in SQL techniques and best practices.
 
+**[⇧ back to top ⇧](#top)**
