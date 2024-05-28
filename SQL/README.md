@@ -1,4 +1,4 @@
-# ☁️ SQL Challenges on LeetCode
+# 🗃️ SQL Challenges on LeetCode
 
 **Welcome to my journey through SQL challenges on LeetCode!** In this repository, I share my journey of tackling various SQL problems on LeetCode, detailing my approaches and the insights I've gained along the way. This repository serves both as a diary of my learning process and as a resource for those who are also on their path to mastering SQL and database querying.
 
