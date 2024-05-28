@@ -9,7 +9,7 @@
 - [Contact Information](#iphone-contact-information)
 - [License](#license)
 
-<h2 id="star-learning-record-introduction">:star: Learning Record Introduction</h2>
+<h2 id="star-learning-record-introduction">⭐ Learning Record Introduction</h2>
 
 [![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
 [![Machine Learning](https://img.shields.io/badge/Machine_Learning-Skilled-yellow.svg?logo=scikit-learn)](https://scikit-learn.org/)
@@ -20,13 +20,13 @@
 
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
-<h2 id="star2-why-data-science">:star2: Why Data Science</h2>
+<h2 id="star2-why-data-science">🌟 Why Data Science</h2>
 
 * In this era of vast and ever-growing data, data science combines disciplines like statistics, data analytics, and machine learning to unearth hidden patterns and insights by delving deeply into and processing data. 
 
 * The ability to transform data into decision support and innovative solutions deeply attracts me, compelling me to master the core technologies of data science and make a meaningful impact in this data-driven world.
 
-<h2 id="dizzy-data-science-projects">:dizzy: Data Science Projects</h2>
+<h2 id="dizzy-data-science-projects">💫 Data Science Projects</h2>
 
 * The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects) contains a collection of my hands-on work. 
 
@@ -40,7 +40,7 @@
 
 * Practicing these exercises can enhance my SQL skills, improving my ability to handle structured data efficiently.
 
-<h2 id="tada-certificates">:tada: Certificates</h2>
+<h2 id="tada-certificates">🎉 Certificates</h2>
 
 * The Certificates folder is a record of the formal education and training I have completed in the field of Data Science. 
 
@@ -58,13 +58,13 @@
 
 * Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
 
-<h2 id="speaker-conclusion">:speaker: Conclusion</h2>
+<h2 id="speaker-conclusion">🔈 Conclusion</h2>
 
 * Through Data Science, I aspire to make meaningful contributions by transforming raw data into actionable insights.
 
 * This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
 
-<h2 id="iphone-contact-information">:iphone: Contact Information</h2>
+<h2 id="iphone-contact-information">📱  Contact Information</h2>
 
 * For any questions or suggestions about my repo, please feel free to contact me at:
 
