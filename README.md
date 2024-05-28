@@ -1,4 +1,5 @@
 <a name="top"></a>
+![Data Science](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg)
 ## 📋 Table of Contents
 - [Learning Record Introduction](#star-learning-record-introduction)
 - [Why Data Science](#star2-why-data-science)
