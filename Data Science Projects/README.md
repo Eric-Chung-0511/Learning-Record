@@ -1,4 +1,7 @@
-# :dizzy: Project Highlights
+<!-- Add an anchor at the top of the document -->
+<a name="top"></a>
+
+# 💫 Project Highlights
 
 ## 📋 Table of Contents
 - [Data Analysis](#data-analysis)
@@ -26,6 +29,8 @@
     
   - **Both methods not only balance the class distribution effectively but also enhance the robustness and accuracy of classification models in highly skewed datasets.**
 
+**[⇧ back to top ⇧](#top)**
+
 <h2 id="supervised-machine-learning">⚙️ Supervised Machine Learning</h2>
 
 * In the field of machine learning, my expertise is not limited to traditional models like **Logistic Regression**, **Decision Trees**, and **KNN** for solving classification problems.
@@ -51,6 +56,8 @@
 
 * Finally, by precisely evaluating model performance using tools like confusion matrices, **ROC curves**, and **Precision-Recall Curves**, I can thoroughly understand the strengths and weaknesses of models, thereby making wiser decisions in real world problems.
 
+**[⇧ back to top ⇧](#top)**
+
 <h2 id="unsupervised-machine-learning-clustering">🎛️ Unsupervised Machine Learning - Clustering</h2>
 
 * In the realm of unsupervised learning, I have already begun implementing techniques like **KMeans** and **DBSCAN**, which play crucial roles in discovering inherent structures within unlabelled data.
@@ -61,6 +68,8 @@
 
 * Looking ahead, future advancements will focus on scaling these algorithms to handle larger datasets more efficiently and enhancing their ability to discern more subtle patterns and relationships in the data. This ongoing development and deeper integration of clustering techniques into my analytical toolkit will continue to enhance the robustness and scope of my data analysis capabilities.
 
+**[⇧ back to top ⇧](#top)**
+
 <h2 id="artificial-neural-networks-anns">🤖 Artificial Neural Networks (ANNs)</h2>
 
 * ANNs are powerful computational models inspired by the human brain's structure, making them exceptionally adept at recognizing subtle patterns and anomalies in large datasets.
@@ -70,6 +79,8 @@
   - **Architecture and Function**: In this project, the ANN is structured with multiple layers, including an input layer, several hidden layers, and an output layer that employs a sigmoid activation function. This setup is tailored to effectively handle the binary classification task of distinguishing fraudulent transactions.
     
   - **Training and Optimization**: The network is trained using a backpropagation algorithm with a binary cross-entropy loss function, which refines the model by minimizing prediction errors. This process is crucial for enhancing the ANN’s ability to accurately identify fraudulent activities in transaction data.
+ 
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="future-goals-and-directions">💎 Future Goals and Directions</h2>
 
@@ -85,6 +96,6 @@
 * My future goal is to leverage Transformer models to build advanced AI systems. These models will enable me to create sophisticated language models for various applications, including text generation, translation, and more.
 * The aim is to harness the full potential of these cutting-edge technologies to develop AI solutions that can understand and generate human-like text, providing enhanced user interactions and personalized experiences.
 
-
+**[⇧ back to top ⇧](#top)**
 
 
