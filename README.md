@@ -23,7 +23,7 @@
 
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
-**[`^        back to top        ^`](#top)**
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="star2-why-data-science">🌟 Why Data Science</h2>
 
@@ -31,7 +31,7 @@
 
 * The ability to transform data into decision support and innovative solutions deeply attracts me, compelling me to master the core technologies of data science and make a meaningful impact in this data-driven world.
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="dizzy-data-science-projects">💫 Data Science Projects</h2>
 
@@ -41,7 +41,7 @@
 
 * Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="sql">🗃️ SQL</h2>
 
@@ -49,7 +49,7 @@
 
 * Practicing these exercises can enhance my SQL skills, improving my ability to handle structured data efficiently.
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="tada-certificates">🎉 Certificates</h2>
 
@@ -57,7 +57,7 @@
 
 * These certificates represent not just the acquisition of knowledge, but my commitment to continuous learning and professional growth in this rapidly evolving field.
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="general-helpers">🛠️ General Helpers</h2>
 
@@ -71,13 +71,15 @@
 
 * Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="speaker-conclusion">🔈 Conclusion</h2>
 
 * Through Data Science, I aspire to make meaningful contributions by transforming raw data into actionable insights.
 
 * This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
+
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="iphone-contact-information">📱  Contact Information</h2>
 
@@ -87,10 +89,10 @@
 
 * LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
 
 <h2 id="license">🔏 License</h2>
 
 * This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-<a href="#top">back to top</a>
+**[⇧ back to top ⇧](#top)**
