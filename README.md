@@ -38,7 +38,7 @@
 
 * These certificates represent not just the acquisition of knowledge, but my commitment to continuous learning and professional growth in this rapidly evolving field.
 
-# 🔐 General Helpers
+# 🛠️ General Helpers
 * Here, you'll find a treasure trove of handy functions designed to make your data science and machine learning journey smoother and more enjoyable. Whether you're **crunching numbers, visualizing data, or building models, our collection of helpers is here to save you time and effort.**
 
 * ### Why You'll Love These Helpers ❤️
