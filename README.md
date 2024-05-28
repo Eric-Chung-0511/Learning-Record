@@ -12,7 +12,6 @@
 - [Contact Information](#iphone-contact-information)
 - [License](#license)
   
-<a name="star-learning-record-introduction"></a>
 <h2 id="star-learning-record-introduction">⭐ Learning Record Introduction</h2>
 
 [![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
@@ -26,7 +25,6 @@
 
 **[⇧ back to top ⇧](#top)**
  
-<a name="star-learning-record-introduction"></a>
 <h2 id="star2-why-data-science">🌟 Why Data Science</h2>
 
 * In this era of vast and ever-growing data, data science combines disciplines like statistics, data analytics, and machine learning to unearth hidden patterns and insights by delving deeply into and processing data. 
