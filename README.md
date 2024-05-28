@@ -11,7 +11,11 @@
 - [Conclusion](#speaker-conclusion)
 - [Contact Information](#iphone-contact-information)
 - [License](#license)
-  
+
+<!-- Add some space before the section -->
+<a name="star-learning-record-introduction"></a>
+<br>
+<br>
 <h2 id="star-learning-record-introduction">⭐ Learning Record Introduction</h2>
 
 [![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
