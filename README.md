@@ -4,15 +4,15 @@
 - [Data Science Projects](#dizzy-data-science-projects)
 - [SQL](#️-sql)
 - [Certificates](#tada-certificates)
-- [General Helpers](#-general-helpers)
+- [General Helpers](#%EF%B8%8F-general-helpers)
 - [Conclusion](#speaker-conclusion)
 - [Contact Information](#iphone-contact-information)
 - [License](#-license)
 
 # :star: Learning Record Introduction
-[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
-![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
-![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
+![Python](https://img.shields.io/badge/Python-3.11-blue.svg?logo=python)
+![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
 
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
@@ -63,3 +63,4 @@
 
 # 🔏 License
 * This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
