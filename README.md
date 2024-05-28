@@ -1,5 +1,9 @@
 <a name="top"></a>
-<img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg" width="800">
+
+<p align="center">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg" alt="Data Science Innovation" width="600">
+</p>
+
 ## 📋 Table of Contents
 - [Learning Record Introduction](#star-learning-record-introduction)
 - [Why Data Science](#star2-why-data-science)
