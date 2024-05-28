@@ -61,7 +61,9 @@
 # :gem: Future Goals and Directions
 
 ### 🧠 Deep Learning: 
-* I have already made initial explorations in deep learning, **applied ANN for data analysis, and basic use of CNN for image recognition.** I have also used the Functional API for more complex model architectures. Moreover, I expect to use LSTM in time series data. Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
+* I have already made initial explorations in deep learning, **applied ANN for data analysis, and basic use of CNN for image recognition.** I have also used the Functional API for more complex model architectures.
+  
+* Moreover, I expect to use LSTM in time series data. Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
 
 ### 🗣️ Natural Language Processing (NLP): 
 * My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.
