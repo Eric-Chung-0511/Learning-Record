@@ -22,12 +22,12 @@
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
 **[⇧ back to top ⇧](#top)**
- 
+
 <h2 id="star2-why-data-science">🌟 Why Data Science</h2>
 
 * In this era of vast and ever-growing data, data science combines disciplines like statistics, data analytics, and machine learning to unearth hidden patterns and insights by delving deeply into and processing data. 
 
-* The ability to transform data into decision support and innovative solutions deeply attracts me, compelling me to master the core technologies of data science and make a meaningful impact in this data-driven world.
+* The ability to transform data into decision support and innovative solutions deeply attracts me, compelling me to master the core technologies of data science and make a meaningful impact in this data driven world.
 
 **[⇧ back to top ⇧](#top)**
 
@@ -37,7 +37,7 @@
 
 * These projects reflect my practical application of data science concepts, from exploratory data analysis to machine learning and predictive modeling. 
 
-* Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
+* Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real world problems.
 
 **[⇧ back to top ⇧](#top)**
 
@@ -79,7 +79,7 @@
 
 **[⇧ back to top ⇧](#top)**
 
-<h2 id="iphone-contact-information">📱  Contact Information</h2>
+<h2 id="iphone-contact-information">📱 Contact Information</h2>
 
 * For any questions or suggestions about my repo, please feel free to contact me at:
 
@@ -94,3 +94,4 @@
 * This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 **[⇧ back to top ⇧](#top)**
+
