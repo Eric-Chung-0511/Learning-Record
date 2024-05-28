@@ -1,3 +1,13 @@
+## 📋 Table of Contents
+- [Learning Record Introduction](#star-learning-record-introduction)
+- [Why Data Science](#star2-why-data-science)
+- [Data Science Projects](#dizzy-data-science-projects)
+- [SQL](#️-sql)
+- [Certificates](#tada-certificates)
+- [General Helpers](#-general-helpers)
+- [Conclusion](#speaker-conclusion)
+- [Contact Information](#iphone-contact-information)
+
 # :star: Learning Record Introduction
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
@@ -34,9 +44,9 @@
 * ### Dive In! 🚀
 * Imagine having a toolbox filled with all the right tools to get the job done faster and better. Explore the examples provided to see how these helpers can seamlessly fit into your workflow. I've included practical demonstrations to help you get started quickly. Whether you're a beginner or a seasoned pro, you'll find these tools invaluable.
 
-*  Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
+* Feel free to explore, experiment, and expand your toolkit with our General Helpers. Contributions and suggestions are always welcome! let's build something amazing together! Happy coding! 💻✨
 
-#  :speaker: Conclusion
+# :speaker: Conclusion
 * Through Data Science, I aspire to make meaningful contributions by transforming raw data into actionable insights.
 
 * This Learning Record is not just a showcase of what I have achieved, but a reflection of my ongoing journey to understand more about the world through the lens of data.
@@ -48,4 +58,4 @@
 
 * LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
 
-# :raised_hands: Thank you for your patience !
+
