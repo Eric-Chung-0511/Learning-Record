@@ -13,7 +13,7 @@
 
 * Each project is a step towards honing my skills and deepening my understanding of how data can be used to solve real-world problems.
 
-# ☁️ SQL
+# 🗃️ SQL
 * This section contains a variety of [SQL challenges](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/SQL) that I have tackled, showcasing my ability to manipulate and query databases effectively.
 
 * Practicing these exercises can enhance my SQL skills, improving my ability to handle structured data efficiently.
