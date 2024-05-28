@@ -23,7 +23,7 @@
 
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
 
-**[`^        back to top        ^`](#Table-of-contents)**
+**[`^        back to top        ^`](#top)**
 
 <h2 id="star2-why-data-science">🌟 Why Data Science</h2>
 
