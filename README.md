@@ -7,6 +7,7 @@
 - [General Helpers](#-general-helpers)
 - [Conclusion](#speaker-conclusion)
 - [Contact Information](#iphone-contact-information)
+- [License](#-license)
 
 # :star: Learning Record Introduction
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
@@ -58,4 +59,5 @@
 
 * LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
 
-
+# 🔏 License
+* This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
