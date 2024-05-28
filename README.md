@@ -1,7 +1,7 @@
 <a name="top"></a>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg" alt="Data Science Innovation" width="600">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg" alt="Data Science Innovation" width="800">
 </p>
 
 ## 📋 Table of Contents
