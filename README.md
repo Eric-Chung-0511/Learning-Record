@@ -86,7 +86,7 @@
 
 <h2 id="iphone-contact-information">📱 Contact Information</h2>
 
-* For any questions or suggestions about my repo, please feel free to contact me at:
+* For any questions or suggestions about my project, please feel free to contact me at:
 
 * [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:substantial79@gmail.com)
 
