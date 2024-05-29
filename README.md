@@ -88,9 +88,9 @@
 
 * For any questions or suggestions about my repo, please feel free to contact me at:
 
-* Email: [![Gmail](https://img.shields.io/badge/-Gmail-000?style=flat&logo=gmail)](mailto:substantial79@gmail.com)
+* [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:substantial79@gmail.com)
 
-* LinkedIn: [![LinkedIn](https://img.shields.io/badge/-LinkedIn-000?style=flat&logo=linkedin)](https://www.linkedin.com/in/ericchung0511/)
+* [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ericchung0511/)
 
 **[⇧ back to top ⇧](#top)**
 
