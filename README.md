@@ -1,7 +1,7 @@
 <a name="top"></a>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg" alt="Data Science Innovation" width="700">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/light-bulb-4514505_1920.jpg" alt="Data Science Innovation" width="800">
 </p>
 
 ## 📋 Table of Contents
@@ -88,9 +88,9 @@
 
 * For any questions or suggestions about my repo, please feel free to contact me at:
 
-* Email: [substantial79@gmail.com]
+* Email: [![Gmail](https://img.shields.io/badge/-Gmail-000?style=flat&logo=gmail)](mailto:substantial79@gmail.com)
 
-* LinkedIn: [https://www.linkedin.com/in/ericchung0511/]
+* LinkedIn: [![LinkedIn](https://img.shields.io/badge/-LinkedIn-000?style=flat&logo=linkedin)](https://www.linkedin.com/in/ericchung0511/)
 
 **[⇧ back to top ⇧](#top)**
 
