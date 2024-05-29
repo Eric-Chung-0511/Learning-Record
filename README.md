@@ -24,7 +24,7 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
 
-* Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data analytics to gain insights and make informed decisions.
+* Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data science to gain insights and make informed decisions.
 
 **[⇧ back to top ⇧](#top)**
 
