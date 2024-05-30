@@ -3,8 +3,9 @@ import random
 import shutil
 import zipfile
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras.models import Sequential
+from tensorflow.keras import layers, models, Sequential, Input
+from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
+from tensorflow.keras.models import Model
 
 # Download the dataset
 !wget https://example.com/dataset.zip
@@ -87,25 +88,24 @@ test_data = tf.keras.preprocessing.image_dataset_from_directory(
 )
 
 # 資料增強層 Data augmentation layer
-data_augmentation = Sequential([
-  layers.RandomFlip("horizontal"),  # 隨機水平翻轉 Random horizontal flip
-  layers.RandomRotation(0.2),  # 隨機旋轉 Random rotation
-  layers.RandomZoom(0.2),  # 隨機縮放 Random zoom
-  layers.RandomHeight(0.2),  # 隨機高度調整 Random height adjustment
-  layers.RandomWidth(0.2),  # 隨機寬度調整 Random width adjustment
-], name="data_augmentation")
+data_augmentation = Sequential(name="data_augmentation")
+data_augmentation.add(layers.RandomFlip("horizontal"))  # 隨機水平翻轉 Random horizontal flip
+data_augmentation.add(layers.RandomRotation(0.2))  # 隨機旋轉 Random rotation
+data_augmentation.add(layers.RandomZoom(0.2))  # 隨機縮放 Random zoom
+data_augmentation.add(layers.RandomHeight(0.2))  # 隨機高度調整 Random height adjustment
+data_augmentation.add(layers.RandomWidth(0.2))  # 隨機寬度調整 Random width ad
 
 # 載入預訓練模型 Load pre-trained model
 base_model = tf.keras.applications.EfficientNetB0(include_top=False)
 base_model.trainable = False  # 冻結預訓練模型 Freeze the pre-trained model
 
 # Build the model
-inputs = layers.Input(shape=(224, 224, 3))
+inputs = Input(shape=(224, 224, 3))
 x = data_augmentation(inputs)
 x = base_model(x, training=False)
-x = layers.GlobalAveragePooling2D()(x)
-outputs = layers.Dense(train_data.num_classes, activation="softmax")(x)
-model = tf.keras.Model(inputs, outputs)
+x = GlobalAveragePooling2D()(x)
+outputs = Dense(train_data.num_classes, activation="softmax")(x)
+model = Model(inputs=inputs, outputs=outputs)
 
 # Set up checkpoint callback
 checkpoint_path = "101_classes_10_percent_data_model_checkpoint"
