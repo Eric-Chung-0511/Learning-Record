@@ -50,7 +50,7 @@ for class_name in os.listdir(data_dir): # 遍歷每個類別資料夾 Iterate ov
         dst_path = os.path.join(test_dir, class_name, img)  # 設定目標測試資料夾中的完整路徑 Set the full path in the target test directory
         shutil.move(src_path, dst_path)  # 將圖像從源路徑移動到目標路徑 Move the image from the source path to the target path
 
-# 設置圖像大小和批次大小 Set image size and batch size
+# Set image size and batch size
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 
@@ -101,17 +101,17 @@ checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     save_best_only=True  # 只保存最佳模型 Save only the best model
 )
 
-# 編譯模型 Compile the model
+# Compile the model
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(),  # 使用Adam優化器 Use Adam optimizer
-    loss="categorical_crossentropy",  # 使用categorical_crossentropy損失函數 Use categorical crossentropy loss
-    metrics=["accuracy"]  # 評估指標為準確率 Evaluation metric is accuracy
+    optimizer=tf.keras.optimizers.Adam(),  # Use Adam optimizer
+    loss="categorical_crossentropy",  # Use categorical crossentropy loss
+    metrics=["accuracy"]  # Evaluation metric is accuracy
 )
 
-# 訓練模型 Train the model
+# Train the model
 history = model.fit(
     train_data,
     epochs=10,
     validation_data=test_data,
-    callbacks=[checkpoint_callback]  # 使用檢查點回調 Use checkpoint callback
+    callbacks=[checkpoint_callback]  # Use checkpoint callback
 )
