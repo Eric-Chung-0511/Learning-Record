@@ -6,12 +6,27 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-# 下載資料集 Download the dataset
+# Download the dataset
 !wget https://example.com/dataset.zip
 
-# 解壓資料集 Extract the dataset
-with zipfile.ZipFile('dataset.zip', 'r') as zip_ref:
-    zip_ref.extractall('dataset')
+# Unzip the files
+import zipfile
+
+def unzip_data(filename):
+    """
+    解壓指定的文件到當前工作目錄中。
+
+    參數:
+    filename (str): 要解壓的zip文件的路徑。
+
+    返回:
+    None
+    """
+    with zipfile.ZipFile(filename, "r") as zip_ref:
+        zip_ref.extractall()
+
+# 示例使用 Example usage
+unzip_data('dataset.zip')
 
 # 設置資料夾路徑 Set directory paths
 data_dir = 'dataset/images'
@@ -126,7 +141,7 @@ history = model.fit(
 # 解除預訓練模型的所有層的凍結 Unfreeze the entire pre-trained model
 base_model.trainable = True 
 
-# 模型微調 Fine-tuning the model, 解除最後十層的凍結 Unfreeze the last ten layers
+# 模型微調 Fine-tuning the model, 解除最後十層的凍結 Unfreeze the last ten layers 
 # for layer in base_model.layers[-10:]:
     # layer.trainable = True
 
