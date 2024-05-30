@@ -1,28 +1,28 @@
 # Data Science Project Work Flow
 
-## Description and Goal
+## 🎯 Description and Goal
 
 This workflow outlines the steps for completing a data science project, starting from data collection to model evaluation. It provides detailed procedures for handling missing values, data preprocessing, feature engineering, and model selection.
 
-## Steps
+## 📋 Steps
 
-1. **Data Collection and Preparation**
+1. **📊 Data Collection and Preparation**
     - Assume the necessary data has been collected and converted into a CSV file.
     - Read the data into your IDE (Jupyter Notebook, VSCode, Spyder, PyCharm, etc.).
 
-2. **Initial Data Exploration**
+2. **🔍 Initial Data Exploration**
     - Inspect the data using methods like `head()`, `info()`, `isna().sum()`, `describe()`, etc.
 
-3. **Check for Data Imbalance**
+3. **⚖️ Check for Data Imbalance**
     - Use `value_counts(normalize=True)` to calculate the proportion of each class if applicable.
 
-4. **Identify Data Types**
+4. **🔠 Identify Data Types**
     - Classify features as Numeric or Categorical.
 
-5. **Encode Categorical Variables**
+5. **🔧 Encode Categorical Variables**
     - Convert categorical variables into numeric using One-hot Encoding or Label Encoding. Ensure that the encoded values retain meaningful information.
 
-6. **Handle Missing Values**
+6. **🛠️ Handle Missing Values**
     - Address missing values before Exploratory Data Analysis (EDA).
     - Visualize relationships between features using charts.
     - Fill missing values using methods like median, mean, mode, or by predicting them using models.
@@ -32,7 +32,7 @@ This workflow outlines the steps for completing a data science project, starting
     df = df.dropna() or df.dropna(inplace=True)
     ```
 
-7. **Predicting Missing Values with Random Forest**
+7. **🌳 Predicting Missing Values with Random Forest**
 
     **Target Missing Value:**
     ```python
@@ -75,7 +75,7 @@ This workflow outlines the steps for completing a data science project, starting
         rfr = RandomForestRegressor(n_estimators=100, random_state=42)
         rfr.fit(X_train, y_train)
         
-        print(f'模型準確度（特徵 {feature}）: {rfr.score(X_test, y_test)}')
+        print(f'Model Accuracy（features {feature}）: {rfr.score(X_test, y_test)}')
         
         X_missing = df_missing.drop(columns=features_to_impute)
         predicted_values = rfr.predict(X_missing)
@@ -85,17 +85,18 @@ This workflow outlines the steps for completing a data science project, starting
     print(df_copy)
     ```
 
-8. **Outlier Detection and Handling**
+8. **📉 Outlier Detection and Handling**
     - Detect outliers and decide whether to remove or treat them.
-    - Utilize the `pyod` library for outlier detection.
+    - Utilize the [`pyod`](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Machine%20Learning/Data%20Preprocessing/Handle%20outliers%20using%20pyod.py) library for outlier detection.
+    - Using the [Statistic Method](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Machine%20Learning/Data%20Preprocessing/Handle%20outliers%20using%20statistic.py), such as IQR (Interquartile Range), helps to detect and handle outliers by providing a robust measure of statistical dispersion. This method identifies outliers as values that fall below the lower bound (Q1 - 1.5 * IQR) or above the upper bound (Q3 + 1.5 * IQR), ensuring that extreme values do not disproportionately influence the dataset, thus maintaining the integrity and accuracy of the data analysis.
 
-9. **Preprocessing and Feature Engineering**
+9. **🔨 Preprocessing and Feature Engineering**
     - Perform train-test split (typically 20-30% test size, `random_state=42`).
     ```python
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     ```
 
-10. **Scaling the Data**
+10. **📏 Scaling the Data**
     - Use `StandardScaler` or `MinMaxScaler`.
     ```python
     scaler = StandardScaler()
@@ -103,7 +104,7 @@ This workflow outlines the steps for completing a data science project, starting
     X_test_scaled = scaler.transform(X_test)
     ```
 
-11. **Dimensionality Reduction**
+11. **📉 Dimensionality Reduction**
     - Apply PCA if the data has high dimensions.
     ```python
     pca = PCA(n_components=0.95)
@@ -111,14 +112,14 @@ This workflow outlines the steps for completing a data science project, starting
     X_test_pca = pca.transform(X_test)
     ```
 
-12. **Handling Imbalanced Data**
+12. **🗄️ Handling Imbalanced Data**
     - Use SMOTE or ADASYN for balancing.
     ```python
     smote = SMOTE(random_state=42)
     X_train_smote, y_train_smote = smote.fit_resample(X_train_pca, y_train)
     ```
 
-13. **Building Pipelines**
+13. **🔗 Building Pipelines**
     ```python
     pipeline = ImbPipeline([
         ('scaler', StandardScaler()),
@@ -130,15 +131,15 @@ This workflow outlines the steps for completing a data science project, starting
     y_pred = pipeline.predict(X_test)
     ```
 
-14. **Model Selection and Tuning**
+14. **🧠 Model Selection and Tuning**
     - Experiment with various models (e.g., XGBoost, RandomForest).
     - Use `GridSearchCV` or Bayesian Optimization for hyperparameter tuning.
 
-15. **Model Evaluation**
+15. **🌐 Model Evaluation**
     - For regression: use MAE, MSE, RMSE.
     - For classification: use Confusion Matrix, Classification Report, ROC Curve.
 
-16. **Clustering**
+16. **🧩 Clustering**
     - Common algorithms: KMeans, DBSCAN.
     - Use silhouette score to evaluate clustering performance.
     ```python
@@ -160,7 +161,7 @@ This workflow outlines the steps for completing a data science project, starting
         print('Not enough clusters to calculate the meaningful silhouette_score')
     ```
 
-## Conclusion
+## 🏁 Conclusion
  - This workflow provides a general guideline for conducting a data science project.
  
  - The specific steps may vary based on the nature of the data and the project requirements. Adjust the steps as necessary to fit your project's needs.
