@@ -23,5 +23,10 @@ def unzip_data(filename):
     # Close the zip file to free up resources
     zip_ref.close()
 
+    # Or use with syntax, will automatically close the file
+    #  with zipfile.ZipFile(filename, "r") as zip_ref:
+        # zip_ref.extractall()
+
+
 # Example Usage
 # unzip_data('somefile.zip')
