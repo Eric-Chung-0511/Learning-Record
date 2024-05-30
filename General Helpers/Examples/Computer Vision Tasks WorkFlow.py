@@ -132,7 +132,7 @@ base_model.trainable = True
 
 # Re-compile the model
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(1e-5),  # 使用較小的學習率 Use a lower learning rate
+    optimizer=tf.keras.optimizers.Adam(1e-5),  # Use a lower learning rate
     loss="categorical_crossentropy",
     metrics=["accuracy"])
 
