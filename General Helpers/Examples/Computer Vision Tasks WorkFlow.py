@@ -124,8 +124,8 @@ early_stopping_callback = tf.keras.callbacks.EarlyStopping(
 
 # Compile the model
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(),
-    loss="categorical_crossentropy",
+    optimizer='adam',
+    loss="categorical_crossentropy", # if the format is integer, use sparse_categorical_crossentropy; if the format is one-hot encoded, use categorical_crossentropy
     metrics=["accuracy"]
 )
 
@@ -148,7 +148,7 @@ base_model.trainable = True
 # Re-compile the model
 model.compile(
     optimizer=tf.keras.optimizers.Adam(1e-5),  # Use a lower learning rate
-    loss="categorical_crossentropy",
+    loss="categorical_crossentropy", # if the format is integer, use sparse_categorical_crossentropy; if the format is one-hot encoded, use categorical_crossentropy
     metrics=["accuracy"])
 
 # Continue training the model
