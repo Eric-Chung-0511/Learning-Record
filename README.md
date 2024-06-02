@@ -18,7 +18,7 @@
 <h2 id="star-learning-record-introduction">⭐ Learning Record Introduction</h2>
 
 [![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
-[![Machine Learning](https://img.shields.io/badge/Machine_Learning-Skilled-yellow.svg?logo=scikit-learn)](https://scikit-learn.org/)
+[![Machine Learning](https://img.shields.io/badge/Machine_Learning-Practitioner-yellow.svg?logo=scikit-learn)](https://scikit-learn.org/)
 [![Python](https://img.shields.io/badge/Python->3.6-blue.svg?logo=python)](https://www.python.org/)
 [![SQL](https://img.shields.io/badge/SQL-Enthusiast-lightgrey.svg?logo=mysql)](https://www.mysql.com/)
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
