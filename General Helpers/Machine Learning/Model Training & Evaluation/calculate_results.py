@@ -15,7 +15,7 @@ def calculate_results(y_true, y_pred):
     # Calculate model accuracy
     model_accuracy = accuracy_score(y_true, y_pred)
     
-    # Calculate model precision, recall, and F1 score
+    # Calculate model precision, recall, and F1 score, '_' stands for support
     model_precision, model_recall, model_f1_score, _ = precision_recall_fscore_support(y_true, y_pred, average='weighted')
 
     # Round accuracy to two decimal places
