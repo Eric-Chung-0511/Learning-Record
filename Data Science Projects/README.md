@@ -84,8 +84,9 @@
 <h2 id="future-goals-and-directions">💎 Future Goals and Directions</h2>
 
 ### 🧠 Deep Learning
-* I have already made initial explorations in deep learning, **applied ANN for data analysis, and basic use of CNN for image recognition.** I have also used the Functional API for more complex model architectures.
-* Moreover, I expect to use LSTM in time series data. Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks (GANs).
+* I have already made initial explorations in deep learning, **applied ANN for data analysis, and use CNN for computer vision.** I have also used the Functional API for more complex model architectures.
+  
+* Moreover, I expect to use LSTM in time series data. Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks.
 
 ### 🚀 Transfer Learning
 * Although I am just starting to learn about Transfer Learning, it has already opened my eyes to its potential. **This method allows me to leverage pretrained models and fine tune them for specific use cases, significantly reducing the time and resources required.**
