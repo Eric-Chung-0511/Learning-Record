@@ -95,12 +95,12 @@
 * **In the future, I also plan to apply large language models like GPT-3 and Gemma to practical applications. By fine-tuning these models on specific datasets and tasks, I want to create highly customized and effective language models that can be utilized in real life, achieving remarkable results with less effort.**
 
 ### 🗣️ Natural Language Processing (NLP)
-* My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.
+* **My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.**
   
 * These advancements will leverage the full potential of language data, enhancing user interaction and delivering personalized experiences based on sophisticated language understanding and processing.
 
 ### 🔄 Transformer Technology
-* My future target is to leverage Transformer models to build advanced AI systems. These models will enable me to create sophisticated language models for various applications, including text generation, translation, and more.
+* **My future target is to leverage Transformer models to build advanced AI systems. These models will enable me to create sophisticated language models for various applications, including text generation, translation, and more.**
   
 * The aim is to harness the full potential of these cutting-edge technologies to develop AI solutions that can understand and generate human-like text, providing enhanced user interactions and personalized experiences.
 
