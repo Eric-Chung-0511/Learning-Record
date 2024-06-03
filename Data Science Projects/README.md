@@ -109,9 +109,7 @@
 
 <h2 id="data-science-workflow">🌐 Data Science Workflow</h2>
 
-* In my [**Data Science Workflow**](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Data%20Science%20Project%20WorkFlow.md), I follow a structured approach to tackle data-driven projects. This workflow encompasses data collection, preprocessing, exploration, modeling, and evaluation. Each step is crucial in transforming raw data into actionable insights and making data-driven decisions.
-
-* By adhering to this workflow, I ensure that my data analysis processes are thorough, systematic, and replicable, leading to robust and reliable outcomes. This comprehensive approach helps in addressing various data challenges and enhances the accuracy and effectiveness of the models I develop.
-
+* Based on my existing hands-on experience, I have developed a structured[**Data Science Workflow**](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/Data%20Science%20Project%20WorkFlow.md) that ensures my data analysis processes are thorough, systematic, and replicable. **This workflow encompasses data collection, preprocessing, exploration, modeling, and evaluation**, each step being crucial in transforming raw data into actionable insights and making data driven decisions, thereby enhancing the accuracy and effectiveness of the models I develop.
+  
 **[⇧ back to top ⇧](#top)**
 
