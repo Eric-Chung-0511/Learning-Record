@@ -14,19 +14,10 @@ from tensorflow.keras.models import Model
 import zipfile
 
 def unzip_data(filename):
-    """
-    解壓指定的文件到當前工作目錄中。
-
-    參數:
-    filename (str): 要解壓的zip文件的路徑。
-
-    返回:
-    None
-    """
     with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall()
 
-# 示例使用 Example usage
+# Example usage
 unzip_data('dataset.zip')
 
 # 設置資料夾路徑 Set directory paths
@@ -43,10 +34,10 @@ for class_name in os.listdir(data_dir):
     os.makedirs(os.path.join(train_dir, class_name), exist_ok=True)
     os.makedirs(os.path.join(test_dir, class_name), exist_ok=True)
 
-# 設置訓練和測試比例 Set train and test split ratio
+# Set train and test split ratio
 train_ratio = 0.8
 
-# 隨機分割資料集並移動圖像 Randomly split dataset and move images
+# Randomly split dataset and move images
 for class_name in os.listdir(data_dir):
     class_path = os.path.join(data_dir, class_name)
     images = os.listdir(class_path)
@@ -66,11 +57,11 @@ for class_name in os.listdir(data_dir):
         dst_path = os.path.join(test_dir, class_name, img)  # 設定目標測試資料夾中的完整路徑 Set the full path in the target test directory
         shutil.move(src_path, dst_path)  # 將圖像從源路徑移動到目標路徑 Move the image from the source path to the target path
 
-# 設置圖像大小和批次大小 Set image size and batch size
+# Set image size and batch size
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 
-# 載入訓練資料 Load train data
+# Load train data
 train_data = tf.keras.preprocessing.image_dataset_from_directory(
     train_dir,
     label_mode="categorical",
@@ -78,7 +69,7 @@ train_data = tf.keras.preprocessing.image_dataset_from_directory(
     batch_size=BATCH_SIZE
 )
 
-# 載入測試資料 Load test data
+# Load test data
 test_data = tf.keras.preprocessing.image_dataset_from_directory(
     test_dir,
     label_mode="categorical",
@@ -97,7 +88,7 @@ data_augmentation.add(layers.RandomWidth(0.2))  # 隨機寬度調整 Random widt
 
 # 載入預訓練模型 Load pre-trained model
 base_model = tf.keras.applications.EfficientNetB0(include_top=False)
-base_model.trainable = False  # 冻結預訓練模型 Freeze the pre-trained model
+base_model.trainable = False  # 凍結預訓練模型 Freeze the pre-trained model
 
 # Build the model
 inputs = Input(shape=(224, 224, 3))
