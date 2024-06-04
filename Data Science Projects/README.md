@@ -8,7 +8,7 @@
 - [Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
 - [Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
 - [Future Goals and Directions](#future-goals-and-directions)
-- [Data Science WorkFlow](#data-science-workflow)
+- [Data Science WorkFlow](#data-science-project-workflow)
 
 <h2 id="data-analysis">📊 Data Analysis</h2>
 
