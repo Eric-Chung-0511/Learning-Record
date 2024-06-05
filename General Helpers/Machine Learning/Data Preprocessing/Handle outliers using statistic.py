@@ -2,8 +2,9 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import FunctionTransformer
 
+# Method 1
 # Detect and Handle outliers
-# Set two methods, median and quantile
+# Set two methods, median and quantile to handle the outliers, not all situation is suitable to filter out all outliers. It may lost some important info or let dataset imbalanced
 def handle_outliers(df, method=None):
     """
     Detect and handle outliers in a DataFrame using the specified method.
@@ -133,3 +134,18 @@ def create_pipeline(outlier_method, X_train):
     ])
     
     return pipeline
+
+# Method 2
+# Just filter out the outliers, using IQR
+def handle_outliers(df):
+   
+   Q1 = df.quantile(0.25)
+   Q3 = df.quantile(0.75)
+   IQR = Q3 - Q1
+
+   upper_bound = Q3 + 1.5 * IQR
+   lower_bound = Q1 - 1.5 * IQR
+
+   df_filtered = df[~((df < lower_bound) | (df > upper_bound)).any(axis=1)]
+
+   return df_filtered
