@@ -72,7 +72,7 @@
 ## 🎯 Conclusion:
 * In this Loan Prediction project, I tackled the challenge of selecting the best model from several closely performing options. I evaluated five machine learning models: **Logistic Regression**, **RandomForest**, **XGBoost**, **AdaBoost**, and **SVM**, as well as ensemble methods including **Voting** and **Stacking**.
   
-* This comparative analysis taught me that while **SVM** topped in accuracy, evaluating models on multiple metrics like **Recall** and **Precision** is crucial, particularly with imbalanced datasets where recognizing minority classes and ensuring accurate predictions are equally important.
+* This comparative analysis taught me that while accuracy is most intuitive, evaluating models on multiple metrics like **Recall** and **Precision** is crucial, particularly with imbalanced datasets where recognizing minority classes and ensuring accurate predictions are equally important.
 
 * I employed **Bayesian Optimization** to fine-tune each model’s parameters, which not only boosted their performance but also enhanced my understanding of each model’s sensitivity to different settings.
   
@@ -83,6 +83,8 @@
 * Additional factors such as model interpretability, computational efficiency, and practical viability must also be taken into account to ensure the selected model meets real world demands effectively.
 
 * This experience has underscored the value of domain knowledge in applying machine learning to tackle complex real world challenges efficiently.
+
+* Although many methods were employed, there is still room for improvement in **precision and recall.** While the model performs well in identifying class 1, there is potential to further enhance its ability to correctly identify class 0. **Future efforts will focus on refining these aspects to ensure a more balanced and robust performance across all classes.**
 
 ## 📚 Acknowledgments and References:
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
