@@ -38,7 +38,7 @@
 
 <h2 id="dizzy-data-science-projects">💫 Data Science Projects</h2>
 
-* The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects) contains a collection of my hands-on work. 
+* The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects) contains a collection of my hands on work. 
 
 * These projects reflect my practical application of data science concepts, from exploratory data analysis to machine learning and predictive modeling. 
 
