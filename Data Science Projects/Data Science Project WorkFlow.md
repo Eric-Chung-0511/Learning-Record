@@ -28,8 +28,8 @@ This workflow outlines the steps for completing a data science project, starting
       # Separate numerical columns
       numerical_columns = df.select_dtypes(include=['int64', 'float64']).columns
 
-      print(f'Categorical Columns:          {list(categorical_columns)}')
-      print(f'Numerical Columns:            {list(numerical_columns)}')
+      print(f'Categorical Columns:{list(categorical_columns)}')
+      print(f'Numerical Columns:{list(numerical_columns)}')
       ```
 
 5. **🔧 Encode Categorical Variables**
