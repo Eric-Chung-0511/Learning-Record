@@ -18,6 +18,19 @@ This workflow outlines the steps for completing a data science project, starting
 
 4. **🔠 Identify Data Types**
     - Classify features as Numeric or Categorical.
+    - Separate the Categorical and Numerical data.
+
+      ```python
+
+      # Separate categorical columns
+      categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+
+      # Separate numerical columns
+      numerical_columns = df.select_dtypes(include=['int64', 'float64']).columns
+
+      print(f'Categorical Columns:          {list(categorical_columns)}')
+      print(f'Numerical Columns:            {list(numerical_columns)}')
+      ```
 
 5. **🔧 Encode Categorical Variables**
     - Convert categorical variables into numeric using One-hot Encoding or Label Encoding. Ensure that the encoded values retain meaningful information.
