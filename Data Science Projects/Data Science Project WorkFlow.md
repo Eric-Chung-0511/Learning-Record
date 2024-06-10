@@ -2,7 +2,7 @@
 
 ## 🎯 Description and Goal
 
-This workflow outlines the steps for completing a data science project, starting from data collection to model evaluation. It provides detailed procedures for handling missing values, data preprocessing, feature engineering, and model selection.
+This workflow outlines is the steps for completing a data science project, starting from data collection to model evaluation. It provides detailed procedures for handling missing values, data preprocessing, feature engineering, and model selection.
 
 ## 📋 Steps
 
