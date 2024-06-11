@@ -18,26 +18,54 @@ This workflow outlines is the steps for completing a data science project, start
 
 4. **🔠 Identify Data Types**
     - Classify features as Numeric or Categorical.
+      
     - Separate the Categorical and Numerical data.
+      
 
-      ```python
+   ```python
 
-      # Separate categorical columns
-      categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+   # Separate categorical columns
+   categorical_columns = df.select_dtypes(include=['object', 'category']).columns
 
-      # Separate numerical columns
-      numerical_columns = df.select_dtypes(include=['int64', 'float64']).columns
+   # Separate numerical columns
+   numerical_columns = df.select_dtypes(include=['int64', 'float64']).columns
 
-      print(f'Categorical Columns:{list(categorical_columns)}')
-      print(f'Numerical Columns:{list(numerical_columns)}')
-      ```
+   print(f'Categorical Columns:{list(categorical_columns)}')
+   print(f'Numerical Columns:{list(numerical_columns)}')
+   ```
 
-5. **🔧 Encode Categorical Variables**
+5. **👀 Dive into Data and Visualize it**
+   - Perform exploratory data analysis (EDA) to uncover patterns, spot anomalies, and test hypotheses.
+
+   - Utilize visualizations to understand data distributions and relationships between variables.
+  
+   ```python
+   import seaborn as sns
+   import matplotlib.pyplot as plt
+
+   # Scatter plot to visualize relationships between two numerical variables
+   sns.scatterplot(data=df, x='feature1', y='feature2', hue='target')
+   plt.title('Scatter Plot of Feature1 vs Feature2')
+   plt.show()
+
+   # Box plot to visualize the distribution of numerical data and identify outliers
+   sns.boxplot(data=df, x='categorical_feature', y='numerical_feature')
+   plt.title('Box Plot of Numerical Feature by Categorical Feature')
+   plt.show()
+
+   # Histogram to visualize the distribution of a numerical feature
+   sns.histplot(data=df, x='numerical_feature', bins=30, kde=True)
+   plt.title('Histogram of Numerical Feature')
+   plt.show()
+   ```
+
+
+7. **🔧 Encode Categorical Variables**
     - Convert categorical variables into numeric using One-hot Encoding or Label Encoding. Ensure that the encoded values retain meaningful information.
 
       - **One-Hot Encoding**
 
-        One-Hot Encoding converts categorical variables into a binary matrix. Each category value is converted into a new           binary column. This method is useful when the categorical variable is nominal (i.e., there is no ordinal                    relationship between the categories).
+        One-Hot Encoding converts categorical variables into a binary matrix. Each category value is converted into a new binary column. This method is useful when the categorical variable is nominal (i.e., there is no           ordinal relationship between the categories).
 
       - **When to Use**
 
@@ -69,16 +97,16 @@ This workflow outlines is the steps for completing a data science project, start
         print(onehot_encoded_df)
         ```
 
-        - **Label Encoding**
+      - **Label Encoding**
        
-          Label Encoding converts categorical variables into numeric values by assigning a unique integer to each category.           This method is useful when the categorical variable is ordinal (i.e., there is an ordinal relationship between              the categories).
+          Label Encoding converts categorical variables into numeric values by assigning a unique integer to each category. This method is useful when the categorical variable is ordinal (i.e., there is an ordinal relationship between the categories).
 
-        - **When to Use**
+      - **When to Use**
           
         - The categorical variable is ordinal.
         - There is a meaningful order or ranking among the categories.
        
-        - **Example**
+      - **Example**
           
          ```python
          import pandas as pd
@@ -105,7 +133,7 @@ This workflow outlines is the steps for completing a data science project, start
         print(label_encoded_df)
         ```
 
-6. **🛠️ Handle Missing Values**
+8. **🛠️ Handle Missing Values**
     - Address missing values before Exploratory Data Analysis (EDA).
     - Visualize relationships between features using charts.
     - Fill missing values using methods like median, mean, mode, or by predicting them using models.
@@ -115,7 +143,7 @@ This workflow outlines is the steps for completing a data science project, start
     df = df.dropna() or df.dropna(inplace=True)
     ```
 
-7. **🌳 Predicting Missing Values with Random Forest**
+9. **🌳 Predicting Missing Values with Random Forest**
 
     **Target Missing Value:**
     ```python
@@ -168,18 +196,18 @@ This workflow outlines is the steps for completing a data science project, start
     print(df_copy)
     ```
 
-8. **📉 Outlier Detection and Handling**
+10. **📉 Outlier Detection and Handling**
     - Detect outliers and decide whether to remove or treat them.
     - Utilize the [`pyod`](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Machine%20Learning/Data%20Preprocessing/Handle%20outliers%20using%20pyod.py) library for outlier detection.
     - Using the [Statistic Method](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/General%20Helpers/Machine%20Learning/Data%20Preprocessing/Handle%20outliers%20using%20statistic.py), such as IQR (Interquartile Range), helps to detect and handle outliers by providing a robust measure of statistical dispersion. This method identifies outliers as values that fall below the lower bound (Q1 - 1.5 * IQR) or above the upper bound (Q3 + 1.5 * IQR), ensuring that extreme values do not disproportionately influence the dataset, thus maintaining the integrity and accuracy of the data analysis.
 
-9. **🔨 Preprocessing and Feature Engineering**
+11. **🔨 Preprocessing and Feature Engineering**
     - Perform train-test split (typically 20-30% test size, `random_state=42`).
     ```python
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     ```
 
-10. **📏 Scaling the Data**
+12. **📏 Scaling the Data**
     - Use `StandardScaler` or `MinMaxScaler`.
     ```python
     scaler = StandardScaler()
@@ -187,7 +215,7 @@ This workflow outlines is the steps for completing a data science project, start
     X_test_scaled = scaler.transform(X_test)
     ```
 
-11. **📉 Dimensionality Reduction**
+13. **📉 Dimensionality Reduction**
     - Apply PCA if the data has high dimensions.
     ```python
     pca = PCA(n_components=0.95)
@@ -195,14 +223,14 @@ This workflow outlines is the steps for completing a data science project, start
     X_test_pca = pca.transform(X_test)
     ```
 
-12. **🗄️ Handling Imbalanced Data**
+14. **🗄️ Handling Imbalanced Data**
     - Use SMOTE or ADASYN for balancing.
     ```python
     smote = SMOTE(random_state=42)
     X_train_smote, y_train_smote = smote.fit_resample(X_train_pca, y_train)
     ```
 
-13. **🔗 Building Pipelines**
+15. **🔗 Building Pipelines**
     ```python
     pipeline = ImbPipeline([
         ('scaler', StandardScaler()),
@@ -214,15 +242,15 @@ This workflow outlines is the steps for completing a data science project, start
     y_pred = pipeline.predict(X_test)
     ```
 
-14. **🧠 Model Selection and Tuning**
+16. **🧠 Model Selection and Tuning**
     - Experiment with various models (e.g., XGBoost, RandomForest).
     - Use `GridSearchCV` or Bayesian Optimization for hyperparameter tuning.
 
-15. **🌐 Model Evaluation**
+17. **🌐 Model Evaluation**
     - For regression: use MAE, MSE, RMSE.
     - For classification: use Confusion Matrix, Classification Report, ROC Curve.
 
-16. **🧩 Clustering**
+18. **🧩 Clustering**
     - Common algorithms: KMeans, DBSCAN.
     - Use silhouette score to evaluate clustering performance.
     ```python
