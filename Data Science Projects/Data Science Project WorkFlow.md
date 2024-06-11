@@ -7,7 +7,7 @@ This workflow outlines the steps for completing a data science project, starting
 ## 📋 Steps
 
 1. **📊 Data Collection and Preparation**
-    - Assume the necessary data has been collected and converted into a CSV file.
+    - Assume the necessary data has been collected and converted into a CSV file or whatever the file is.
     - Read the data into your IDE (Jupyter Notebook, VSCode, Spyder, PyCharm, etc.).
 
 2. **🔍 Initial Data Exploration**
