@@ -35,6 +35,76 @@ This workflow outlines is the steps for completing a data science project, start
 5. **🔧 Encode Categorical Variables**
     - Convert categorical variables into numeric using One-hot Encoding or Label Encoding. Ensure that the encoded values retain meaningful information.
 
+      - **One-Hot Encoding**
+
+        One-Hot Encoding converts categorical variables into a binary matrix. Each category value is converted into a new           binary column. This method is useful when the categorical variable is nominal (i.e., there is no ordinal                    relationship between the categories).
+
+      - **When to Use**
+
+        - The categorical variable is nominal.
+        - There are no inherent relationships among the categories.
+
+      - **Example**
+
+        ```python
+        import pandas as pd
+        from sklearn.preprocessing import OneHotEncoder
+
+        # Example data
+        data = pd.DataFrame({
+        'color': ['red', 'green', 'blue', 'green', 'red'],
+        'size': ['S', 'M', 'L', 'M', 'S']})
+
+        # Using OneHotEncoder
+        encoder = OneHotEncoder(sparse=False)
+        onehot_encoded_features = encoder.fit_transform(data[['color', 'size']])
+
+        # Get feature names
+        feature_names = encoder.get_feature_names_out(['color', 'size'])
+
+        # Convert to DataFrame
+        onehot_encoded_df = pd.DataFrame(onehot_encoded_features, columns=feature_names)
+
+        print("One-Hot Encoded Features:")
+        print(onehot_encoded_df)
+        ```
+
+        - **Label Encoding**
+       
+          Label Encoding converts categorical variables into numeric values by assigning a unique integer to each category.           This method is useful when the categorical variable is ordinal (i.e., there is an ordinal relationship between              the categories).
+
+        - **When to Use**
+          
+        - The categorical variable is ordinal.
+        - There is a meaningful order or ranking among the categories.
+       
+        - **Example**
+          
+         ```python
+         import pandas as pd
+         from sklearn.preprocessing import LabelEncoder
+
+        # Example data
+        data = pd.DataFrame({
+        'color': ['red', 'green', 'blue', 'green', 'red'],
+        'size': ['S', 'M', 'L', 'M', 'S']})
+
+        # Using LabelEncoder for 'color' and 'size'
+        label_encoder_color = LabelEncoder()
+        label_encoded_color = label_encoder_color.fit_transform(data['color'])
+
+        label_encoder_size = LabelEncoder()
+        label_encoded_size = label_encoder_size.fit_transform(data['size'])
+
+        # Convert to DataFrame
+        label_encoded_df = pd.DataFrame({
+        'color': label_encoded_color,
+        'size': label_encoded_size})
+
+        print("Label Encoded Features:")
+        print(label_encoded_df)
+        ```
+
 6. **🛠️ Handle Missing Values**
     - Address missing values before Exploratory Data Analysis (EDA).
     - Visualize relationships between features using charts.
