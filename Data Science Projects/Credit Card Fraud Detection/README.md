@@ -17,6 +17,7 @@
 * classification Report
 * AUC_ROC Score
 ### 🧠 Deep Learning:
+* TensorFlow
 * ANN (Artificial Neural Network)
 
 ## 🤖 Skills Detail:
