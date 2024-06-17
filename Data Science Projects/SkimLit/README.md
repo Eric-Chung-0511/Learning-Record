@@ -59,7 +59,7 @@
     4. **Hybrid Embedding and Output Layer**: Combined all embeddings and processed through dense and dropout layers, achieving an F1 score of **84%**.
 
 ### 🔍 Fine-Tuning:
-* Fine-tuned Model 5 by unfreezing all layers and retraining, which improved the F1 score to **87%**.
+* **Fine-tuned Model 5** by unfreezing all layers and retraining, which improved the F1 score to **87%**.
 
 ### 🧭 Model Evaluation:
 * Evaluated models using metrics like accuracy, precision, recall, and F1 score. Conducted detailed analysis through precision-recall curves to optimize decision thresholds and balance recall and precision.
