@@ -74,7 +74,7 @@
 * **Results:** The fine-tuned RoBERTa model achieved F1 score of **87.7%**, demonstrating its effectiveness in understanding and classifying biomedical texts.
 
 ### 🧭 Model Evaluation:
-* Evaluated models using metrics like accuracy, precision, recall, and F1 score. Conducted detailed analysis through precision-recall curves to optimize decision thresholds and balance recall and precision.
+* Evaluated models using metrics like **accuracy, precision, recall, and F1 score.** Conducted detailed analysis through precision-recall curves to optimize decision thresholds and balance recall and precision.
 
 ## 🎯 Conclusion:
 * The SkimLit project demonstrated the effectiveness of combining various text processing and deep learning techniques to enhance the extraction of relevant information from medical papers. Fine-tuning and transfer learning improved the model's performance, making it a robust tool for automatic literature review.
