@@ -83,7 +83,7 @@
 * ## 📚 Acknowledgments and References:
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
-* **Udemy Course:** [TensorFlow for Deep Learning Bootcamp](https://www.udemy.com/course/tensorflow-developer-certificate-machine-learning-zero-to-mastery/?couponCode=KEEPLEARNING)
+* [Udemy Course - TensorFlow for Deep Learning Bootcamp](https://www.udemy.com/course/tensorflow-developer-certificate-machine-learning-zero-to-mastery/?couponCode=KEEPLEARNING)
 
 * [Hugging Face - RoBERTa](https://huggingface.co/docs/transformers/model_doc/roberta)
 
