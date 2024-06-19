@@ -71,7 +71,7 @@
 
 * **Implementation:** The implementation involved loading the pre-trained RoBERTa model from the Hugging Face model hub, tokenizing the input text, and fine-tuning the model on the biomedical literature dataset. The fine-tuning process included adjusting the model's parameters to improve its performance on the specific task.
 
-* **Results:** The fine-tuned RoBERTa model achieved a high F1 score of 87%, demonstrating its effectiveness in understanding and classifying biomedical texts.
+* **Results:** The fine-tuned RoBERTa model achieved a high F1 score of **87.6%**, demonstrating its effectiveness in understanding and classifying biomedical texts.
 
 ### 🧭 Model Evaluation:
 * Evaluated models using metrics like accuracy, precision, recall, and F1 score. Conducted detailed analysis through precision-recall curves to optimize decision thresholds and balance recall and precision.
