@@ -1,4 +1,4 @@
-# 📄 SkimLit 🔍
+# 📝 SkimLit 🔍
 
 ## ✨ Project Overview:
 * The primary purpose of this project is to develop a deep learning model capable of automatically classifying and summarizing biomedical literature. This helps researchers quickly access relevant information from vast amounts of scientific papers. 
@@ -38,30 +38,31 @@
   * Built a pipeline using TfidfVectorizer and MultinomialNB, achieving an F1 score of **70%**.
 
 * **Model 1: Conv1D with Token Embeddings**
-  * Developed a Conv1D model with token embeddings using the Functional API, achieving an F1 score of **81%**.
+  * Developed a Conv1D model with token embeddings using the Functional API, achieving an F1 score of **81.5%**.
 
 * **Model 2: Feature Extraction with Pretrained Token Embeddings**
-  * Utilized TensorFlow Hub's Universal Sentence Encoder (USE4) for feature extraction, with an F1 score of **75%**.
+  * Utilized TensorFlow Hub's Universal Sentence Encoder (USE4) for feature extraction, with an F1 score of **74.6%**.
 
 * **Model 3: Conv1D with Character Embeddings**
-  * Created a Conv1D model with character embeddings, leveraging GlobalMaxPooling to prevent overfitting, resulting in an F1 score of **68%**.
+  * Created a Conv1D model with character embeddings, leveraging GlobalMaxPooling to prevent overfitting, resulting in an F1 score of **68.1%**.
 
 * **Model 4: Combining Pretrained Token Embeddings and Character Embeddings**
   * Developed a hybrid model combining token and character embeddings:
     1. **Token Inputs Model**: Processed token inputs through a pretrained embedding layer.
     2. **Character Inputs Model**: Tokenized character inputs and processed through a Bidirectional LSTM.
-    3. **Concatenation**: Merged token and character embeddings, followed by dropout and dense layers, achieving an F1 score of **74%**.
+    3. **Concatenation**: Merged token and character embeddings, followed by dropout and dense layers, achieving an F1 score of **74.2%**.
 
 * **Model 5: Transfer Learning with Pretrained Token, Character, and Positional Embeddings**
   * Extended Model 4 by adding positional embeddings:
     1. **Token Inputs**: Pretrained token embeddings with dense layers.
     2. **Character Inputs**: Character embeddings processed through Bidirectional LSTM.
     3. **Line Number and Total Lines Models**: Positional embeddings for sentence and abstract structure.
-    4. **Hybrid Embedding and Output Layer**: Combined all embeddings and processed through dense and dropout layers, achieving an F1 score of **84%**.
+    4. **Hybrid Embedding and Output Layer**: Combined all embeddings and processed through dense and dropout layers, achieving an F1 score of **83.8%**.
 
-### 🔍 Fine-Tuning:
-* **Fine-tuned Model 5** by unfreezing all layers and retraining, which improved the F1 score to **87%**.
-
+* **Fine-Tuning Model 5:**
+  * By unfreezing all layers and retraining and add early stopping, which improved the F1 score to **86.6%**.
+ 
+### 📄 RoBERTa
 * Despite achieving a good result with Model 5, I explored the potential of **using RoBERTa** to further enhance performance. RoBERTa (Robustly optimized BERT approach) is an advanced transformer-based model designed for natural language understanding. It improves on BERT by using a more robust pre-training approach, including training on larger datasets and using longer sequences. This allows RoBERTa to capture more intricate details of the text, making it highly effective for NLP tasks.
 
 * **Usage:** In this project, the RoBERTa model was fine-tuned for the task of classifying and summarizing biomedical literature. The model takes tokenized input and outputs high-dimensional vectors that represent the semantic meaning of the text.
