@@ -60,7 +60,7 @@
     4. **Hybrid Embedding and Output Layer**: Combined all embeddings and processed through dense and dropout layers, achieving an F1 score of **83.8%**.
 
 * **Fine-Tuning Model 5:**
-  * By unfreezing all layers and retraining and add early stopping, which improved the F1 score to **86.6%**.
+  * By unfreezing all layers and retraining and add callbacks(early stopping and reduce learning rate), which improved the F1 score to **86.6%**.
  
 ### 📄 RoBERTa
 * Despite achieving a good result with Model 5, I explored the potential of **using RoBERTa** to further enhance performance. RoBERTa (Robustly optimized BERT approach) is an advanced transformer-based model designed for natural language understanding. It improves on BERT by using a more robust pre-training approach, including training on larger datasets and using longer sequences. This allows RoBERTa to capture more intricate details of the text, making it highly effective for NLP tasks.
