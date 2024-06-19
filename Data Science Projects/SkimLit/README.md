@@ -78,7 +78,7 @@
 ## 🎯 Conclusion:
 * The SkimLit project demonstrated the effectiveness of combining various text processing and deep learning techniques to enhance the extraction of relevant information from medical papers. Fine-tuning and transfer learning improved the model's performance, making it a robust tool for automatic literature review.
 
-* This project highlights the importance of preprocessing in handling text data and the potential of deep learning models in understanding and classifying complex text data, particularly in the context of medical literature. The final model achieved a high F1 score, demonstrating its capability to accurately extract and classify different sections of medical abstracts.
+* This project highlights the importance of preprocessing in handling text data and the potential of deep learning models in understanding and classifying complex text data, particularly in the context of medical literature. The **RoBERTa** model achieved a high F1 score, demonstrating its capability to accurately extract and classify different sections of medical abstracts.
 
 * ## 📚 Acknowledgments and References:
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
