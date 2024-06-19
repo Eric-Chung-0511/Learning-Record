@@ -18,6 +18,7 @@
 * Bidirectional LSTM
 * Functional API
 * tf.data.Dataset
+* transformers (TFRobertaForSequenceClassification, RobertaTokenizer)
 
 ## 🤖 Skills Detail:
 ### 👓 Data Handling and Text Preprocessing:
@@ -61,6 +62,16 @@
 ### 🔍 Fine-Tuning:
 * **Fine-tuned Model 5** by unfreezing all layers and retraining, which improved the F1 score to **87%**.
 
+* Despite achieving a good result with Model 5, I explored the potential of **using RoBERTa** to further enhance performance. RoBERTa (Robustly optimized BERT approach) is an advanced transformer-based model designed for natural language understanding. It improves on BERT by using a more robust pre-training approach, including training on larger datasets and using longer sequences. This allows RoBERTa to capture more intricate details of the text, making it highly effective for NLP tasks.
+
+* **Usage:** In this project, the RoBERTa model was fine-tuned for the task of classifying and summarizing biomedical literature. The model takes tokenized input and outputs high-dimensional vectors that represent the semantic meaning of the text.
+
+* **Libraries and Tools:** To use RoBERTa, the **Hugging Face Transformers** library was employed, which provides pre-trained models and easy-to-use interfaces for fine-tuning.
+
+* **Implementation:** The implementation involved loading the pre-trained RoBERTa model from the Hugging Face model hub, tokenizing the input text, and fine-tuning the model on the biomedical literature dataset. The fine-tuning process included adjusting the model's parameters to improve its performance on the specific task.
+
+* **Results:** The fine-tuned RoBERTa model achieved a high F1 score of 87%, demonstrating its effectiveness in understanding and classifying biomedical texts.
+
 ### 🧭 Model Evaluation:
 * Evaluated models using metrics like accuracy, precision, recall, and F1 score. Conducted detailed analysis through precision-recall curves to optimize decision thresholds and balance recall and precision.
 
@@ -73,6 +84,8 @@
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
 * **Udemy Course:** [TensorFlow for Deep Learning Bootcamp](https://www.udemy.com/course/tensorflow-developer-certificate-machine-learning-zero-to-mastery/?couponCode=KEEPLEARNING)
+
+* [Hugging Face - RoBERTa](https://huggingface.co/docs/transformers/model_doc/roberta)
 
 * [PubMed 200k RCT: a Dataset for Sequenctial Sentence Classification in Medical Abstracts](https://arxiv.org/pdf/1710.06071)
 
