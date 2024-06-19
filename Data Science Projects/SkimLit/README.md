@@ -87,6 +87,8 @@
 
 * [Hugging Face - RoBERTa](https://huggingface.co/docs/transformers/model_doc/roberta)
 
+* [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
+
 * [PubMed 200k RCT: a Dataset for Sequenctial Sentence Classification in Medical Abstracts](https://arxiv.org/pdf/1710.06071)
 
 * [Neural Networks for Joint Sentence Classification in Medical Paper Abstracts](https://arxiv.org/pdf/1612.05251)
