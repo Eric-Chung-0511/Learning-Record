@@ -7,6 +7,7 @@
 - [Supervised Machine Learning](#supervised-machine-learning)
 - [Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
 - [Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
+- [BERT and RoBERTa](#bert-and-roberta)
 - [Future Goals and Directions](#future-goals-and-directions)
 - [Data Science Project WorkFlow](#data-science-project-workflow)
 
@@ -81,7 +82,7 @@
  
 **[⇧ back to top ⇧](#top)**
 
-<h2 id="artificial-neural-networks-anns">📄 BERT and RoBERTa</h2>
+<h2 id="bert-and-roberta">📄 BERT and RoBERTa</h2>
 
 ### Overview
 * BERT is a powerful pre-trained language model developed by Google, designed to understand the context of a word in search queries. Unlike traditional models that read text input sequentially, BERT reads text bidirectionally, capturing the context from both the left and the right sides of a word. This capability makes BERT exceptionally effective for various NLP tasks, including text classification, question answering, and named entity recognition.
@@ -93,6 +94,8 @@
 - **Text Classification and Summarization**: In the SkimLit project, the RoBERTa model was fine-tuned to automatically classify and summarize biomedical literature. This helps researchers quickly access relevant information from vast amounts of scientific papers.
 - **Architecture and Function**: The RoBERTa model processes tokenized input text and outputs high-dimensional vectors representing the semantic meaning of the text. This model is structured with multiple layers, including an embedding layer and several transformer layers that capture complex linguistic features.
 - **Training and Optimization**: The model was fine-tuned using a biomedical literature dataset, employing a binary cross-entropy loss function and backpropagation for optimization. This fine-tuning process enhances the model's ability to accurately classify and summarize the abstracts.
+
+**[⇧ back to top ⇧](#top)**
 
 
 <h2 id="future-goals-and-directions">💎 Future Goals and Directions</h2>
