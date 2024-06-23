@@ -73,6 +73,20 @@
 
 * **Results:** The fine-tuned RoBERTa model achieved F1 score of **87.7%**, demonstrating its effectiveness in understanding and classifying biomedical texts.
 
+**Update (6/23):**
+**To further improve the model's performance, the following adjustments were made:**
+- **Increased the number of units in the dense layers**: 
+  - The dense layer units were increased from 256 and 128 units to 512 and 256 units, respectively. Additionally, the dropout rates were increased from 0.3 to 0.5.
+    
+  - **Reason**: Increasing the number of units allows the model to capture more complex patterns and features in the data, while higher dropout rates help in preventing overfitting by making the model more robust.
+
+- **Adjusted the `beta_2` parameter of the optimizer**:
+  - The `beta_2` parameter was changed from 0.999 to 0.98.
+    
+  - **Reason**: Lowering the `beta_2` value helps the optimizer to converge faster by giving more weight to recent gradients. This adjustment can lead to better fine-tuning of the model's parameters, thus improving performance.
+
+🎊 These changes led to an improvement in the final F1 score, increasing from **87.7%** to **88.4%**. 🎊 
+
 ### 🧭 Model Evaluation:
 * Evaluated models using metrics like **accuracy, precision, recall, and F1 score.** Conducted detailed analysis through precision-recall curves to optimize decision thresholds and balance recall and precision.
 
