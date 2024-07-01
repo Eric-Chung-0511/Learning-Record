@@ -57,7 +57,7 @@
 
 <h2 id="data-structure-&-algorithm">🌐 Data Structure & Algorithm</h2>
 
-* The [Data Structure and Algorithm folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Structure%20and%20Algorithm) is dedicated to documenting my journey through various algorithmic challenges and data structure problems. 
+* The [Data Structure and Algorithm folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Structure%20%26%20Algorithm) is dedicated to documenting my journey through various algorithmic challenges and data structure problems. 
 
 * Each entry includes a problem description, the solution approach, and Python code implementations. 
 
