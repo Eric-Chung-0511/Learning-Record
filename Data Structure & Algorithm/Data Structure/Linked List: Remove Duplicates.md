@@ -4,6 +4,8 @@
 
 Implement a method called `remove_duplicates()` within the `LinkedList` class that removes all duplicate values from a singly linked list containing integer values. The method should modify the existing list in-place and preserve the relative order of the nodes.
 
+定義一個名為 `remove_duplicates()` 的函數，用於刪除單鏈表中所有重複的整數值。該方法應直接修改現有的列表，並保留節點的相對順序。
+
 ## Problem Solution Approach
 
 ### English:
