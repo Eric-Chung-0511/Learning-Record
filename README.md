@@ -9,6 +9,7 @@
 - [Why Data Science](#star2-why-data-science)
 - [Data Science Projects](#dizzy-data-science-projects)
 - [SQL](#sql)
+- [Data Structure & Algorithm](#data-structure-&-algorithm)
 - [Certificates](#tada-certificates)
 - [General Helpers](#general-helpers)
 - [Conclusion](#speaker-conclusion)
@@ -51,6 +52,16 @@
 * This section contains a variety of [SQL challenges](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/SQL) that I have tackled, showcasing my ability to manipulate and query databases effectively.
 
 * Practicing these exercises can enhance my SQL skills, improving my ability to handle structured data efficiently.
+
+**[⇧ back to top ⇧](#top)**
+
+<h2 id="data-structure-&-algorithm">🌐 Data Structure & Algorithm</h2>
+
+* The [Data Structure and Algorithm folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Structure%20and%20Algorithm) is dedicated to documenting my journey through various algorithmic challenges and data structure problems. 
+
+* Each entry includes a problem description, the solution approach, and Python code implementations. 
+
+* This section aims to enhance my problem-solving skills and deepen my understanding of fundamental computer science concepts.
 
 **[⇧ back to top ⇧](#top)**
 
