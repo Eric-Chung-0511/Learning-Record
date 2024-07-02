@@ -31,6 +31,7 @@ To remove duplicates from a linked list using a set:
 4. **繼續遍歷**：移動 `current` 指針到下一個節點，重複直到列表末尾。
 
 ## Code Implementation
+* **Time Complexity = O(n)**
 
 ```python
 class ListNode:
