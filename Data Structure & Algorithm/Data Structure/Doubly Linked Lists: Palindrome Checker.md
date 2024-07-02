@@ -79,6 +79,8 @@ class DoublyLinkedList:
     def is_palindrome(self):
         left = self.head
         right = self.tail
+
+        # Ensure the left and right pointers are within bounds, haven't met, and haven't crossed
         while left is not None and right is not None and left != right and left.prev != right:
             if left.value != right.value:
                 return False
