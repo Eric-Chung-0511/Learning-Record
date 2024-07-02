@@ -6,6 +6,10 @@ Implement a method called `remove_duplicates()` within the `LinkedList` class th
 
 定義一個名為 `remove_duplicates()` 的函數，用於刪除單鏈表中所有重複的整數值。該方法應直接修改現有的列表，並保留節點的相對順序。
 
+## Method Name
+
+###  remove_duplicates
+
 ## Problem Solution Approach
 
 ### English:
