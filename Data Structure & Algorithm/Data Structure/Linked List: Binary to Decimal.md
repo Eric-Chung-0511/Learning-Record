@@ -6,11 +6,11 @@ Implement the `binary_to_decimal` method for the `LinkedList` class. This method
 
 實現 `LinkedList` 類的 `binary_to_decimal` 方法。這個方法應該將用鏈表表示的二進制數轉換為十進制等價值。鏈表中的每個節點包含二進制數的一個數字（0 或 1），整個數字由從頭到尾遍歷鏈表形成。
 
-## Problem Solution Approach
-
 ## Method Name
 
 ### binary_to_decimal
+
+## Problem Solution Approach
 
 ### English:
 
