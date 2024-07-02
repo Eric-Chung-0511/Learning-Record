@@ -6,6 +6,10 @@ Swap the values of the first and last node in a doubly linked list. The pointers
 
 將雙向鏈表中第一個節點和最後一個節點的值交換。節點本身的指針不會被交換，僅交換它們的值。
 
+## Method Name
+
+### swap_first_last
+
 ## Problem Solution Approach
 
 ### English:
