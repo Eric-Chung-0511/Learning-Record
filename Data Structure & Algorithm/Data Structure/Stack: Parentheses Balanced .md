@@ -46,6 +46,7 @@ To check if a string of parentheses is balanced:
 
 
 ## Code Implementation
+* **Time Complexity = O(n)**
 
 ```python
 class Stack:
