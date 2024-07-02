@@ -28,7 +28,8 @@ To convert a binary number represented as a linked list to its decimal equivalen
 4. **移動指針**：將 `current` 移動到下一個節點，重複直到列表末尾。
 5. **返回結果**：當遍歷完成後，`num` 包含二進制數的十進制等價值。
 
-## Code Implementation
+## Code Implementation 
+* **Time Complexity = O(n)**
 
 ```python
 class ListNode:
