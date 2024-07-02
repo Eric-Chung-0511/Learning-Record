@@ -8,6 +8,10 @@ Implement the `binary_to_decimal` method for the `LinkedList` class. This method
 
 ## Problem Solution Approach
 
+## Method Name
+
+### binary_to_decimal
+
 ### English:
 
 To convert a binary number represented as a linked list to its decimal equivalent:
