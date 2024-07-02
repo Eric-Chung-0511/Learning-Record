@@ -5,6 +5,10 @@
 Create a method called `reverse` that reverses the order of the nodes in the doubly linked list, i.e., the first node becomes the last node, the second node becomes the second-to-last node, and so on. The values of the nodes are not changed, only their pointers are reversed.
 建立一個反轉的雙向鍊錶讓原本的第一個變成最後一個，第二個變倒數第二個...
 
+## Method Name
+
+### reverse
+
 ## Problem Solution Approach
 
 ### English:
