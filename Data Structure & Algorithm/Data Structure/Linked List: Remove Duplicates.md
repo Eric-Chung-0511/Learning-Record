@@ -19,7 +19,7 @@ To remove duplicates from a linked list using a set:
    - If the value is not in the set, add it to the set and move the `prev` pointer.
 4. **Continue Traversal**: Move the `current` pointer to the next node and repeat until the end of the list.
 
-### Chinese:
+### 中文:
 
 使用 Set 從鏈表中刪除重複值：
 
