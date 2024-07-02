@@ -29,6 +29,7 @@ To swap the values of the first and last node in a doubly linked list:
 3. **交換值**：交換 `head` 節點和 `tail` 節點的值。
 
 ## Code Implementation
+* **Time Complexity = O(1)**
 
 ```python
 class Node:
