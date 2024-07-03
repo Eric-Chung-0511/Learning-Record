@@ -72,7 +72,7 @@
     - 當 `sorted_stack` 不為空時，從 `sorted_stack` 彈出元素並推入 `stack`：
       - `stack = [1, 2, 3, 4, 5]`。
 
-## 代碼實現
+## 程式碼
 
 ```python
 class Stack:
