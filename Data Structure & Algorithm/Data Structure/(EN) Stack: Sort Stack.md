@@ -73,6 +73,7 @@ Given an initial stack `stack = [5, 1, 3, 2, 4]`, we aim to sort it to become `s
       - `stack = [1, 2, 3, 4, 5]`.
 
 ## Code Implementation
+* **Time Complexity = O(n^2)**
 
 ```python
 class Stack:
