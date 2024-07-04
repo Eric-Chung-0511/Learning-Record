@@ -1,4 +1,4 @@
-# Linked List: Remove Duplicates
+# Linked List: Remove Duplicates from Unsorted List
 
 ## Description and Goal
 
