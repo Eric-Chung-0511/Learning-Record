@@ -73,7 +73,7 @@
       - `stack = [1, 2, 3, 4, 5]`。
 
 ## 程式碼
-
+* **時間複雜度 = O(n^2)**
 ```python
 class Stack:
     def __init__(self):
