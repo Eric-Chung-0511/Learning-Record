@@ -126,7 +126,8 @@ def create_pipeline(outlier_method, X_train):
         ('outliers', outlier_transformer, numeric_cols),
         ('scaler', StandardScaler(), numeric_cols)
     ])
-    
+
+    # If the data has large dimension, use PCA to reduce it
     pipeline = Pipeline(steps=[
         ('preprocessor', preprocessor),
         ('pca', PCA(n_components=0.95)),
