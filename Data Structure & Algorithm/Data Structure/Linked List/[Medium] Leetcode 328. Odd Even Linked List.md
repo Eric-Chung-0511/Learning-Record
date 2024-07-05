@@ -140,20 +140,6 @@ def oddEvenList(self, head):
 
     odd.next = even_head
     return head
-
-# Example usage:
-# List: 1 -> 2 -> 3 -> 4 -> 5
-# After reordering: 1 -> 3 -> 5 -> 2 -> 4
-
-def print_list(head):
-    current = head
-    while current:
-        print(current.val, end=" -> " if current.next else "\n")
-        current = current.next
-
-# Creating the list 1 -> 2 -> 3 -> 4 -> 5
-list_head = ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5)))))
-solution = Solution()
 list_head = solution.oddEvenList(list_head)
 
 # Printing the modified list
