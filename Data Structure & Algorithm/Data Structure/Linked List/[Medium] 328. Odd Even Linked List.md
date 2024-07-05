@@ -118,7 +118,7 @@ Final list: 1 -> 3 -> 5 -> 2 -> 4
 
 最終鏈表：1 -> 3 -> 5 -> 2 -> 4
 
-## Code Implementation / 代碼實現
+## Code Implementation 
 
 ```python
 class ListNode:
