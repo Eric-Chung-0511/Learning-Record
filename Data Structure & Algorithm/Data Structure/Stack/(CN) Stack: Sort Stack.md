@@ -75,10 +75,14 @@
 
 12. **總結**:
     1. 首先，我們從 `stack` 中取出一個數字 `temp`。
+
     2. 然後，我們比較 `temp` 和 `sorted_stack` 頂部的數字。如果 `sorted_stack` 是空的，或者 `temp` 比 `sorted_stack` 頂部的數字大或相等，就把 `temp` 放到 `sorted_stack` 中。
-    3.如果 `temp` 比 `sorted_stack` 頂部的數字小，我們就把 `sorted_stack` 頂部的數字拿出來，放回 `stack`，直到找到合適的位置把 `temp` 放進去。
-    4.重複這個過程，直到 `stack` 變空。
-    5.最後，`sorted_stack` 中的數字就是按從小到大的順序排列的，我們再把它們一個個放回 `stack` 中，這樣 `stack` 中的數字也就按從小到大的順序排列了。
+
+    3. 如果 `temp` 比 `sorted_stack` 頂部的數字小，我們就把 `sorted_stack` 頂部的數字拿出來，放回 `stack`，直到找到合適的位置把 `temp` 放進去。
+
+    4. 重複這個過程，直到 `stack` 變空。
+
+    5. 最後，`sorted_stack` 中的數字就是按從小到大的順序排列的，我們再把它們一個個放回 `stack` 中，這樣 `stack` 中的數字也就按從小到大的順序排列了。
 
 ## 程式碼
 * **時間複雜度 = O(n^2)**
