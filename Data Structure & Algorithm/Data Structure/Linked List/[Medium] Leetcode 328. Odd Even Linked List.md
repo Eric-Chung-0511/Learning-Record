@@ -142,5 +142,3 @@ def oddEvenList(self, head):
     return head
 list_head = solution.oddEvenList(list_head)
 
-# Printing the modified list
-print_list(list_head)
