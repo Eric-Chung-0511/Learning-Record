@@ -140,5 +140,4 @@ def oddEvenList(self, head):
 
     odd.next = even_head
     return head
-list_head = solution.oddEvenList(list_head)
 
