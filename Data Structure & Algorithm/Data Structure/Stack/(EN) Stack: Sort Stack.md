@@ -71,6 +71,17 @@ Given an initial stack `stack = [5, 1, 3, 2, 4]`, we aim to sort it to become `s
 11. **Transfer Elements Back**:
     - While `sorted_stack` is not empty, pop elements from `sorted_stack` and push them back to `stack`:
       - `stack = [1, 2, 3, 4, 5]`.
+     
+12. **Conclusion**:
+    1. First, we take a number temp from the stack.
+    
+    2. Then, we compare temp with the top number of the sorted_stack. If the sorted_stack is empty, or if temp is greater than or equal to the top number of the sorted_stack, we put temp into the              sorted_stack.
+
+    3. If temp is smaller than the top number of the sorted_stack, we take the top number of the sorted_stack and put it back into the stack, until we find the appropriate position to place temp.
+
+    4. Repeat this process until the stack is empty.
+
+    5. Finally, the numbers in the sorted_stack are arranged in ascending order. We then put them back into the stack one by one, so that the numbers in the stack are also arranged in ascending order.
 
 ## Code Implementation
 * **Time Complexity = O(n^2)**
