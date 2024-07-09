@@ -1,6 +1,6 @@
-# 654. Maximum Binary Tree ( ** Interview Question)
+# 654. Maximum Binary Tree 
 
-## Problem Description / 問題描述
+## Problem Description 
 
 **English**:
 Given an integer array `nums`, construct a maximum binary tree as described below:
@@ -18,7 +18,7 @@ Return the root of the maximum binary tree.
 
 返回最大二叉樹的根結點。
 
-## Solution Explanation / 解決方案解釋
+## Solution Explanation 
 
 **English**:
 To solve this problem, we use a stack to build the tree. We traverse the `nums` array and for each number, we create a new tree node. We maintain the stack to ensure that the largest number is always at the top of the stack. If the current number is larger than the number at the top of the stack, we pop from the stack and set the current node's left child to be the popped node. Then, if the stack is not empty, we set the right child of the node at the top of the stack to be the current node. Finally, we push the current node onto the stack.
@@ -26,14 +26,14 @@ To solve this problem, we use a stack to build the tree. We traverse the `nums` 
 **中文**:
 為了解決這個問題，我們使用堆疊來構建樹。我們遍歷 `nums` 數組，對於每個數字，我們創建一個新的樹節點。我們維護堆疊以確保最大的數字總是位於堆疊的頂部。如果當前數字大於堆疊頂部的數字，我們從堆疊中彈出，並將當前節點的左子節點設置為彈出的節點。然後，如果堆疊不為空，我們將堆疊頂部節點的右子節點設置為當前節點。最後，我們將當前節點推入堆疊。
 
-## Detailed Steps / 詳細步驟
+## Detailed Steps 
 
 **English**:
 1. **Initialize Stack**: Create an empty stack.
 2. **Traverse the Array**:
     - For each number in `nums`, create a new tree node.
     - While the stack is not empty and the value of the node at the top of the stack is less than the current number, pop from the stack and set the current node's left child to be the popped node.
-    - If the stack is not empty, set the right child of the node at the top of the stack to be the current node.
+    - If the stack is not empty, set the right child of the node at the top of the stack to be the current node.`stack[-1]` is the biggest number now.(So it's the biggest number right tree)
     - Push the current node onto the stack.
 3. **Return the Root**: The first element in the stack is the root of the maximum binary tree.
 
@@ -42,11 +42,11 @@ To solve this problem, we use a stack to build the tree. We traverse the `nums` 
 2. **遍歷數組**：
     - 對於 `nums` 中的每個數字，創建一個新的樹節點。
     - 當堆疊不為空且堆疊頂部節點的值小於當前數字時，從堆疊中彈出，並將當前節點的左子節點設置為彈出的節點。
-    - 如果堆疊不為空，將堆疊頂部節點的右子節點設置為當前節點。
+    - 如果堆疊不為空，將堆疊頂部節點的右子節點設置為當前節點，這時的`stack[-1]`為最大值。(所以是最大值的右子樹)
     - 將當前節點推入堆疊。
 3. **返回根結點**：堆疊中的第一個元素是最大二叉樹的根結點。
 
-## Time Complexity / 時間複雜度
+## Time Complexity 
 
 **English**:
 The time complexity of this solution is **O(n)**, where `n` is the length of the input array `nums`. This is because each element is pushed and popped from the stack at most once.
@@ -54,7 +54,7 @@ The time complexity of this solution is **O(n)**, where `n` is the length of the
 **中文**:
 該解決方案的時間複雜度是 **O(n)**，其中 `n` 是輸入數組 `nums` 的長度。這是因為每個元素最多被推入和彈出堆疊一次。
 
-## Visual Explanation / 視覺化解釋
+## Visual Explanation 
 
 ### English:
 
@@ -121,5 +121,22 @@ Suppose we have an array: `[3, 2, 1, 6, 0, 5]`
 
 #### 繼續對剩餘數字進行此過程。
 
+## Code Implementation 
 
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
+def constructMaximumBinaryTree(self, nums):
+    stack = []
+    for num in nums:
+        curr = TreeNode(num)
+        while stack and stack[-1].val < num:
+            curr.left = stack.pop()
+        if stack:
+            stack[-1].right = curr
+        stack.append(curr)
+    return stack[0] if stack else None
