@@ -117,7 +117,6 @@ Suppose we perform the following operations:
 ## Code Implementation 
 
 ```python
-from collections import deque
 
 class MyStack:
     def __init__(self):
@@ -146,10 +145,3 @@ class MyStack:
 # print(stack.top())    # Output: 2
 # print(stack.pop())    # Output: 2
 # print(stack.empty())  # Output: False
-
-stack = MyStack()
-stack.push(1)
-stack.push(2)
-print(stack.top())    # Output: 2
-print(stack.pop())    # Output: 2
-print(stack.empty())  # Output: False
