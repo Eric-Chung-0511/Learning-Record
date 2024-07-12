@@ -17,27 +17,27 @@ A **stack** is a linear data structure that follows the **Last In, First Out (LI
 
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/stack_push_add_function.b406cffbe2dd.jpg" alt="Linked List visualization" width="500">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/Stack_image/stack_push_add_function.b406cffbe2dd.jpg" alt="Linked List visualization" width="500">
 </p>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/stack_push_delete_word.6a64fed15fde.jpg" alt="Linked List visualization" width="500">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/Stack_image/stack_push_delete_word.6a64fed15fde.jpg" alt="Linked List visualization" width="500">
 </p>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/stack_push_indent.01223b7d94a7.jpg" alt="Linked List visualization" width="500">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/Stack_image/stack_push_indent.01223b7d94a7.jpg" alt="Linked List visualization" width="500">
 </p>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/stack_pop_indent.e28029c81831.jpg" alt="Linked List visualization" width="500">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/Stack_image/stack_pop_indent.e28029c81831.jpg" alt="Linked List visualization" width="500">
 </p>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/stack_pop_delete_word.89f14f6ed390.jpg" alt="Linked List visualization" width="500">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/Stack_image/stack_pop_delete_word.89f14f6ed390.jpg" alt="Linked List visualization" width="500">
 </p>
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/stack_pop_add_function.a4f66332971a.jpg" alt="Linked List visualization" width="500">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Structure%20%26%20Algorithm/Data%20Structure/Stack/Stack_image/stack_pop_add_function.a4f66332971a.jpg" alt="Linked List visualization" width="500">
 </p>
 
 *Image source: [Real Python](https://realpython.com/how-to-implement-python-stack/)*
