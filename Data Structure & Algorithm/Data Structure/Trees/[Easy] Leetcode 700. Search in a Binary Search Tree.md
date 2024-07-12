@@ -44,6 +44,8 @@ The time complexity of this solution is **O(h)**, where `h` is the height of the
 **中文**:
 該解決方案的時間複雜度是 **O(h)**，其中 `h` 是樹的高度。在最壞的情況下，對於一棵偏斜樹，這可能是 **O(n)**。
 
+## Code Implementation
+
 ```python
 class Solution:
     def searchBST(self, root, val):
