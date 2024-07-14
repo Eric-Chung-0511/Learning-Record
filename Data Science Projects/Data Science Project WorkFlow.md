@@ -204,10 +204,17 @@ This workflow outlines the steps for completing a data science project, starting
 11. **🔨 Preprocessing and Feature Engineering**
     - Perform train-test split (typically 20-30% test size, `random_state=42`).
     ```python
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42
+    ```
+    
+12. **🗄️ Handling Imbalanced Data**
+    - Use SMOTE or ADASYN for balancing.
+    ```python
+    smote = SMOTE(random_state=42)
+    X_train_smote, y_train_smote = smote.fit_resample(X_train_pca, y_train)
     ```
 
-12. **📏 Scaling the Data**
+13. **📏 Scaling the Data**
     - Use `StandardScaler` or `MinMaxScaler`.
     ```python
     scaler = StandardScaler()
@@ -215,19 +222,12 @@ This workflow outlines the steps for completing a data science project, starting
     X_test_scaled = scaler.transform(X_test)
     ```
 
-13. **📉 Dimensionality Reduction**
+14. **📉 Dimensionality Reduction**
     - Apply PCA if the data has high dimensions.
     ```python
     pca = PCA(n_components=0.95)
     X_train_pca = pca.fit_transform(X_train)
     X_test_pca = pca.transform(X_test)
-    ```
-
-14. **🗄️ Handling Imbalanced Data**
-    - Use SMOTE or ADASYN for balancing.
-    ```python
-    smote = SMOTE(random_state=42)
-    X_train_smote, y_train_smote = smote.fit_resample(X_train_pca, y_train)
     ```
 
 15. **🔗 Building Pipelines**
