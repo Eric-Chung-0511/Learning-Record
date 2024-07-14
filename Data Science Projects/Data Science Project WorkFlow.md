@@ -233,9 +233,9 @@ This workflow outlines the steps for completing a data science project, starting
 15. **🔗 Building Pipelines**
     ```python
     pipeline = ImbPipeline([
+        ('smote', SMOTE(random_state=42)),
         ('scaler', StandardScaler()),
         ('pca', PCA(n_components=2)),
-        ('smote', SMOTE(random_state=42)),
         ('classifier', RandomForestClassifier(random_state=42))
     ])
     pipeline.fit(X_train, y_train)
