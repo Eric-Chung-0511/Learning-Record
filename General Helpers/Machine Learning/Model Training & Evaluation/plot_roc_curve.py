@@ -42,7 +42,7 @@ def plot_roc_curve(model, X_test, y_test):
 # plot_roc_curve(svc, X_test_pca, y_test)
 
 
-# Plot for multiclass
+# Plot for multiclasses
 def plot_roc_curve_multiclass(model, X_test, y_test, n_classes=3):
    
     # Get the predicted probabilities for each class
