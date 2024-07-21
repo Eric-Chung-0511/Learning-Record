@@ -129,4 +129,4 @@ The project highlighted the importance of comprehensive preprocessing in handlin
 ## 📚 Acknowledgments and References:
 * This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
 
-* [Credit Score Classification](https://www.kaggle.com/competitions/credit-score-classification)
+* [Credit Score Classification](https://www.kaggle.com/datasets/parisrohan/credit-score-classification/data)
