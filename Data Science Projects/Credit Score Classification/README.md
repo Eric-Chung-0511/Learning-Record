@@ -32,7 +32,7 @@
   
 * **Handling Missing Values**: Processed missing values by setting ranges (e.g., Age: 0-120), using regex to clean categorical features, and removing unnecessary symbols. Visualized job distribution with bar charts.
   
-* **Feature Engineering**: Added new features and removed unnecessary ones. Used correlation and VIF for initial feature selection. Employed quantile (lower 0.1, upper 0.9) to filter outliers, followed by box plots and histograms to check distributions. Applied log transformation to filter features with high skewness. Finally, used feature importance to determine the most crucial features.
+* **Feature Engineering**: **Added new features and removed unnecessary ones. Used correlation and VIF for initial feature selection. Employed quantile (lower 0.1, upper 0.9) to filter outliers, followed by box plots and histograms to check distributions. Applied log transformation to filter features with high skewness. Finally, used feature importance to determine the most crucial features.**
 
 ### ⚒️ Data Preprocessing:
 * **Log Transformation on 'Amount'**: Applied log transformation to normalize skewed 'Amount' feature.
@@ -44,7 +44,12 @@
     
   - **Variance Inflation Factor (VIF)**: Further evaluated features using VIF to ensure minimal multicollinearity, thus improving the reliability of the regression coefficients.
     
-  - **Multicollinearity**: Multicollinearity occurs when two or more predictor variables in a statistical model are highly correlated, meaning that one can be linearly predicted from the others with a substantial degree of accuracy. This can lead to problems in estimating the coefficients of the model, as it becomes difficult to determine the individual effect of each predictor. Avoiding multicollinearity is crucial because it can inflate the variance of the coefficient estimates and make the model unstable and difficult to interpret.**Essentially, multicollinearity means that the affected variables do not provide independent information and can be predicted by each other, leading to redundancy in the model.**
+  - **Multicollinearity**:
+    - Multicollinearity occurs when two or more predictor variables in a statistical model are highly correlated, meaning that one can be linearly predicted from the others with a substantial degree of accuracy. This can lead to problems in estimating the coefficients of the model, as it becomes difficult to determine the individual effect of each predictor.
+  
+    - Avoiding multicollinearity is crucial because it can inflate the variance of the coefficient estimates and make the model unstable and difficult to interpret.
+    
+    - **Essentially, multicollinearity means that the affected variables do not provide independent information and can be predicted by each other, leading to redundancy in the model.**
     
 * **Feature Scaling with StandardScaler**: Normalized features to ensure equal contribution.
   
