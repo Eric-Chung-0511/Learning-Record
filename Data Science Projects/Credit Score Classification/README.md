@@ -57,6 +57,22 @@
   
 * **ANN Implementation**: Built and evaluated an Artificial Neural Network with the same metrics.
 
+### 📊 Results:
+The LightGBM model achieved the best results with the following metrics:
+- **Accuracy**: 85.17%
+- **Precision**: 84.8%
+- **Recall**: 85.17%
+- **F1 Score**: 84.95%
+
+As shown in the ROC Curve (AUC) plot below, the model performance for each class is represented:
+- **Class 0 (Good)**: AUC = 0.90
+- **Class 1 (Poor)**: AUC = 0.92
+- **Class 2 (Standard)**: AUC = 0.88
+
+### ROC Curve (AUC) Introduction:
+The ROC (Receiver Operating Characteristic) curve is a graphical plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied. The AUC (Area Under the Curve) represents the degree or measure of separability. It tells how much the model is capable of distinguishing between classes. An AUC of 1.0 represents a perfect model, while an AUC of 0.5 represents a model with no discriminative power.
+
+
 ## 🎯 Conclusion:
 The project highlighted the importance of comprehensive preprocessing in handling imbalanced datasets and optimizing machine learning models for credit score classification. Key insights and learnings from this project include:
 
@@ -87,6 +103,21 @@ The project highlighted the importance of comprehensive preprocessing in handlin
     * **Outstanding Debt**: The amount of outstanding debt plays a significant role, suggesting that lower outstanding debt is associated with better credit scores.
       
     * **Delay from Due Date**: Timeliness of payments (`Delay_from_due_date`) is crucial, highlighting the importance of paying bills on time.
+      
+    * **Debt Per Account**: The `Debt_Per_Account` feature indicates the average debt per account, suggesting that managing debt across multiple accounts is an important factor in creditworthiness.
+      
+    * **Debt to Income Ratio**: A lower `Debt_to_Income_Ratio` is generally associated with a better credit score, as it indicates a healthy balance between debt and income.
+      
+    * **Income and Salary**: Features like `Annual_Income` and `Monthly_Inhand_Salary` are also important, as higher income and available salary typically correlate with better credit scores, reflecting the individual's capacity to meet financial obligations.
+      
+    * **Credit Inquiries**: The number of credit inquiries (`Num_Credit_Inquiries`) can impact the credit score. Frequent inquiries may indicate higher credit risk, as they might suggest financial instability or aggressive credit seeking behavior.
+      
+    * **Payment Behavior**: `Delayed_Payments_Per_Account` and `Payment_Behaviour_Encoded` features offer valuable insights into the customer's payment habits and discipline, which are essential for assessing creditworthiness.
+      
+    * **Occupation and Payment of Minimum Amount**: Features like `Occupation_Encoded` and `Payment_of_Min_Amount_Encoded` provide additional context on the customer's job stability and payment behaviors, contributing to the overall assessment of their credit profile.
+
+    * **By analyzing these features comprehensively, we gain a deeper understanding of the various factors that influence credit scores and customer creditworthiness, enabling more accurate and effective credit score classification models.**
+
 
 3. **Potential Improvements**:
     * **Feature Engineering**: Further feature engineering could enhance model performance. For example, creating interaction features or using domain knowledge to derive new features.
