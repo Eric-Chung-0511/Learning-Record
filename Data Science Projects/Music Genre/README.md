@@ -61,7 +61,6 @@
 
 * https://www.kaggle.com/datasets/aniruddhachoudhury/classify-song-genres-from-audio-data
 
-* https://www.kaggle.com/code/aniruddhachoudhury/classify-song-genres-from-audio-data-model
 
 ## 📄 Viewing Jupyter Notebooks
 * Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
