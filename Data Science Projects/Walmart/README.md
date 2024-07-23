@@ -56,7 +56,9 @@
 * **Despite the low MAE suggesting accurate predictions, visual assessments of the plots revealed discrepancies, highlighting the need for both numerical and visual evaluations to fully gauge model performance.**
 
 ## 📚 Acknowledgments and References:
-* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+* This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
+
+* https://www.kaggle.com/datasets/varsharam/walmart-sales-dataset-of-45stores
 
 * https://www.kaggle.com/code/fatmayousufmohamed/time-serises-analysis#Thanks!
 
