@@ -87,7 +87,9 @@
 * Although many methods were employed, there is still room for improvement in **precision and recall.** While the model performs well in identifying class 1, there is potential to further enhance its ability to correctly identify class 0. **Future efforts will focus on refining these aspects to ensure a more balanced and robust performance across all classes.**
 
 ## 📚 Acknowledgments and References:
-* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+* This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
+
+* https://www.kaggle.com/datasets/ninzaami/loan-predication
   
 * https://www.kaggle.com/code/caesarmario/loan-prediction-w-various-ml-models/notebook
 
