@@ -57,7 +57,9 @@
  * Parameter optimization via GridSearchCV refined our models, with final evaluations confirming their accuracy and reliability. The process underscored the importance of careful model selection and tuning in achieving precise classification outcomes.
 
 ## 📚 Acknowledgments and References:
-* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+* This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
+
+* https://www.kaggle.com/datasets/aniruddhachoudhury/classify-song-genres-from-audio-data
 
 * https://www.kaggle.com/code/aniruddhachoudhury/classify-song-genres-from-audio-data-model
 
