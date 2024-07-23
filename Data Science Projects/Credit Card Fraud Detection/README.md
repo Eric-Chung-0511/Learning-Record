@@ -75,7 +75,7 @@
 * **Particularly in the context of credit card fraud, achieving a high recall is critical, as it is essential to detect as many fraudulent transactions as possible. Missing a fraudulent transaction can have significant financial implications**, thus emphasizing recall ensures that fewer fraud cases go undetected, prioritizing the security and trust of the financial system.
 
 ## 📚 Acknowledgments and References:
-* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+* This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
 
 * https://www.kaggle.com/code/idalez/creditcardfraud-analysis-and-prediction-using-ann
 
