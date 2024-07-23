@@ -61,6 +61,8 @@
 ## 📚 Acknowledgments and References:
 * I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
 
+* https://www.kaggle.com/competitions/titanic
+
 * https://www.kaggle.com/code/volhaleusha/titanic-tutorial-encoding-feature-eng-81-8#Part-8:-Conclusion
 
 ## 📄 Viewing Jupyter Notebooks
