@@ -59,7 +59,7 @@
 * It demonstrated the effectiveness of combining feature engineering with sophisticated machine learning models to make predictions that are not only accurate but also interpretable and meaningful in understanding historical events.
 
 ## 📚 Acknowledgments and References:
-* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+* This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
 
 * https://www.kaggle.com/competitions/titanic
 
