@@ -127,7 +127,7 @@ The project highlighted the importance of comprehensive preprocessing in handlin
 3. **Potential Improvements**:
     * **Feature Engineering**: Further feature engineering could enhance model performance. For example, creating interaction features or using domain knowledge to derive new features.
       
-    * **Advanced Models**: Exploring advanced models and techniques, such as ensemble methods or gradient boosting, could provide better classification accuracy.
+    * **Advanced Models**: Exploring advanced models and techniques, such as ensemble methods, maybe will provide better classification accuracy.
       
     * **Real-World Application**: In the context of credit score classification, achieving high recall is critical as it ensures fewer misclassifications of low credit scores, which is essential for reducing financial risk for the company.
 
