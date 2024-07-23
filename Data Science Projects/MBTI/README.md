@@ -77,9 +77,12 @@
 * This comprehensive approach not only improved our model's performance but also enriched my understanding and application of these critical data science competencies.
 
 ## 📚 Acknowledgments and References:
-* I am grateful to the developers and researchers whose work has significantly influenced this project. Below are the resources that have been instrumental:
+* This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
+
+* https://www.kaggle.com/datasets/datasnaek/mbti-type
 
 * https://www.kaggle.com/code/rajshreev/mbti-personality-predictor-using-machine-learning/notebook
+  
 * https://www.nltk.org/
 
 ## 📄 Viewing Jupyter Notebooks
