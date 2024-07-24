@@ -23,6 +23,7 @@
 * LightGBM
 * XGBoost
 * RandomForest
+* Voting Classifier
 * ANN (Artificial Neural Network)
 * Classification Metrics: Accuracy, Precision, Recall, F1-score
 
@@ -56,20 +57,25 @@
 * **Balancing Data with SMOTE**: Used SMOTE to handle class imbalance by generating synthetic samples for the minority class.
 
 ### 🧬 Model Building and Evaluation:
-* **Bayesian Optimization for Parameter Tuning**: Applied Bayesian Optimization for initial parameter tuning of LightGBM, XGBoost, and RandomForest models.
-  
+* **Bayesian Optimization for Parameter Tuning**: Applied Bayesian Optimization for initial parameter tuning of LightGBM, XGBoost and RandomForest models.
+
+* **Voting Model**: The Voting Classifier is an ensemble learning method that combines the predictions from multiple machine learning models to improve overall performance. There are two types of voting:
+    - **Hard Voting**: In hard voting, each model in the ensemble makes a prediction (vote) for each test instance, and the final prediction is the one that receives the majority of votes. This is essentially a majority rule voting.
+
+    - **Soft Voting**: In soft voting, each model in the ensemble predicts the probability of each class for each test instance. The probabilities are then averaged, and the class with the highest average probability is chosen as the final prediction. Soft voting can give better results when the models are well-calibrated.
+ 
 * **Model Training and Fine-Tuning**: Further fine-tuned models and evaluated using accuracy, precision, recall, F1-score, and ROC_AUC.
   
 * **ANN Implementation**: Built and evaluated an Artificial Neural Network with the same metrics.
 
 ### 📊 Results:
-The LightGBM model achieved the best results with the following metrics:
-- **Accuracy**: 85.17%
-- **Precision**: 84.8%
-- **Recall**: 85.17%
-- **F1 Score**: 84.95%
+The Voting Classifier achieved the best results with the following metrics:
+- **Accuracy**: 85.37%
+- **Precision**: 85.03%
+- **Recall**: 85.37%
+- **F1 Score**: 85.16%
 
-As shown in the ROC Curve (AUC) plot below, the model performance for each class is represented:
+However, since the Voting Classifier does not have a specific ROC curve, the LightGBM model showed the best ROC curve performance. As shown in the ROC Curve (AUC) plot below, the model performance for each class is represented:
 - **Class 0 (Good)**: AUC = 0.90
 - **Class 1 (Poor)**: AUC = 0.92
 - **Class 2 (Standard)**: AUC = 0.88
@@ -127,9 +133,9 @@ The project highlighted the importance of comprehensive preprocessing in handlin
 3. **Potential Improvements**:
     * **Feature Engineering**: Further feature engineering could enhance model performance. For example, creating interaction features or using domain knowledge to derive new features.
       
-    * **Advanced Models**: Exploring advanced models and techniques, such as ensemble methods, maybe will provide better classification accuracy.
-      
     * **Real-World Application**: In the context of credit score classification, achieving high recall is critical as it ensures fewer misclassifications of low credit scores, which is essential for reducing financial risk for the company.
+  
+    * **Improving Data Quality**: If the model performance does not improve significantly after comprehensive feature engineering and model tuning, it may be necessary to revisit the data itself. Adding new relevant features or obtaining higher quality data can sometimes be the key to better model performance.
 
 ## 📚 Acknowledgments and References:
 * This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
