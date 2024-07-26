@@ -69,6 +69,8 @@
   
 * **ANN Implementation**: Built and evaluated an Artificial Neural Network with the same metrics.
 
+* **Using Object-Oriented Programming (OOP)**: Implemented an object-oriented approach to create a reusable class for model evaluation and plotting ROC curves. This class includes methods for calculating performance metrics and plotting ROC curves for multiclass classification and voting classifiers.
+
 ### 📊 Results:
 The Voting Classifier achieved the best results with the following metrics:
 - **Accuracy**: 85.37%
