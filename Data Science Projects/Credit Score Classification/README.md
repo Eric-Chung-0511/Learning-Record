@@ -16,6 +16,7 @@
 * Label Encoder
 * SMOTE
 * StandardScaler
+* Object Oriented Programming (OOP)
 
 ### 📈 Modeling, Parameter Tuning, and Evaluation:
 * Bayesian Optimization
