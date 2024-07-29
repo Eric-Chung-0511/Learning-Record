@@ -21,8 +21,10 @@ Visualize the customized confusion matrix to evaluate the performance of classif
 - **This function consists of one main function aimed at plotting the ROC curve for a given model and test data.**
 - **plot_roc_curve**: Plot the ROC curve for a trained classifier, compute the AUC, and display the curve with the AUC value, providing a visual representation of the model's performance.
 
-### calculate_results
-- **This function calculates and formats the evaluation metrics for a classification model. It computes the accuracy, precision, recall, and F1 score, rounds them to two decimal places, converts them to percentages, and returns them in a dictionary.**
+### calculate_results and (OOP)Model_Evaluator
+- **The first function calculates and formats the evaluation metrics for a classification model. It computes the accuracy, precision, recall, and F1 score, rounds them to two decimal places, converts them to percentages, and returns them in a dictionary.**
+
+- **The second function using Object-Oriented Programming (OOP) style that calculates accuracy, precision, recall, and F1-score. Additionally, the function should include the ability to plot the ROC curve. It should be designed for multiple classes and be easily adaptable for binary classification scenarios.**
 
 
 
