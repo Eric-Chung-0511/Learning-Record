@@ -39,13 +39,15 @@ Queue table:
 
 **Explanation:**
 The table is ordered by the turn for simplicity:
-+------+----+-----------+--------+--------------+
+
 | Turn | ID | Name      | Weight | Total Weight |
-+------+----+-----------+--------+--------------+
+|------|----|-----------|--------|--------------|
 | 1    | 5  | Alice     | 250    | 250          |
 | 2    | 3  | Alex      | 350    | 600          |
-| 3    | 6  | John Cena | 400    | 1000         | (last person to board)
-| 4    | 2  | Marie     | 200    | 1200         | (cannot board)
+| 3    | 6  | John Cena | 400    | 1000         | 
+| 4    | 2  | Marie     | 200    | 1200         |
+
+*Note: John Cena is the last person to board, and Marie cannot board.*
 
 ## Thoughts and Solution Approach
 
