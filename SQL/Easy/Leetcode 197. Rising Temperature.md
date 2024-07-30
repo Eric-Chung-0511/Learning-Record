@@ -53,7 +53,7 @@ The task requires comparing the temperature of each day with that of the previou
 ### 中文:
 
 題目要求比較每一天與前一天的溫度。
-- **自我連接**：在 `Weather` 表上使用自我連接，比較連續兩天的記錄。
+- **與自己連接**：在 `Weather` 與自己做連接，比較連續兩天的記錄。
 - **`DATEDIFF` 使用**：`DATEDIFF`用來計算兩個日期之間的天數差異。在此查詢中，它用來確保被比較的記錄正好相隔一天。
 - **溫度比較**：在確定了連續的兩天後，檢查當前天（`a.recordDate`）的溫度是否高於前一天（`b.recordDate`）。
 
