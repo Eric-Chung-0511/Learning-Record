@@ -211,7 +211,7 @@ This workflow outlines the steps for completing a data science project, starting
     - Use SMOTE or ADASYN for balancing.
     ```python
     smote = SMOTE(random_state=42)
-    X_train_smote, y_train_smote = smote.fit_resample(X_train_pca, y_train)
+    X_train_smote, y_train_smote = smote.fit_resample(X_train, y_train)
     ```
 
 13. **📏 Scaling the Data**
