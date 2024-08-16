@@ -18,12 +18,24 @@
 
 <h2 id="star-learning-record-introduction">⭐ Learning Record Introduction</h2>
 
-[![Data Science](https://img.shields.io/badge/Data_Science-Explorer-orange.svg?logo=tensorflow)](https://www.tensorflow.org/)
-[![Machine Learning](https://img.shields.io/badge/Machine_Learning-Practitioner-yellow.svg?logo=scikit-learn)](https://scikit-learn.org/)
-[![Python](https://img.shields.io/badge/Python->3.8-blue.svg?logo=python)](https://www.python.org/)
-[![SQL](https://img.shields.io/badge/SQL-Enthusiast-lightgrey.svg?logo=mysql)](https://www.mysql.com/)
+### Data Science
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=flat-square&logo=TensorFlow&logoColor=white)](https://www.tensorflow.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat-square&logo=PyTorch&logoColor=white)](https://pytorch.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-%23F7931E.svg?style=flat-square&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-%23150458.svg?style=flat-square&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-%23013243.svg?style=flat-square&logo=NumPy&logoColor=white)](https://numpy.org/)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ff69b4.svg?style=flat-square&logo=Matplotlib&logoColor=white)](https://matplotlib.org/)
+[![Seaborn](https://img.shields.io/badge/Seaborn-%2328B5B5.svg?style=flat-square&logo=Seaborn&logoColor=white)](https://seaborn.pydata.org/)
+
+### Programming Languages
+[![Python](https://img.shields.io/badge/Python-%233776AB.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![SQL](https://img.shields.io/badge/SQL-%230075A8.svg?style=flat-square&logo=MySQL&logoColor=white)](https://www.mysql.com/)
+
+### Others
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
+
+
 
 * Welcome to my Learning Record! This repository is a personal testament to my journey into the world of Data Science. It showcases my dedication to understanding and leveraging data science to gain insights and make informed decisions.
 
