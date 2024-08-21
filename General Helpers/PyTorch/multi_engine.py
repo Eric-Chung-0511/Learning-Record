@@ -91,6 +91,7 @@ def train(model: torch.nn.Module,
           optimizer: torch.optim.Optimizer,
           loss_fn: torch.nn.Module,
           epochs: int,
+          num_classes: int,
           device: torch.device,
           scheduler: torch.optim.lr_scheduler._LRScheduler = None,
           early_stopping_patience: int = None) -> Dict[str, List[float]]:
@@ -122,12 +123,13 @@ def train(model: torch.nn.Module,
                "test_precision": [],
                "test_recall": [],
                "test_f1": []}
-
+            
+    # If It's binary task, use task='binary' only
     metrics = {
-        "accuracy": Accuracy().to(device),
-        "precision": Precision().to(device),
-        "recall": Recall().to(device),
-        "f1": F1Score().to(device)
+        "accuracy": Accuracy(task='multiclass', num_classes=num_classes).to(device),
+        "precision": Precision(task='multiclass', num_classes=num_classes).to(device),
+        "recall": Recall(task='multiclass', num_classes=num_classes).to(device),
+        "f1": F1Score(task='multiclass', num_classes=num_classes).to(device)
     }
 
     best_loss = float('inf')
