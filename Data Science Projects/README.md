@@ -106,11 +106,11 @@
 * Moreover, I expect to use LSTM in time series data. Currently, I am immensely interested in the innovative applications of Generative Adversarial Networks.
 
 ### 🚀 Transfer Learning
-* Although I am just starting to learn about Transfer Learning, it has already opened my eyes to its potential. **This method allows me to leverage pretrained models and fine tune them for specific use cases, significantly reducing the time and resources required.**
-  
-* Despite being new to this technique, I am confident that with a basic understanding of how to use it, I can quickly get up to speed. By adjusting the parameters of these pretrained models, I can develop new models that are tailored to my needs, benefiting from the robust features and patterns already learned by the original models. This approach has proven to be extremely powerful and efficient.
-  
-* **In the future, I also plan to apply large language models like GPT-3 and Gemma to practical applications. By fine-tuning these models on specific datasets and tasks, I want to create highly customized and effective language models that can be utilized in real life, achieving remarkable results with less effort.**
+* Recently, I have been exploring Transfer Learning and have begun to grasp its significant potential. **This method enables me to utilize pretrained models and fine-tune them for specific tasks, greatly reducing the time and resources required.**
+
+* While I'm still relatively new to this technique, I'm steadily building my understanding. By tweaking the parameters of these pretrained models, I'm learning how to develop tailored models that suit my needs, making the most of the robust features and patterns learned by the original models. This approach has already demonstrated its power and efficiency.
+
+* **Looking ahead, I am also planning to apply large language models like GPT-3 and Gemma to real-world applications. By fine-tuning these models on specific datasets and tasks, my goal is to create highly customized and effective language models that can be leveraged in practical scenarios, achieving meaningful results with greater efficiency.**
 
 ### 🗣️ Natural Language Processing (NLP)
 * **My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.**
