@@ -1,4 +1,4 @@
-# 🍕 FoodVision Mini 🍣
+#  🍕🥩🍣 FoodVision Mini 👀
 
 ## ✨ Project Overview:
 * The goal of this project is to develop a model capable of accurately recognizing three types of food: steak, pizza, and sushi, using a dataset of training images. **FoodVision Mini** illustrates the efficiency of leveraging pretrained models through transfer learning, allowing us to build an effective image classification system without needing to train from scratch.
