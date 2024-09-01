@@ -105,17 +105,14 @@
 
 * While I'm still relatively new to this technique, I'm steadily building my understanding. By tweaking the parameters of these pretrained models, I'm learning how to develop tailored models that suit my needs, making the most of the robust features and patterns learned by the original models. This approach has already demonstrated its power and efficiency.
 
-* **Looking ahead, I am also planning to apply large language models like GPT-3 and Gemma to real-world applications. By fine-tuning these models on specific datasets and tasks, my goal is to create highly customized and effective language models that can be leveraged in practical scenarios, achieving meaningful results with greater efficiency.**
-
-### 🗣️ Natural Language Processing (NLP)
-* **My future goals involve expanding the scope of NLP applications to include sentiment analysis of texts, the development of intelligent recommendation systems, and the creation of interactive chatbots.**
+* **Looking ahead, I am also planning to apply large language models like GPT-4 and Meta Llama3 to real-world applications. By fine-tuning these models on specific datasets and tasks, my goal is to create highly customized and effective language models that can be leveraged in practical scenarios, achieving meaningful results with greater efficiency.**
   
-* These advancements will leverage the full potential of language data, enhancing user interaction and delivering personalized experiences based on sophisticated language understanding and processing.
+### 🗣🔄🤖 Natural Language Processing (NLP) and Transformer Technology
+* My future goals involve leveraging advanced Transformer models to expand the scope of NLP applications. This includes tasks such as sentiment analysis, the development of intelligent recommendation systems, and the creation of interactive chatbots.
 
-### 🔄 Transformer Technology
-* **My future target is to leverage Transformer models to build advanced AI systems. These models will enable me to create sophisticated language models for various applications, including text generation, translation, and more.**
-  
-* The aim is to harness the full potential of these cutting-edge technologies to develop AI solutions that can understand and generate human-like text, providing enhanced user interactions and personalized experiences.
+* **Additionally, I aspire to develop AI systems capable of automatically extracting and summarizing key points from academic papers, allowing researchers to spend less time on initial screening and more time on in-depth reading and exploration of relevant studies.**
+
+* By harnessing the full potential of these cutting-edge technologies, I aim to build sophisticated AI systems capable of understanding and generating human-like text, enhancing user interaction, and delivering personalized experiences across various applications like text generation, translation, and more.
 
 **[⇧ back to top ⇧](#top)**
 
