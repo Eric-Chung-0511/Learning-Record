@@ -68,7 +68,7 @@ plt.imshow(image_tensor)
 plt.show()
 ```
 ## 總結：
-* **PyTorch**的形式為[channels, height, width], **TensorFlow**的形式為[height, width, channels[
+* **PyTorch**的形式為[channels, height, width], **TensorFlow**的形式為[height, width, channels]
 * **unsqueeze()**：用於增加批次維度（從 [channels, height, width] 到 [1, channels, height, width]）。
 * **permute(1, 2, 0)**：用於調整圖像通道順序（從 [channels, height, width] 到 [height, width, channels]），使其符合 imshow 的要求。
 * **squeeze()**：用於移除多余的維度，通常是從 [1, channels, height, width] 到 [channels, height, width]。
