@@ -50,3 +50,6 @@ def visualize_predictions(model, test_data, class_names, device, num_samples=10)
     plt.tight_layout()
     plt.subplots_adjust(wspace=0.3, hspace=0.6) 
     plt.show()
+
+# Usage
+# visualize_predictions(efficientnetb3_model, test_data, class_names, device, num_samples=10)
