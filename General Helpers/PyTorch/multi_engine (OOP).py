@@ -79,6 +79,8 @@ class Trainer:
         for X, y in self.train_dataloader:
             X, y = X.to(self.device), y.to(self.device)
             y_pred = self.model(X)
+            if hasattr(y_pred, 'logits'):
+                y_pred = y_pred.logits # extract logits
             loss = self.loss_fn(y_pred, y)
             train_loss += loss.item()
 
@@ -113,6 +115,8 @@ class Trainer:
             for X, y in self.test_dataloader:
                 X, y = X.to(self.device), y.to(self.device)
                 y_pred = self.model(X)
+                if hasattr(y_pred, 'logits'):
+                    y_pred = y_pred.logits  # extract logits
                 loss = self.loss_fn(y_pred, y)
                 test_loss += loss.item()
 
