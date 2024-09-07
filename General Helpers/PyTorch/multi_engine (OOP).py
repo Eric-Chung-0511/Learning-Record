@@ -229,6 +229,10 @@ class Trainer:
 # from timeit import default_timer as timer
 # start_time = timer()
 
+# optimizer = torch.optim.Adam(pretrained_resnet.parameters(), lr=0.001)
+
+# loss_fn = torch.nn.CrossEntropyLoss()
+
 # scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=True)
 
 # trainer = Trainer(
