@@ -25,7 +25,7 @@ The goal of this project is to develop a model capable of accurately recognizing
 - The fine-tuned ResNet-50 model was deployed on Hugging Face Spaces, making it accessible for real time predictions.
 - **Users can upload images of pets to receive predictions about their breed, showcasing the practical application of transfer learning and real time image classification.**
 
-### 🔧 Technical Implementation:
+### ⚙️  Technical Implementation:
 
 #### Data Handling and Preprocessing:
 - Pandas was used for managing and cleaning the dataset, while Matplotlib was utilized for visualizing image data distribution and model performance.
@@ -33,7 +33,14 @@ The goal of this project is to develop a model capable of accurately recognizing
 - These steps ensured that the model could handle diverse inputs and improve its robustness when predicting new images.
 
 #### Transfer Learning:
-- Transfer learning played a critical role in this project. By leveraging a pretrained ResNet-50 model, Its capability can quickly build an effective image classifier by fine-tuning the model on a smaller dataset, significantly reducing training time while improving accuracy.
+- Transfer learning played a critical role in this project. By leveraging a pretrained ResNet-50 model, its capability can quickly build an effective image classifier by fine-tuning the model on a smaller dataset, significantly reducing training time while improving accuracy.
+  
+- **To fine-tune the model, I froze most of the ResNet-50 layers except for the last 4 layers (layer4 is the last Conv2d layer)**. This allows the model to retain its general image features while focusing on learning the specific features for pet classification. The following code was used to implement this fine-tuning strategy:
+
+- In addition, **I adjusted the learning rate and optimizer to further improve the model's performance.** I used the **AdamW** optimizer with weight decay for regularization and the **OneCycleLR** scheduler to dynamically adjust the learning rate during training:
+
+- This fine-tuning approach and learning rate adjustments helped to optimize the model's learning process and achieve a higher accuracy on the Oxford Pet dataset.
+
 
 #### Interactive Interface with Gradio:
 - Gradio was integrated to provide an intuitive and user friendly interface where users can upload images and instantly get breed predictions.
