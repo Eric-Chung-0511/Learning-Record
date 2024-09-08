@@ -14,11 +14,11 @@ The goal of this project is to develop a model capable of accurately recognizing
 ## 🚀 Project Details:
 
 ### 🧠 Model Exploration and Selection:
-**Model Testing with ResNet-50:**
+## **Model Testing with ResNet-50:**
 - Utilizing the **ResNet-50 model** for its proven track record in image classification tasks, known for its ability to learn deep hierarchical features from images.
+- **ResNet-50** addresses a common issue in deep networks: when networks become very deep, gradients can either explode or vanish during backpropagation, making training difficult. To solve this, ResNet-50 introduces a key innovation called the **Residual Block, which allows the network to "skip" certain layers, preserving information and stabilizing training in deep architectures.**
 - ResNet-50 was chosen due to its balance between depth and computational efficiency, making it suitable for training on the Oxford Pet dataset while delivering strong classification performance.
 - Transfer learning allowed us to fine-tune the pretrained ResNet-50 model on the Oxford Pet dataset, adapting its learned features to accurately classify 37 different pet breeds.
-- I also tested **EfficientNet-B3**, which achieved an **88% F1 score**. However, **ResNet-50** outperformed it with a **92% F1 score**, making it the final model selection for this project.
 
 ### 🖥️ Deployment:
 **Final Model Deployment:**
