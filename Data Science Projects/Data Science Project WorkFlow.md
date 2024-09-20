@@ -230,21 +230,68 @@ This workflow outlines the steps for completing a data science project, starting
     X_test_pca = pca.transform(X_test)
     ```
 
-15. **🔗 Building Pipelines**
+15. **🧠 Model Selection and Tuning**
+    - Experiment with various models (e.g., XGBoost, RandomForest).
+    - Use `GridSearchCV` or `Bayesian Optimization` for hyperparameter tuning.
     ```python
+    from sklearn.model_selection import GridSearchCV
+    from bayes_opt import BayesianOptimization
+    from sklearn.ensemble import RandomForestClassifier
+    import xgboost as xgb
+
+    # GridSearchCV example
+    param_grid = {
+        'n_estimators': [100, 200, 300],
+        'max_depth': [3, 5, 7],
+        'min_samples_split': [2, 5, 10]
+    }
+    grid_search = GridSearchCV(RandomForestClassifier(random_state=42), param_grid, cv=5)
+    grid_search.fit(X_train, y_train)
+    best_rf = grid_search.best_estimator_
+
+    # Bayesian Optimization example
+    def xgb_evaluate(max_depth, learning_rate, n_estimators, gamma):
+        params = {
+            'max_depth': int(max_depth),
+            'learning_rate': learning_rate,
+            'n_estimators': int(n_estimators),
+            'gamma': gamma,
+            'random_state': 42
+        }
+        model = xgb.XGBClassifier(**params)
+        score = cross_val_score(model, X_train, y_train, cv=5).mean()
+        return score
+
+    xgb_bo = BayesianOptimization(
+        f=xgb_evaluate,
+        pbounds={
+            'max_depth': (3, 10),
+            'learning_rate': (0.01, 0.3),
+            'n_estimators': (50, 300),
+            'gamma': (0, 1)
+        },
+        random_state=42
+    )
+    xgb_bo.maximize(init_points=5, n_iter=25)
+    best_xgb_params = xgb_bo.max['params']
+    ```
+
+16. **🔗 Building Pipelines**
+    ```python
+    from imblearn.pipeline import Pipeline as ImbPipeline
+    from imblearn.over_sampling import SMOTE
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+
     pipeline = ImbPipeline([
         ('smote', SMOTE(random_state=42)),
         ('scaler', StandardScaler()),
         ('pca', PCA(n_components=2)),
-        ('classifier', RandomForestClassifier(random_state=42))
+        ('classifier', RandomForestClassifier(**grid_search.best_params_, random_state=42))
     ])
     pipeline.fit(X_train, y_train)
     y_pred = pipeline.predict(X_test)
     ```
-
-16. **🧠 Model Selection and Tuning**
-    - Experiment with various models (e.g., XGBoost, RandomForest).
-    - Use `GridSearchCV` or Bayesian Optimization for hyperparameter tuning.
 
 17. **🌐 Model Evaluation**
     - For regression: use MAE, MSE, RMSE.
