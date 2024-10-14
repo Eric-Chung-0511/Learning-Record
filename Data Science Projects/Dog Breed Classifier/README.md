@@ -16,6 +16,7 @@
 * PIL
 * Scikit-learn
 * TensorBoard
+* SQLite
 
 ### 📊 Deep Learning Techniques:
 * **EfficientNetV2(M)**: Backbone architecture pretrained on ImageNet for superior feature extraction.
@@ -58,6 +59,10 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 * **Multi-Species Expansion**: Exploring ways to extend the model to recognize other species, such as cats and birds, while maintaining accuracy and efficiency across diverse animal categories.
 * **Real-Time Inference**: Optimizing the model for faster inference times, potentially enabling real-time breed classification in mobile or embedded devices.
 * **Transfer Learning for Species**: Investigating the use of transfer learning to quickly adapt the model to entirely new species without extensive retraining on massive datasets.
+
+## 🚀 Model Deployment:
+* The model is deployed on **Hugging Face Spaces**, allowing users to upload an image and receive the predicted dog breed. After classification, the system integrates with an **SQLite** database to provide brief information about the identified breed.
+* In addition to returning breed information, the system offers **external links** for users to explore more comprehensive resources, giving them further insights into the breed, such as its history, care requirements, or notable facts.
 
 ## 🌐 Try it Yourself:
 You can test the model directly on [Hugging Face](https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier), where it’s live and ready to classify your pet images. Simply upload an image, and see how well the model can predict the pet's breed!
