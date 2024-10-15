@@ -73,3 +73,4 @@ You can test the model directly on [Hugging Face](https://huggingface.co/spaces/
 ## 📚 Acknowledgments and References:
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
 - [EfficientNetV2: Smaller Models and Faster Traing](https://arxiv.org/pdf/2104.00298)
+- [torch.einsum resource](https://blog.csdn.net/ViatorSun/article/details/122710515)
