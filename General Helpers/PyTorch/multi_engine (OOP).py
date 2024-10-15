@@ -90,10 +90,11 @@ class Trainer:
             self.optimizer.step()
 
             # Calculate metrics for this batch
-            y_pred_class = torch.argmax(y_pred, dim=1)
-            for name, metric in self.metrics.items():
-                metric_results[name] += metric(y_pred_class, y).item()
-
+            with torch.no_grad():
+                 y_pred_class = torch.argmax(y_pred, dim=1)
+                 for name, metric in self.metrics.items():
+                        metric_results[name] += metric(y_pred_class, y).item()
+                
         # Average the loss and metrics over all batches
         train_loss /= len(self.train_dataloader)
         metric_results = {name: total / len(self.train_dataloader) for name, total in metric_results.items()}
@@ -121,10 +122,11 @@ class Trainer:
                 test_loss += loss.item()
 
                 # Calculate metrics for this batch
-                y_pred_class = torch.argmax(y_pred, dim=1)
-                for name, metric in self.metrics.items():
-                    metric_results[name] += metric(y_pred_class, y).item()
-
+                with torch.no_grad():
+                    y_pred_class = torch.argmax(y_pred, dim=1)
+                    for name, metric in self.metrics.items():
+                         metric_results[name] += metric(y_pred_class, y).item()
+        
         # Average the loss and metrics over all batches
         test_loss /= len(self.test_dataloader)
         metric_results = {name: total / len(self.test_dataloader) for name, total in metric_results.items()}
