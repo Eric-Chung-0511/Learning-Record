@@ -29,7 +29,7 @@
 * **Mixed Precision Training**: Applied **GradScaler** and **autocast** to speed up training and reduce memory usage.
 
 ## 🧠 Skills Detail:
-### 🦴 Model Architecture:
+### 🦴 Model Backbone:
 * The model's base architecture is **EfficientNetV2(M)**, well-known for its efficiency and accuracy in feature extraction. By integrating **Multi-Head Attention**, the model can better focus on critical features of the input image, enhancing breed classification. This attention mechanism splits the feature space into multiple heads, allowing for the most relevant features to be extracted.
 * **Prototype Networks** enable efficient classification by storing prototypes for each class. New data points are classified based on their similarity to these prototypes. This approach makes the model scalable for future additions of new breeds or even new animal species, such as cats, with minimal training data required.
 * **torch.einsum** is used to efficiently compute attention across multiple heads, optimizing the computation process for the attention layers.
