@@ -8,7 +8,7 @@
 - [Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
 - [Deep Learning](#deep-learning)
 - [BERT and RoBERTa](#bert-and-roberta)
-- [Future Goals and Directions](#future-goals-and-directions)
+- [Future Goals and Current Endeavors](#future-goals-and-current-endeavors)
 - [Data Science Project WorkFlow](#data-science-project-workflow)
 
 <h2 id="data-analysis">📊 Data Analysis</h2>
@@ -102,7 +102,7 @@
 **[⇧ back to top ⇧](#top)**
 
 
-<h2 id="future-goals-and-directions">💎 Future Goals and Directions</h2>
+<h2 id="future-goals-and-current-endeavors">💎 Future Goals and Current Endeavors</h2>
 
 ### 🚀 Transfer Learning
 * Recently, I have been exploring Transfer Learning and have begun to grasp its significant potential. **This method enables me to utilize pretrained models and fine-tune them for specific tasks, greatly reducing the time and resources required.**
