@@ -37,9 +37,9 @@
 
 * I've also explored more complex models, such as **Support Vector Machine (SVM)**, **Random Forest**, and **Gradient Boosting Machines (GBM)**. These are advanced methods for tackling complex nonlinear problems.
   
-  - **Support Vector Machine (SVM)** is a powerful supervised learning algorithm used primarily for classification and regression challenges. SVM operates by identifying the optimal hyperplane in a high-dimensional space that best separates different classes. This is achieved through the maximization of the margin between data points of the classes, making SVM particularly effective in high dimensional spaces.
+  - **Support Vector Machine (SVM)**, is a powerful supervised learning algorithm used primarily for classification and regression challenges. SVM operates by identifying the optimal hyperplane in a high-dimensional space that best separates different classes. This is achieved through the maximization of the margin between data points of the classes, making SVM particularly effective in high dimensional spaces.
     
-  - **Random Forest** is an ensemble learning technique that builds multiple decision trees and merges them together to obtain a more accurate and stable prediction. It works by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random Forest is known for its robustness against overfitting, especially in cases where the dataset is very large.
+  - **Random Forest**, is an ensemble learning technique that builds multiple decision trees and merges them together to obtain a more accurate and stable prediction. It works by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random Forest is known for its robustness against overfitting, especially in cases where the dataset is very large.
     
   - **Gradient Boosting Machines (GBM)**, These techniques build the model in stages, and generalize them by allowing optimization of an arbitrary differentiable loss function. **XGBoost**, an extension of gradient boosting, provides a scalable and efficient implementation of gradient boosting that has proven effective across a variety of data science competitions and challenges.
 
@@ -47,6 +47,8 @@
   - **Cross-Validation**, which systematically divides the dataset into subsets to ensure the model's performance is validated thoroughly, enhancing its generalizability.
     
   - **GridSearchCV**, which tests a variety of parameter combinations, streamlining the process to determine the most effective configurations for a model. This approach automates the tuning process, ensuring that the optimal parameters are selected based on systematic evaluation and comparison.
+
+  - **BayesSearchCV**, uses a smarter way to find the best settings for your model by learning from each trial. Instead of trying all possible combinations like GridSearchCV, it focuses on the most likely options that could improve performance. By using this method, BayesSearchCV reduces the number of tests needed and increases the chances of quickly finding the best parameters for your model.
     
   - **Bayesian Optimization**, which uses probabilistic models to optimize parameter selection more efficiently than traditional methods like GridSearchCV by intelligently predicting and focusing on the most promising parameter combinations. This approach significantly reduces the number of evaluations needed, prioritizing those that are likely to yield the best performance, which is especially beneficial when evaluations are computationally expensive.
 
