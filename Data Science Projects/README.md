@@ -6,7 +6,7 @@
 - [Data Analysis](#data-analysis)
 - [Supervised Machine Learning](#supervised-machine-learning)
 - [Unsupervised Machine Learning - Clustering](#unsupervised-machine-learning-clustering)
-- [Artificial Neural Networks (ANNs)](#artificial-neural-networks-anns)
+- [Deep Learning](#deep-learning)
 - [BERT and RoBERTa](#bert-and-roberta)
 - [Future Goals and Directions](#future-goals-and-directions)
 - [Data Science Project WorkFlow](#data-science-project-workflow)
@@ -70,15 +70,19 @@
 
 **[⇧ back to top ⇧](#top)**
 
-<h2 id="artificial-neural-networks-anns">🤖 Artificial Neural Networks (ANNs)</h2>
+<h2 id="deep-learning">🤖 Deep Learning</h2>
 
-* ANNs are powerful computational models inspired by the human brain's structure, making them exceptionally adept at recognizing subtle patterns and anomalies in large datasets.
+* I utilized advanced deep learning techniques to create an efficient and accurate dog breed classifier. By leveraging **EfficientNetV2(M)** as the backbone model, combined with a **MultiHead Attention** mechanism, I significantly enhanced the model’s capacity to capture fine-grained details in images.
+
+  - **EfficientNetV2(M)**: Known for its balance between accuracy and computational efficiency, EfficientNetV2(M) serves as the foundation for feature extraction. It scales well with both image size and model capacity, making it ideal for handling complex datasets like dog breed images with over 120 breeds.
   
-  - **Application in Fraud Detection**: ANNs excel in detecting fraudulent transactions by learning to differentiate between legitimate and fraudulent behaviors through training on a dataset of transaction records. This capability is critical in financial security, where accurate detection can prevent substantial financial losses.
+  - **MultiHead Attention Mechanism**: To further improve the model's ability to focus on relevant parts of the image, I integrated a MultiHead Attention mechanism. This enables the model to process various regions of the image in parallel, allowing it to better differentiate between similar-looking breeds.
     
-  - **Architecture and Function**: In this project, the ANN is structured with multiple layers, including an input layer, several hidden layers, and an output layer that employs a sigmoid activation function. This setup is tailored to effectively handle the binary classification task of distinguishing fraudulent transactions.
+  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over 21,000 images, achieving an F1 score of 81.22% across 120 breeds. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
     
-  - **Training and Optimization**: The network is trained using a backpropagation algorithm with a binary cross-entropy loss function, which refines the model by minimizing prediction errors. This process is crucial for enhancing the ANN’s ability to accurately identify fraudulent activities in transaction data.
+  - **Training and Optimization**: The model was trained using a **OneCycle Learning Rate** scheduler and optimized with the **AdamW** optimizer. For loss calculation, I implemented **Focal Loss**, which is particularly effective in dealing with class imbalance often found in large-scale datasets like this one.
+    
+  - For a detailed walkthrough and code implementation, please visit [Dog Breed Classifier](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/Dog%20Breed%20Classifier) 
  
 **[⇧ back to top ⇧](#top)**
 
