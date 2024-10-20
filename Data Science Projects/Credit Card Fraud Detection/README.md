@@ -14,11 +14,10 @@
 * StandardScaler
 * IQR (Handle Outliers)
 * Adasyn
+* BayesSearchCV
+* XGBoost
 * classification Report
-* AUC_ROC Score
-### 🧠 Deep Learning:
-* TensorFlow
-* ANN (Artificial Neural Network)
+* ROC Curve
 
 ## 🤖 Skills Detail:
 ### 👓 Data Handling and Visualization:
