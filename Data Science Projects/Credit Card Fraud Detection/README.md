@@ -51,33 +51,31 @@
       
     - **Adapting to Complex Data Structures**: ADASYN excels in scenarios with complex decision boundaries and high class imbalance, thanks to its ability to adaptively generate more samples where they are most needed, enhancing the model's overall robustness and effectiveness.
    
-### 🧬 Artificial Neural Network(ANN):
-* **Structure**: An Artificial Neural Network (ANN) is a computational model inspired by the structure and functions of biological neural networks. It consists of layers of nodes, each node representing a neuron, and connections between these nodes representing synapses.
+### 🔝 XGBoost Classifier:
+* **Structure**: XGBoost is a powerful and efficient implementation of gradient boosting. It works by building an ensemble of decision trees, where each new tree corrects the errors made by the previous ones. This iterative process helps the model learn complex patterns in the data and improve prediction accuracy, particularly on challenging datasets like fraud detection.
 
-* **Information Flow**: Information flows through the network from input to output. Each node processes the input and passes it on to the next layer until the output layer is reached.
+* **Boosting Mechanism**: In XGBoost, each new tree is added to the model to correct the residuals (errors) from the previous trees. The final model is a weighted sum of all the trees, resulting in a strong predictive model that excels in handling both large and imbalanced datasets, which are common in fraud detection.
   
-* **Activation Functions**: In the output layer, ANNs typically use a sigmoid activation function to map predictions to a probability distribution. This is particularly ideal for binary classification tasks such as fraud detection, where the model predicts either a 'Fraud' or 'Not Fraud' outcome.
+* **Evaluation and Regularization**: XGBoost incorporates regularization techniques to prevent overfitting, such as L1 and L2 regularization. It also allows early stopping, which halts the training process when there is no further improvement on the validation set, ensuring the model doesn't overfit.
   
-* **Loss Functions and Optimizers**: The choice of loss function and optimizer is crucial for training an ANN effectively. A binary cross-entropy loss function is commonly chosen in conjunction with the sigmoid activation. This loss function calculates the error rate between the predicted probabilities and the actual class outputs.
-  
-* **Backpropagation**: The calculated error is then utilized during backpropagation, a crucial mechanism in ANN training. This process involves adjusting the weights of the connections within the network to minimize prediction errors. By continuously refining these weights over iterations, the network enhances its accuracy, **aiming to find the optimal function for accurate predictions.**
+* **Bayesian Optimization**: Instead of manually tuning the hyperparameters, Skopt's Bayesian Optimization is used to automatically find the best configuration. This approach constructs a probabilistic model to predict the best hyperparameters and iteratively improves the performance of the model by efficiently searching through the parameter space. 
 
 ### 🧭 Model Evaluation:
-* **Precision-Recall Curve Analysis**: Plotted precision-recall curves to find the optimal decision making threshold, which balances recall (sensitivity) and precision, critical in fraud detection where missing a fraudulent transaction (low recall) is more detrimental than a false positive.
+* **Precision-Recall Curve Analysis**: The Receiver Operating Characteristic (ROC) curve provides a graphical representation of the true positive rate (recall) against the false positive rate. The AUC (Area Under the Curve) score summarizes the ROC curve by providing a single value that reflects the model’s ability to distinguish between positive and negative classes. In this project, a high **AUC score (0.99)** signifies the model's excellent discriminative power in detecting fraudulent transactions.
   
 * **Phased Testing Approach**: Validated the model on the validation set followed by the test set, using these separate datasets to gauge the model’s ability to generalize to new, unseen data.
   
-* **Comprehensive Performance Metrics**: Utilized classification reports to provide detailed insights into the model's accuracy, precision, recall, and F1-score on both validation and test data, giving a rounded view of model effectiveness.
+* **Comprehensive Performance Metrics**: Classification reports were generated to provide a detailed breakdown of the model's performance across precision, recall, F1-score, and accuracy. These metrics were used to evaluate both the validation and test sets, ensuring that the model generalizes well to unseen data.
 
 ## 🎯 Conclusion:
-* The project elucidated the importance of preprocessing in handling imbalanced datasets and the effectiveness of ANN in detecting fraudulent transactions. **The comparative analysis between different outlier handling methods provided insights into how data preparation significantly affects the outcome, underscoring the need for tailored approaches in fraud detection**.
+* This project highlighted the importance of using advanced machine learning techniques like **XGBoost and Bayesian Optimization** to handle complex and imbalanced datasets. XGBoost's gradient boosting mechanism, coupled with Bayesian hyperparameter optimization, significantly improved the model's performance in detecting fraudulent transactions.
 
-* **Particularly in the context of credit card fraud, achieving a high recall is critical, as it is essential to detect as many fraudulent transactions as possible. Missing a fraudulent transaction can have significant financial implications**, thus emphasizing recall ensures that fewer fraud cases go undetected, prioritizing the security and trust of the financial system.
-
+* In the context of credit card fraud detection, **achieving a high AUC score and recall is critical. The model's ability to distinguish between legitimate and fraudulent transactions with a 99% AUC demonstrates its reliability in real world scenarios.** Focusing on high recall ensures that fewer fraudulent transactions are missed, which is vital in protecting financial institutions from significant financial losses.
+  
 ## 📚 Acknowledgments and References:
 * This project was influenced by several resources and contributions from the data science community. Special thanks to the Kaggle community and the following reference:
 
-* https://www.kaggle.com/code/idalez/creditcardfraud-analysis-and-prediction-using-ann
+* https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
 
 ## 📄 Viewing Jupyter Notebooks
 * Sometimes there's bug on GitHub, if you encounter any problems displaying the Jupyter Notebooks directly on GitHub, you can view this project with the following link:
