@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Breed Classifier</title>
+    <style>
+        .dog-info { border: 1px solid #ddd; margin-bottom: 20px; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .dog-info h2 { background-color: #f0f0f0; padding: 10px; margin: -15px -15px 15px -15px; border-radius: 5px 5px 0 0; }
+        .breed-button { background-color: #4CAF50; color: white; padding: 5px 10px; border-radius: 3px; border: none; cursor: pointer; margin-left: 10px; }
+        .breed-button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <div id="dogs_info">
+        <div class="dog-info">
+            <h2>Dog 1</h2>
+            <p>Breed: Labrador Retriever (43.00% confidence)</p>
+            <button id="Dog1_Labrador" class="breed-button">Learn More</button>
+        </div>
+        <div class="dog-info">
+            <h2>Dog 2</h2>
+            <p>Breed: Golden Retriever (35.72% confidence)</p>
+            <button id="Dog2_Golden" class="breed-button">Learn More</button>
+        </div>
+    </div>
+
+    <input type="radio" id="Dog1_Labrador_Radio" value="Dog1_Labrador">
+    <input type="radio" id="Dog2_Golden_Radio" value="Dog2_Golden">
+
+    <script>
+        document.querySelectorAll('button[id^="Dog"]').forEach(button => {
+            console.log('Attaching event to button: ' + button.id);  
+            button.addEventListener('click', () => {
+                const button_id = button.id;
+                console.log('Button clicked: ' + button_id);  
+                const radio = document.querySelector('input[type=radio][value="' + button_id + '"]');
+                if (radio) {
+                    radio.click();
+                    console.log('Radio button clicked for: ' + button_id);  
+                } else {
+                    console.error("Radio button not found for: " + button_id);  
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
