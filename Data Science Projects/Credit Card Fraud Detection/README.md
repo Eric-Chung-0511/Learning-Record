@@ -21,7 +21,7 @@
 
 ## 🤖 Skills Detail:
 ### 👓 Data Handling and Visualization:
-* Python Libraries: Used Pandas for data manipulation and analysis, NumPy for numerical operations, and Matplotlib and Seaborn for creating diverse plots like histograms, box plots and more  to visualize data distributions and inter-variable relationships. These visualizations help highlight key features and relationships critical to understanding fraud dynamics.
+* **Python Libraries**: Used Pandas for data manipulation and analysis, NumPy for numerical operations, and Matplotlib and Seaborn for creating diverse plots like histograms, box plots and more  to visualize data distributions and inter-variable relationships. These visualizations help highlight key features and relationships critical to understanding fraud dynamics.
 
 ### ⚒️ Data Preprocessing:
 * **Log Transformation on 'Amount'**: To address skewed distributions typically seen with transaction amounts in fraud data, applied a logarithmic transformation to the 'Amount' feature. This helps normalize the data, reducing the influence of extreme values on the analysis.
