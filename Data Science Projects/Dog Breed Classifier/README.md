@@ -72,7 +72,7 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 * **Real-Time Inference**: Optimizing the model for faster inference times, potentially enabling real-time breed classification in mobile or embedded devices.
 * **Transfer Learning for Species**: Investigating the use of transfer learning to quickly adapt the model to entirely new species without extensive retraining on massive datasets.
 
-## 🚀 Model Deployment:
+## 🚀 Model Deployment and Features:
 * The model is deployed on **Hugging Face Spaces**, allowing users to upload an image and receive the predicted dog breed. After classification, the system integrates with an **SQLite** database to provide brief information about the identified breed.
 * In addition to returning breed information, the system offers **external links** for users to explore more comprehensive resources, giving them further insights into the breed, such as its history, care requirements, or notable facts.
 
@@ -82,10 +82,10 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 This intelligent recommendation system helps users find their perfect canine companion based on various lifestyle factors and preferences:
 
 #### Input Parameters:
-- Living Space (apartment/small house/large house)
+- Living Space (apartment / small house / large house)
 - Available Exercise Time (minutes per day)
-- Grooming Commitment (low/medium/high)
-- Experience Level (beginner/intermediate/advanced)
+- Grooming Commitment (low / medium / high)
+- Experience Level (beginner / intermediate / advanced)
 - Presence of Children
 - Noise Tolerance
 - Space for Play
