@@ -42,6 +42,15 @@
 * **OneCycleLR**: This learning rate scheduler adjusts the learning rate dynamically during training, helping the model converge faster and preventing overfitting in the later stages of training.
 * **Progressive Unfreezing**: Gradually unfroze layers of the **EfficientNetV2(M)** backbone during training. This technique starts with only the final layers being trainable and progressively unfreezes deeper layers at set intervals, helping to stabilize training and prevent catastrophic forgetting while fine-tuning the model.
 
+### 🔎 Dog Detection using YOLO
+- In this project, **YOLO (You Only Look Once)** was used for detecting multiple dogs in an image. YOLO is known for its real-time object detection capabilities, and it was applied here for dog breed identification during the deployment phase, not during model training.
+  
+- The `detect_multiple_dogs` function uses a pre-trained YOLO model to detect multiple dogs in a given image. The function applies non-maximum suppression (NMS) to filter out overlapping bounding boxes, ensuring that each dog is detected only once.
+
+- #### Key Parameters:
+- **`conf_threshold`**: The confidence threshold for filtering weak detections. Detections below this threshold are ignored.
+- **`iou_threshold`**: The Intersection over Union (IoU) threshold used during non-maximum suppression to remove overlapping bounding boxes.
+
 ### 🧪 Evaluation:
 * The **EfficientNetV2(M)** backbone combined with **Multi-Head Attention** allowed the model to focus on critical features, while **Focal Loss and Contrastive Loss** helped address class imbalances and improve performance.
 * The model is also ready to support **Few-Shot Learning**, allowing new breeds or animal species to be added efficiently by updating the prototypes.
@@ -66,6 +75,84 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 ## 🚀 Model Deployment:
 * The model is deployed on **Hugging Face Spaces**, allowing users to upload an image and receive the predicted dog breed. After classification, the system integrates with an **SQLite** database to provide brief information about the identified breed.
 * In addition to returning breed information, the system offers **external links** for users to explore more comprehensive resources, giving them further insights into the breed, such as its history, care requirements, or notable facts.
+
+### 🎯 Key Features
+
+### 1. Breed Recommendation System
+This intelligent recommendation system helps users find their perfect canine companion based on various lifestyle factors and preferences:
+
+#### Input Parameters:
+- Living Space (apartment/small house/large house)
+- Available Exercise Time (minutes per day)
+- Grooming Commitment (low/medium/high)
+- Experience Level (beginner/intermediate/advanced)
+- Presence of Children
+- Noise Tolerance
+- Space for Play
+- Other Pets
+- Climate Conditions
+
+#### Scoring Components:
+
+##### Base Score Calculation (70% of Total)
+- **Space Compatibility (30%)**: Evaluates how well the breed suits your living space
+  - Small breeds score higher for apartments
+  - Large breeds receive bonuses for houses with yards
+  
+- **Exercise Match (25%)**: Compares your available exercise time with breed needs
+  - Very High: 120+ minutes/day
+  - High: 90 minutes/day
+  - Moderate: 60 minutes/day
+  - Low: 30 minutes/day
+
+- **Grooming Compatibility (15%)**: Matches grooming needs with your commitment level
+  - Considers coat type and maintenance requirements
+  - Adjusts for breed size (larger dogs need more grooming time)
+
+- **Experience Level Match (30%)**: Aligns breed difficulty with owner experience
+  - Factors in temperament and trainability
+  - Considers breed-specific challenges
+
+##### Bonus Score System (Additional 30%)
+Breeds can earn bonus points based on:
+- **Longevity**: Breeds with above-average lifespan (+0.5% per year above 10)
+- **Temperament Traits**:
+  - Friendly/Gentle/Affectionate (+1% each)
+  - Good with children (when applicable) (+2%)
+- **Adaptability**: Special bonuses for breeds that excel in specific environments
+- **Health Factors**: Consideration of breed-specific health predispositions
+
+### 2. Comprehensive Breed Information
+Each recommendation includes:
+- Detailed breed characteristics
+- Exercise requirements
+- Grooming needs
+- Temperament description
+- Child compatibility
+- Health insights and common medical considerations
+- External resources and AKC links
+
+### 3. Health Information System
+Provides breed-specific health insights:
+- Common health concerns
+- Recommended health screenings
+- Veterinary care requirements
+- Lifespan expectations
+- Preventive care recommendations
+
+### 4. Breed Comparison Tool
+Allows users to:
+- Compare multiple breeds side-by-side
+- Evaluate differences in care requirements
+- Assess compatibility scores
+- Review health considerations
+- Compare maintenance needs
+
+### 5. Interactive Visualization
+- Progress bars for compatibility scores
+- Visual representation of match percentages
+- Tooltips with detailed information
+- Mobile-responsive design
 
 ## 🌐 Try it Yourself:
 You can test the model directly on [PawMatch AI](https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier), where it’s live and ready to classify your dog images. Simply upload an image, the model will identify the breed and give you some information about it.
