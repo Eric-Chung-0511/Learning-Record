@@ -68,7 +68,7 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 * In addition to returning breed information, the system offers **external links** for users to explore more comprehensive resources, giving them further insights into the breed, such as its history, care requirements, or notable facts.
 
 ## 🌐 Try it Yourself:
-You can test the model directly on [Hugging Face](https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier), where it’s live and ready to classify your dog images. Simply upload an image, the model will identify the breed and give you some information about it.
+You can test the model directly on [PawMatch AI](https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier), where it’s live and ready to classify your dog images. Simply upload an image, the model will identify the breed and give you some information about it.
 
 ## 📚 Acknowledgments and References:
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
