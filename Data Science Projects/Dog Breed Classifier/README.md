@@ -73,86 +73,87 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 * **Transfer Learning for Species**: Investigating the use of transfer learning to quickly adapt the model to entirely new species without extensive retraining on massive datasets.
 
 ## 🚀 Model Deployment and Features:
-* The model is deployed on **Hugging Face Spaces**, allowing users to upload an image and receive the predicted dog breed. After classification, the system integrates with an **SQLite** database to provide brief information about the identified breed.
-* In addition to returning breed information, the system offers **external links** for users to explore more comprehensive resources, giving them further insights into the breed, such as its history, care requirements, or notable facts.
+* The model is deployed on **Hugging Face Spaces**, allowing users to upload an image and receive an accurate prediction of the dog breed. After classification, the system integrates with an **SQLite** database to provide essential information about the identified breed.
+* In addition to returning breed information, the system offers **external links** for users to explore more comprehensive resources, such as the breed's history, care requirements, and notable facts.
 
 ### 🎯 Key Features
 
-### 1. Breed Recommendation System
-This intelligent recommendation system helps users find their perfect canine companion based on various lifestyle factors and preferences:
+#### 1. 🐶 **Breed Detection**
+* Utilizing the advanced **EfficientNetV2(M)** and **Multi-Head Attention** models, the system accurately detects and classifies 120 distinct dog breeds. Users can simply upload an image, and the model will identify the breed, providing breed details and a link to more in-depth resources for further exploration.
 
-#### Input Parameters:
-- Living Space (apartment / small house / large house)
-- Available Exercise Time (minutes per day)
-- Grooming Commitment (low / medium / high)
-- Experience Level (beginner / intermediate / advanced)
-- Presence of Children
-- Noise Tolerance
-- Space for Play
-- Other Pets
-- Climate Conditions
+#### 2. 💡 **Breed Recommendation System**
+* This intelligent recommendation system helps users find their perfect canine companion by analyzing various lifestyle factors and preferences. The recommendation engine considers:
+  - Living Space (apartment, small house, or large house)
+  - Available Exercise Time (minutes per day)
+  - Grooming Commitment (low, medium, high)
+  - Experience Level (beginner, intermediate, advanced)
+  - Presence of Children
+  - Noise Tolerance
+  - Space for Play
+  - Other Pets
+  - Climate Conditions
+* The recommendation score evaluates compatibility across several dimensions, assigning base scores and bonuses to find the best breed match for each user's lifestyle.
 
 #### Scoring Components:
 
 ##### Base Score Calculation (70% of Total)
-- **Space Compatibility (30%)**: Evaluates how well the breed suits your living space
+- **Space Compatibility (30%)**: Evaluates how well the breed suits the user’s living space
   - Small breeds score higher for apartments
-  - Large breeds receive bonuses for houses with yards
+  - Large breeds get extra points for houses with yards
   
-- **Exercise Match (25%)**: Compares your available exercise time with breed needs
+- **Exercise Match (25%)**: Compares the user’s available exercise time with the breed's needs
   - Very High: 120+ minutes/day
   - High: 90 minutes/day
   - Moderate: 60 minutes/day
   - Low: 30 minutes/day
 
-- **Grooming Compatibility (15%)**: Matches grooming needs with your commitment level
-  - Considers coat type and maintenance requirements
-  - Adjusts for breed size (larger dogs need more grooming time)
+- **Grooming Compatibility (15%)**: Matches grooming needs with the user’s commitment level
+  - Takes into account coat type and maintenance requirements
+  - Adjusts based on breed size (larger dogs typically need more grooming)
 
-- **Experience Level Match (30%)**: Aligns breed difficulty with owner experience
-  - Factors in temperament and trainability
-  - Considers breed-specific challenges
+- **Experience Level Match (30%)**: Aligns breed difficulty with the owner’s experience level
+  - Considers temperament and trainability
+  - Accounts for breed-specific challenges
 
 ##### Bonus Score System (Additional 30%)
-Breeds can earn bonus points based on:
-- **Longevity**: Breeds with above-average lifespan (+0.5% per year above 10)
+Breeds can earn bonus points for traits such as:
+- **Longevity**: Breeds with an above-average lifespan (+0.5% per year over 10 years)
 - **Temperament Traits**:
-  - Friendly/Gentle/Affectionate (+1% each)
-  - Good with children (when applicable) (+2%)
-- **Adaptability**: Special bonuses for breeds that excel in specific environments
-- **Health Factors**: Consideration of breed-specific health predispositions
+  - Friendly, Gentle, Affectionate (+1% each)
+  - Good with children (+2%)
+- **Adaptability**: Special points for breeds suited to specific environments
+- **Health Factors**: Accounts for breed-specific health predispositions
 
-### 2. Comprehensive Breed Information
-Each recommendation includes:
-- Detailed breed characteristics
-- Exercise requirements
-- Grooming needs
-- Temperament description
-- Child compatibility
-- Health insights and common medical considerations
-- External resources and AKC links
+#### 3. 📑 **Comprehensive Breed Information**
+* Each breed recommendation includes in-depth details, such as:
+  - Breed characteristics
+  - Exercise requirements
+  - Grooming needs
+  - Temperament description
+  - Compatibility with children
 
-### 3. Health Information System
-Provides breed-specific health insights:
-- Common health concerns
-- Recommended health screenings
-- Veterinary care requirements
-- Lifespan expectations
-- Preventive care recommendations
+#### 4. 🧬 **Health Information System**
+* Provides breed-specific health insights, including:
+  - Common health concerns
+  - Recommended health screenings
+  - Veterinary care requirements
+  - Lifespan expectations
+  - Preventive care recommendations
 
-### 4. Breed Comparison Tool
-Allows users to:
-- Compare multiple breeds side-by-side
-- Evaluate differences in care requirements
-- Assess compatibility scores
-- Review health considerations
-- Compare maintenance needs
+#### 5. 🔍 **Breed Comparison Tool**
+* Users can compare different breeds side-by-side, evaluating:
+  - Differences in care requirements
+  - Compatibility scores across lifestyle factors
+  - Health considerations
+  - Maintenance needs for grooming, exercise, and more
 
-### 5. Interactive Visualization
-- Progress bars for compatibility scores
-- Visual representation of match percentages
-- Tooltips with detailed information
-- Mobile-responsive design
+#### 6. 📊 **Interactive Visualization and User-Friendly Design**
+* To enhance the user experience, the interface offers:
+  - Progress bars to visualize compatibility scores
+  - Clear, visual representation of match percentages
+  - Tooltips with detailed information for each feature
+  - Mobile-responsive design for a seamless experience on any device
+  - Side-by-side breed comparison for quick and informed decision-making
 
 ## 🌐 Try it Yourself:
 You can test the model directly on [PawMatch AI](https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier), where it’s live and ready to classify your dog images. Simply upload an image, the model will identify the breed and give you some information about it.
