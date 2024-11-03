@@ -1,7 +1,7 @@
 # 🐕 Dog Breed Classifier 🐾
 
 ## ✨ Project Overview:
-* This project focuses on classifying **120 dog breeds** using the **Stanford Dog Dataset**, containing **20,580 images**. The model architecture utilizes **EfficientNetV2(M)**, enhanced with **Multi-Head Attention** for refined feature extraction. It also incorporates **Prototype Networks** for **Few-Shot Learning**, allowing new breeds to be added in the future without retraining the entire model.
+* This project focuses on classifying **124 dog breeds** using the **Stanford Dog Dataset**, containing **21,239 images**. The model architecture utilizes **EfficientNetV2(M)**, enhanced with **Multi-Head Attention** for refined feature extraction. It also incorporates **Prototype Networks** for **Few-Shot Learning**, allowing new breeds to be added in the future without retraining the entire model. Recently, the model was extended to include four additional popular breeds: **Shiba Inu**, **Dachshund**, **Bichon Frise**, and **Havanese**. These additions were made because they are commonly recognized breeds, broadening the model's applicability and making it more versatile for practical use cases.
 
 * Advanced loss functions like **Focal Loss** and **Contrastive Loss** were used to address class imbalance and ensure effective feature separation, which is critical in handling a large number of dog breeds and potentially new species.
 
