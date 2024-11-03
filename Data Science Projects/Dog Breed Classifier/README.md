@@ -162,5 +162,6 @@ You can test the model directly on [PawMatch AI](https://huggingface.co/spaces/D
 
 ## 📚 Acknowledgments and References:
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
+- [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [EfficientNetV2: Smaller Models and Faster Traing](https://arxiv.org/pdf/2104.00298)
 - [torch.einsum resource](https://blog.csdn.net/ViatorSun/article/details/122710515)
