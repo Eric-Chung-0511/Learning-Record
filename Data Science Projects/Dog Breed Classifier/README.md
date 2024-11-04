@@ -1,7 +1,7 @@
 # 🐕 Dog Breed Classifier 🐾
 
 ## ✨ Project Overview:
-* This project focuses on classifying **124 dog breeds** , based on the **Stanford Dog Dataset**, containing **21,239 images**. the model was extended to include four additional popular breeds: **Shiba Inu**, **Dachshund**, **Bichon Frise**, and **Havanese**. These additions were made because they are commonly recognized breeds, broadening the model's applicability and making it more versatile for practical use cases.
+* This project focuses on classifying **124 dog breeds** , based on the **Stanford Dog Dataset**, containing **21,000+ images**. the model was extended to include four additional popular breeds: **Shiba Inu**, **Dachshund**, **Bichon Frise**, and **Havanese**. These additions were made because they are commonly recognized breeds, broadening the model's applicability and making it more versatile for practical use cases.
   
 
 ## ⚙️ Skills Used:
