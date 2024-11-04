@@ -158,7 +158,7 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
  
 
 ## 🌐 Try it Yourself:
-You can test the model directly on [PawMatch AI](https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier), where it’s live and ready to classify your dog images. Simply upload an image, the model will identify the breed and give you some information about it.
+You can test the model directly on HuggingFace — I call it [PawMatch AI]((https://huggingface.co/spaces/DawnC/Dog_Breed_Classifier)). It's live and ready to classify your dog images with just a simple upload! The model will not only identify the breed but also provide detailed information about it, including key traits and care tips.
 
 ## 📚 Acknowledgments and References:
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
