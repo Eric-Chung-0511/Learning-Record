@@ -14,6 +14,7 @@
 * Scikit-learn
 * TensorBoard
 * SQLite
+* Gradio
 
 ### 📊 Deep Learning Techniques:
 * **EfficientNetV2(M)**: Backbone architecture pretrained on ImageNet for superior feature extraction.
