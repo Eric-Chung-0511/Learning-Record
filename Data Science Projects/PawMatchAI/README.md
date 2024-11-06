@@ -165,4 +165,5 @@ You can test the model directly on HuggingFace — I call it [PawMatch AI](https
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [EfficientNetV2: Smaller Models and Faster Traing](https://arxiv.org/pdf/2104.00298)
 - [torch.einsum resource](https://blog.csdn.net/ViatorSun/article/details/122710515)
+- [A Simple Framework for Contrastive Learning of Visual Representations (SimCLR)](https://arxiv.org/pdf/2002.05709)
 
