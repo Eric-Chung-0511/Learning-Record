@@ -76,15 +76,13 @@
 
 * I utilized advanced deep learning techniques to create an efficient and accurate dog breed classifier. By leveraging **EfficientNetV2(M)** as the backbone model, combined with a **MultiHead Attention** mechanism, I significantly enhanced the model’s capacity to capture fine-grained details in images.
 
-  - **EfficientNetV2(M)**: Known for its balance between accuracy and computational efficiency, EfficientNetV2(M) serves as the foundation for feature extraction. It scales well with both image size and model capacity, making it ideal for handling complex datasets like dog breed images with over 120 breeds.
+  - **EfficientNetV2(M)**: Known for its balance between accuracy and computational efficiency, EfficientNetV2(M) serves as the foundation for feature extraction. It scales well with both image size and model capacity, making it ideal for handling complex datasets like dog breed images with 124 breeds.
   
   - **MultiHead Attention Mechanism**: To further improve the model's ability to focus on relevant parts of the image, I integrated a MultiHead Attention mechanism. This enables the model to process various regions of the image in parallel, allowing it to better differentiate between similar-looking breeds.
     
-  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over 21,000 images, achieving an F1 score of 81.22% across 120 breeds. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
-    
-  - **Training and Optimization**: The model was trained using a **OneCycle Learning Rate** scheduler and optimized with the **AdamW** optimizer. For loss calculation, I implemented **Focal Loss**, which is particularly effective in dealing with class imbalance often found in large-scale datasets like this one.
-    
-  - For a detailed walkthrough and code implementation, please visit [Dog Breed Classifier](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/Dog%20Breed%20Classifier) 
+  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over 21,000+ images, achieving an F1 score of 82.30% across 124 breeds. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
+        
+  - For a detailed walkthrough and code implementation, please visit [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)
  
 **[⇧ back to top ⇧](#top)**
 
