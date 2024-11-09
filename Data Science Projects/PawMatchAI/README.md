@@ -55,7 +55,7 @@
 * Although **Few-Shot Learning** is currently not implemented in practice, the model architecture is designed to support it in the future. Prototypes can be learned from a small number of examples, enabling quick adaptation to new breeds or species.
 
 ## 📊 Results:
-* **F1 Score**: The model achieved an overall **F1 Score** of **81.22%** across all 120 breeds.
+* **F1 Score**: The model achieved an overall **F1 Score** of **82.30%** across all 124 breeds.
 
 ## 🎯 Conclusion:
 This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Multi-Head Attention** for large-scale dog breed classification. With the integration of **Prototype Networks**, the system is ready for future expansions, allowing new breeds or even new species, such as **cats**, to be added with minimal data through **Few-Shot Learning**. The use of **Contrastive Loss** and **Focal Loss** enhances the model's capability to manage class imbalance and distinguish similar breeds effectively.
@@ -93,68 +93,78 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 
 
 #### 3. 💡 **Breed Recommendation System**
-* This intelligent recommendation system helps users find their perfect canine companion by analyzing various lifestyle factors and preferences. The recommendation engine considers:
-  - Living Space (apartment, small house, or large house)
-  - Available Exercise Time (minutes per day)
-  - Grooming Commitment (low, medium, high)
-  - Experience Level (beginner, intermediate, advanced)
-  - Presence of Children
-  - Noise Tolerance
-* The recommendation score evaluates compatibility across several dimensions, assigning base scores and bonuses to find the best breed match for each user's lifestyle.
+Experience a smarter way to find your ideal dog breed through our dual-methodology recommendation system, blending lifestyle compatibility analysis with AI-powered breed matching.
 
-  #### 💯 Scoring Components:
-  
-    ##### Base Score Calculation (70% of Total)
-    - **Space Compatibility (30%)**: Evaluates how well the breed suits the user’s living space
-      - Small breeds score higher for apartments
-      - Large breeds get extra points for houses with yards
-      
-    - **Exercise Match (25%)**: Compares the user’s available exercise time with the breed's needs
-      - Very High: 120+ minutes/day
-      - High: 90 minutes/day
-      - Moderate: 60 minutes/day
-      - Low: 30 minutes/day
-    
-    - **Grooming Compatibility (15%)**: Matches grooming needs with the user’s commitment level
-      - Takes into account coat type and maintenance requirements
-      - Adjusts based on breed size (larger dogs typically need more grooming)
-    
-    - **Experience Level Match (30%)**: Aligns breed difficulty with the owner’s experience level
-      - Considers temperament and trainability
-      - Accounts for breed-specific challenges
-    
-    ##### Bonus Score System (Additional 30%)
-    Breeds can earn bonus points for traits such as:
-    - **Longevity**: Breeds with an above-average lifespan (+0.5% per year over 10 years)
-    - **Temperament Traits**:
-      - Friendly, Gentle, Affectionate (+1% each)
-      - Good with children (+2%)
-    - **Adaptability**: Special points for breeds suited to specific environments
-    - **Health Factors**: Accounts for breed-specific health predispositions
-    
-    #### 📑 **Comprehensive Breed Information**
-    * Each breed recommendation includes in-depth details, such as:
-      - Breed characteristics
-      - Exercise requirements
-      - Grooming needs
-      - Temperament description
-      - Compatibility with children
-    
-    #### 🧬 **Health Information System**
-    * Provides breed-specific health insights, including:
-      - Common health concerns
-      - Recommended health screenings
-      - Veterinary care requirements
-      - Lifespan expectations
-      - Preventive care recommendations
-        
-    #### 📊 **Interactive Visualization and User-Friendly Design**
-    * To enhance the user experience, the interface offers:
-      - Progress bars to visualize compatibility scores
-      - Clear, visual representation of match percentages
-      - Tooltips with detailed information for each feature
-      - Mobile-responsive design for a seamless experience on any device
-      - Side-by-side breed comparison for quick and informed decision-making
+##### 🎯 A. Criteria-Based Matching
+Evaluates compatibility based on lifestyle factors and preferences through a comprehensive scoring system:
+
+###### 💯 Base Score Calculation (70%)
+- **Space Compatibility (30%)**
+  - Evaluates living space suitability (apartment/house)
+  - Assigns higher scores for size-appropriate matches
+
+- **Exercise Match (25%)**
+  - Very High: 120+ minutes/day
+  - High: 90 minutes/day
+  - Moderate: 60 minutes/day
+  - Low: 30 minutes/day
+
+- **Grooming Compatibility (15%)**
+  - Considers coat maintenance requirements
+  - Adjusts for breed size variations
+
+- **Experience Level Match (30%)**
+  - Aligns breed difficulty with owner experience
+  - Factors in temperament and trainability
+
+###### 🌟 Bonus Score System (30%)
+- **Longevity**: +0.5% per year over 10 years
+- **Temperament Traits**:
+  - Friendly/Gentle/Affectionate: +1% each
+  - Child-friendly: +2%
+- **Adaptability & Health Factors**
+  - Environment suitability
+  - Health predisposition consideration
+
+##### 🔄 B. Description-Based Matching
+Leverages advanced NLP technology for nuanced breed matching:
+
+###### 🧠 Technical Implementation
+- **Embedding Model**: Sentence-BERT (all-mpnet-base-v2)
+  - State-of-the-art transformer architecture
+  - Optimized for semantic textual similarity
+  - Generates high-dimensional vectors capturing breed characteristics
+
+###### 📊 Matching Components & Weights
+- Description Similarity (25%): Semantic matching of user preferences
+- Temperament Compatibility (20%): Personality trait alignment
+- Exercise Requirements (15%): Activity level matching
+- Health Factors (15%): Breed health considerations
+- Noise Level (15%): Barking tendency compatibility
+- Size Compatibility (10%): Physical size matching
+
+###### 💫 Scoring Mechanism
+- Utilizes cosine similarity for text-based comparisons
+- Implements specialized scoring for categorical attributes
+- Combines weighted scores for comprehensive matching
+
+#### 📑 Comprehensive Output
+Each recommendation includes:
+- Breed characteristics & requirements
+- Detailed compatibility breakdown
+- Health insights & care requirements
+- Interactive visualizations:
+  - Compatibility score bars
+  - Match percentage displays
+  - Feature-specific tooltips
+  - Mobile-responsive interface
+  - Side-by-side breed comparisons
+
+#### 🔍 Unique Features
+- Dual matching approaches for enhanced accuracy
+- NLP-powered semantic understanding
+- Comprehensive health information system
+- User-friendly visualization tools
  
 
 ## 🌐 Try it Yourself:
