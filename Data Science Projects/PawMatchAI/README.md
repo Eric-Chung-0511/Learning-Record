@@ -129,36 +129,37 @@ Evaluates compatibility based on lifestyle factors and preferences through a com
 ##### 🔄 B. Description-Based Matching
 Leverages advanced NLP technology for nuanced breed matching:
 
-###### 🧠 Technical Implementation
+#### 🧠 Technical Implementation
 - **Embedding Model**: Sentence-BERT (all-mpnet-base-v2)
   - State-of-the-art transformer architecture
   - Optimized for semantic textual similarity
   - Generates high-dimensional vectors capturing breed characteristics
+  - Caching embeddings for efficient similarity computation
 
-###### 📊 Matching Components & Weights
-- Description Similarity (25%): Semantic matching of user preferences
-- Temperament Compatibility (20%): Personality trait alignment
-- Exercise Requirements (15%): Activity level matching
-- Health Factors (15%): Breed health considerations
-- Noise Level (15%): Barking tendency compatibility
-- Size Compatibility (10%): Physical size matching
+#### 📊 Matching Components & Weights
+- **Description Similarity (25%)**: Semantic matching of user preferences using Sentence-BERT embeddings and cosine similarity.
+- **Temperament Compatibility (20%)**: Evaluates alignment of personality traits through cosine similarity of temperament embeddings.
+- **Exercise Requirements (20%)**: Matches user activity level preferences (low, moderate, high) with breed exercise needs.
+- **Health Factors (15%)**: Based on breed health conditions, considers severe and moderate health issues, adjusted by user health sensitivity.
+- **Noise Level (15%)**: Matches user preferences on barking tendencies using predefined noise levels (Low, Moderate, High).
+- **Size Compatibility (5%)**: Considers physical size compatibility (Small, Medium, Large) between user preferences and breed.
 
-###### 💫 Scoring Mechanism
-- Utilizes cosine similarity for text-based comparisons
-- Implements specialized scoring for categorical attributes
-- Combines weighted scores for comprehensive matching
+#### 💫 Scoring Mechanism
+- **Cosine Similarity**: Utilized for text-based comparisons (description, temperament).
+- **Categorical Attribute Scoring**: Specialized scoring for exercise requirements, size, health, and noise level.
+- **Weighted Average**: Combines all weighted scores for a comprehensive matching score.
 
 #### 📑 Comprehensive Output
 Each recommendation includes:
-- Breed characteristics & requirements
-- Detailed compatibility breakdown
-- Health insights & care requirements
-- Interactive visualizations:
-  - Compatibility score bars
+- **Breed Characteristics & Requirements**: Detailed breed information with key attributes.
+- **Compatibility Breakdown**: Visualized breakdown of each score component (Description, Temperament, Exercise, etc.).
+- **Health Insights & Care Requirements**: Includes common health issues and suggested care tips.
+- **Interactive Visualizations**:
+  - Compatibility score bars for each feature
   - Match percentage displays
-  - Feature-specific tooltips
-  - Mobile-responsive interface
-  - Side-by-side breed comparisons
+  - Feature-specific tooltips for detailed explanations
+  - Mobile-responsive interface for seamless user experience
+  - Side-by-side breed comparisons for easy decision-making
 
 #### 🔍 Unique Features
 - Dual matching approaches for enhanced accuracy
