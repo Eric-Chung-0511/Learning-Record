@@ -95,7 +95,7 @@ This project demonstrates a sophisticated use of **EfficientNetV2(M)** and **Mul
 #### 3. 💡 **Breed Recommendation System**
 Experience a smarter way to find your ideal dog breed through our dual-methodology recommendation system, blending lifestyle compatibility analysis with AI-powered breed matching.
 
-##### 🎯 A. Criteria-Based Matching
+##### ✅ A. Criteria-Based Matching
 Evaluates compatibility based on lifestyle factors and preferences through a comprehensive scoring system:
 
 ###### 💯 Base Score Calculation (70%)
@@ -126,28 +126,48 @@ Evaluates compatibility based on lifestyle factors and preferences through a com
   - Environment suitability
   - Health predisposition consideration
 
-##### 🔄 B. Description-Based Matching
-Leverages advanced NLP technology for nuanced breed matching:
+##### 🔄 B. Description-Based Matching (Beta)
+> ⚠️ Note: This feature is currently in beta and under continuous optimization. Results are for reference only and may vary.
+
+Leverages advanced Natural Language Processing for intelligent breed matching, providing personalized recommendations based on user descriptions:
 
 #### 🧠 Technical Implementation
-- **Embedding Model**: Sentence-BERT (all-mpnet-base-v2)
-  - State-of-the-art transformer architecture
-  - Optimized for semantic textual similarity
-  - Generates high-dimensional vectors capturing breed characteristics
-  - Caching embeddings for efficient similarity computation
+- **Sentence Transformer Model**
+  - Utilizing SBERT (all-mpnet-base-v2)
+  - Optimized for semantic similarity matching
+  - Efficient embedding cache system
+  - Language-agnostic breed characteristic analysis
 
-#### 📊 Matching Components & Weights
-- **Description Similarity (25%)**: Semantic matching of user preferences using Sentence-BERT embeddings and cosine similarity.
-- **Temperament Compatibility (20%)**: Evaluates alignment of personality traits through cosine similarity of temperament embeddings.
-- **Exercise Requirements (20%)**: Matches user activity level preferences (low, moderate, high) with breed exercise needs.
-- **Health Factors (15%)**: Based on breed health conditions, considers severe and moderate health issues, adjusted by user health sensitivity.
-- **Noise Level (15%)**: Matches user preferences on barking tendencies using predefined noise levels (Low, Moderate, High).
-- **Size Compatibility (5%)**: Considers physical size compatibility (Small, Medium, Large) between user preferences and breed.
+#### 📊 Feature Weights & Scoring System
+1. **Core Matching Components** (Total 100%)
+   - Description Similarity (35%)
+     - Semantic analysis of user preferences
+     - Natural language understanding
+     - Context-aware matching
+   
+   - Temperament Matching (25%)
+     - Personality trait alignment
+     - Behavioral characteristic matching
+     - Family compatibility analysis
+   
+   - Practical Considerations (40%)
+     - Exercise Requirements (15%)
+     - Health Factors (10%)
+     - Living Environment (10%)
+     - Noise Level (5%)
 
-#### 💫 Scoring Mechanism
-- **Cosine Similarity**: Utilized for text-based comparisons (description, temperament).
-- **Categorical Attribute Scoring**: Specialized scoring for exercise requirements, size, health, and noise level.
-- **Weighted Average**: Combines all weighted scores for a comprehensive matching score.
+2. **Bonus Score System**
+   - Direct Breed Mention (+15%)
+   - Similar Breed Match (+10%)
+   - Family Compatibility (+20%)
+   - Size-Environment Match (+/-15%)
+
+#### 💫 Smart Matching Features
+- **Adaptive Scenario Detection**
+  - Apartment living adjustments
+  - Family environment optimization
+  - First-time owner considerations
+  - Special requirement analysis
 
 #### 📑 Comprehensive Output
 Each recommendation includes:
@@ -161,12 +181,23 @@ Each recommendation includes:
   - Mobile-responsive interface for seamless user experience
   - Side-by-side breed comparisons for easy decision-making
 
+> 🔬 Development Status:
+> - Current Version: Beta 1.0
+> - Active Development: Ongoing algorithm refinement
+> - Accuracy Improvement: Continuous calculation enhancing to achieve more accurate result.
+
+#### 🎯 Future Improvements
+- Enhanced multilingual support
+- More granular personality matching
+- Dynamic weight adjustment system
+- Extended breed database integration
+- Advanced health prediction models
+
 #### 🔍 Unique Features
 - Dual matching approaches for enhanced accuracy
 - NLP-powered semantic understanding
 - Comprehensive health information system
-- User-friendly visualization tools
- 
+- User-friendly visualization tools 
 
 ## 🌐 Try it Yourself:
 You can test the model directly on HuggingFace — I call it [PawMatch AI](https://huggingface.co/spaces/DawnC/PawMatchAI). It's live and ready to classify your dog images with just a simple upload! The model will not only identify the breed but also provide detailed information about it, including key traits and care tips.
@@ -178,4 +209,3 @@ You can test the model directly on HuggingFace — I call it [PawMatch AI](https
 - [torch.einsum resource](https://blog.csdn.net/ViatorSun/article/details/122710515)
 - [A Simple Framework for Contrastive Learning of Visual Representations (SimCLR)](https://arxiv.org/pdf/2002.05709)
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
-
