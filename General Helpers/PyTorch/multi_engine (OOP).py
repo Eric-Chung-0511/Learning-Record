@@ -1,9 +1,9 @@
 import torch
 import torchmetrics
-from torchmetrics import Accuracy, Precision, Recall, F1Score
+from torchmetrics import Accuracy
 from typing import Dict, List, Tuple
 from sklearn.metrics import classification_report
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.optim.lr_scheduler import OneCycleLR
 from tqdm.auto import tqdm
 
 class Trainer:
@@ -207,6 +207,7 @@ class Trainer:
 
         # Generate and print the classification report
         print(classification_report(y_true, y_pred, target_names=class_names))
+        
 
 # Example Usage
 # # Start the timer
@@ -219,14 +220,13 @@ class Trainer:
 
 # scheduler = OneCycleLR(
 #     optimizer,
-#     max_lr=1e-3,           # 設定最大學習率
+#     max_lr=1e-3,           # set the max learning rate
 #     steps_per_epoch=len(train_dataloader),
 #     epochs=epochs,
-#     anneal_strategy='cos', # 通常 'cos' 表現較好
-#     div_factor=25,         # 初始學習率 = max_lr / div_factor
-#     final_div_factor=1e3   # 最終學習率為初始學習率 / final_div_factor
+#     anneal_strategy='cos', # 'cos' usually perform better
+#     div_factor=25,         # initial_learning_rate = max_lr / div_factor
+#     final_div_factor=1e3   # final_learning_rate = max_learning_rate / final_div_factor
 # )
-
 
 # trainer = Trainer(
 #         model=model,
