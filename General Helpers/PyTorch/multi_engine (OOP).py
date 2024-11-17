@@ -59,9 +59,6 @@ class Trainer:
         # Initialize metrics using torchmetrics
         self.metrics = {
             "accuracy": Accuracy(task='multiclass', num_classes=num_classes).to(device),
-            "precision": Precision(task='multiclass', num_classes=num_classes).to(device),
-            "recall": Recall(task='multiclass', num_classes=num_classes).to(device),
-            "f1": F1Score(task='multiclass', num_classes=num_classes).to(device)
         }
 
     def train_step(self) -> Tuple[float, Dict[str, float]]:
@@ -144,14 +141,8 @@ class Trainer:
         """
         results = {"train_loss": [],
                    "train_acc": [],
-                   "train_precision": [],
-                   "train_recall": [],
-                   "train_f1": [],
                    "test_loss": [],
-                   "test_acc": [],
-                   "test_precision": [],
-                   "test_recall": [],
-                   "test_f1": []}
+                   "test_acc": []}
 
         best_loss = float('inf')
         epochs_without_improvement = 0
@@ -166,27 +157,14 @@ class Trainer:
                 f"Epoch: {epoch+1} | "
                 f"train_loss: {train_loss:.4f} | "
                 f"train_acc: {train_metrics['accuracy']:.4f} | "
-                f"train_precision: {train_metrics['precision']:.4f} | "
-                f"train_recall: {train_metrics['recall']:.4f} | "
-                f"train_f1: {train_metrics['f1']:.4f} | "
                 f"test_loss: {test_loss:.4f} | "
-                f"test_acc: {test_metrics['accuracy']:.4f} | "
-                f"test_precision: {test_metrics['precision']:.4f} | "
-                f"test_recall: {test_metrics['recall']:.4f} | "
-                f"test_f1: {test_metrics['f1']:.4f}"
-            )
+                f"test_acc: {test_metrics['accuracy']:.4f} | ")
 
             # Store the metrics in the results dictionary
             results["train_loss"].append(train_loss)
             results["train_acc"].append(train_metrics['accuracy'])
-            results["train_precision"].append(train_metrics['precision'])
-            results["train_recall"].append(train_metrics['recall'])
-            results["train_f1"].append(train_metrics['f1'])
             results["test_loss"].append(test_loss)
             results["test_acc"].append(test_metrics['accuracy'])
-            results["test_precision"].append(test_metrics['precision'])
-            results["test_recall"].append(test_metrics['recall'])
-            results["test_f1"].append(test_metrics['f1'])
 
             # Update the learning rate if scheduler is provided
             if self.scheduler:
@@ -235,11 +213,20 @@ class Trainer:
 # from timeit import default_timer as timer
 # start_time = timer()
 
-# optimizer = torch.optim.Adam(pretrained_resnet.parameters(), lr=0.001)
+# optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # loss_fn = torch.nn.CrossEntropyLoss()
 
-# scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=True)
+# scheduler = OneCycleLR(
+#     optimizer,
+#     max_lr=1e-3,           # 設定最大學習率
+#     steps_per_epoch=len(train_dataloader),
+#     epochs=epochs,
+#     anneal_strategy='cos', # 通常 'cos' 表現較好
+#     div_factor=25,         # 初始學習率 = max_lr / div_factor
+#     final_div_factor=1e3   # 最終學習率為初始學習率 / final_div_factor
+# )
+
 
 # trainer = Trainer(
 #         model=model,
