@@ -6,6 +6,7 @@ from PIL import Image
 from torchvision.transforms import RandAugment
 
 class CustomImageDataset(Dataset):
+    
     def __init__(self, root_dir, transform=None, is_train=True, use_subdirectories=True, allowed_extensions=None):
         """
         通用影像資料集類別，適用於各類影像分類專案。
