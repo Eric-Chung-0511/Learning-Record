@@ -106,7 +106,7 @@ class CustomImageDataset(Dataset):
             return None, None
         if self.transform:
             image = self.transform(image)
-        return image, torch.tensor(class_idx, dtype=torch.long)
+        return image, torch.tensor(class_idx, dtype=torch.long) # CrossEntropy needs long(int64) format
 
 
 # Example Usage
