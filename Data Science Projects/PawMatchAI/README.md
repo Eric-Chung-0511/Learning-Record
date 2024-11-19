@@ -209,3 +209,4 @@ You can test the model directly on HuggingFace — I call it [PawMatch AI](https
 - [torch.einsum resource](https://blog.csdn.net/ViatorSun/article/details/122710515)
 - [A Simple Framework for Contrastive Learning of Visual Representations (SimCLR)](https://arxiv.org/pdf/2002.05709)
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
+- [Focal Loss for Dense Object Detection](https://arxiv.org/pdf/1708.02002)
