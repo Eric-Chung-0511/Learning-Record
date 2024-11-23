@@ -99,32 +99,54 @@ Experience a smarter way to find your ideal dog breed through our dual-methodolo
 Evaluates compatibility based on lifestyle factors and preferences through a comprehensive scoring system:
 
 ##### 💯 Base Score Calculation (70%)
+This section calculates the fundamental compatibility score based on key lifestyle factors:
+
 - **Space Compatibility (30%)**
-  - Evaluates living space suitability (apartment/house)
-  - Assigns higher scores for size-appropriate matches
+  - Evaluates the suitability of the living space (e.g., apartment, small house, large house).
+  - Adjusts scores based on breed size and space requirements.
+  - Provides additional adjustments for breeds requiring outdoor play areas or those adaptable to smaller spaces.
 
 - **Exercise Match (25%)**
-  - Very High: 120+ minutes/day
-  - High: 90 minutes/day
-  - Moderate: 60 minutes/day
-  - Low: 30 minutes/day
+  - Matches the user's daily available exercise time with the breed's activity needs:
+    - Very High: 120+ minutes/day
+    - High: 90 minutes/day
+    - Moderate: 60 minutes/day
+    - Low: 30 minutes/day
+  - Penalizes or rewards based on under/over-exercise potential to ensure proper energy level alignment.
 
 - **Grooming Compatibility (15%)**
-  - Considers coat maintenance requirements
-  - Adjusts for breed size variations
+  - Considers the breed's grooming needs (e.g., low, moderate, or high).
+  - Accounts for the owner's grooming commitment and adjusts based on breed size variations.
+  - Includes special conditions like long or double coats that may require additional maintenance.
 
 - **Experience Level Match (30%)**
-  - Aligns breed difficulty with owner experience
-  - Factors in temperament and trainability
+  - Aligns the breed's care difficulty and temperament with the owner's experience level:
+    - Beginner: Prioritizes easy-to-train, gentle, and adaptable breeds.
+    - Intermediate: Allows moderate challenges with certain independent or energetic breeds.
+    - Advanced: Opens suitability for breeds requiring experienced handlers.
+  - Factors in trainability, temperament traits, and any potential difficulties (e.g., stubbornness, dominance).
 
 ##### 🌟 Bonus Score System (30%)
-- **Longevity**: +0.5% per year over 10 years
-- **Temperament Traits**:
-  - Friendly/Gentle/Affectionate: +1% each
-  - Child-friendly: +2%
+Additional adjustments to highlight breed-specific strengths and enhance user preference alignment:
+
+- **Longevity**
+  - Adds +0.5% for each year of expected lifespan over 10 years.
+  - Prioritizes long-living breeds for owners seeking longer companionship.
+
+- **Temperament Traits**
+  - Rewards positive traits such as:
+    - Friendly/Gentle/Affectionate: +1% each.
+    - Child-friendly: +2% for breeds suitable for families with children.
+  - Penalizes traits that may pose challenges (e.g., aggressive or nervous behaviors).
+
 - **Adaptability & Health Factors**
-  - Environment suitability
-  - Health predisposition consideration
+  - Evaluates the breed's adaptability to environmental conditions (e.g., climate, living space).
+  - Incorporates health predispositions to ensure compatibility with the owner's preferences for low-maintenance breeds.
+  - Special traits like "generally healthy" or "hardy breed" can boost scores, while severe health risks lower compatibility.
+
+##### 🛠 Additional Features
+This system dynamically adapts the weight and importance of each factor based on user preferences, ensuring highly personalized recommendations. Each breed is evaluated comprehensively to provide a balanced and practical compatibility score.
+
 
 #### 🔄 B. Description-Based Matching (Beta)
 > ⚠️ Note: This feature is currently in beta and under continuous optimization. Results are for reference only and may vary.
