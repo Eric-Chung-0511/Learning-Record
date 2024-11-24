@@ -135,11 +135,11 @@ Offers two methods to suggest suitable breeds:
 ---
 
 ### 🔎 Dog Detection using YOLO
-- **YOLOv8:** Integrated during deployment for multi-dog detection in a single image.
+- **YOLOv8:** Integrated during the **deployment phase** for multi-dog detection in a single image. YOLO was not used during the model training process but was added later to enhance the system's ability to handle real-world use cases where multiple dogs may appear in a single image.
   - **Key Parameters:**
-    - **`conf_threshold`:** Filters weak predictions.
-    - **`iou_threshold`:** Removes overlapping bounding boxes to ensure clean detections.
-  - **Why YOLO?:** Real-time object detection capabilities make it ideal for deployment scenarios where speed is critical.
+    - **`conf_threshold`:** Filters weak predictions to retain only confident detections.
+    - **`iou_threshold`:** Removes overlapping bounding boxes to ensure clean and accurate detections.
+  - **Why YOLO?:** Real-time object detection capabilities make it ideal for deployment scenarios where speed and efficiency are critical. This ensures that users can receive accurate results even with complex images featuring multiple dogs.
 
 ---
 
