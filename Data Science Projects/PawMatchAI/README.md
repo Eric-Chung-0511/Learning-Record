@@ -99,7 +99,7 @@ Offers two methods to suggest suitable breeds:
 
 2. **Loss Functions:**
    - **Contrastive Loss:**
-     - Ensures that images of the same breed are grouped closer in the feature space, while images of different breeds are pushed farther apart.
+     - **Ensures that images of the same breed are grouped closer in the feature space, while images of different breeds are pushed farther apart.**
      - Formula:
        $[
        L = y \cdot d^2 + (1 - y) \cdot \max(0, m - d)^2
