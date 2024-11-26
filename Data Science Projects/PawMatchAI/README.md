@@ -160,17 +160,17 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 ---
 
 ## 🚀 Potential Improvements
-1. **Expanded Augmentation:** Introduce more complex data augmentations to cover edge cases.
-2. **Dynamic Weight Adjustment:** Allow users to customize recommendation weightings, such as prioritizing exercise needs.
-3. **Real-Time Inference:** Optimize the system for deployment on mobile or embedded devices.
+1. **Feature Enhancement for Challenging Breeds:** Identify and focus on poorly performing breeds by enhancing feature representations, using techniques like targeted data augmentation or fine-tuning specific layers for these categories.
+2. **Expanded Augmentation:** Introduce more complex data augmentations to cover edge cases.
+3. **Dynamic Weight Adjustment:** Allow users to customize recommendation weightings, such as prioritizing exercise needs.
+4. **Real-Time Inference:** Optimize the system for deployment on mobile or embedded devices.
 
 ---
 
 ## 🌱 Future Thoughts
-1. **Feature Enhancement for Challenging Breeds:** Identify and focus on poorly performing breeds by enhancing feature representations, using techniques like targeted data augmentation or fine-tuning specific layers for these categories.
-2. **Multi-Species Expansion:** Extend support to other species like cats or birds while maintaining accuracy.
-3. **Transfer Learning for Species:** Quickly adapt the model to classify new species with minimal retraining.
-4. **Interactive Feedback:** Incorporate user feedback to refine recommendations dynamically.
+1. **Multi-Species Expansion:** Extend support to other species like cats or birds while maintaining accuracy.
+2. **Transfer Learning for Species:** Quickly adapt the model to classify new species with minimal retraining.
+3. **Interactive Feedback:** Incorporate user feedback to refine recommendations dynamically.
 
 ---
 
