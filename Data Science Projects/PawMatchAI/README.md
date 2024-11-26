@@ -9,11 +9,16 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
 
 ## 🎯 Key Features
 
-### 1. 🐶 **Accurate Breed Detection**
-- **High Precision:** The system leverages advanced neural networks to classify 124 breeds, including those with subtle visual differences.
-- **F1 Score:** Achieved an overall **F1 Score of 82.30%**, ensuring robust breed identification even in challenging scenarios.
+### 1. 🔍 **Breed Detection**
+- **Photo Identification:** Upload a photo, and the model identifies the dog's breed from 124 possible options.
+- **Detailed Information:** Provides essential breed details, including:
+  - **Exercise Needs:** Typical activity requirements.
+  - **Lifespan:** Average expected lifespan.
+  - **Grooming Requirements:** Coat care and maintenance levels.
+  - **Health Insights:** Common health issues and considerations.
+  - **Noise Behavior:** Typical vocalization tendencies.
 
-### 2. 🔍 **Breed Comparison Tool**
+### 2. 📋 **Breed Comparison Tool**
 - Compare two breeds side-by-side based on:
   - **Care Requirements:** Grooming, exercise, and maintenance needs.
   - **Personality Traits:** Typical behaviors and temperament.
@@ -37,6 +42,7 @@ Offers two methods to suggest suitable breeds:
 
 #### 🔄 B. Description-Based Matching (Beta)
 - **How It Works:** Users provide free-text descriptions (e.g., "playful and low-maintenance"), which are analyzed using advanced **Natural Language Processing (NLP)** to recommend suitable breeds.
+- **Status:** Currently under development to improve accuracy and reliability in generating recommendations.
 
 ### 🧠 Technical Implementation
 1. **Sentence Transformer Model:**
