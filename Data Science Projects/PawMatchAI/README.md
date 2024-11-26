@@ -161,9 +161,10 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 ---
 
 ## 🌱 Future Thoughts
-1. **Multi-Species Expansion:** Extend support to other species like cats or birds while maintaining accuracy.
-2. **Transfer Learning for Species:** Quickly adapt the model to classify new species with minimal retraining.
-3. **Interactive Feedback:** Incorporate user feedback to refine recommendations dynamically.
+1. **Feature Enhancement for Challenging Breeds:** Identify and focus on poorly performing breeds by enhancing feature representations, using techniques like targeted data augmentation or fine-tuning specific layers for these categories.
+2. **Multi-Species Expansion:** Extend support to other species like cats or birds while maintaining accuracy.
+3. **Transfer Learning for Species:** Quickly adapt the model to classify new species with minimal retraining.
+4. **Interactive Feedback:** Incorporate user feedback to refine recommendations dynamically.
 
 ---
 
