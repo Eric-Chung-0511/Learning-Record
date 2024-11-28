@@ -27,7 +27,8 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
 
 ### 3. 💡 **Breed Recommendation System**
 Offers two methods to suggest suitable breeds:
-#### ✅ A. Criteria-Based Matching
+#### ✅ Criteria-Based Matching
+- **Status:** Currently under development to improve accuracy and reliability in generating recommendations.
 - **Core Matching:** Evaluates key lifestyle compatibility factors:
   1. **Space Compatibility (30%):** Matches breed size and activity needs to user living environments (e.g., apartments, large houses).
   2. **Exercise Match (25%):** Compares user exercise availability with breed activity levels.
@@ -39,20 +40,6 @@ Offers two methods to suggest suitable breeds:
   - **Family-Friendly Bonus:** Highlights gentle, sociable breeds.
   - **Adaptability Bonus:** Adds scores for breeds suitable for varying climates or environments.
   - **Health Penalty:** Penalizes breeds prone to severe health risks.
-
-#### 🔄 B. Description-Based Matching (Beta)
-- **How It Works:** Users provide free-text descriptions (e.g., "playful and low-maintenance"), which are analyzed using advanced **Natural Language Processing (NLP)** to recommend suitable breeds.
-- **Status:** Currently under development to improve accuracy and reliability in generating recommendations.
-
-### 🧠 Technical Implementation
-1. **Sentence Transformer Model:**
-   - **Model Used:** SBERT (all-mpnet-base-v2), optimized for capturing semantic relationships between user input and breed characteristics.
-   - **Embedding Efficiency:** Precomputes breed embeddings for real-time scoring and minimal latency.
-   - **Language Support:** Supports multilingual descriptions, making it versatile for global users.
-
-2. **Scoring System:**
-   - **Core Weights:** Combines textual similarity (35%), personality alignment (25%), and practical factors like exercise, health, and noise tolerance (40%).
-   - **Bonus Weights:** Dynamically adjusts scores for explicit mentions, family suitability, and size-environment alignment.
 
 ---
 
