@@ -158,6 +158,7 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 1. **Multi-Species Expansion:** Extend support to other species like cats or birds while maintaining accuracy.
 2. **Transfer Learning for Species:** Quickly adapt the model to classify new species with minimal retraining.
 3. **Interactive Feedback:** Incorporate user feedback to refine recommendations dynamically.
+4. **Recommendation based on user description:** Using SBERT or other NLP models to analyze user needs and recommend suitable breeds tailored to their requirements.
 
 ---
 
