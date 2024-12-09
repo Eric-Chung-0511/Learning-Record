@@ -150,3 +150,9 @@ class ImageDataLoader:
 #     dataset=dataset,
 #     train_ratio=0.8
 # )
+
+# # Can start begin training
+# train_loader, test_loader = data_loader.get_loaders(
+#     batch_size=32,
+#     num_workers=4
+# )
