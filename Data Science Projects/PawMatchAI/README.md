@@ -27,10 +27,10 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
 
 ### 3. 💡 Breed Recommendation System
 
-Our system employs an advanced matching algorithm that comprehensively evaluates compatibility between potential dog owners and different breeds. The system features:
+This system employs an advanced matching algorithm that comprehensively evaluates compatibility between potential dog owners and different breeds. The system features:
 
 #### 🎯 Core Matching Intelligence
-Our matching system processes multiple dimensions of compatibility through:
+The system processes multiple dimensions of compatibility through:
 
 1. **Dynamic Scoring Mechanism**
    - Adapts to user circumstances
@@ -65,7 +65,7 @@ Our matching system processes multiple dimensions of compatibility through:
 
 #### 🌟 Breed Bonus System
 
-The system includes special bonuses for breeds with advantageous characteristics:
+Also includes special bonuses for breeds with advantageous characteristics:
 
 1. **Longevity Bonus (up to +5%)**
    - Breeds with above-average lifespan
@@ -94,7 +94,7 @@ The system includes special bonuses for breeds with advantageous characteristics
 
 #### 🔄 Additional Factors
 
-The system considers several additional factors that can influence the final score:
+And the end it considers several additional factors that can influence the final score:
 
 1. **Special Skills Assessment**
    - Working abilities: +3%
@@ -116,7 +116,7 @@ The system considers several additional factors that can influence the final sco
 
 #### 📊 Scoring System and Bonus Mechanism
 
-Our scoring process combines base evaluation with breed-specific bonuses:
+The scoring process combines base evaluation with breed-specific bonuses:
 
 ##### Base Score (Core Dimensions)
 * Evaluates six fundamental compatibility factors
@@ -279,5 +279,6 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [Prototypical Networks](https://arxiv.org/pdf/1703.05175)
 - [Focal Loss](https://arxiv.org/pdf/1708.02002)
 - [SBERT](https://arxiv.org/pdf/1908.10084)
+- [American Kennel Club](https://www.akc.org/)
 
 ---
