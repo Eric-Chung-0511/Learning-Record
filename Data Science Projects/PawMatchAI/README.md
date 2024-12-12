@@ -11,6 +11,13 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
 
 ### 1. 🔍 **Breed Detection**
 - **Photo Identification:** Upload a photo, and the model identifies the dog's breed from 124 possible options.
+  - **Recognition Process:**
+    - **Initial Detection:** YOLO model first detects and focuses specifically on dog subjects within the uploaded image
+    - **Breed Classification:** Our specialized model analyzes the detected dog and processes breed identification
+    - **Confidence-Based Results:** System provides breed information based on confidence levels:
+      - High Confidence (≥45%): Directly presents the identified breed with detailed information
+      - Medium Confidence (20-45%): Offers top 3 most probable breed matches for consideration
+      - Low Confidence (<20%): Indicates the dog's breed may not be included in our current dataset
 - **Detailed Information:** Provides essential breed details, including:
   - **Exercise Needs:** Typical activity requirements.
   - **Lifespan:** Average expected lifespan.
@@ -25,131 +32,94 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
   - **Health Considerations:** Lifespan and common health issues.
   - **Noise Behavior:** Vocalization levels and tendencies.
 
-### 3. 💡 Breed Recommendation System
+### 3. 💡 **Breed Recommendation System**
+The intelligent matching system evaluates compatibility between potential dog owners and breeds through a sophisticated algorithm. The system consists of:
 
-This system employs an advanced matching algorithm that comprehensively evaluates compatibility between potential dog owners and different breeds. The system features:
+- **Core Matching Process:**
+  - Processes comprehensive compatibility analysis through multiple dimensions
+  - Adapts scoring based on individual circumstances
+  - Employs dynamic evaluation mechanisms
+  
+- **Primary Evaluation Categories (Base Score):**
+  - **Space Compatibility (25%):**
+    - Evaluates living environment suitability
+    - Assesses breed size compatibility
+    - Considers available outdoor space
+  - **Exercise Requirements (25%):**
+    - Matches daily activity needs
+    - Evaluates exercise intensity compatibility
+    - Assesses energy level alignment
+  - **Experience Requirements (20%):**
+    - Considers owner expertise level
+    - Evaluates breed-specific training needs
+    - Assesses special care requirements
+  - **Grooming Considerations (10%):**
+    - Evaluates maintenance needs
+    - Assesses owner's time commitment
+    - Considers professional grooming requirements
+  - **Health Factors (10%):**
+    - Reviews genetic health considerations
+    - Evaluates longevity factors
+    - Assesses care intensity requirements
+  - **Noise Compatibility (10%):**
+    - Considers barking tendencies
+    - Evaluates environmental restrictions
+    - Assesses owner tolerance levels
 
-#### 🎯 Core Matching Intelligence
-The system processes multiple dimensions of compatibility through:
+- **Enhancement Scoring System:**
+  - **Longevity Bonuses (up to +5%):**
+    - Above-average lifespan consideration
+    - Health resilience evaluation
+    - Quality of life assessment
+  - **Personality Trait Bonuses (up to +15%):**
+    - Friendly disposition (+5%)
+    - Gentle nature (+5%)
+    - Patient demeanor (+5%)
+    - Intelligence (+4%)
+    - Adaptability (+4%)
+    - Affectionate behavior (+4%)
+  - **Adaptability Bonuses (up to +10%):**
+    - Apartment suitability (+5%)
+    - Temperament flexibility (+5%)
+    - Climate adaptation (+5%)
+  - **Family Compatibility Bonuses (up to +10%):**
+    - Child-friendly characteristics (+6%)
+    - Patient temperament (+5%)
+    - Gentle nature (+5%)
+    - Tolerant personality (+4%)
 
-1. **Dynamic Scoring Mechanism**
-   - Adapts to user circumstances
-   - Employs non-linear scoring curves
-   - Considers factor interactions
+- **Final Score Interpretation:**
+  - **Outstanding Match (90-100):**
+    - Exceptional compatibility with significant breed advantages
+    - Represents top 4% of matches
+  - **Excellent Fit (80-89):**
+    - Strong overall compatibility with positive breed traits
+    - Represents top 15% of matches
+  - **Good Match (70-79):**
+    - Solid fundamental compatibility
+    - Represents 35% of matches
+  - **Acceptable Match (60-69):**
+    - Basic compatibility with some considerations
+    - Represents 30% of matches
+  - **Not Recommended (Below 60):**
+    - Significant compatibility concerns
+    - Represents 16% of matches
 
-2. **Primary Evaluation Dimensions**
-   - **Space Compatibility (25%):**
-     - Living environment assessment
-     - Breed size compatibility
-     - Yard availability impact
-   - **Exercise Match (25%):**
-     - Daily activity requirements
-     - Exercise intensity matching
-     - Energy level compatibility
-   - **Experience Level Match (20%):**
-     - Owner expertise evaluation
-     - Breed training difficulty
-     - Special care requirements
-   - **Grooming Needs (10%):**
-     - Maintenance requirements
-     - Owner commitment level
-     - Professional care needs
-   - **Health Considerations (10%):**
-     - Genetic health assessment
-     - Longevity factors
-     - Care intensity needed
-   - **Noise Compatibility (10%):**
-     - Barking tendencies
-     - Environmental restrictions
-     - Owner tolerance levels
-
-#### 🌟 Breed Bonus System
-
-Also includes special bonuses for breeds with advantageous characteristics:
-
-1. **Longevity Bonus (up to +5%)**
-   - Breeds with above-average lifespan
-   - Health resilience considerations
-   - Quality of life factors
-
-2. **Personality Traits Bonus (up to +15%)**
-   - Friendly disposition: +5%
-   - Gentle temperament: +5%
-   - Patient nature: +5%
-   - Intelligence: +4%
-   - Adaptability: +4%
-   - Affectionate behavior: +4%
-
-3. **Adaptability Bonus (up to +10%)**
-   - Small breeds in apartments: +5%
-   - Adaptable temperament: +5%
-   - Climate suitability: +5%
-
-4. **Family Compatibility Bonus (up to +10%)**
-   When families with children are involved:
-   - "Good with children" trait: +6%
-   - Patient temperament: +5%
-   - Gentle nature: +5%
-   - Tolerant character: +4%
-
-#### 🔄 Additional Factors
-
-And the end it considers several additional factors that can influence the final score:
-
-1. **Special Skills Assessment**
-   - Working abilities: +3%
-   - Herding capabilities: +3%
-   - Hunting skills: +3%
-   - Tracking abilities: +3%
-   - Agility potential: +2%
-
-2. **Environmental Adaptability**
-   - Small breeds in apartments: +8%
-   - Adaptable breeds: +5-10%
-   - Climate-specific adaptations: up to +8%
-
-3. **Age-Specific Adjustments**
-   For families with children:
-   - Toddlers: More strict evaluation
-   - School-age: Standard evaluation
-   - Teenagers: More flexible evaluation
-
-#### 📊 Scoring System and Bonus Mechanism
-
-The scoring process combines base evaluation with breed-specific bonuses:
-
-##### Base Score (Core Dimensions)
-* Evaluates six fundamental compatibility factors
-* Typically ranges around 70 points for well-matched breeds
-
-##### Breed Bonus
-* Additional percentage-based bonus (up to 30%)
-* Calculated as multiplier of base score
-* Example: Base score 70 × 1.3 maximum bonus = 91 points
-
-##### Final Score Categories:
-* **90-100:** Perfect Match (Top 4%)
-  * Exceptional base compatibility with significant breed advantages
-* **80-89:** Excellent Match (15%)
-  * Strong core matching with positive breed characteristics
-* **70-79:** Good Match (35%)
-  * Solid fundamental compatibility
-* **60-69:** Acceptable Match (30%)
-  * Basic needs met with some considerations
-* **Below 60:** Not Recommended (16%)
-  * Significant compatibility concerns
-
-##### 🔍 System Features
-
-#### 1. Comprehensive Analysis
-* Multi-factor evaluation
-* Cross-impact assessment
-* Specialized need consideration
-
-#### 2. Transparent Process
-* Detailed score breakdown
-* Clear recommendation rationale
-* Traceable decision logic
+- **Special Considerations:**
+  - **Age-Specific Adjustments:**
+    - Enhanced evaluation for families with toddlers
+    - Standard assessment for school-age children
+    - Flexible criteria for teenagers
+  - **Environmental Factors:**
+    - Apartment living adaptability (+8%)
+    - Climate-specific considerations (+8%)
+    - General adaptability bonus (5-10%)
+  - **Special Abilities:**
+    - Working capabilities (+3%)
+    - Herding aptitude (+3%)
+    - Hunting proficiency (+3%)
+    - Tracking ability (+3%)
+    - Agility potential (+2%)
      
 ---
 
