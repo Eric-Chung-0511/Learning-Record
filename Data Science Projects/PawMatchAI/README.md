@@ -139,14 +139,14 @@ The scoring process combines base evaluation with breed-specific bonuses:
 * **Below 60:** Not Recommended (16%)
   * Significant compatibility concerns
 
-#### 🔍 System Features
+##### 🔍 System Features
 
-### 1. Comprehensive Analysis
+#### 1. Comprehensive Analysis
 * Multi-factor evaluation
 * Cross-impact assessment
 * Specialized need consideration
 
-### 2. Transparent Process
+#### 2. Transparent Process
 * Detailed score breakdown
 * Clear recommendation rationale
 * Traceable decision logic
