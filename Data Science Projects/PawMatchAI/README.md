@@ -149,13 +149,21 @@ The intelligent matching system evaluates compatibility between potential dog ow
      - Capture dependencies between different image regions, improving classification accuracy.
    - **Example Impact:** Helps differentiate breeds with similar appearances, like the Siberian Husky and Alaskan Malamute.
 
-3. **Prototype Networks:**
-   - **Definition:** A prototype represents the central feature for a specific breed. It is calculated as the average embedding vector for all training samples of that breed.
-   - **Use Case:** During classification, a new image’s features are compared to these prototypes, and the closest match determines the predicted breed.
-   - **Why It’s Important:** Prototype Networks simplify scalability:
-     - Adding a new breed only requires computing its prototype, avoiding full model retraining.
-     - Works effectively with limited data, supporting **Few-Shot Learning** for new species or rare breeds.
-   - **Real-World Example:** Allows quick adaptation for classifying additional species like cats or birds by adding their prototypes.
+3. **Prototype Networks (Reserved for Future Development):**
+  - **Definition:** A prototype represents the central feature for a specific breed. It is calculated as the average embedding vector for all training samples of that breed.
+  
+  - **Current Status:** While fully implemented in the codebase, this feature is currently inactive but maintained for future scalability purposes.
+  
+  - **Why It's Important:** When activated, Prototype Networks will enhance scalability through:
+    - Adding a new breed only requires computing its prototype, avoiding full model retraining
+    - Works effectively with limited data, supporting **Few-Shot Learning** for new species or rare breeds
+    
+  - **Future Implementation:** The system preserves the prototype network infrastructure while currently using traditional classification methods. This design choice maintains extensibility for:
+    - Rapid integration of new breeds through prototype computation
+    - Support for scenarios with limited training data
+    - Easy expansion to additional animal classifications
+    
+  - **Real-World Applications:** Upon activation, this feature will enable quick adaptation for classifying additional species like cats or birds by simply adding their prototypes, demonstrating the system's future adaptability potential.
 
 ---
 
