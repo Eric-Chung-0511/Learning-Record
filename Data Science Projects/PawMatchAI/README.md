@@ -258,5 +258,5 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [Focal Loss](https://arxiv.org/pdf/1708.02002)
 - [SBERT](https://arxiv.org/pdf/1908.10084)
 - [American Kennel Club](https://www.akc.org/)
-
+- [Contrastive Loss](https://arxiv.org/pdf/2002.05709)
 ---
