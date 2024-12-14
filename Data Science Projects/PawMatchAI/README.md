@@ -255,8 +255,9 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [EfficientNetV2](https://arxiv.org/pdf/2104.00298)
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [Prototypical Networks](https://arxiv.org/pdf/1703.05175)
+- [Contrastive Loss](https://arxiv.org/pdf/2002.05709)
 - [Focal Loss](https://arxiv.org/pdf/1708.02002)
 - [SBERT](https://arxiv.org/pdf/1908.10084)
 - [American Kennel Club](https://www.akc.org/)
-- [Contrastive Loss](https://arxiv.org/pdf/2002.05709)
+
 ---
