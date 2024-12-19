@@ -202,12 +202,36 @@ The intelligent matching system evaluates compatibility between potential dog ow
 
 3. **Learning Strategies:**
    - **OneCycleLR Scheduler:**
-     - Dynamically adjusts the learning rate during training. Starts with a small value, increases it rapidly, and then gradually reduces it again.
-     - **Why It’s Effective:** Encourages faster convergence and reduces the risk of overfitting by focusing training in the most critical learning phase.
-     - Example: Prevents the model from getting stuck in local minima.
+     - **Core Mechanism:** Implements a sophisticated three-phase learning rate strategy:
+       1. Warmup Phase (30% of training): Learning rate progressively scales from initial_lr/10 to initial_lr*8, following a carefully planned trajectory that matches our unfreezing schedule. This   
+       extended warmup period (30% vs traditional 20%) allows the model to adapt to higher learning rates while most layers remain frozen, creating a stable foundation for subsequent training phases.
+       2. Peak Performance Phase: Maintains higher learning rates for optimal learning
+       3. Fine-tuning Phase (70% of training): Decreases using cosine annealing
+     - **Technical Details:**
+       - pct_start=0.3: Optimized warmup period allocation
+       - div_factor=10: Controls initial learning rate scaling
+       - final_div_factor=100: Ensures effective final fine-tuning
+     - **Why It's Effective:** Combines fast convergence with robust training stability:
+       - Prevents early training instability through careful warmup
+       - Higher learning rates act as implicit regularization
+       - Gradual cooldown allows precise parameter optimization
+       - Synergizes with progressive unfreezing strategy
+
    - **Progressive Unfreezing:**
-     - During fine-tuning, initially keeps deeper layers of the backbone frozen and gradually unfreezes them as training progresses.
-     - **Why It Works:** Stabilizes the early training phase by focusing on learning high-level features before fine-tuning deeper, more specialized layers.
+     - **Implementation Strategy:** Systematic layer activation schedule:
+       - Epoch 1/6: Unfreeze last 2 layers (lr *= 0.8)
+       - Epoch 2/6: Unfreeze last 4 layers (lr *= 0.6)
+       - Epoch 3/6: Unfreeze last 6 layers (lr *= 0.4)
+       - Epoch 4/6: Unfreeze entire backbone (lr *= 0.2)
+     - **Why It Works:** Leverages transfer learning principles effectively:
+       - Early focus on task-specific feature adaptation
+       - Preserves valuable low-level features from pretraining
+       - Prevents catastrophic forgetting through gradual parameter updates
+       - Learning rate reduction matches increasing parameter flexibility
+     - **Key Benefits:**
+       - Stabilizes training through controlled parameter updates
+       - Optimizes transfer learning from pretrained weights
+       - Balances adaptation and preservation of learned features
 
 4. **Mixed Precision Training:**
    - **Efficiency:** Uses lower precision (16-bit floats) for most calculations to save memory and speed up training, while retaining 32-bit precision for critical operations.
