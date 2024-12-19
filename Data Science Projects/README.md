@@ -74,9 +74,9 @@
 
 <h2 id="deep-learning">🤖 Deep Learning</h2>
 
-* I utilized advanced deep learning techniques to create an efficient and accurate dog breed classifier. By leveraging **EfficientNetV2(M)** as the backbone model, combined with a **MultiHead Attention** mechanism, I significantly enhanced the model’s capacity to capture fine-grained details in images.
+* I utilized advanced deep learning techniques to create an efficient and accurate dog breed classifier. By leveraging **ConvNext-Base** as the backbone model, combined with a **MultiHead Attention** mechanism, I significantly enhanced the model’s capacity to capture fine-grained details in images.
 
-  - **EfficientNetV2(M)**: Known for its balance between accuracy and computational efficiency, EfficientNetV2(M) serves as the foundation for feature extraction. It scales well with both image size and model capacity, making it ideal for handling complex datasets like dog breed images with 124 breeds.
+  - **ConvNeXt Base**: Representing a modern evolution in CNN architecture, ConvNeXt Base combines the robust pattern recognition of traditional CNNs with Transformer-inspired innovations. Its carefully crafted architecture proves particularly effective for our complex dataset of 124 dog breeds, delivering superior feature extraction capabilities while maintaining computational efficiency through its innovative design principles derived from Transformer insights.
   
   - **MultiHead Attention Mechanism**: To further improve the model's ability to focus on relevant parts of the image, I integrated a MultiHead Attention mechanism. This enables the model to process various regions of the image in parallel, allowing it to better differentiate between similar-looking breeds.
     
