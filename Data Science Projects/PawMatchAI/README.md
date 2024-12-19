@@ -124,7 +124,7 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ---
 
 ## 📊 Results
-- **F1 Score:** The system achieved an overall **F1 Score of 82.30%,** excelling at fine-grained classification across 124 breeds.
+- **F1 Score:** The system achieved an overall **F1 Score of 85.10%,** across 124 breeds.
 - **Few-Shot Ready:** The architecture is prepared to support new breeds or species with minimal training data, enabling easy scalability.
 
 ---
@@ -133,13 +133,14 @@ The intelligent matching system evaluates compatibility between potential dog ow
 
 ### 🦴 Model Backbone
 
-1. **EfficientNetV2(M):**
-   - **What It Does:** EfficientNetV2(M) is the backbone model for feature extraction. Pretrained on ImageNet, it provides a robust foundation for extracting meaningful patterns from high-resolution images, which is essential for distinguishing between visually similar breeds.
-   - **Why It Matters:** EfficientNetV2(M) achieves a balance between computational efficiency and accuracy. Its architecture includes advanced layers like Fused-MBConv, which improve both inference speed and feature quality, making it ideal for fine-grained tasks like dog breed classification.
+1. **ConvNeXt Base:**
+   - **What It Does:** ConvNeXt Base functions as our primary feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's advantages back to CNN architecture. It excels in extracting hierarchical visual features while maintaining the efficient computing patterns of traditional CNNs.
+   - **Why It Matters:** This architecture choice reflects a deep understanding of modern deep learning trends. While Vision Transformers (ViT) have dominated recent research, ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. By combining it with Multi-Head Attention, we create a hybrid architecture that leverages both the locality bias of CNNs and the global relationship modeling of Transformers.
    - **Key Features:**
-     - Scalable design to handle varying image sizes.
-     - Optimized for both training speed and real-world inference performance.
-     - Handles subtle visual differences, such as slight variations in coat texture or color patterns.
+     - Adopts Transformer's design principles while maintaining CNN's computational efficiency.
+     - Integrates modern techniques like depthwise convolution and inverted bottleneck design.
+     - Strategically positioned to complement the subsequent Multi-Head Attention mechanism.
+     - Enhanced feature representation for fine-grained breed classification tasks.
 
 2. **Multi-Head Attention:**
    - **How It Works:** Multi-Head Attention is inspired by the Transformer architecture. It divides the extracted features into multiple "heads," where each head focuses on specific parts of the image. These heads work independently to analyze different regions, such as the dog's face, ears, or body.
@@ -252,6 +253,7 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 
 ## 📚 Acknowledgments and References
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
+- [ConvNext](https://arxiv.org/pdf/2201.03545)
 - [EfficientNetV2](https://arxiv.org/pdf/2104.00298)
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [Prototypical Networks](https://arxiv.org/pdf/1703.05175)
