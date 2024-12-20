@@ -134,8 +134,8 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ### 🦴 Model Backbone
 
 1. **ConvNeXt Base:**
-   - **What It Does:** ConvNeXt Base functions as our primary feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's advantages back to CNN architecture. It excels in extracting hierarchical visual features while maintaining the efficient computing patterns of traditional CNNs.
-   - **Why It Matters:** This architecture choice reflects a deep understanding of modern deep learning trends. While Vision Transformers (ViT) have dominated recent research, ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. By combining it with Multi-Head Attention, we create a hybrid architecture that leverages both the locality bias of CNNs and the global relationship modeling of Transformers.
+   - **What It Does:** ConvNeXt Base functions as the primary feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's advantages back to CNN architecture. It excels in extracting hierarchical visual features while maintaining the efficient computing patterns of traditional CNNs.
+   - **Why It Matters:** While Vision Transformers (ViT) have dominated recent research, ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. By combining it with Multi-Head Attention, I create a hybrid architecture that leverages both the locality bias of CNNs and the global relationship modeling of Transformers.
    - **Key Features:**
      - Adopts Transformer's design principles while maintaining CNN's computational efficiency.
      - Integrates modern techniques like depthwise convolution and inverted bottleneck design.
@@ -148,7 +148,6 @@ The intelligent matching system evaluates compatibility between potential dog ow
    - **Why It’s Effective:** Multi-Head Attention enhances the model’s ability to:
      - Focus on critical details, such as unique facial patterns.
      - Capture dependencies between different image regions, improving classification accuracy.
-   - **Example Impact:** Helps differentiate breeds with similar appearances, like the Siberian Husky and Alaskan Malamute.
 
 3. **Prototype Networks (Reserved for Future Development):**
   - **Definition:** A prototype represents the central feature for a specific breed. It is calculated as the average embedding vector for all training samples of that breed.
