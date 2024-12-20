@@ -12,7 +12,7 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
 ### 1. 🔍 **Breed Detection**
 - **Photo Identification:** Upload a photo, and the model identifies the dog's breed from 124 possible options.
   - **Recognition Process:**
-    - **Initial Detection:** YOLO model first detects and focuses specifically on dog subjects within the uploaded image
+    - **Initial Detection:** **YOLOv8** model first detects and focuses specifically on dog subjects within the uploaded image
     - **Breed Classification:** Our specialized model analyzes the detected dog and processes breed identification
     - **Confidence-Based Results:** System provides breed information based on confidence levels:
       - High Confidence (≥45%): Directly presents the identified breed with detailed information
