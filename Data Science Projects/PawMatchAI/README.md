@@ -151,7 +151,7 @@ The intelligent matching system evaluates compatibility between potential dog ow
    
    - **Technical Insight:** I implemented this mechanism efficiently using **torch.einsum**, ensuring optimal computation of attention weights while keeping memory usage and processing speed in check. The choice of torch.einsum was crucial for maintaining the model's overall efficiency.
    
-   - **Why It's Effective:** This integration enhances our model's ability to:
+   - **Why It's Effective:** This integration enhances the model's ability to:
      - Focus on critical details, such as unique facial patterns
      - Capture dependencies between different image regions, improving classification accuracy
      - Complement ConvNeXt's local feature processing with global relationship modeling
