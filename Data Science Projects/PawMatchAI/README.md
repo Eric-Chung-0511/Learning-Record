@@ -143,9 +143,8 @@ The intelligent matching system evaluates compatibility between potential dog ow
    
    - **Key Features:**
      - Adopts Transformer's design principles while maintaining CNN's computational efficiency
-     - Integrates modern techniques like depthwise convolution and inverted bottleneck design
      - Forms the perfect foundation for my planned attention mechanism integration
-     - Provides robust feature extraction for our breed classification task
+     - Provides robust feature extraction for the breed classification task
 
 2. **Multi-Head Attention:**
    - **How It Works:** Building upon ConvNeXt's transformer-inspired nature, I integrated Multi-Head Attention to further enhance the model's capabilities. This mechanism divides the extracted features into multiple "heads," each focusing on specific parts of the image. These heads work independently to analyze different regions, such as the dog's face, ears, or body.
