@@ -134,20 +134,25 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ### 🦴 Model Backbone
 
 1. **ConvNeXt Base:**
-   - **What It Does:** ConvNeXt Base functions as the primary feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's advantages back to CNN architecture. It excels in extracting hierarchical visual features while maintaining the efficient computing patterns of traditional CNNs.
-   - **Why It Matters:** While Vision Transformers (ViT) have dominated recent research, ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. By combining it with Multi-Head Attention, I create a hybrid architecture that leverages both the locality bias of CNNs and the global relationship modeling of Transformers.
+   - **What It Does:** ConvNeXt Base functions as my chosen feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's advantages back to CNN architecture. When I learned about this unique characteristic, it inspired me to think about further possibilities with Transformer components.
+   
+   - **Why It Matters:** Observing how Vision Transformers (ViT) have dominated recent research, I found it intriguing that ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. This sparked my idea - since ConvNeXt already successfully adapts Transformer concepts into CNN, why not complete the circle by adding actual Transformer components? This led me to create a hybrid architecture combining it with Multi-Head Attention.
+   
    - **Key Features:**
-     - Adopts Transformer's design principles while maintaining CNN's computational efficiency.
-     - Integrates modern techniques like depthwise convolution and inverted bottleneck design.
-     - Strategically positioned to complement the subsequent Multi-Head Attention mechanism.
-     - Enhanced feature representation for fine-grained breed classification tasks.
+     - Adopts Transformer's design principles while maintaining CNN's computational efficiency
+     - Integrates modern techniques like depthwise convolution and inverted bottleneck design
+     - Forms the perfect foundation for my planned attention mechanism integration
+     - Provides robust feature extraction for our breed classification task
 
 2. **Multi-Head Attention:**
-   - **How It Works:** Multi-Head Attention is inspired by the Transformer architecture. It divides the extracted features into multiple "heads," where each head focuses on specific parts of the image. These heads work independently to analyze different regions, such as the dog's face, ears, or body.
-   - **Technical Insight:** This mechanism is implemented efficiently using **torch.einsum**, which computes attention weights while minimizing memory usage and improving computational speed.
-   - **Why It’s Effective:** Multi-Head Attention enhances the model’s ability to:
-     - Focus on critical details, such as unique facial patterns.
-     - Capture dependencies between different image regions, improving classification accuracy.
+   - **How It Works:** Building upon ConvNeXt's transformer-inspired nature, I integrated Multi-Head Attention to further enhance the model's capabilities. This mechanism divides the extracted features into multiple "heads," each focusing on specific parts of the image. These heads work independently to analyze different regions, such as the dog's face, ears, or body.
+   
+   - **Technical Insight:** I implemented this mechanism efficiently using **torch.einsum**, ensuring optimal computation of attention weights while keeping memory usage and processing speed in check. The choice of torch.einsum was crucial for maintaining the model's overall efficiency.
+   
+   - **Why It's Effective:** This integration enhances our model's ability to:
+     - Focus on critical details, such as unique facial patterns
+     - Capture dependencies between different image regions, improving classification accuracy
+     - Complement ConvNeXt's local feature processing with global relationship modeling
 
 3. **Prototype Networks (Reserved for Future Development):**
   - **Definition:** A prototype represents the central feature for a specific breed. It is calculated as the average embedding vector for all training samples of that breed.
