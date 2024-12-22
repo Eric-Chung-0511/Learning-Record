@@ -134,8 +134,11 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ### 🦴 Model Backbone
 
 1. **ConvNeXt Base:**
-   - **What It Does:** ConvNeXt Base functions as my chosen feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's advantages back to CNN architecture. When I learned about this unique characteristic, it inspired me to think about further possibilities with Transformer components.
-   
+   - **What It Does:** ConvNeXt Base functions as my chosen feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's architectural benefits into CNN design. It modernizes traditional CNN by incorporating key Transformer principles like:
+   - Increased channel dimensions and larger kernel sizes for better feature capture
+   - Simplified architecture with fewer unique components compared to traditional CNNs
+   - Layer normalization and GELU activation, inspired by Transformer designs
+
    - **Why It Matters:** Observing how Vision Transformers (ViT) have dominated recent research, I found it intriguing that ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. This sparked my idea - since ConvNeXt already successfully adapts Transformer concepts into CNN, why not complete the circle by adding actual Transformer components? This led me to create a hybrid architecture combining it with Multi-Head Attention.
    
    - **Key Features:**
