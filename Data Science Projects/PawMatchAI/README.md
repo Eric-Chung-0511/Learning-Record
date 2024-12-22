@@ -224,16 +224,33 @@ The intelligent matching system evaluates compatibility between potential dog ow
        - Synergizes with progressive unfreezing strategy
 
    - **Progressive Unfreezing:**
-     - **Implementation Strategy:** Systematic layer activation schedule:
-       - Epoch 1/6: Unfreeze last 2 layers (lr *= 0.8)
-       - Epoch 2/6: Unfreeze last 4 layers (lr *= 0.6)
-       - Epoch 3/6: Unfreeze last 6 layers (lr *= 0.4)
-       - Epoch 4/6: Unfreeze entire backbone (lr *= 0.2)
+     - **Implementation Strategy:** I implemented a five-stage unfreezing schedule to provide finer control over the training process:
+       - **Stage 1 (1/8 epochs):** Unfreeze last 2 layers (lr *= 0.9)
+         - Begin with high-level features most relevant to our task
+         - Maintain 90% of learning rate to ensure stable adaptation
+       
+       - **Stage 2 (2/8 epochs):** Unfreeze last 4 layers (lr *= 0.8)
+         - Gradually incorporate more complex feature processing
+         - Reduce learning rate to 80% for careful parameter tuning
+       
+       - **Stage 3 (3/8 epochs):** Unfreeze last 6 layers (lr *= 0.7)
+         - Access deeper feature representations
+         - Further reduce learning rate to 70% to prevent disrupting learned features
+       
+       - **Stage 4 (4/8 epochs):** Unfreeze last 8 layers (lr *= 0.6)
+         - Enable fine-tuning of more fundamental features
+         - Decrease learning rate to 60% for more conservative updates
+       
+       - **Final Stage (5/8 epochs):** Unfreeze entire backbone (lr *= 0.5)
+         - Allow full model optimization
+         - Halve learning rate to preserve pretrained knowledge while enabling full adaptation
+           
      - **Why It Works:** Leverages transfer learning principles effectively:
        - Early focus on task-specific feature adaptation
        - Preserves valuable low-level features from pretraining
        - Prevents catastrophic forgetting through gradual parameter updates
        - Learning rate reduction matches increasing parameter flexibility
+         
      - **Key Benefits:**
        - Stabilizes training through controlled parameter updates
        - Optimizes transfer learning from pretrained weights
