@@ -80,7 +80,7 @@
   
   - **MultiHead Attention Mechanism**: To further improve the model's ability to focus on relevant parts of the image, I integrated a MultiHead Attention mechanism. This enables the model to process various regions of the image in parallel, allowing it to better differentiate between similar-looking breeds.
     
-  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over **21,000+ images**, **achieving an F1 score of 87.94% across 124 breeds**. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
+  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over **21,000+ images**, **achieving an F1 score of 90.95% across 124 breeds**. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
         
   - For a detailed walkthrough and code implementation, please visit [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)
  
