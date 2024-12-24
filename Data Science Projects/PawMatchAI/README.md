@@ -222,8 +222,8 @@ The intelligent matching system evaluates compatibility between potential dog ow
        2. Peak Performance Phase: Maintains higher learning rates for optimal learning
        3. Fine-tuning Phase (70% of training): Decreases using cosine annealing
      - **Technical Details:**
-       - pct_start=0.3: Optimized warmup period allocation
-       - div_factor=10: Controls initial learning rate scaling
+       - pct_start=0.25: Optimized warmup period allocation
+       - div_factor=8: Controls initial learning rate scaling
        - final_div_factor=50: Ensures effective final fine-tuning
      - **Why It's Effective:** Combines fast convergence with robust training stability:
        - Prevents early training instability through careful warmup
