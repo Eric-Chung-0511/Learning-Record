@@ -217,14 +217,14 @@ The intelligent matching system evaluates compatibility between potential dog ow
 3. **Learning Strategies:**
    - **OneCycleLR Scheduler:**
      - **Core Mechanism:** Implements a sophisticated three-phase learning rate strategy:
-       1. Warmup Phase (30% of training): Learning rate progressively scales from initial_lr/10 to initial_lr*8, following a carefully planned trajectory that matches our unfreezing schedule. This   
+       1. Warmup Phase (30% of training): Learning rate progressively scales from initial_lr/10 to initial_lr*6, following a carefully planned trajectory that matches the unfreezing schedule. This   
        extended warmup period (30% vs traditional 20%) allows the model to adapt to higher learning rates while most layers remain frozen, creating a stable foundation for subsequent training phases.
        2. Peak Performance Phase: Maintains higher learning rates for optimal learning
        3. Fine-tuning Phase (70% of training): Decreases using cosine annealing
      - **Technical Details:**
        - pct_start=0.3: Optimized warmup period allocation
        - div_factor=10: Controls initial learning rate scaling
-       - final_div_factor=100: Ensures effective final fine-tuning
+       - final_div_factor=50: Ensures effective final fine-tuning
      - **Why It's Effective:** Combines fast convergence with robust training stability:
        - Prevents early training instability through careful warmup
        - Higher learning rates act as implicit regularization
