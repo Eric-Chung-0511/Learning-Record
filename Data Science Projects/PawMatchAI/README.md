@@ -327,6 +327,7 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
 - [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/pdf/2002.05709)
 - [Focal Loss for Dense Object Detection](https://arxiv.org/pdf/1708.02002)
+- [mixup: BEYOND EMPIRICAL RISK MINIMIZATION](https://arxiv.org/pdf/1710.09412)
 - [Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks](https://arxiv.org/pdf/1908.10084)
 - [American Kennel Club](https://www.akc.org/)
 
