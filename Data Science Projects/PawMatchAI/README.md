@@ -149,7 +149,7 @@ The intelligent matching system evaluates compatibility between potential dog ow
 2. **Multi-Head Attention:**
    - **How It Works:** Building upon ConvNeXt's transformer-inspired nature, I integrated Multi-Head Attention to further enhance the model's capabilities. This mechanism divides the extracted features into multiple "heads," each focusing on specific parts of the image. These heads work independently to analyze different regions, such as the dog's face, ears, or body.
    
-   - **Technical Insight:** I implemented this mechanism efficiently using **torch.einsum**, ensuring optimal computation of attention weights while keeping memory usage and processing speed in check. The choice of torch.einsum was crucial for maintaining the model's overall efficiency.
+   - **Insight:** I implemented this mechanism efficiently using **torch.einsum**, ensuring optimal computation of attention weights while keeping memory usage and processing speed in check. The choice of torch.einsum was crucial for maintaining the model's overall efficiency.
    
    - **Why It's Effective:** This integration enhances the model's ability to:
      - Focus on critical details, such as unique facial patterns
@@ -225,36 +225,57 @@ The intelligent matching system evaluates compatibility between potential dog ow
 
    - **Progressive Unfreezing:**
      - **Implementation Strategy:** I implemented a five-stage unfreezing schedule to provide finer control over the training process:
-       - **Stage 1 (1/8 epochs):** Unfreeze last 2 layers (lr *= 0.9)
-         - Begin with high-level features most relevant to our task
-         - Maintain 90% of learning rate to ensure stable adaptation
+       - **Stage 1 (Epoch 10 / epochs/15):** Unfreezes Last 2 Layers
+       - **Details:**
+         - Target: Last 2 layers for focused adaptation
+         - Timing: Epoch 10 marks our starting point,  model starts with familiar high-level features
+         - Purpose: Initiating high-level feature refinement
+      
+      - **Stage 2 (Epoch 20 / epochs/7.5):** Expands to 4 Layers
+       - **Details:**
+         - Target: Increase to 4 layers for broader learning
+         - Timing: Strategic point at epoch 20
+         - Purpose: Mid-level feature processing begins
+      
+      - **Stage 3 (Epoch 30 / epochs/5):** Advances to 6 Layers
+       - **Details:**
+         - Target: 6 layers now actively learning, unlocking deeper network potential
+         - Timing: Calculated for epoch 30 sweet spot
+         - Purpose: Accessing deeper network knowledge
+      
+      - **Stage 4 (Epoch 40 / epochs/3.75):** Deepens to 8 Layers
+       - **Details:**
+         - Target: 8 layers engaged in learning, fundamental features begin fine-tuning
+         - Timing: Carefully placed at epoch 40
+         - Purpose: Deep feature refinement phase
+      
+      - **Final Stage (Epoch 50 / epochs/3):** Complete Backbone Release
+       - **Details:**
+         - Target: Complete backbone unleashed, makes entire model joins the optimization
+         - Timing: Final stage at epoch 50
+         - Purpose: Comprehensive model refinement
+        
+      - **Why I Gradually Unfreeze - A Personal Approach:**
+        - **The Learning Journey:**
+           - Think of it like teaching a student - start with basics and go deeper
+           - It's fascinating how each layer contributes uniquely to learning
+           - Just like humans, models need time to grasp finer details
        
-       - **Stage 2 (2/8 epochs):** Unfreeze last 4 layers (lr *= 0.8)
-         - Gradually incorporate more complex feature processing
-         - Reduce learning rate to 80% for careful parameter tuning
+        - **My Practical Experience:**
+           - Found that only unfreezing final layers is like learning just surface features
+           - It's similar to only learning what something looks like without understanding why
+           - Like teaching art but only focusing on outlines, missing all the subtle shading
        
-       - **Stage 3 (3/8 epochs):** Unfreeze last 6 layers (lr *= 0.7)
-         - Access deeper feature representations
-         - Further reduce learning rate to 70% to prevent disrupting learned features
-       
-       - **Stage 4 (4/8 epochs):** Unfreeze last 8 layers (lr *= 0.6)
-         - Enable fine-tuning of more fundamental features
-         - Decrease learning rate to 60% for more conservative updates
-       
-       - **Final Stage (5/8 epochs):** Unfreeze entire backbone (lr *= 0.5)
-         - Allow full model optimization
-         - Halve learning rate to preserve pretrained knowledge while enabling full adaptation
+        - **The Trade-offs I've Found:**
+           - **Benefits of Early Complete Unfreezing:**
+               - Model learns deeper, more nuanced features
+               - Catches subtle patterns we might miss otherwise
+               - Like giving the model full artistic freedom
            
-     - **Why It Works:** Leverages transfer learning principles effectively:
-       - Early focus on task-specific feature adaptation
-       - Preserves valuable low-level features from pretraining
-       - Prevents catastrophic forgetting through gradual parameter updates
-       - Learning rate reduction matches increasing parameter flexibility
-         
-     - **Key Benefits:**
-       - Stabilizes training through controlled parameter updates
-       - Optimizes transfer learning from pretrained weights
-       - Balances adaptation and preservation of learned features
+           - **Real-world Considerations:**
+               - It needs more GPU memory - like needing a bigger canvas
+               - Training takes longer - but often worth the wait
+               - Memory usage increases, but the results can be stunning
 
 4. **Mixed Precision Training:**
    - **Efficiency:** Uses lower precision (16-bit floats) for most calculations to save memory and speed up training, while retaining 32-bit precision for critical operations.
