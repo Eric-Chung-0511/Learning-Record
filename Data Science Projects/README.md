@@ -76,11 +76,11 @@
 
 * I utilized advanced deep learning techniques to create an efficient and accurate dog breed classifier. By leveraging **ConvNext-Base** as the backbone model, combined with a **MultiHead Attention** mechanism, I significantly enhanced the model’s capacity to capture fine-grained details in images.
 
-  - **ConvNeXt Base**: Representing a modern evolution in CNN architecture, ConvNeXt Base combines the robust pattern recognition of traditional CNNs with Transformer-inspired innovations. Its carefully crafted architecture proves particularly effective for our complex dataset of 124 dog breeds, delivering superior feature extraction capabilities while maintaining computational efficiency through its innovative design principles derived from Transformer insights.
+  - **ConvNeXtV2 Base**: Representing a modern evolution in CNN architecture, ConvNeXt Base combines the robust pattern recognition of traditional CNNs with Transformer-inspired innovations. Its carefully crafted architecture proves particularly effective for our complex dataset of 124 dog breeds, delivering superior feature extraction capabilities while maintaining computational efficiency through its innovative design principles derived from Transformer insights.
   
   - **MultiHead Attention Mechanism**: To further improve the model's ability to focus on relevant parts of the image, I integrated a MultiHead Attention mechanism. This enables the model to process various regions of the image in parallel, allowing it to better differentiate between similar-looking breeds.
     
-  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over **21,000+ images**, **achieving an F1 score of 90.95% across 124 breeds**. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
+  - **Application in Dog Breed Classification**: The classifier is trained on a dataset of over **21,000+ images**, **achieving an F1 score of 89.91% across 124 breeds**. By applying the attention mechanism, the model can more accurately focus on unique characteristics of each breed, even in challenging images where multiple breeds might look similar.
         
   - For a detailed walkthrough and code implementation, please visit [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)
  
