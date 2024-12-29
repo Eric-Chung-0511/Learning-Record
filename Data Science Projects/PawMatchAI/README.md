@@ -132,7 +132,7 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ---
 
 ## 📊 Results
-- **F1 Score:** The system achieved an overall **F1 Score of 90.95%,** across 124 breeds.
+- **F1 Score:** The system achieved an overall **F1 Score of 89.91%,** across 124 breeds.
 - **Few-Shot Ready:** The architecture is prepared to support new breeds or species with minimal training data, enabling easy scalability.
 
 ---
@@ -141,28 +141,44 @@ The intelligent matching system evaluates compatibility between potential dog ow
 
 ### 🦴 Model Backbone
 
-1. **ConvNeXt Base:**
-   - **What It Does:** ConvNeXt Base functions as my chosen feature extraction backbone, representing a fascinating reverse-engineered approach that brings Transformer's architectural benefits into CNN design. It modernizes traditional CNN by incorporating key Transformer principles like:
-   - Increased channel dimensions and larger kernel sizes for better feature capture
-   - Simplified architecture with fewer unique components compared to traditional CNNs
-   - Layer normalization and GELU activation, inspired by Transformer designs
+1. **ConvNeXtV2 Base:**
+   - **What It Does:** ConvNeXtV2 Base serves as my chosen feature extraction backbone, representing an evolution of the original ConvNeXt architecture with significant improvements. It builds upon the successful "modernizing classic ResNet" approach by introducing:
+   - Fully MetaFormer architecture that removes traditional convolutions
+   - Global Response Normalization (GRN) for enhanced feature calibration
+   - Faster Meta Layer Normalization for improved training stability
 
-   - **Why It Matters:** Observing how Vision Transformers (ViT) have dominated recent research, I found it intriguing that ConvNeXt Base demonstrates how CNN can be modernized by incorporating Transformer-inspired designs. This sparked my idea - since ConvNeXt already successfully adapts Transformer concepts into CNN, why not complete the circle by adding actual Transformer components? This led me to create a hybrid architecture combining it with Multi-Head Attention.
+   - **Why It Matters:** The transition from ConvNeXt to ConvNeXtV2 represents a significant leap in architectural design. While ConvNeXt brought Transformer principles to CNNs, ConvNeXtV2 takes this further by introducing the MetaFormer concept, which provides a more unified and effective approach to feature processing. Imagine MetaFormer as an advanced assembly line where each layer is specifically designed to process and enhance different aspects of the image features - from basic patterns to complex structures.
    
    - **Key Features:**
-     - Adopts Transformer's design principles while maintaining CNN's computational efficiency
-     - Forms the perfect foundation for my planned attention mechanism integration
-     - Provides robust feature extraction for the breed classification task
+     - Implements Fully MetaFormer architecture for more efficient information flow, similar to having multiple specialized experts working together
+     - Utilizes Global Response Normalization (GRN) to understand relationships between different feature channels, like connecting related visual elements across the image
+     - Provides enhanced feature extraction through frequency-based processing (FMCA), analyzing images at multiple scales simultaneously
+     - Employs adaptive feature calibration (GRL) to dynamically adjust feature importance
+     - Creates an ideal foundation for additional attention mechanisms
 
-2. **Multi-Head Attention:**
-   - **How It Works:** Building upon ConvNeXt's transformer-inspired nature, I integrated Multi-Head Attention to further enhance the model's capabilities. This mechanism divides the extracted features into multiple "heads," each focusing on specific parts of the image. These heads work independently to analyze different regions, such as the dog's face, ears, or body.
-   
-   - **Insight:** I implemented this mechanism efficiently using **torch.einsum**, ensuring optimal computation of attention weights while keeping memory usage and processing speed in check. The choice of torch.einsum was crucial for maintaining the model's overall efficiency.
-   
-   - **Why It's Effective:** This integration enhances the model's ability to:
-     - Focus on critical details, such as unique facial patterns
-     - Capture dependencies between different image regions, improving classification accuracy
-     - Complement ConvNeXt's local feature processing with global relationship modeling
+2. **Multi-Level Attention Architecture:**
+   - **Innovation in Design:** I developed a unique dual-attention approach that processes features at different abstraction levels:
+     - Lower-level: Utilizes ConvNeXtV2's built-in FMCA to process basic visual elements, analyzing features in different frequency domains (like shape, texture, and fine details)
+     - Higher-level: Implements an additional Multi-Head Attention layer near the output to capture complex feature relationships, similar to having multiple experts focusing on different breed-specific characteristics
+
+   - **Technical Implementation:**
+     - Base Level: FMCA processes features in different frequency domains
+       - Low frequency captures overall shape and structure
+       - Mid frequency analyzes textures and patterns
+       - High frequency focuses on fine details and edges
+     - High Level: Custom Multi-Head Attention with 8 attention heads
+       - Each head specializes in different aspects of breed characteristics
+       - Enables parallel processing of multiple feature relationships
+       - Efficiently implemented using torch.einsum for attention calculations
+     - Dynamic feature aggregation ensuring balanced feature integration
+     - Seamless integration with MetaFormer architecture
+
+   - **Why It's Effective:** This innovative dual-attention architecture enhances the model's capabilities by:
+     - Processing features hierarchically: from basic visual elements to complex breed-specific patterns
+     - Enabling comprehensive feature analysis through multiple attention mechanisms
+     - Lower level FMCA captures fundamental visual patterns while higher level attention focuses on breed-specific feature combinations
+     - Creating a more robust and adaptable feature extraction pipeline that can better distinguish subtle differences between similar breeds
+     - Maintaining computational efficiency while significantly increasing model expressiveness through strategic placement of attention mechanisms
 
 3. **Prototype Networks (Reserved for Future Development):**
   - **Definition:** A prototype represents the central feature for a specific breed. It is calculated as the average embedding vector for all training samples of that breed.
@@ -185,13 +201,17 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ### 📈 Training and Optimization
 
 1. **Data Augmentation:**
-   - **RandAugment:** 
-     - Applies random combinations of transformations (e.g., rotation, scaling, brightness adjustment).
-     - Encourages the model to generalize better by exposing it to diverse image variations.
-     - Example: Simulating different lighting conditions to make the model robust against outdoor and indoor photos.
-   - **RandomErasing:**
-     - Randomly removes a portion of the image during training to simulate occlusions (e.g., parts of the dog being blocked).
-     - Trains the model to rely on global patterns rather than overly focusing on one region.
+   - **Advanced Training Pipeline:** 
+     - Implements a carefully balanced combination of multiple augmentation techniques for optimal training
+     - Uses RandomResizedCrop with controlled scale (0.3-1.0) and aspect ratio (0.85-1.15) to maintain proper breed proportions
+     - Applies minimal color adjustments (≤10% variation) to prevent over-reliance on color features
+   
+   - **Multi-Strategy Approach:**
+     - Combines RandAugment (magnitude: 7) with AutoAugment for comprehensive but controlled image variations
+     - Uses moderate RandomErasing (2-15% area) to improve robustness against partial occlusions
+     - Maintains breed-specific characteristics while introducing sufficient variability for generalization
+
+   - **Key Insight:** Through experimentation, I discovered that excessive color augmentation led to misclassifications between breeds with similar colors but different physical characteristics (e.g., golden-colored Dachshunds being misclassified as Golden Retrievers). By reducing color jittering and focusing on structural features, the model achieved more reliable breed identification based on fundamental morphological traits rather than color patterns.
 
 2. **Loss Functions:**
    - **Contrastive Loss:**
@@ -331,8 +351,8 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
 - [A ConvNet for the 2020s](https://arxiv.org/pdf/2201.03545)
 - [ConvNeXt V2: Co-designing and Scaling ConvNets with Masked Autoencoders](https://arxiv.org/pdf/2301.00808)
-- [EfficientNetV2: Smaller Models and Faster Training](https://arxiv.org/pdf/2104.00298)
 - [RandAugment: Practical automated data augmentation with a reduced search space](https://arxiv.org/pdf/1909.13719)
+- [EfficientNetV2: Smaller Models and Faster Training](https://arxiv.org/pdf/2104.00298)
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
 - [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/pdf/2002.05709)
