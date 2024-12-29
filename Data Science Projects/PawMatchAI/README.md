@@ -330,7 +330,9 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 ## 📚 Acknowledgments and References
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
 - [A ConvNet for the 2020s](https://arxiv.org/pdf/2201.03545)
+- [ConvNeXt V2: Co-designing and Scaling ConvNets with Masked Autoencoders](https://arxiv.org/pdf/2301.00808)
 - [EfficientNetV2: Smaller Models and Faster Training](https://arxiv.org/pdf/2104.00298)
+- [RandAugment: Practical automated data augmentation with a reduced search space](https://arxiv.org/pdf/1909.13719)
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
 - [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/pdf/2002.05709)
