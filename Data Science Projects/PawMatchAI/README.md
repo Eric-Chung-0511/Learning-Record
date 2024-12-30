@@ -143,9 +143,9 @@ The intelligent matching system evaluates compatibility between potential dog ow
 
 1. **ConvNeXtV2 Base:**
    - **What It Does:** ConvNeXtV2 Base serves as my chosen feature extraction backbone, representing an evolution of the original ConvNeXt architecture with significant improvements. It builds upon the successful "modernizing classic ResNet" approach by introducing:
-   - Fully MetaFormer architecture that removes traditional convolutions
-   - Global Response Normalization (GRN) for enhanced feature calibration
-   - Faster Meta Layer Normalization for improved training stability
+     - Fully MetaFormer architecture that removes traditional convolutions
+     - Global Response Normalization (GRN) for enhanced feature calibration
+     - Faster Meta Layer Normalization for improved training stability
 
    - **Why It Matters:** The transition from ConvNeXt to ConvNeXtV2 represents a significant leap in architectural design. While ConvNeXt brought Transformer principles to CNNs, ConvNeXtV2 takes this further by introducing the MetaFormer concept, which provides a more unified and effective approach to feature processing. Imagine MetaFormer as an advanced assembly line where each layer is specifically designed to process and enhance different aspects of the image features - from basic patterns to complex structures.
    
