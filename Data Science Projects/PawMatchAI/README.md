@@ -158,8 +158,8 @@ The intelligent matching system evaluates compatibility between potential dog ow
 
 2. **Multi-Level Attention Architecture:**
    - **Innovation in Design:** I developed a unique dual-attention approach that processes features at different abstraction levels:
-     - Lower-level: Utilizes ConvNeXtV2's built-in FMCA to process basic visual elements, analyzing features in different frequency domains (like shape, texture, and fine details)
-     - Higher-level: Implements an additional Multi-Head Attention layer near the output to capture complex feature relationships, similar to having multiple experts focusing on different breed-specific characteristics
+     - **Lower-level:** Utilizes ConvNeXtV2's built-in FMCA to process basic visual elements, analyzing features in different frequency domains (like shape, texture, and fine details)
+     - **Higher-level:** Implements an additional Multi-Head Attention layer near the output to capture complex feature relationships, similar to having multiple experts focusing on different breed-specific characteristics
 
    - **Technical Implementation:**
      - Base Level: FMCA processes features in different frequency domains
