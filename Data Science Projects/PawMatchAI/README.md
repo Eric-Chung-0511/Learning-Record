@@ -152,8 +152,8 @@ The intelligent matching system evaluates compatibility between potential dog ow
    - **Key Features:**
      - Implements Fully MetaFormer architecture for more efficient information flow, similar to having multiple specialized experts working together
      - Utilizes Global Response Normalization (GRN) to understand relationships between different feature channels, like connecting related visual elements across the image
-     - Provides enhanced feature extraction through frequency-based processing (FMCA), analyzing images at multiple scales simultaneously
-     - Employs adaptive feature calibration (GRL) to dynamically adjust feature importance
+     - Provides enhanced feature extraction through frequency-based processing, analyzing images at multiple scales simultaneously
+     - Employs adaptive feature calibration to dynamically adjust feature importance
      - Creates an ideal foundation for additional attention mechanisms
 
 2. **Multi-Level Attention Architecture:**
