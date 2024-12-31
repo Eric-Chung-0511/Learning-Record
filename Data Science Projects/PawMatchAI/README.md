@@ -8,7 +8,7 @@ As an extension of its core classification capabilities, PawMatchAI includes a *
 ---
 
 ## 📊 Project Impact
-**Currently featured in Hugging Face Spaces of the Week, this project has achieved:**
+**This project has achieved:**
 
 > ![Visits](https://img.shields.io/badge/Total%20Visits-26k+-blue)
 ![Model Runs](https://img.shields.io/badge/Model%20Runs-12k+-green)
