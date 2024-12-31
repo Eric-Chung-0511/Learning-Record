@@ -254,34 +254,34 @@ The intelligent matching system evaluates compatibility between potential dog ow
    - **Progressive Unfreezing:**
      - **Implementation Strategy:** I implemented a five-stage unfreezing schedule to provide finer control over the training process:
        - **Stage 1 (Epoch 10 / epochs/15):** Unfreezes Last 2 Layers
-       - **Details:**
-         - Target: Last 2 layers for focused adaptation
-         - Timing: Epoch 10 marks our starting point,  model starts with familiar high-level features
-         - Purpose: Initiating high-level feature refinement
+         - **Details:**
+           - Target: Last 2 layers for focused adaptation
+           - Timing: Epoch 10 marks our starting point,  model starts with familiar high-level features
+           - Purpose: Initiating high-level feature refinement
       
-      - **Stage 2 (Epoch 20 / epochs/7.5):** Expands to 4 Layers
-       - **Details:**
-         - Target: Increase to 4 layers for broader learning
-         - Timing: Strategic point at epoch 20
-         - Purpose: Mid-level feature processing begins
+       - **Stage 2 (Epoch 20 / epochs/7.5):** Expands to 4 Layers
+         - **Details:**
+           - Target: Increase to 4 layers for broader learning
+           - Timing: Strategic point at epoch 20
+           - Purpose: Mid-level feature processing begins
       
-      - **Stage 3 (Epoch 30 / epochs/5):** Advances to 6 Layers
-       - **Details:**
-         - Target: 6 layers now actively learning, unlocking deeper network potential
-         - Timing: Calculated for epoch 30 sweet spot
-         - Purpose: Accessing deeper network knowledge
+       - **Stage 3 (Epoch 30 / epochs/5):** Advances to 6 Layers
+         - **Details:**
+           - Target: 6 layers now actively learning, unlocking deeper network potential
+           - Timing: Calculated for epoch 30 sweet spot
+           - Purpose: Accessing deeper network knowledge
       
-      - **Stage 4 (Epoch 40 / epochs/3.75):** Deepens to 8 Layers
-       - **Details:**
-         - Target: 8 layers engaged in learning, fundamental features begin fine-tuning
-         - Timing: Carefully placed at epoch 40
-         - Purpose: Deep feature refinement phase
+       - **Stage 4 (Epoch 40 / epochs/3.75):** Deepens to 8 Layers
+         - **Details:**
+           - Target: 8 layers engaged in learning, fundamental features begin fine-tuning
+           - Timing: Carefully placed at epoch 40
+           - Purpose: Deep feature refinement phase
       
-      - **Final Stage (Epoch 50 / epochs/3):** Complete Backbone Release
-       - **Details:**
-         - Target: Complete backbone unleashed, makes entire model joins the optimization
-         - Timing: Final stage at epoch 50
-         - Purpose: Comprehensive model refinement
+       - **Final Stage (Epoch 50 / epochs/3):** Complete Backbone Release
+         - **Details:**
+           - Target: Complete backbone unleashed, makes entire model joins the optimization
+           - Timing: Final stage at epoch 50
+           - Purpose: Comprehensive model refinement
         
       - **Why I Gradually Unfreeze - A Personal Approach:**
         - **The Learning Journey:**
