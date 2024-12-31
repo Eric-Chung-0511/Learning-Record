@@ -162,11 +162,11 @@ The intelligent matching system evaluates compatibility between potential dog ow
      - **Higher-level:** Implements an additional Multi-Head Attention layer near the output to capture complex feature relationships, similar to having multiple experts focusing on different breed-specific characteristics
 
    - **Technical Implementation:**
-     - Base Level: FMCA processes features in different frequency domains
+     - **Base Level:** FMCA processes features in different frequency domains
        - Low frequency captures overall shape and structure
        - Mid frequency analyzes textures and patterns
        - High frequency focuses on fine details and edges
-     - High Level: Custom Multi-Head Attention with 8 attention heads
+     - **High Level:** Custom Multi-Head Attention with 8 attention heads
        - Each head specializes in different aspects of breed characteristics
        - Enables parallel processing of multiple feature relationships
        - Efficiently implemented using torch.einsum for attention calculations
