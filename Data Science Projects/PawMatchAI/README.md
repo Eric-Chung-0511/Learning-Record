@@ -3,7 +3,7 @@
 ## ✨ Project Overview
 **PawMatchAI** is an advanced dog breed classification system that identifies **124 dog breeds**, built on the **Stanford Dog Dataset** with **21,000+ images**, and extends to include four additional popular breeds: **Shiba Inu**, **Dachshund**, **Bichon Frise**, and **Havanese**.
 
-As an extension of its core classification capabilities, PawMatchAI includes a breed recommendation system and breed comparison to provide personalized breed suggestions based on user preferences. This makes the system not only accurate in identifying breeds but also versatile in helping users find their perfect canine companion.
+As an extension of its core classification capabilities, PawMatchAI includes a **breed recommendation system and breed comparison** to provide personalized breed suggestions based on user preferences. This makes the system not only accurate in identifying breeds but also versatile in helping users find their perfect canine companion.
 
 ---
 
