@@ -23,9 +23,9 @@ As an extension of its core classification capabilities, PawMatchAI includes a b
     - **Initial Detection:** **YOLOv8** model first detects and focuses specifically on dog subjects within the uploaded image
     - **Breed Classification:** Our specialized model analyzes the detected dog and processes breed identification
     - **Confidence-Based Results:** System provides breed information based on confidence levels:
-      - High Confidence (≥45%): Directly presents the identified breed with detailed information
-      - Medium Confidence (20-45%): Offers top 3 most probable breed matches for consideration
-      - Low Confidence (<20%): Indicates the dog's breed may not be included in our current dataset
+      - High Confidence (≥40%): Directly presents the identified breed with detailed information
+      - Medium Confidence (15%-39%): Offers top 3 most probable breed matches for consideration
+      - Low Confidence (<15%): Indicates the dog's breed may not be included in our current dataset
 - **Detailed Information:** Provides essential breed details, including:
   - **Exercise Needs:** Typical activity requirements.
   - **Lifespan:** Average expected lifespan.
