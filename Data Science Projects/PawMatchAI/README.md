@@ -180,7 +180,33 @@ The intelligent matching system evaluates compatibility between potential dog ow
      - Creating a more robust and adaptable feature extraction pipeline that can better distinguish subtle differences between similar breeds
      - Maintaining computational efficiency while significantly increasing model expressiveness through strategic placement of attention mechanisms
 
-3. **Prototype Networks (Reserved for Future Development):**
+3. **Morphological Feature Analysis System:**
+   - **Inspiration:** This system draws inspiration from human visual cognition patterns. Just as humans naturally process visual information by first observing overall characteristics before focusing on specific details, this system implements a similar hierarchical approach to feature analysis.
+
+   - **Architecture Overview:**
+     The system comprises five specialized analyzers working in concert:
+     - **Body Proportion Analyzer:** Captures overall size and structural relationships using large-scale convolutions
+     - **Head Feature Analyzer:** Focuses on crucial facial and head structure details through medium-scale feature extraction
+     - **Tail Feature Analyzer:** Processes distinctive tail characteristics and positioning
+     - **Fur Feature Analyzer:** Analyzes coat texture, length, and patterns using fine-grained convolution operations
+     - **Color Pattern Analyzer:** Examines color distribution and distinctive markings through multi-layer analysis
+
+   - **Technical Implementation:**
+     - Implements dynamic feature transformation from 1D to 2D spatial representation
+     - Utilizes Multi-Head Attention mechanism with 8 heads for feature relationship analysis
+     - Employs adaptive pooling for consistent feature processing
+     - Integrates residual connections for preserving crucial information
+     - Features intelligent feature integration through hierarchical processing
+
+   - **Why It's Effective:**
+     This biomimetic approach enhances breed recognition accuracy by:
+     - Mimicking human visual processing patterns for more intuitive feature extraction
+     - Enabling comprehensive analysis from macro to micro characteristics
+     - Creating a more robust feature representation through multiple specialized analyzers
+     - Facilitating better distinction between similar breeds through detailed morphological analysis
+     - Maintaining computational efficiency while significantly improving feature detection capabilities
+
+4. **Prototype Networks (Reserved for Future Development):**
   - **Definition:** A prototype represents the central feature for a specific breed. It is calculated as the average embedding vector for all training samples of that breed.
   
   - **Current Status:** While fully implemented in the codebase, this feature is currently inactive but maintained for future scalability purposes.
@@ -237,14 +263,14 @@ The intelligent matching system evaluates compatibility between potential dog ow
 3. **Learning Strategies:**
    - **OneCycleLR Scheduler:**
      - **Core Mechanism:** Implements a sophisticated three-phase learning rate strategy:
-       1. Warmup Phase (30% of training): Learning rate progressively scales from initial_lr/10 to initial_lr*6, following a carefully planned trajectory that matches the unfreezing schedule. This   
-       extended warmup period (30% vs traditional 20%) allows the model to adapt to higher learning rates while most layers remain frozen, creating a stable foundation for subsequent training phases.
+       1. Warmup Phase (35% of training): Learning rate progressively scales from initial_lr/10 to initial_lr*4, following a carefully planned trajectory that matches the unfreezing schedule. This   
+       extended warmup period (35% vs traditional 20%) allows the model to adapt to higher learning rates while most layers remain frozen, creating a stable foundation for subsequent training phases.
        2. Peak Performance Phase: Maintains higher learning rates for optimal learning
-       3. Fine-tuning Phase (70% of training): Decreases using cosine annealing
+       3. Fine-tuning Phase (65% of training): Decreases using cosine annealing
      - **Technical Details:**
-       - pct_start=0.25: Optimized warmup period allocation
-       - div_factor=8: Controls initial learning rate scaling
-       - final_div_factor=50: Ensures effective final fine-tuning
+       - pct_start=0.35: Optimized warmup period allocation
+       - div_factor=10: Controls initial learning rate scaling
+       - final_div_factor=150: Ensures effective final fine-tuning
      - **Why It's Effective:** Combines fast convergence with robust training stability:
        - Prevents early training instability through careful warmup
        - Higher learning rates act as implicit regularization
@@ -259,19 +285,19 @@ The intelligent matching system evaluates compatibility between potential dog ow
            - Timing: Epoch 10 marks our starting point,  model starts with familiar high-level features
            - Purpose: Initiating high-level feature refinement
       
-       - **Stage 2 (Epoch 20 / epochs/7.5):** Expands to 4 Layers
+       - **Stage 2 (Epoch 18 / epochs/8):** Expands to 4 Layers
          - **Details:**
            - Target: Increase to 4 layers for broader learning
            - Timing: Strategic point at epoch 20
            - Purpose: Mid-level feature processing begins
       
-       - **Stage 3 (Epoch 30 / epochs/5):** Advances to 6 Layers
+       - **Stage 3 (Epoch 27 / epochs/5.5):** Advances to 6 Layers
          - **Details:**
            - Target: 6 layers now actively learning, unlocking deeper network potential
            - Timing: Calculated for epoch 30 sweet spot
            - Purpose: Accessing deeper network knowledge
       
-       - **Stage 4 (Epoch 40 / epochs/3.75):** Deepens to 8 Layers
+       - **Stage 4 (Epoch 37 / epochs/4):** Deepens to 8 Layers
          - **Details:**
            - Target: 8 layers engaged in learning, fundamental features begin fine-tuning
            - Timing: Carefully placed at epoch 40
