@@ -394,6 +394,8 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [RandAugment: Practical automated data augmentation with a reduced search space](https://arxiv.org/pdf/1909.13719)
 - [EfficientNetV2: Smaller Models and Faster Training](https://arxiv.org/pdf/2104.00298)
 - [Attention Is All You Need](https://arxiv.org/pdf/1706.03762)
+- [Part-based R-CNNs for Fine-grained Category Detection](https://arxiv.org/pdf/1407.3867)
+- [Learning Subject-Aware Cropping by Outpainting Professional Photos](https://arxiv.org/pdf/2312.12080)
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
 - [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/pdf/2002.05709)
 - [Focal Loss for Dense Object Detection](https://arxiv.org/pdf/1708.02002)
