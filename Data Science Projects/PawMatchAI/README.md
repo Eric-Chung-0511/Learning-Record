@@ -338,13 +338,27 @@ The intelligent matching system evaluates compatibility between potential dog ow
      
 ---
 
-### 🔎 Dog Detection using YOLO
+### 🔎 Advanced Dog Detection System
 - **YOLOv8:** Integrated during the **deployment phase** for multi-dog detection in a single image. YOLO was not used during the model training process but was added later to enhance the system's ability to handle real-world use cases where multiple dogs may appear in a single image.
   - **Key Parameters:**
     - **`conf_threshold`:** Filters weak predictions to retain only confident detections.
     - **`iou_threshold`:** Removes overlapping bounding boxes to ensure clean and accurate detections.
   - **Why YOLO?:** Real-time object detection capabilities make it ideal for deployment scenarios where speed and efficiency are critical. This ensures that users can receive accurate results even with complex images featuring multiple dogs.
 
+- **Biomimetic Processing Pipeline:** Inspired by human visual cognition patterns, the system implements a sophisticated post-detection processing pipeline:
+  - **Intelligent Frame Adjustment:** Similar to how a professional photographer frames their shots, the system dynamically adjusts detection frames based on:
+    - Dog's pose (standing, sitting)
+    - Spatial relationships (overlapping dogs)
+    - Position in frame (edge compensation)
+    - Size variations (abnormal size handling)
+  
+  - **Enhanced Preprocessing:** Implements specialized image processing techniques that mimic human visual attention:
+    - Maintains aspect ratios for standing poses to preserve natural proportions
+    - Provides additional context for overlapping dogs
+    - Centers subjects optimally within the frame
+    - Uses high-quality resampling for detail preservation
+
+This biomimetic approach significantly improves the system's ability to handle various real-world scenarios, making it more robust and reliable for practical applications.
 ---
 
 ## 🌐 Model Deployment
