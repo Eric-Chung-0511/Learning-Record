@@ -132,7 +132,7 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ---
 
 ## 📊 Results
-- **F1 Score:** The system achieved an overall **F1 Score of 89.91%,** across 124 breeds.
+- **F1 Score:** The system achieved an overall **F1 Score of 88.70%,** across 124 breeds.
 - **Few-Shot Ready:** The architecture is prepared to support new breeds or species with minimal training data, enabling easy scalability.
 
 ---
