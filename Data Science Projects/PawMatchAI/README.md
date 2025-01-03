@@ -357,8 +357,6 @@ The intelligent matching system evaluates compatibility between potential dog ow
     - Provides additional context for overlapping dogs
     - Centers subjects optimally within the frame
     - Uses high-quality resampling for detail preservation
-
-This biomimetic approach significantly improves the system's ability to handle various real-world scenarios, making it more robust and reliable for practical applications.
 ---
 
 ## 🌐 Model Deployment
