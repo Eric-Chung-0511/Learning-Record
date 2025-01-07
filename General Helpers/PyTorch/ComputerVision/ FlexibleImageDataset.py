@@ -105,25 +105,67 @@ class FlexibleImageDataset(Dataset):
             return False
 
     def _get_default_transform(self):
-        """獲取默認的數據轉換流程"""
+        """
+        提供預設的數據增強轉換
+        針對細粒度圖像分類優化的數據增強策略
+        """
         if self.is_train:
-            return transforms.Compose([
-                transforms.RandomResizedCrop(self.image_size),
-                transforms.RandomHorizontalFlip(),
-                RandAugment(num_ops=2, magnitude=9),
-                transforms.ColorJitter(0.3, 0.3, 0.3, 0.1),
+            transform = transforms.Compose([
+                # 隨機裁剪和縮放
+                transforms.RandomResizedCrop(
+                    224,                    # 適合大多數預訓練模型
+                    scale=(0.3, 1.0),       # 裁剪範圍，有助於捕捉局部特徵
+                    ratio=(0.85, 1.15)      # 長寬比變化，避免過度扭曲
+                ),
+                
+                # 基礎的水平翻轉
+                transforms.RandomHorizontalFlip(p=0.5),
+                
+                # RandAugment：自適應數據增強
+                RandAugment(
+                    num_ops=2,              # 每次選擇 2 種增強方法，平衡增強效果和訓練穩定性
+                    magnitude=7             # 中等強度，避免過度失真
+                ),
+                
+                # 色彩調整：針對自然圖像優化的參數
+                transforms.ColorJitter(
+                    brightness=0.1,         # 較小的亮度變化
+                    contrast=0.1,           # 較小的對比度變化
+                    saturation=0.1,         # 較小的飽和度變化
+                    hue=0.02               # 極小的色相變化，保持原始顏色特徵
+                ),
+                
+                # AutoAugment：使用 ImageNet 優化策略
+                transforms.AutoAugment(policy=transforms.AutoAugmentPolicy.IMAGENET),
+                
+                # 標準化處理
                 transforms.ToTensor(),
-                transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-                transforms.RandomErasing(p=0.2)
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406],  # ImageNet 標準化參數
+                    std=[0.229, 0.224, 0.225]
+                ),
+                
+                # 隨機遮罩：增加模型魯棒性
+                transforms.RandomErasing(
+                    p=0.2,                 # 適中的遮罩概率
+                    scale=(0.02, 0.15),    # 較小的遮罩區域
+                    ratio=(0.5, 2)         # 遮罩形狀範圍
+                )
             ])
         else:
-            return transforms.Compose([
-                transforms.Resize(int(self.image_size * 1.14)),
-                transforms.CenterCrop(self.image_size),
+            # 驗證/測試時的標準轉換
+            transform = transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
                 transforms.ToTensor(),
-                transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406],
+                    std=[0.229, 0.224, 0.225]
+                )
             ])
+        return transform
 
+    
     def _load_and_validate_data(self):
         """載入並驗證數據"""
         if self.has_subdirs:
