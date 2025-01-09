@@ -111,7 +111,7 @@
 
 * **Looking ahead, I am also planning to apply large language models like GPT-4 and Meta Llama3 to real-world applications. By fine-tuning these models on specific datasets and tasks, my goal is to create highly customized and effective language models that can be leveraged in practical scenarios, achieving meaningful results with greater efficiency.**
   
-### 🗣🔄🤖 Natural Language Processing (NLP) and Transformer Technology
+### 🗣🔄 Natural Language Processing (NLP) and Transformer Technology
 * My future goals involve leveraging advanced Transformer models to expand the scope of NLP applications. This includes tasks such as sentiment analysis, the development of intelligent recommendation systems, and the creation of interactive chatbots.
 
 * **Additionally, I aspire to develop AI systems capable of automatically extracting and summarizing key points from academic papers, allowing researchers to spend less time on initial screening and more time on in-depth reading and exploration of relevant studies.**
