@@ -403,3 +403,14 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [American Kennel Club](https://www.akc.org/)
 
 ---
+
+
+## 📜 License
+
+This project is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).  
+You are free to use, share, and adapt the material for any purpose, provided that appropriate credit is given to the original author, **Eric Chung**, and the project.  
+
+### Disclaimer
+The author provides this work "as is," without any warranties, and shall not be liable for any damages arising from its use.  
+
+For details, please refer to the [LICENSE](./LICENSE.md) file in this project directory.
