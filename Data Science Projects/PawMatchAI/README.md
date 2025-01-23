@@ -142,43 +142,40 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ### 🦴 Model Backbone
 
 1. **ConvNeXtV2 Base:**
-   - **What It Does:** ConvNeXtV2 Base serves as my chosen feature extraction backbone, representing an evolution of the original ConvNeXt architecture with significant improvements. It builds upon the successful "modernizing classic ResNet" approach by introducing:
-     - Fully MetaFormer architecture that removes traditional convolutions
+   - **What It Does:** ConvNeXtV2 Base serves as my chosen feature extraction backbone, representing an evolution of the original ConvNeXt architecture with significant improvements. It introduces:
      - Global Response Normalization (GRN) for enhanced feature calibration
-     - Faster Meta Layer Normalization for improved training stability
-
-   - **Why It Matters:** The transition from ConvNeXt to ConvNeXtV2 represents a significant leap in architectural design. While ConvNeXt brought Transformer principles to CNNs, ConvNeXtV2 takes this further by introducing the MetaFormer concept, which provides a more unified and effective approach to feature processing. Imagine MetaFormer as an advanced assembly line where each layer is specifically designed to process and enhance different aspects of the image features - from basic patterns to complex structures.
+     - Fully Convolutional Masked AutoEncoder (FCMAE) for self-supervised learning
+     - Optimized sparse convolution processing
+   - **Why It Matters:** The transition from ConvNeXt to ConvNeXtV2 represents a significant leap in architectural design. ConvNeXtV2 enhances the pure convolutional approach with innovative normalization and self-supervised learning techniques. Imagine it as an advanced image processing pipeline where each component is specifically designed to enhance different aspects of the feature learning process - from basic patterns to complex structures.
    
    - **Key Features:**
-     - Implements Fully MetaFormer architecture for more efficient information flow, similar to having multiple specialized experts working together
-     - Utilizes Global Response Normalization (GRN) to understand relationships between different feature channels, like connecting related visual elements across the image
-     - Provides enhanced feature extraction through frequency-based processing, analyzing images at multiple scales simultaneously
-     - Employs adaptive feature calibration to dynamically adjust feature importance
-     - Creates an ideal foundation for additional attention mechanisms
+     - Implements Global Response Normalization (GRN) to enhance inter-channel feature competition and prevent feature collapse
+     - Utilizes sparse convolution during pre-training for efficient processing of masked regions
+     - Provides enhanced feature extraction through the FCMAE framework
+     - Employs adaptive feature calibration through learnable parameters in GRN
+     - Creates an ideal foundation for computer vision tasks
 
 2. **Multi-Level Attention Architecture:**
-   - **Innovation in Design:** I developed a unique dual-attention approach that processes features at different abstraction levels:
-     - **Lower-level:** Utilizes ConvNeXtV2's built-in FMCA to process basic visual elements, analyzing features in different frequency domains (like shape, texture, and fine details)
-     - **Higher-level:** Implements an additional Multi-Head Attention layer near the output to capture complex feature relationships, similar to having multiple experts focusing on different breed-specific characteristics
-
+   - **Innovation in Design:** I developed a multi-level feature processing approach that processes features at different abstraction levels:
+     - **Lower-level:** Utilizes ConvNeXtV2's built-in GRN to process and normalize features across channels
+     - **Higher-level:** Implements an additional Multi-Head Attention layer near the output to capture complex feature relationships
    - **Technical Implementation:**
-     - **Base Level:** FMCA processes features in different frequency domains
-       - Low frequency captures overall shape and structure
-       - Mid frequency analyzes textures and patterns
-       - High frequency focuses on fine details and edges
+     - **Base Level:** GRN processes features through three key steps:
+       - Global feature aggregation using L2-norm
+       - Feature normalization through divisive normalization
+       - Feature calibration with learnable parameters
      - **High Level:** Custom Multi-Head Attention with 8 attention heads
        - Each head specializes in different aspects of breed characteristics
        - Enables parallel processing of multiple feature relationships
        - Efficiently implemented using torch.einsum for attention calculations
      - Dynamic feature aggregation ensuring balanced feature integration
-     - Seamless integration with MetaFormer architecture
-
-   - **Why It's Effective:** This innovative dual-attention architecture enhances the model's capabilities by:
+     - Seamless integration with ConvNeXtV2 architecture
+   - **Why It's Effective:** This innovative architecture enhances the model's capabilities by:
      - Processing features hierarchically: from basic visual elements to complex breed-specific patterns
-     - Enabling comprehensive feature analysis through multiple attention mechanisms
-     - Lower level FMCA captures fundamental visual patterns while higher level attention focuses on breed-specific feature combinations
+     - Enabling comprehensive feature analysis through both GRN and attention mechanisms
+     - Lower level GRN ensures feature diversity while higher level attention focuses on breed-specific feature combinations
      - Creating a more robust and adaptable feature extraction pipeline that can better distinguish subtle differences between similar breeds
-     - Maintaining computational efficiency while significantly increasing model expressiveness through strategic placement of attention mechanisms
+     - Maintaining computational efficiency while significantly increasing model expressiveness through strategic feature processing
 
 3. **Morphological Feature Analysis System:**
    - **Inspiration:** This system draws inspiration from human visual cognition patterns. Just as humans naturally process visual information by first observing overall characteristics before focusing on specific details, this system implements a similar hierarchical approach to feature analysis.
