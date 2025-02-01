@@ -462,9 +462,9 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 - [A disciplined approach to neural network hyper-parameters: Part 1 - learning rate, batch size, momentum, and weight decay](https://arxiv.org/pdf/1803.09820)
 - [mixup: BEYOND EMPIRICAL RISK MINIMIZATION](https://arxiv.org/pdf/1710.09412)
 - [Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks](https://arxiv.org/pdf/1908.10084)
-- [American Kennel Club](https://www.akc.org/)
 - [Distilling the Knowledge in a Neural Network](https://arxiv.org/pdf/1503.02531)
-
+- [American Kennel Club](https://www.akc.org/)
+  
 ---
 
 
