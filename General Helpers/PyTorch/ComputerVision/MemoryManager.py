@@ -86,7 +86,7 @@ class MemoryManager:
         if scheduler is not None:
             checkpoint['scheduler_state_dict'] = scheduler.state_dict()
         
-        # 保存檢查點
+        # 保存檢查點(.pth檔案)
         torch.save(checkpoint, checkpoint_path)
         self.logger.info(f"Checkpoint saved: {checkpoint_path}")
 
