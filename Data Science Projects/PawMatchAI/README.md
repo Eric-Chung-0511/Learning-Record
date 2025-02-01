@@ -470,7 +470,7 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 
 ## 📜 License
 
-![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-blue)
+![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgray)
 
 This project is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).  
 You are free to use, share, and adapt the material for any purpose, provided that appropriate credit is given to the original author, **Eric Chung**, and the project.  
