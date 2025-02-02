@@ -470,12 +470,28 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 
 ## 📜 License
 
-![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgray)
+![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgray)
 
-This project is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).  
-You are free to use, share, and adapt the material for any purpose, provided that appropriate credit is given to the original author, **Eric Chung**, and the project.  
+# License and Copyright Notice
 
-### Disclaimer
-The author provides this work "as is," without any warranties, and shall not be liable for any damages arising from its use.  
+© 2025 Eric Chung. All Rights Reserved.
 
-For details, please refer to the [LICENSE](./LICENSE.md) file in this project directory.
+This project is licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+This license means:
+
+**You are free to:**
+- View and study the material
+- Share the material in its original form
+- Use the material for personal and academic research
+
+**Under the following terms:**
+- **Attribution** — You must give appropriate credit to Eric Chung as the original author, provide a link to this project, and indicate if any changes were made.
+- **NonCommercial** — You may not use the material for commercial purposes or monetary gain.
+- **NoDerivatives** — If you modify, transform, or build upon the material, you may not distribute the modified material.
+
+For permissions beyond the scope of this license or commercial use inquiries, please contact the author directly.
+
+## Disclaimer
+
+This work is provided "AS IS", without warranty of any kind, express or implied. The author shall not be liable for any damages arising from the use of this project.
