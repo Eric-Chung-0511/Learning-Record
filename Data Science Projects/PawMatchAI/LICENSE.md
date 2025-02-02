@@ -1,5 +1,3 @@
-# License and Copyright Notice
-
 © 2025 Eric Chung. All Rights Reserved.
 
 This work is licensed under a restricted license that protects the intellectual property rights of the author while allowing limited use for educational and research purposes.
