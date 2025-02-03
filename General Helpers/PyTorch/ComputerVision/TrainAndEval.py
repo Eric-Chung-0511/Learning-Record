@@ -141,6 +141,33 @@ class TrainAndEval:
         
         return epoch_loss, epoch_acc
 
+    def validate_epoch(self) -> tuple[float, float]:
+        """
+        在訓練過程中進行驗證
+        Returns:
+            tuple[float, float]: (validation_loss, validation_accuracy)
+        """
+        self.model.eval()
+        total_loss = 0
+        total_correct = 0
+        total_samples = 0
+        
+        with torch.no_grad():
+            for data, target in self.val_loader:
+                data, target = data.to(self.device), target.to(self.device)
+                features, output = self.model(data)  # 這裡收到兩個返回值
+                loss = self.criterion(output, target)
+                
+                pred = output.argmax(dim=1)
+                total_correct += pred.eq(target).sum().item()
+                total_samples += target.size(0)
+                total_loss += loss.item()
+        
+        epoch_loss = total_loss / len(self.val_loader)
+        epoch_acc = 100. * total_correct / total_samples
+        
+        return epoch_loss, epoch_acc
+
     def train(self, epochs: int) -> Dict[str, list]:
         """
         執行完整的訓練流程，包含漸進式解凍
