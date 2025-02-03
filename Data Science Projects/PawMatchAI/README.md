@@ -500,6 +500,7 @@ This project is licensed under the MIT License with additional attribution requi
 ### Example Attribution:
 This project uses work created by [Eric Chung](https://github.com/Eric-Chung-0511)
 ([PawMatchAI Project](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI))
+
 Original work © 2025 Eric Chung.
 ## Note to Users
 This project was originally created as a portfolio piece for career transition purposes. While you are welcome to use and build upon this work, proper attribution helps:
