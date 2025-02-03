@@ -2,7 +2,7 @@ class TrainAndEval:
     
     def __init__(
         self,
-        model: ModelManager,  # 這裡明確指定接收 ModelManager 實例
+        model: ModelManager,
         train_loader: torch.utils.data.DataLoader,
         val_loader: torch.utils.data.DataLoader,
         memory_manager: Any,
@@ -11,24 +11,27 @@ class TrainAndEval:
         scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
         device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
         use_amp: bool = True,
-        learning_rate: Optional[float] = None,  # 改為可選參數
+        learning_rate: Optional[float] = None,  # 如果是 None 且 use_lr_finder=True，則使用 LRFinder
+        use_lr_finder: bool = False,  # 新增：是否使用 LRFinder
+        lr_finder_config: Optional[Dict] = None,  # 新增：LRFinder 的配置
         total_epochs: int = 100,
         unfreeze_strategy: Optional[Dict] = None
     ):
-        """初始化訓練管理器，主要修改在於更好地處理學習率和優化器的設置"""
         self.model = model.to(device)
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.device = device
         self.use_amp = use_amp
-        self.unfreeze_strategy = unfreeze_strategy or {
-            0.2: 2,
-            0.4: 4,
-            0.6: None
-        }
         
         # 設置損失函數
         self.criterion = criterion if criterion is not None else nn.CrossEntropyLoss()
+        
+        # 處理學習率和優化器設置
+        self.learning_rate = self._setup_learning_rate(
+            learning_rate, 
+            use_lr_finder,
+            lr_finder_config or {}
+        )
         
         # 優化器設置改進：使用 ModelManager 的參數分組
         if optimizer is None:
@@ -75,6 +78,50 @@ class TrainAndEval:
         # 設定日誌
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
+
+    def _setup_learning_rate(
+        self, 
+        learning_rate: Optional[float],
+        use_lr_finder: bool,
+        lr_finder_config: Dict
+    ) -> float:
+        """
+        設置學習率，根據配置決定是否使用 LRFinder
+        """
+        if learning_rate is not None and use_lr_finder:
+            self.logger.warning(
+                "Both learning_rate and use_lr_finder are specified. "
+                "Will ignore learning_rate and use LRFinder."
+            )
+        
+        if use_lr_finder:
+            self.logger.info("Using LR Finder to determine optimal learning rate...")
+            lr_finder = LRFinder(
+                model=self.model,
+                train_loader=self.train_loader,
+                criterion=self.criterion,
+                optimizer=torch.optim.AdamW(self.model.get_trainable_params())
+            )
+            
+            # 使用配置或默認值
+            lr_finder.range_test(
+                start_lr=lr_finder_config.get('start_lr', 1e-7),
+                end_lr=lr_finder_config.get('end_lr', 10),
+                num_iter=lr_finder_config.get('num_iter', 100),
+                smooth_window=lr_finder_config.get('smooth_window', 21),
+                diverge_threshold=lr_finder_config.get('diverge_threshold', 4.0)
+            )
+            
+            lr_finder.plot()  # 顯示學習率曲線
+            learning_rate = lr_finder.best_lr
+            self.logger.info(f"Found optimal learning rate: {learning_rate:.2e}")
+            
+        elif learning_rate is None:
+            raise ValueError(
+                "Must either provide a learning_rate or set use_lr_finder=True"
+            )
+        
+        return learning_rate
 
     def _check_unfreeze_schedule(self, progress: float):
         """
