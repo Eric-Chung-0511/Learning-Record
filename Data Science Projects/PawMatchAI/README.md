@@ -488,7 +488,7 @@ This project is licensed under the MIT License with additional attribution requi
 ### Under the following required terms:
 1. **Attribution Requirements:**
    - Maintain the original copyright notice: `© 2025 Eric Chung`
-   - Include a link to the original project: [https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI]
+   - Include a link to the original project: [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)
    - Clearly indicate you are using Eric Chung's work
    - State if you have modified the original project
 
@@ -498,6 +498,9 @@ This project is licensed under the MIT License with additional attribution requi
    - In documentation: Include attribution in the README or documentation
 
 ### Example Attribution:
+This project uses work created by [Eric Chung](https://github.com/Eric-Chung-0511)
+([PawMatchAI Project](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI))
+Original work © 2025 Eric Chung.
 ## Note to Users
 This project was originally created as a portfolio piece for career transition purposes. While you are welcome to use and build upon this work, proper attribution helps:
 - Maintain academic integrity
