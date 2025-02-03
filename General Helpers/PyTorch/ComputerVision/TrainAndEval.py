@@ -95,6 +95,29 @@ class TrainAndEval:
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
 
+    def find_best_lr(self, **kwargs):
+        """
+        尋找最佳學習率
+        
+        Returns:
+            float: 建議的最佳學習率
+        """
+        lr_finder = LRFinder(
+            model=self.model,
+            train_loader=self.train_loader,
+            criterion=self.criterion,
+            optimizer=self.optimizer,
+            device=self.device
+        )
+        
+        # 執行學習率範圍測試
+        lr_finder.range_test(**kwargs)
+        
+        # 繪製結果
+        lr_finder.plot()
+        
+        return lr_finder.best_lr
+
     def train_epoch(self) -> tuple[float, float]:
         """執行一個訓練epoch"""
         self.model.train()
