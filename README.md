@@ -119,7 +119,7 @@
 
 <h2 id="license">🔏 License</h2>
 
-* This project is licensed under the MIT License. For more details, see the [LICENSE](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/LICENSE.md) file.
+* This project is licensed under the Apache 2.0 License. For more details, see the [LICENSE](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/LICENSE.md) file.
 
 **[⇧ back to top ⇧](#top)**
 
