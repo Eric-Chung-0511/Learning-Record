@@ -469,15 +469,15 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
 
 
 ## 📜 License
-![License: MIT with Attribution](https://img.shields.io/badge/License-MIT%20with%20Attribution-blue)
+![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue)
 
 # License and Copyright Notice
 © 2025 Eric Chung. 
 
-This project was created as part of a portfolio to demonstrate technical skills and learning achievements. While sharing and learning from this project is encouraged, proper attribution is required.
+This project is licensed under the Apache License 2.0, ensuring proper attribution and allowing broad usage while maintaining transparency and credit to the original author.
 
 ## Terms of Use
-This project is licensed under the MIT License with additional attribution requirements:
+This project is licensed under the **Apache License 2.0**:
 
 ### You are free to:
 - Study and learn from the code
@@ -489,27 +489,38 @@ This project is licensed under the MIT License with additional attribution requi
 1. **Attribution Requirements:**
    - Maintain the original copyright notice: `© 2025 Eric Chung`
    - Include a link to the original project: [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)
-   - Clearly indicate you are using Eric Chung's work
+   - Clearly indicate that you are using Eric Chung's work
    - State if you have modified the original project
 
-2. **Attribution Display:**
-   - In code: Keep the copyright header in source files
-   - In applications: Include attribution in the about/credits section
-   - In documentation: Include attribution in the README or documentation
+2. **License Compliance:**
+   - You **must include a copy of this license** in any distributed or modified version of this project.
+   - If you modify the files, **you must state what changes were made**.
+   - You **cannot remove the original license notice** from the project files.
+
+3. **Attribution Display:**
+   - **In code:** Keep the copyright header in source files.
+   - **In applications:** Include attribution in the about/credits section.
+   - **In documentation:** Include attribution in the README or documentation.
 
 ### Example Attribution:
 This project uses work created by [Eric Chung](https://github.com/Eric-Chung-0511)
 ([PawMatchAI Project](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI))
 
 Original work © 2025 Eric Chung.
+Licensed under the Apache License, Version 2.0.
+
+
 ## Note to Users
 This project was originally created as a portfolio piece for career transition purposes. While you are welcome to use and build upon this work, proper attribution helps:
 - Maintain academic integrity
 - Support the original author's career development
-- Foster trust in the open source community
+- Foster trust in the open-source community
 
 ## Disclaimer
 This work is provided "AS IS", without warranty of any kind, express or implied. The author shall not be liable for any damages arising from the use of this project.
+
+## Full License Text
+The full license text can be found here: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## Contact
 For questions about usage or collaboration, please:
