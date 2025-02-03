@@ -1,22 +1,32 @@
 class TrainAndEval:
+    """
+    整合的訓練與評估管理器：提供進階的訓練控制和監控功能
     
+    主要特色：
+    1. 支援自動和手動的漸進式解凍策略
+    2. 整合了學習率查找器功能
+    3. 提供混合精度訓練支援
+    4. 包含完整的訓練監控和評估機制
+    """
     def __init__(
         self,
-        model: ModelManager,
-        train_loader: torch.utils.data.DataLoader,
-        val_loader: torch.utils.data.DataLoader,
-        memory_manager: Any,
-        criterion: Optional[nn.Module] = None,
-        optimizer: Optional[torch.optim.Optimizer] = None,
-        scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
-        device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
-        use_amp: bool = True,
-        learning_rate: Optional[float] = None,  # 如果是 None 且 use_lr_finder=True，則使用 LRFinder
-        use_lr_finder: bool = False,  # 新增：是否使用 LRFinder
-        lr_finder_config: Optional[Dict] = None,  # 新增：LRFinder 的配置
-        total_epochs: int = 100,
-        unfreeze_strategy: Optional[Dict] = None
+        model: ModelManager,                    # 模型管理器實例
+        train_loader: torch.utils.data.DataLoader,  # 訓練數據加載器
+        val_loader: torch.utils.data.DataLoader,    # 驗證數據加載器
+        memory_manager: Any,                    # 記憶體管理器實例
+        use_amp: bool = True,                   # 是否使用混合精度訓練
+        use_lr_finder: bool = False,            # 是否使用學習率查找器
+        learning_rate: Optional[float] = None,  # 手動指定的學習率
+        lr_finder_config: Optional[Dict] = None,  # 學習率查找器的配置
+        unfreeze_method: str = 'auto',          # 解凍方式：'auto' 或 'manual'
+        unfreeze_strategy: Optional[Union[Dict, str]] = None,  # 解凍策略
+        criterion: Optional[nn.Module] = None,   # 損失函數
+        optimizer: Optional[torch.optim.Optimizer] = None,  # 優化器
+        scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,  # 學習率調度器
+        total_epochs: int = 100,                # 總訓練輪數
+        device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     ):
+        """初始化訓練管理器"""
         self.model = model.to(device)
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -26,29 +36,25 @@ class TrainAndEval:
         # 設置損失函數
         self.criterion = criterion if criterion is not None else nn.CrossEntropyLoss()
         
-        # 處理學習率和優化器設置
+        # 設置解凍策略
+        self.unfreeze_method = unfreeze_method
+        self.unfreeze_strategy = self._setup_unfreeze_strategy(unfreeze_strategy)
+        
+        # 設置學習率
         self.learning_rate = self._setup_learning_rate(
-            learning_rate, 
+            learning_rate,
             use_lr_finder,
             lr_finder_config or {}
         )
         
-        # 優化器設置改進：使用 ModelManager 的參數分組
-        if optimizer is None:
-            if learning_rate is None:
-                raise ValueError("Either optimizer or learning_rate must be provided")
-                
-            self.optimizer = torch.optim.AdamW(
-                self.model.get_trainable_params(),  # 使用 ModelManager 的參數分組
-                weight_decay=0.01
-            )
-            # 更新每個參數組的學習率
-            for param_group in self.optimizer.param_groups:
-                param_group['lr'] *= learning_rate  # 根據基礎學習率調整
-        else:
-            self.optimizer = optimizer
-
-        # 學習率調度器設置
+        # 設置優化器
+        self.optimizer = optimizer or torch.optim.AdamW(
+            self.model.get_trainable_params(),
+            lr=self.learning_rate,
+            weight_decay=0.01
+        )
+        
+        # 設置學習率調度器
         if scheduler is None:
             steps_per_epoch = len(train_loader)
             self.scheduler = torch.optim.lr_scheduler.OneCycleLR(
@@ -126,17 +132,112 @@ class TrainAndEval:
     def _check_unfreeze_schedule(self, progress: float):
         """
         檢查並執行解凍策略
+        
+        此方法在每個 epoch 開始時被調用，用於檢查是否需要根據當前訓練進度解凍某些層。
+        無論是自動還是手動策略，都會通過這個方法來執行實際的解凍操作。
+        
         Args:
-            progress: 當前訓練進度 (0~1)
+            progress (float): 當前訓練進度 (0~1)，例如：epoch 50/100 = 0.5
         """
+        # 對策略字典按進度排序，確保按順序解凍
         for threshold, num_layers in sorted(self.unfreeze_strategy.items()):
-            if abs(progress - threshold) < 1e-6:  # 達到設定的進度點
+            # 使用小數值比較，允許有少量誤差
+            if abs(progress - threshold) < 1e-6:  
                 if num_layers is None:
-                    self.logger.info(f"Progress {progress*100:.1f}%: Unfreezing all layers")
+                    # 解凍所有層
+                    self.logger.info(
+                        f"Training Progress {progress*100:.1f}%: "
+                        f"Unfreezing all layers for final fine-tuning"
+                    )
                     self.model.unfreeze_layers(None)
                 else:
-                    self.logger.info(f"Progress {progress*100:.1f}%: Unfreezing last {num_layers} layers")
+                    # 解凍指定數量的層
+                    self.logger.info(
+                        f"Training Progress {progress*100:.1f}%: "
+                        f"Unfreezing last {num_layers} layers"
+                    )
                     self.model.unfreeze_layers(num_layers)
+
+    def _setup_unfreeze_strategy(self, strategy: Optional[Union[Dict, str]]) -> Dict[float, Optional[int]]:
+        """
+        設置解凍策略，支援自動和手動兩種模式
+        
+        Args:
+            strategy: 
+                - 如果是字典：直接作為手動策略使用
+                - 如果是字符串：用作自動策略的類型（'conservative'/'balanced'/'aggressive'）
+                - 如果是 None：使用默認的平衡策略
+        
+        Returns:
+            Dict[float, Optional[int]]: 解凍策略字典，
+                key 為訓練進度（0-1），
+                value 為要解凍的層數（None 表示解凍所有層）
+        """
+        if self.unfreeze_method == 'manual':
+            if not isinstance(strategy, dict):
+                raise ValueError("Manual unfreeze method requires a dictionary strategy")
+            return strategy
+        
+        # 自動模式
+        return self._generate_unfreeze_strategy(
+            total_layers=len(self.model.layers),
+            strategy_type=strategy or 'balanced'
+        )
+
+    def _generate_unfreeze_strategy(self, total_layers: int, strategy_type: str = 'balanced') -> Dict[float, Optional[int]]:
+        """
+        自動生成解凍策略
+        
+        解凍策略的設計原則：
+        - conservative: 保守策略，較晚開始解凍，間隔較大，適合小數據集或遷移學習差異大的情況
+        - balanced: 平衡策略，適中的解凍時間和間隔，適合一般情況
+        - aggressive: 激進策略，較早開始解凍，間隔較小，適合大數據集或遷移學習差異小的情況
+        
+        Args:
+            total_layers: 模型的總層數
+            strategy_type: 策略類型（'conservative'/'balanced'/'aggressive'）
+        
+        Returns:
+            Dict[float, Optional[int]]: 自動生成的解凍策略
+        """
+        # 定義不同策略的參數
+        strategies = {
+            'conservative': {
+                'start': 0.15,      # 從 15% 的訓練進度開始解凍
+                'interval': 0.15,   # 每 15% 解凍一次
+                'stages': 5         # 分 5 個階段解凍
+            },
+            'balanced': {
+                'start': 0.10,      # 從 10% 的訓練進度開始解凍
+                'interval': 0.125,  # 每 12.5% 解凍一次
+                'stages': 5         # 分 5 個階段解凍
+            },
+            'aggressive': {
+                'start': 0.05,      # 從 5% 的訓練進度開始解凍
+                'interval': 0.10,   # 每 10% 解凍一次
+                'stages': 5         # 分 5 個階段解凍
+            }
+        }
+        
+        # 獲取選擇的策略參數，默認使用 balanced
+        config = strategies.get(strategy_type, strategies['balanced'])
+        strategy = {}
+        
+        # 計算每個階段要解凍的層數
+        layers_per_stage = total_layers // (config['stages'] - 1)
+        
+        # 生成各個階段的解凍策略
+        for i in range(config['stages'] - 1):
+            progress = config['start'] + (i * config['interval'])
+            layers = layers_per_stage * (i + 1)
+            # 確保不會超過總層數
+            strategy[progress] = min(layers, total_layers)
+        
+        # 最後一個階段解凍所有層
+        final_progress = config['start'] + ((config['stages']-1) * config['interval'])
+        strategy[final_progress] = None
+        
+        return strategy
 
     def train_epoch(self) -> tuple[float, float]:
         """執行一個訓練epoch"""
