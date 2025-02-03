@@ -1,49 +1,63 @@
-© 2025 Eric Chung. All Rights Reserved.
+# License and Copyright Notice
 
-This work is licensed under a restricted license that protects the intellectual property rights of the author while allowing limited use for educational and research purposes.
+© 2025 Eric Chung. 
 
-## Permissions
+## Overview
+This work represents a portfolio project created to demonstrate technical proficiency and learning achievements. This license aims to protect the author's intellectual property rights while encouraging educational use and proper attribution.
 
-Users are permitted to:
-- View and study the code for personal learning
-- Use the code for academic research purposes
-- Fork the repository for personal study
-- Create copies for personal backup purposes
+## Terms of Use
+All users of this work must comply with the following terms:
 
-## Restrictions
+### Attribution Requirements
+When using or referencing this work, you must:
+1. Credit Eric Chung as the original author
+2. Include a link to the original repository
+3. Indicate whether you have modified the original work
+4. Maintain this copyright notice and attribution requirements in all copies or substantial portions of the work
 
-The following activities are expressly prohibited:
-- Commercial use or exploitation of the code
-- Distribution or redistribution of the code
-- Creation of derivative works
-- Use in commercial products or services
-- Patent use
-- Trademark use
-- Public performance or display
-- Sublicensing or transfer of rights
+### Permitted Uses
+Users are allowed to:
+1. View, study, and learn from the code
+2. Use the code for personal learning and development
+3. Fork the repository for study purposes
+4. Create copies for personal backup
+5. Use the work for academic research and educational purposes
+6. Modify the work for personal learning purposes
 
-## Attribution Requirements
+### Usage Guidelines
+When using this work:
+1. The attribution must be clearly visible and accessible
+2. Any modifications must be clearly marked as such
+3. You may not imply or suggest endorsement by the author
+4. You must maintain all copyright and license notices
 
-When referencing or citing this work:
-- You must provide appropriate credit to Eric Chung as the original author
-- You must include a link to the original repository
-- You must indicate if any changes were made
-- You may not suggest or imply endorsement by the author
+### Attribution Format
+Please use the following format for attribution:
+Based on work by [Eric Chung](https://github.com/Eric-Chung-0511)
+([PawMatchAI Project](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI))
+
+Original work © 2025 Eric Chung
+
+## Important Notes
+1. This project was created as a portfolio piece for career transition purposes
+2. While the focus is on learning and educational use, all usage requires proper attribution
+3. The author reserves the right to grant additional permissions on a case-by-case basis
 
 ## Disclaimer
-
 This work is provided "AS IS", without warranty of any kind, express or implied. The author shall not be liable for any claims, damages, or other liability arising from the use or inability to use the work.
 
-## Commercial Licensing
+## Supplementary Permissions
+1. For inquiries about additional usage rights or permissions:
+   - Open an issue in this repository
+   - Contact the author through GitHub
+2. The author may grant additional permissions upon request
 
-For commercial licensing inquiries or other permissions beyond the scope of this license, please contact the author directly.
+## License Updates
+1. This license may be updated to reflect changing circumstances
+2. Users will be bound by the license version in effect at the time of their use
+3. Check the repository for the most current license terms
 
-## Termination
-
-Your rights under this license will terminate automatically if you fail to comply with any of its terms.
-
----
-
-For questions or licensing requests, please open an issue in this repository or contact the author directly.
-
-Note: This license supersedes any previous licensing terms and applies to all versions and components of this work unless explicitly stated otherwise.
+## Contact
+For questions, clarifications, or additional permissions:
+- Create an issue in this repository
+- Contact the author through GitHub
