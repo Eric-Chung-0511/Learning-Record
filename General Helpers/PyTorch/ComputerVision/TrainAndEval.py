@@ -1,17 +1,8 @@
 class TrainAndEval:
-    """
-    進階的訓練與評估管理器：整合漸進式訓練策略和完整的評估機制
     
-    主要特色：
-    1. 支援漸進式解凍訓練策略
-    2. 自動學習率調整
-    3. 完整的訓練監控
-    4. 混合精度訓練支援
-    5. 早期停止機制
-    """
     def __init__(
         self,
-        model: nn.Module,  # 現在接收的是 ModelManager 實例
+        model: ModelManager,  # 這裡明確指定接收 ModelManager 實例
         train_loader: torch.utils.data.DataLoader,
         val_loader: torch.utils.data.DataLoader,
         memory_manager: Any,
@@ -20,50 +11,46 @@ class TrainAndEval:
         scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
         device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
         use_amp: bool = True,
-        learning_rate: float = 1e-3,
+        learning_rate: Optional[float] = None,  # 改為可選參數
         total_epochs: int = 100,
-        unfreeze_strategy: Optional[Dict] = None  # 新增：解凍策略配置
+        unfreeze_strategy: Optional[Dict] = None
     ):
-        """
-        初始化訓練管理器
-        Args:
-            ...原有參數...
-            unfreeze_strategy: 解凍策略配置，例如：
-                {
-                    0.1: 2,    # 在 10% 的訓練進度時解凍後 2 層
-                    0.3: 4,    # 在 30% 的訓練進度時解凍後 4 層
-                    0.5: None  # 在 50% 的訓練進度時解凍所有層
-                }
-        """
+        """初始化訓練管理器，主要修改在於更好地處理學習率和優化器的設置"""
         self.model = model.to(device)
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.device = device
         self.use_amp = use_amp
         self.unfreeze_strategy = unfreeze_strategy or {
-            0.2: 2,    # 默認在 20% 時解凍後 2 層
-            0.4: 4,    # 40% 時解凍後 4 層
-            0.6: None  # 60% 時解凍所有層
+            0.2: 2,
+            0.4: 4,
+            0.6: None
         }
         
         # 設置損失函數
         self.criterion = criterion if criterion is not None else nn.CrossEntropyLoss()
         
-        # 設置優化器：使用 ModelManager 的參數分組
+        # 優化器設置改進：使用 ModelManager 的參數分組
         if optimizer is None:
+            if learning_rate is None:
+                raise ValueError("Either optimizer or learning_rate must be provided")
+                
             self.optimizer = torch.optim.AdamW(
                 self.model.get_trainable_params(),  # 使用 ModelManager 的參數分組
                 weight_decay=0.01
             )
+            # 更新每個參數組的學習率
+            for param_group in self.optimizer.param_groups:
+                param_group['lr'] *= learning_rate  # 根據基礎學習率調整
         else:
             self.optimizer = optimizer
-            
-        # 設置學習率調度器
+
+        # 學習率調度器設置
         if scheduler is None:
             steps_per_epoch = len(train_loader)
             self.scheduler = torch.optim.lr_scheduler.OneCycleLR(
                 self.optimizer,
-                max_lr=[group['lr'] * 4 for group in self.optimizer.param_groups],  # 為每個參數組設置學習率
+                max_lr=[group['lr'] * 4 for group in self.optimizer.param_groups],
                 epochs=total_epochs,
                 steps_per_epoch=steps_per_epoch,
                 pct_start=0.3,
@@ -105,7 +92,7 @@ class TrainAndEval:
                     self.model.unfreeze_layers(num_layers)
 
     def train_epoch(self) -> tuple[float, float]:
-        """執行一個訓練 epoch，現在包含特徵輸出"""
+        """執行一個訓練epoch"""
         self.model.train()
         total_loss = 0
         total_correct = 0
