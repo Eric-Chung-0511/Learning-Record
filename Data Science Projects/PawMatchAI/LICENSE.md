@@ -43,6 +43,14 @@ Original work © 2025 Eric Chung
 2. While the focus is on learning and educational use, all usage requires proper attribution
 3. The author reserves the right to grant additional permissions on a case-by-case basis
 
+## Usage Rights
+While this work was originally released under more restrictive terms, the current license allows for broader usage, including potential commercial applications, provided that:
+1. Proper attribution is maintained as specified in the Attribution Requirements section
+2. The original author's rights and contributions are clearly acknowledged
+3. The work's origin as a portfolio project is respected and properly cited
+
+This change in licensing reflects an evolution in the project's scope while maintaining the core requirement of proper attribution and acknowledgment of the original work.
+
 ## Disclaimer
 This work is provided "AS IS", without warranty of any kind, express or implied. The author shall not be liable for any claims, damages, or other liability arising from the use or inability to use the work.
 
