@@ -422,7 +422,7 @@ The intelligent matching system evaluates compatibility between potential dog ow
 ---
 
 ## 🌐 Model Deployment
-The model is deployed on **Hugging Face Spaces**, providing users with an intuitive interface for:
+The model is deployed on **Hugging Face Space**, providing users with an intuitive interface for:
 1. **Breed Detection:** Upload an image for detailed classification results.
 2. **Breed Comparison:** Explore side-by-side comparisons of two breeds.
 3. **Breed Recommendation:** Receive personalized suggestions based on preferences.
