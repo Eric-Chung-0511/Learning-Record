@@ -117,9 +117,11 @@
 
 **[⇧ back to top ⇧](#top)**
 
-<h2 id="license">🔏 License</h2>
+<h2 id="license">📜 License</h2>
 
-* This project is licensed under the Apache 2.0 License. For more details, see the [LICENSE](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/LICENSE.md) file.
+© 2025 Eric Chung. This project is licensed under the Apache License 2.0, a permissive open source license that enables broad usage while ensuring proper attribution to the original author.
+
+For detailed terms and conditions, please refer to the [LICENSE](./LICENSE.md) file.
 
 **[⇧ back to top ⇧](#top)**
 
