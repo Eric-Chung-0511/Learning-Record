@@ -467,62 +467,9 @@ The model is deployed on **Hugging Face Spaces**, providing users with an intuit
   
 ---
 
-
 ## 📜 License
-![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue)
+![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-lightgray)
 
-# License and Copyright Notice
-© 2025 Eric Chung. 
+© 2025 Eric Chung. This project is licensed under the Apache License 2.0, a permissive open source license that enables broad usage while ensuring proper attribution to the original author.
 
-This project is licensed under the Apache License 2.0, ensuring proper attribution and allowing broad usage while maintaining transparency and credit to the original author.
-
-## Terms of Use
-This project is licensed under the **Apache License 2.0**:
-
-### You are free to:
-- Study and learn from the code
-- Use the project (including commercial use)
-- Modify and adapt the project
-- Share and distribute the project
-
-### Under the following required terms:
-1. **Attribution Requirements:**
-   - Maintain the original copyright notice: `© 2025 Eric Chung`
-   - Include a link to the original project: [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)
-   - Clearly indicate that you are using Eric Chung's work
-   - State if you have modified the original project
-
-2. **License Compliance:**
-   - You **must include a copy of this license** in any distributed or modified version of this project.
-   - If you modify the files, **you must state what changes were made**.
-   - You **cannot remove the original license notice** from the project files.
-
-3. **Attribution Display:**
-   - **In code:** Keep the copyright header in source files.
-   - **In applications:** Include attribution in the about/credits section.
-   - **In documentation:** Include attribution in the README or documentation.
-
-### Example Attribution:
-This project uses work created by [Eric Chung](https://github.com/Eric-Chung-0511)
-([PawMatchAI Project](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI))
-
-Original work © 2025 Eric Chung.
-Licensed under the Apache License, Version 2.0.
-
-
-## Note to Users
-This project was originally created as a portfolio piece for career transition purposes. While you are welcome to use and build upon this work, proper attribution helps:
-- Maintain academic integrity
-- Support the original author's career development
-- Foster trust in the open-source community
-
-## Disclaimer
-This work is provided "AS IS", without warranty of any kind, express or implied. The author shall not be liable for any damages arising from the use of this project.
-
-## Full License Text
-The full license text can be found here: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
-## Contact
-For questions about usage or collaboration, please:
-- Open an issue in this repository
-- Contact the author through GitHub
+For detailed terms and conditions, please refer to the [LICENSE](./LICENSE.md) file.
