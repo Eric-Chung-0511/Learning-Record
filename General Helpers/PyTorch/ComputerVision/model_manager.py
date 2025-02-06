@@ -28,11 +28,8 @@ class ModelManager(nn.Module):
         self.model_name = model_name
         self.num_classes = num_classes
         
-        # 初始化骨幹網路
-        self.backbone = self._initialize_backbone()
-        
-        # 自動檢測特徵維度
-        self.feature_dim = self._detect_feature_dim()
+        # 初始化骨幹網路並獲取特徵維度
+        self.backbone, self.feature_dim = self._initialize_backbone_and_dim()
         
         # 設置 attention 層（如果需要）
         self.use_attention = use_attention
@@ -51,40 +48,59 @@ class ModelManager(nn.Module):
         # 初始時凍結所有層
         self.freeze_backbone()
         
-    def _initialize_backbone(self) -> nn.Module:
-        """初始化並配置骨幹網路"""
+    def _initialize_backbone_and_dim(self) -> Tuple[nn.Module, int]:
+        """初始化骨幹網路並直接獲取特徵維度"""
         try:
-            # 嘗試從 timm 加載
+            # 從 timm 加載
             if self.model_name in timm.list_models():
                 model = timm.create_model(self.model_name, pretrained=True)
+                # 獲取特徵維度
+                feature_dim = self._get_timm_feature_dim(model)
                 # 移除分類層
                 if hasattr(model, 'head'):
                     model.head = nn.Identity()
                 elif hasattr(model, 'fc'):
                     model.fc = nn.Identity()
-                return model.to(self.device)
+                return model.to(self.device), feature_dim
                 
-            # 嘗試從 torchvision 加載
+            # 從 torchvision 加載
             if hasattr(tv_models, self.model_name):
                 model = getattr(tv_models, self.model_name)(weights='DEFAULT')
+                # 獲取特徵維度
+                feature_dim = self._get_torchvision_feature_dim(model)
                 if hasattr(model, 'fc'):
                     model.fc = nn.Identity()
                 elif hasattr(model, 'classifier'):
                     model.classifier = nn.Identity()
-                return model.to(self.device)
+                return model.to(self.device), feature_dim
                 
         except Exception as e:
             raise ValueError(f"Error loading model {self.model_name}: {str(e)}")
             
         raise ValueError(f"Model {self.model_name} not found in supported sources")
-        
-    def _detect_feature_dim(self) -> int:
-        """使用 dummy input 自動檢測特徵維度"""
-        self.backbone.eval()
-        with torch.no_grad():
-            dummy_input = torch.randn(1, 3, 224, 224).to(self.device)
-            features = self.backbone(dummy_input)
-            return features.shape[1]
+
+    def _get_timm_feature_dim(self, model: nn.Module) -> int:
+        """獲取 timm 模型的特徵維度"""
+        if hasattr(model, 'num_features'):
+            return model.num_features
+        elif hasattr(model, 'head.in_features'):
+            return model.head.in_features
+        elif hasattr(model, 'fc.in_features'):
+            return model.fc.in_features
+        raise ValueError(f"Cannot determine feature dimension for model {self.model_name}")
+
+    def _get_torchvision_feature_dim(self, model: nn.Module) -> int:
+        """獲取 torchvision 模型的特徵維度"""
+        if hasattr(model, 'fc'):
+            return model.fc.in_features
+        elif hasattr(model, 'classifier'):
+            if isinstance(model.classifier, nn.Linear):
+                return model.classifier.in_features
+            elif isinstance(model.classifier, nn.Sequential):
+                for layer in model.classifier:
+                    if isinstance(layer, nn.Linear):
+                        return layer.in_features
+        raise ValueError(f"Cannot determine feature dimension for model {self.model_name}")
             
     def _build_classifier(self) -> nn.Sequential:
         """建立分類器頭部"""
@@ -172,4 +188,3 @@ class ModelManager(nn.Module):
             
         logits = self.classifier(features)
         return features, logits
-
