@@ -464,6 +464,7 @@ The model is deployed on **Hugging Face Space**, providing users with an intuiti
 - [Prototypical Networks for Few-shot Learning](https://arxiv.org/pdf/1703.05175)
 - [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/pdf/2002.05709)
 - [Focal Loss for Dense Object Detection](https://arxiv.org/pdf/1708.02002)
+- [Cyclical Learning Rates for Training Neural Networks](https://arxiv.org/pdf/1506.01186)
 - [A disciplined approach to neural network hyper-parameters: Part 1 - learning rate, batch size, momentum, and weight decay](https://arxiv.org/pdf/1803.09820)
 - [mixup: BEYOND EMPIRICAL RISK MINIMIZATION](https://arxiv.org/pdf/1710.09412)
 - [Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks](https://arxiv.org/pdf/1908.10084)
