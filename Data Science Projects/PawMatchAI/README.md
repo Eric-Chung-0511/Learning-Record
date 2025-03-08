@@ -454,6 +454,7 @@ The model is deployed on **Hugging Face Space**, providing users with an intuiti
 
 ## 📚 Acknowledgments and References
 - [Stanford Dogs Dataset](https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data)
+- [How does the brain solve visual object recognition](https://pmc.ncbi.nlm.nih.gov/articles/PMC3306444/)
 - [A ConvNet for the 2020s](https://arxiv.org/pdf/2201.03545)
 - [ConvNeXt V2: Co-designing and Scaling ConvNets with Masked Autoencoders](https://arxiv.org/pdf/2301.00808)
 - [RandAugment: Practical automated data augmentation with a reduced search space](https://arxiv.org/pdf/1909.13719)
