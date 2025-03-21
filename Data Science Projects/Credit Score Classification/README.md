@@ -16,7 +16,6 @@
 * Label Encoder
 * SMOTE
 * StandardScaler
-* Object Oriented Programming (OOP)
 
 ### 📈 Modeling, Parameter Tuning, and Evaluation:
 * Bayesian Optimization
@@ -68,8 +67,6 @@
 * **Model Training and Fine-Tuning**: Further fine-tuned models and evaluated using accuracy, precision, recall, F1-score, and ROC_AUC.
   
 * **ANN Implementation**: Built and evaluated an Artificial Neural Network with the same metrics.
-
-* **Using Object-Oriented Programming (OOP)**: Implemented an object-oriented approach to create a reusable class for model evaluation and plotting ROC curves. This class includes methods for calculating performance metrics and plotting ROC curves for multiclass classification and voting classifiers.
 
 ### 📊 Results:
 The Voting Classifier achieved the best results with the following metrics:
