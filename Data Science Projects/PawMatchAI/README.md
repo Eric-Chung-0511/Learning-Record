@@ -131,6 +131,25 @@ The intelligent matching system evaluates compatibility between potential dog ow
      
 ---
 
+### 4. 🧭 Visualization Analysis
+
+To enhance explainability and user experience, the recommendation system now includes **lifestyle-based radar charts** that visualize each breed’s characteristics across six dimensions:
+
+- Space Requirements  
+- Exercise Needs  
+- Grooming Level  
+- Owner Experience  
+- Health Considerations  
+- Noise Behavior  
+
+These visualizations help users intuitively understand how a breed aligns with their lifestyle preferences.
+
+When users compare two breeds, both **radar charts** and **bar charts** are displayed side-by-side, offering a clear contrast across all factors—ideal for thoughtful decision-making.
+
+All visual elements are powered by the **same internal dataset and scoring logic** used by the recommendation engine, ensuring consistency between what the model computes and what the user sees.
+
+---
+
 ## 📊 Results
 - **F1 Score:** The system achieved an overall **F1 Score of 88.70%,** across 124 breeds.
 - **Few-Shot Ready:** The architecture is prepared to support new breeds or species with minimal training data, enabling easy scalability.
