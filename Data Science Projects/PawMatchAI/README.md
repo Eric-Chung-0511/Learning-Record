@@ -198,7 +198,7 @@ All visual elements are powered by the **same internal dataset and scoring logic
 
 3. **Morphological Feature Analysis System**
 
-- Inspired by how humans observe—from overall form down to fine details—this system breaks down morphological features in a structured way to mimic expert-like visual understanding.
+- Inspired by how humans observe, from overall form down to fine details, this system breaks down morphological features in a structured way to mimic expert-like visual understanding.
 
 - **How It Works:**
   The system integrates five dedicated analyzers:
