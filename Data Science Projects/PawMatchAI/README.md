@@ -421,7 +421,7 @@ All visual elements are powered by the **same internal dataset and scoring logic
        - Application to other challenging computer vision tasks
        - Development of more intuitive training methodologies
        - Integration of human learning principles in AI development
-       -     
+            
 ---
 
 ### 🔎 Advanced Dog Detection System
