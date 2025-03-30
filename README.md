@@ -33,7 +33,7 @@
 
 ### Others
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?logo=github)
-[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache2.0-red.svg?logo=open-source-initiative)](https://opensource.org/licenses/MIT)
 
 
 
