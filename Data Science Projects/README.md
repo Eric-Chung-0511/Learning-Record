@@ -19,7 +19,10 @@ When working with complex datasets, I've found that thoughtful feature engineeri
 
 One of the most challenging aspects of real world data science is dealing with imbalanced datasets, especially in domains like fraud detection where the events of interest are rare. To address this, I've implemented both **SMOTE (Synthetic Minority Over-sampling Technique)** and **ADASYN (Adaptive Synthetic Sampling)** in multiple projects. These techniques have proven invaluable for creating synthetic examples that help models better learn the patterns of minority classes without simply oversampling existing points.
 
-Outlier detection has also been a focus area for me, as anomalies can significantly impact model performance. I've utilized the robust algorithms in the **PyOD library** to detect and handle outliers in ways that preserve the integrity of the analysis while acknowledging their potential importance in certain contexts.
+Outlier detection has also been a focus area for me, as anomalies can significantly impact model performance.  
+I've developed custom functions using the **Interquartile Range (IQR) method** to identify and handle outliers thoughtfully.  
+Rather than simply removing them, I apply **median imputation** or **quantile-based trimming**, sometimes combined with **logarithmic transformation** for skewed features, ensuring the dataset remains robust and clean for modeling.
+
 
 **[⇧ back to top ⇧](#top)**
 
