@@ -53,7 +53,7 @@ The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/ma
 
 Here are two highlighted projects that showcase different aspects of my skills:
 
-* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** - A deep learning project for dog breed classification with over **11,000 GPU Runs and 30,000+ visits** on Hugging Face Spaces. This project was featured in Hugging Face's "Spaces of the Week," showcasing its practical application and user engagement.
+* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** - A deep learning project for dog breed classification with over **11k+ GPU Runs and 30k+ visits** on Hugging Face Spaces. This project was featured in Hugging Face's "Spaces of the Week," showcasing its practical application and user engagement.
 
 * 💳 **[Credit Card Fraud Detection](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/Credit%20Card%20Fraud%20Detection)** - A traditional machine learning project tackling highly imbalanced data to detect fraudulent transactions. Using advanced techniques like **ADASYN** sampling and **XGBoost** with **Bayesian hyperparameter optimization**, this project achieved a **99% AUC score**, showcasing my skills in data preprocessing and model evaluation.
 
