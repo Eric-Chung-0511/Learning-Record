@@ -131,7 +131,7 @@ As I continue building my skill set in AI and machine learning, there are a few 
   This has already changed how we approach deep learning problems. Instead of training from scratch, we build on existing knowledge. I'm particularly interested in more advanced fine-tuning methods that help large models adapt to smaller, specialized domains. The challenge is making them flexible without overwriting what’s already valuable — a balance that’s surprisingly tricky.
 
 - **Large Language Models (LLMs)**  
-  I’ve been following the progression from GPT-4 to LLaMA 3 with a lot of interest. Beyond generation tasks, I’m curious about how LLMs can be tailored for specific domains, or integrated into pipelines that involve reasoning, retrieval, or symbolic logic. There’s real potential here, but also important questions around alignment, efficiency, and trust.
+  I’ve been following the progression from GPT-4 to Llama 4 with a lot of interest. Beyond generation tasks, I’m curious about how LLMs can be tailored for specific domains, or integrated into pipelines that involve reasoning, retrieval, or symbolic logic. There’s real potential here, but also important questions around alignment, efficiency, and trust.
 
 - **Multimodal Learning**  
   This is the area I’m most excited about. Combining different types of input — such as text, images, and potentially audio. Unlocks possibilities that go well beyond what single-modality models can achieve. I’d love to build tools that can read a paper and not only understand the text, but also interpret the accompanying charts, tables, and images. It feels like a meaningful step toward making complex knowledge more accessible and better connected.
