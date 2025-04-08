@@ -150,6 +150,43 @@ All visual elements are powered by the **same internal dataset and scoring logic
 
 ---
 
+### 5. 🧑‍🎨 Style Transfer
+
+Ever wondered what your dog would look like as a watercolor painting, a cyberpunk hero, or even an anime character? With the new **Style Transfer** feature, you can now transform ordinary dog photos into extraordinary works of art — all with just a few clicks.
+
+This creative module blends **Stable Diffusion** technology with custom-designed prompts and preprocessing to deliver high-quality, breed-aware stylized outputs.
+
+#### 🎨 Available Styles
+
+Choose from five thoughtfully selected art styles, each offering a distinct visual flavor:
+
+- **Japanese Anime Style** — Vibrant color palettes, expressive eyes, and simplified linework reminiscent of hand-drawn anime  
+- **Classic Cartoon** — Bold outlines and playful exaggeration that echo traditional animated characters  
+- **Oil Painting** — Rich, textured strokes and soft chiaroscuro effects, evoking fine art portraiture  
+- **Watercolor** — Light, flowing washes of color with gentle transitions and visible paper textures  
+- **Cyberpunk** — A high-tech dystopian feel, complete with neon lights, glowing wires, and futuristic overlays  
+
+#### ⚙️ Behind the Scenes
+
+Here’s how the Style Transfer feature works under the hood to make your images both creative and recognizable:
+
+- **Stable Diffusion + Style-Aware Prompts**  
+  Each transformation is powered by Stable Diffusion's `img2img` pipeline, guided by carefully designed prompts that not only express artistic intent (like anime or cyberpunk) but also preserve your dog’s breed-specific traits and facial features.
+
+- **Smart Image Preprocessing**  
+  Before generating the final result, your photo goes through automated enhancements such as contrast tuning, sharpening, and aspect-ratio-preserving resizing with padding — all to help the model focus on what matters most.
+
+- **Adaptive Inference Engine**  
+  Every style uses fine-tuned parameters (strength, guidance scale, steps), and the system automatically adjusts based on image characteristics and hardware resources. If needed, it falls back to lighter settings to ensure successful generation.
+
+#### ⭐ Use Cases
+
+Whether you're creating a framed artwork, a personalized greeting card, or simply exploring AI-powered creativity, this feature offers a fun and flexible playground for anyone with an image and imagination.
+
+You're not limited to dogs — users have experimented with everything from portraits to plush toys and even everyday objects. And while results may sometimes surprise you (in ways you didn’t expect!), that’s part of the charm. It’s all about creative discovery and letting the AI work its magic.
+
+---
+
 ## 📊 Results
 - **F1 Score:** The system achieved an overall **F1 Score of 88.70%,** across 124 breeds.
 - **Few-Shot Ready:** The architecture is prepared to support new breeds or species with minimal training data, enabling easy scalability.
