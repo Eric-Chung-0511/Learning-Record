@@ -19,6 +19,19 @@
 * classification Report
 * ROC Curve
 
+---
+
+## ⚠️ Important Notice
+**Due to a current GitHub issue with rendering Jupyter notebooks (missing 'state' key in metadata.widgets), the notebook code and outputs may not display properly in this repository.**
+
+For the complete notebook with all outputs and visualizations, please access the project via this Google Colab link:  
+👉 [View Complete Project in Google Colab](https://colab.research.google.com/drive/1yu2McKvoto2WodkWrbTZcryrNj2CjsCc?hl=zh-tw)
+
+The issue is being tracked by GitHub and will be resolved as soon as possible. Thank you for your understanding!
+
+---
+
+
 ## 🤖 Skills Detail:
 ### 👓 Data Handling and Visualization:
 * **Python Libraries**: Used Pandas for data manipulation and analysis, NumPy for numerical operations, and Matplotlib and Seaborn for creating diverse plots like histograms, box plots and more  to visualize data distributions and inter-variable relationships. These visualizations help highlight key features and relationships critical to understanding fraud dynamics.
