@@ -11,6 +11,19 @@ The goal of this project is to develop a model capable of accurately recognizing
 - Gradio
 - Transfer Learning (ResNet-50, EfficientNetB3)
 
+---
+
+
+## ⚠️ Important Notice
+**Due to a current GitHub issue with rendering Jupyter notebooks (missing 'state' key in metadata.widgets), the notebook code and outputs may not display properly in this repository.**
+
+For the complete notebook with all outputs and visualizations, please access the project via this Google Colab link:  
+👉 [View Complete Project in Google Colab](https://colab.research.google.com/drive/1omaPJG1CTiJTNMuRsXyJ3YEKk56QXabC?usp=sharing)
+
+The issue is being tracked by GitHub and will be resolved as soon as possible. Thank you for your understanding!
+
+---
+
 ## 🚀 Project Details:
 
 ### 🧠 Model Exploration and Selection:
