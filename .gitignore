@@ -1,0 +1,19 @@
+# 忽略大型模型檔案
+*.pth
+*.h5
+
+# 忽略 Jupyter 筆記本（除非你特別想要包含某些筆記本）
+*.ipynb
+
+# 忽略資料庫檔案
+*.db
+*.sqlite
+
+# 忽略系統檔案
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+
+# 忽略特定資料夾（如果有需要）
+Data Science Projects/PawMatchAI/Model_Deployment/Model_Deployment_241219/
+Data Science Projects/PawMatchAI/Model_Deployment/Model_Deployment_241229/
