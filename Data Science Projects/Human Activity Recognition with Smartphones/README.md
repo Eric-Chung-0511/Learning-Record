@@ -69,7 +69,7 @@
 * **Model Saving and Reloading for Testing**: Finally, the best-performing models are saved and later reloaded to test their accuracy on new, unseen data. This step ensures the robustness of our models and their ability to generalize well to new inputs.
 
 ## 📜 Conclusion:
-* In this project, we tackled the task of human activity recognition using data collected from smartphones. We meticulously handled outliers using the IQR method with both median and quantile imputation techniques.
+* In this project, I tackled the task of human activity recognition using data collected from smartphones. Handled outliers using the IQR method with both median and quantile imputation techniques.
 
 *  **Leveraging FunctionTransformer allowed us to seamlessly integrate custom preprocessing steps into a pipeline. We employed ColumnTransformer for efficient outlier handling and scaling, followed by dimensionality reduction using PCA.**
 
