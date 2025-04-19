@@ -84,6 +84,8 @@ class ModelManager:
                 device=self.device
             ).to(self.device)
 
+            # ✅ torch.load is safe here since model checkpoint is locally saved and trusted.
+            # ⚠️ CVE-2025-32434 warning is not applicable in our case.
             checkpoint = torch.load(
                 'ConvNextV2Base_best_model.pth',
                 map_location=self.device
