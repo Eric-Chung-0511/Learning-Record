@@ -1,0 +1,8 @@
+# Ignore Jupyter notebooks
+*.ipynb
+
+# Ignore temporary files
+__pycache__/
+*.pyc
+.DS_Store
+
