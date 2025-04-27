@@ -12,7 +12,8 @@ class VisualizationHelper:
     @staticmethod
     def visualize_detection(image: Any, result: Any, color_mapper: Optional[Any] = None,
                             figsize: Tuple[int, int] = (12, 12),
-                            return_pil: bool = False) -> Optional[Image.Image]:
+                            return_pil: bool = False,
+                            filter_classes: Optional[List[int]] = None) -> Optional[Image.Image]:
         """
         Visualize detection results on a single image
 
@@ -73,6 +74,10 @@ class VisualizationHelper:
         for box, cls, conf in zip(boxes, classes, confs):
             x1, y1, x2, y2 = box
             cls_id = int(cls)
+            
+            if filter_classes and cls_id not in filter_classes:
+                continue
+
             cls_name = names[cls_id]
 
             # Get color for this class
