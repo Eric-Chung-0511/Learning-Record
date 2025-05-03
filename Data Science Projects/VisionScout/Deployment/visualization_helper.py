@@ -74,7 +74,7 @@ class VisualizationHelper:
         for box, cls, conf in zip(boxes, classes, confs):
             x1, y1, x2, y2 = box
             cls_id = int(cls)
-            
+
             if filter_classes and cls_id not in filter_classes:
                 continue
 

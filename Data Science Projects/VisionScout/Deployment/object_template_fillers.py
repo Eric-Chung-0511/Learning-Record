@@ -1,0 +1,78 @@
+
+OBJECT_TEMPLATE_FILLERS = {
+                "furniture": ["designer chairs", "wooden dining table", "stylish seating", "upholstered armchairs", "elegant dining furniture"],
+                "design_elements": ["art pieces", "decorative wreaths", "statement lighting", "seasonal decorations", "sophisticated decor"],
+                "lighting": ["pendant lights", "decorative fixtures", "geometric lighting", "modern chandeliers", "ambient illumination"],
+                "table_setup": ["elegantly set table", "tabletop decorations", "seasonal centerpieces", "formal place settings", "floral arrangements"],
+                "seating": ["upholstered chairs", "accent armchairs", "mixed seating styles", "designer dining chairs", "comfortable dining seats"],
+                "table_description": ["solid wood table", "designer dining table", "expansive dining surface", "artisanal table", "statement dining table"],
+
+                "storefront_features": ["multi-story shops", "illuminated signs", "merchandise displays", "compact storefronts", "vertical retail spaces"],
+                "pedestrian_flow": ["people walking", "shoppers", "pedestrians", "locals and tourists", "urban foot traffic"],
+                "asian_elements": ["Asian language signage", "decorative lanterns", "local storefronts", "character-based text", "regional design elements"],
+                "cultural_elements": ["red lanterns", "local typography", "distinctive architecture", "cultural symbols", "traditional decorations"],
+                "signage": ["bright store signs", "multilingual text", "vertical signboards", "neon displays", "electronic advertisements"],
+                "street_activities": ["shopping", "commuting", "socializing", "vendor transactions", "urban navigation"],
+
+                "buildings": ["high-rise office buildings", "corporate towers", "skyscrapers", "financial institutions", "commercial headquarters"],
+                "traffic_elements": ["vehicle lights", "trams/street cars", "lane markers", "traffic signals", "urban transit"],
+                "skyscrapers": ["glass and steel buildings", "tall structures", "modern architecture", "office towers", "urban high-rises"],
+                "road_features": ["wide avenues", "tram tracks", "traffic lanes", "median dividers", "urban throughways"],
+                "architectural_elements": ["contemporary buildings", "urban design", "varied architectural styles", "corporate architecture", "city planning features"],
+                "city_landmarks": ["distant bridge", "skyline features", "iconic structures", "urban monuments", "signature buildings"],
+
+                "crossing_pattern": ["zebra crosswalks", "pedestrian walkways", "crosswalk markings", "intersection design", "safety stripes"],
+                "pedestrian_density": ["groups of people", "commuters", "diverse pedestrians", "urban crowds", "varying foot traffic"],
+                "pedestrian_behavior": ["walking in different directions", "crossing together", "waiting for signals", "navigating intersections", "following traffic rules"],
+                "traffic_pattern": ["four-way intersection", "crossroad", "junction", "multi-directional traffic", "regulated crossing"],
+                "pedestrian_flow": ["people crossing", "directional movement", "coordinated crossing", "timed pedestrian traffic", "intersection navigation"],
+
+                "transit_vehicles": ["buses", "trams", "trains", "taxis", "shuttles"],
+                "passenger_activity": ["boarding", "waiting", "exiting vehicles", "checking schedules", "navigating stations"],
+                "transportation_modes": ["public transit", "private vehicles", "ride services", "light rail", "bus systems"],
+                "passenger_needs": ["waiting areas", "information displays", "ticketing services", "transit connections", "seating"],
+                "transit_infrastructure": ["stations", "platforms", "boarding areas", "transit lanes", "signaling systems"],
+                "passenger_movement": ["transfers", "entrances and exits", "queueing", "platform access", "terminal navigation"],
+
+                "retail_elements": ["storefronts", "display windows", "shopping bags", "merchandise", "retail signage"],
+                "shopping_activity": ["browsing", "carrying purchases", "window shopping", "social shopping", "consumer activities"],
+                "store_types": ["boutiques", "brand stores", "local shops", "chain retailers", "specialty stores"],
+                "walkway_features": ["pedestrian paths", "shopping promenades", "retail corridors", "commercial walkways", "shopping streets"],
+                "commercial_signage": ["brand logos", "sale announcements", "store names", "advertising displays", "digital signage"],
+                "consumer_behavior": ["shopping in groups", "individual browsing", "carrying bags", "examining products", "moving between stores"],
+
+                "beach_equipment": ["beach umbrellas", "surfboards", "beach towels", "sun protection", "recreational equipment"],
+                "water_activities": ["water sports", "surfing", "beach recreation", "sun bathing", "coastal leisure"],
+                "sports_equipment": ["game balls", "professional equipment", "athletic gear", "sports apparatus", "competition items"],
+                "competitive_activities": ["team sports", "athletic contests", "competitive games", "sporting events", "professional matches"],
+                "kitchen_equipment": ["professional appliances", "cooking stations", "preparation surfaces", "culinary tools", "industrial equipment"],
+                "food_preparation": ["meal production", "culinary operations", "food service preparation", "commercial cooking", "kitchen workflow"],
+
+                "crossing_pattern": ["grid-like pedestrian crossings", "multi-directional crosswalks", "cross-shaped intersection design", "perpendicular crossing lanes", "zebra-striped crosswalks viewed from above"],
+                "pedestrian_pattern": ["scattered distribution of people", "organized flow of pedestrians", "clustered gatherings", "radial movement patterns", "linear procession of individuals"],
+                "commercial_layout": ["parallel shopping streets", "interconnected shopping blocks", "radial marketplace design", "grid-like retail arrangement", "meandering commercial pathways"],
+                "movement_pattern": ["circular crowd motion", "directional pedestrian flow", "scattered individual movement", "converging foot traffic", "diverging pedestrian patterns"],
+
+                "stall_elements": ["food vendors with steaming woks", "trinket sellers with colorful displays", "lantern-lit stalls", "bamboo-framed shops", "canvas-covered market stands"],
+                "asian_elements": ["hanging red lanterns", "character-based signage", "ornate temple decorations", "traditional paper decorations", "stylized gateway arches"],
+                "cultural_lighting": ["paper lantern illumination", "neon character signs", "strung festival lights", "hanging light chains", "colorful shop front lighting"],
+                "architectural_elements": ["tiered pagoda roofs", "ornate dragon sculptures", "stone guardian statues", "intricately carved railings", "traditional wooden beams"],
+                "cultural_symbols": ["dharma wheels", "lotus motifs", "yin-yang symbols", "zodiac animal representations", "traditional calligraphy"],
+                "architectural_style": ["Baroque facades", "Gothic spires", "Renaissance colonnades", "Neoclassical pediments", "Medieval archways"],
+                "european_features": ["cobblestone paving", "ornate fountains", "bronze statuary", "wrought iron lampposts", "cafe terraces"],
+
+                "lighting_effects": ["streetlamp pools of light", "neon sign glow", "illuminated window squares", "headlight streams", "traffic signal flashes"],
+                "illuminated_elements": ["lit storefront windows", "glowing traffic signals", "illuminated advertising", "headlight-lit streets", "backlit silhouettes"],
+                "neon_elements": ["colorful shop signs", "animated light displays", "illuminated brand logos", "glowing storefront outlines", "digital advertising screens"],
+                "illuminated_signage": ["bright LED displays", "glowing brand names", "projected light advertisements", "illuminated menu boards", "digital information screens"],
+                "colorful_lighting": ["multi-colored neon", "warm ambient illumination", "cool blue accent lights", "festive string lighting", "dynamic color-changing displays"],
+
+                "transitional_elements": ["retractable glass walls", "indoor-outdoor bar counters", "terraced seating areas", "threshold planters", "partial canopy coverage"],
+                "indoor_features": ["climate-controlled spaces", "soft seating arrangements", "interior decor accents", "mood lighting fixtures", "sound-dampened areas"],
+                "outdoor_setting": ["sidewalk tables", "patio seating", "garden furniture", "open-air counters", "courtyard arrangements"],
+                "seating_arrangement": ["tiered spectator stands", "premium viewing boxes", "courtside seating", "general admission benches", "stadium chair rows"],
+                "playing_surface": ["marked court boundaries", "manicured field turf", "running tracks", "competition equipment", "sports field markers"],
+                "construction_equipment": ["tower cranes", "excavators", "cement mixers", "scaffolding structures", "construction barriers"],
+                "medical_elements": ["examination furniture", "monitoring equipment", "sanitation stations", "privacy screens", "medical supply carts"],
+                "educational_furniture": ["student desks", "lecture podiums", "laboratory benches", "learning stations", "collaborative workspace tables"]
+            }

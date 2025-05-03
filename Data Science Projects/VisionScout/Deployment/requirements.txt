@@ -6,3 +6,4 @@ pillow>=9.4.0
 numpy>=1.23.5
 matplotlib>=3.7.0
 gradio>=3.32.0
+git+https://github.com/openai/CLIP.git
