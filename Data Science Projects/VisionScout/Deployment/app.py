@@ -425,9 +425,18 @@ def create_interface():
 
         # Footer
         gr.HTML("""
-            <div class="footer">
-                <p>Powered by YOLOv8 and Ultralytics • Created with Gradio</p>
-                <p>Model can detect 80 different classes of objects</p>
+            <div class="footer" style="padding: 25px 0; text-align: center; background: linear-gradient(to right, #f5f9fc, #e1f5fe); border-top: 1px solid #e2e8f0; margin-top: 30px;">
+                <div style="margin-bottom: 15px;">
+                    <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Powered by YOLOv8, CLIP and Ultralytics • Created with Gradio</p>
+                    <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Model can detect 80 different classes of objects</p>
+                </div>
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 15px;">
+                    <p style="font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 2px; background: linear-gradient(90deg, #38b2ac, #4299e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; display: inline-block;">EXPLORE THE CODE →</p>
+                    <a href="https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout" style="text-decoration: none;">
+                        <img src="https://img.shields.io/badge/GitHub-VisionScout-4299e1?logo=github&style=for-the-badge">
+                    </a>
+                </div>
             </div>
         """)
 
