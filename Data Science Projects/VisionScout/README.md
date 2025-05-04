@@ -45,7 +45,9 @@ Think of Vision Scout as your AI companion for analyzing images. Here's a glimps
 
 ## 🧠 How It All Comes Together: The Vision Scout Flow
 
-So, how does Vision Scout figure all this out? It's a collaborative process where different AI components work in parallel and then bring their insights together:
+So, how does Vision Scout figure all this out? It's a collaborative process where different AI components work in parallel and then bring their insights together. The flowchart below provides a high-level overview of this process, followed by a detailed step-by-step explanation:
+
+> [FlowChart](https://www.mermaidchart.com/raw/aaf856d8-bbd5-4c08-a434-a99d3ccb64c1?theme=light&version=v0.1&format=svg)
 
 1.  **The Image Arrives:** You provide Vision Scout with an image to analyze.
 
@@ -57,20 +59,20 @@ So, how does Vision Scout figure all this out? It's a collaborative process wher
 
     2.3 **Lighting is Assessed:** The `LightingAnalyzer` independently examines pixel characteristics (brightness, color distribution) to determine the likely *lighting conditions* (e.g., sunny day, dim indoor) and estimate the indoor/outdoor probability.
 
-    2.4 **Space is Mapped:** Using the object locations provided by YOLOv8, the `SpatialAnalyzer` begins to understand the *spatial distribution* – how objects are arranged across different regions of the image.
+    2.4 **Space is Mapped (Using YOLO results):** Immediately following object detection, the `SpatialAnalyzer` uses the locations provided by YOLOv8 to understand the *spatial distribution* – how objects are arranged across different regions of the image.
 
-4.  **Intelligent Fusion - Combining Views:** Now, the `SceneAnalyzer` acts as the conductor, integrating the findings. It considers scene possibilities suggested by YOLO's detected objects (object-based evidence, like "sees a bed -> maybe bedroom?") and those suggested by CLIP's semantic understanding (context-based evidence, like "feels like indoor residential"). It then *intelligently fuses* these scores. This fusion process dynamically gives more weight to YOLO for scenes primarily defined by specific objects (like a kitchen needing certain appliances) and more weight to CLIP for scenes defined by atmosphere, layout, or cultural context (like a bustling market or an aerial view).
+3.  **Intelligent Fusion - Combining Views:** Now, the `SceneAnalyzer` acts as the conductor, integrating the findings. It considers scene possibilities suggested by YOLO's detected objects (object-based evidence, like "sees a bed -> maybe bedroom?") and those suggested by CLIP's semantic understanding (context-based evidence, like "feels like indoor residential"). It then *intelligently fuses* these scores. This fusion process dynamically gives more weight to YOLO for scenes primarily defined by specific objects (like a kitchen needing certain appliances) and more weight to CLIP for scenes defined by atmosphere, layout, or cultural context (like a bustling market or an aerial view).
 
-5.  **Scene Identification:** Based on the intelligently fused scores, the system identifies the single most likely scene type and calculates a confidence level for this determination.
+4.  **Scene Identification:** Based on the intelligently fused scores, the system identifies the single most likely scene type and calculates a confidence level for this determination.
 
-6.  **Contextual Enrichment - Adding Detail:** With the main scene type identified, the system adds layers of detail and nuance:
+5.  **Contextual Enrichment - Adding Detail:** With the main scene type identified, the system adds layers of detail and nuance:
     * Based on the spatial mapping from Step 2.4, the `SpatialAnalyzer` identifies likely **functional zones** within the scene (such as specific seating areas, workspaces, or traffic lanes).
     * The system consults its "Knowledge Base" (the various `.py` template and definition files like `scene_type.py`, `activity_templates.py`, `safety_templates.py`) to infer probable **activities** happening in the scene and flag potential **safety concerns** relevant to that environment and the objects present.
     * Contextual details like viewpoint hints derived from the CLIP analysis are integrated to provide a richer understanding.
 
-7.  **Narrative Crafting - Telling the Story:** Finally, the `EnhancedSceneDescriber` acts as the storyteller. It gathers *all* the previously generated insights—the final scene type, the list of key objects, the lighting mood, the spatial layout and functional zones, inferred activities, safety notes, viewpoint—and uses a sophisticated template system (drawing from `scene_detail_templates.py`, `object_template_fillers.py`, etc.) to weave them into a comprehensive, flowing **natural language description**.
+6.  **Narrative Crafting - Telling the Story:** Finally, the `EnhancedSceneDescriber` acts as the storyteller. It gathers *all* the previously generated insights—the final scene type, the list of key objects, the lighting mood, the spatial layout and functional zones, inferred activities, safety notes, viewpoint—and uses a sophisticated template system (drawing from `scene_detail_templates.py`, `object_template_fillers.py`, etc.) to weave them into a comprehensive, flowing **natural language description**.
 
-8.  **Presenting the Findings:** The complete analysis—including the image annotated with bounding boxes, detailed statistics, and the rich scene understanding report—is organized and clearly displayed back to you in the user-friendly Gradio interface.
+7.  **Presenting the Findings:** The complete analysis—including the image annotated with bounding boxes, detailed statistics, and the rich scene understanding report—is organized and clearly displayed back to you in the user-friendly Gradio interface.
 
 ---
 
