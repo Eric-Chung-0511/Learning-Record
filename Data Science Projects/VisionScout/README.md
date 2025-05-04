@@ -123,8 +123,11 @@ There's always more to explore! Here are some ideas for where Vision Scout could
 ---
 
 ## 📜 License
+![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-lightgray)
 
-This project uses the MIT License. Check the `LICENSE` file for details.
+© 2025 Eric Chung. This project is licensed under the Apache License 2.0, a permissive open source license that enables broad usage while ensuring proper attribution to the original author.
+
+For detailed terms and conditions, please refer to the [LICENSE](./LICENSE.md) file.
 
 ---
 
