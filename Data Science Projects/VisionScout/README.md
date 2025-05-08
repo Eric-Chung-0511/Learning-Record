@@ -8,6 +8,7 @@ While many tools detect objects, Vision Scout offers more:
 * **Intelligent Fusion:** It doesn't just *see* objects (YOLOv8), it understands the *context* and *vibe* (CLIP), smartly combining both for better scene identification.
 * **Rich Narratives, Not Just Labels:** Forget simple tags. Vision Scout crafts detailed, human-like descriptions that tell the story of the scene.
 * **Spatial Smarts:** It figures out where things are in relation to each other, identifying functional zones like 'dining areas' or 'workspaces'.
+* **From Snapshots to Stories Over Time**: Beyond single images, Vision Scout now handles videos, tracking objects and analyzing scene evolution across frames. Whether it’s people moving through a plaza or traffic flowing at an intersection, Vision Scout connects the dots over time, not just space.
 
 ---
 
@@ -38,7 +39,8 @@ Think of Vision Scout as your AI companion for analyzing images. Here's a glimps
   
 * **Reading Between the Lines - Activity & Safety:** Based on the scene and objects (like people near traffic or sharp items in a kitchen), the system suggests **likely activities** and flags potential **safety points**.
 
-  
+* **Video Understanding**: Upload a video, and it will process frames at your chosen interval, detect and track objects over time, and even refresh the scene description periodically. It creates an annotated video output showing both object tracking. Plus, detailed frame-by-frame stats and an overall summary are included.
+
 * **An Interface for Exploration:** All this analysis is presented through a **Gradio web app**. Easily upload images, tweak settings, and view results in organized tabs (annotated image, stats, full report).
 
 ---
@@ -117,7 +119,7 @@ The easiest way to try Vision Scout is via the deployed Hugging Face Space:
 
 There's always more to explore! Here are some ideas for where Vision Scout could go next:
 
-* **Dynamic and Temporal Analysis:** Move beyond static images by handling video inputs. This could involve adding memory or temporal context across frames to understand sequences of events, track object interactions, and analyze dynamic changes within a scene over time.
+* **Dynamic and Temporal Analysis**: Extend beyond static analysis by implementing more advanced video understanding—such as temporal consistency checks, motion pattern recognition, multi-frame activity inference, and higher-level object interactions over time. This would enable the system to not just describe scenes frame-by-frame, but to understand evolving stories, like detecting group behavior, spotting anomalies, or summarizing key events from a full video.
 
 * **Enhanced Intelligence and Domain Specialization:** Integrate Large Language Models (LLMs) to enable richer interactions, such as natural language Q&A about the scene or generating even more flexible and nuanced descriptions. Additionally, fine-tuning the core models (YOLOv8, potentially CLIP) on domain-specific data could significantly boost performance for targeted applications like indoor navigation assistance or retail shelf analysis.
   
