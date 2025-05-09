@@ -53,7 +53,7 @@ The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/ma
 
 Here are two highlighted projects that showcase different aspects of my skills:
 
-* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** – A deep learning project for dog breed classification with over **11k+ GPU Runs and 30k+ visits** on Hugging Face Spaces. This project was featured in Hugging Face’s **"Spaces of the Week"**, showcasing its practical application and user engagement.  
+* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** – A deep learning project for dog breed classification with over **11k+ GPU Runs and 30k+ visits**, and was featured in Hugging Face’s **"Spaces of the Week"** for its strong user engagement and real-world utility.  
 It combines **ConvNeXtV2**, **Multi-Head Attention**, and a **morphological feature extractor** to accurately classify 124 breeds and recommend the most compatible match based on lifestyle preferences.
 
 * 🛰️ **[Vision Scout](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout)** – An advanced computer vision project that combines **YOLOv8** for object detection with **CLIP** for semantic understanding to analyze not just *what* is in an image, but *what the scene means*. From object detection and spatial mapping to narrative scene description and video tracking, Vision Scout pushes beyond simple labels into **scene-level interpretation**. Deployed on Hugging Face with a Gradio interface, it was also featured in Hugging Face’s **"Spaces of the Week"**, highlighting both its innovation and user impact.
