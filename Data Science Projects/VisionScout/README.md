@@ -32,7 +32,8 @@ Think of Vision Scout as your AI companion for analyzing images. Here's a glimps
 
 * **Reading Between the Lines - Activity, Safety & LLM Verification:** Based on the scene and objects (like people near traffic or sharp items in a kitchen), the system suggests **likely activities** and flags potential **safety points**. Furthermore, if conflicting interpretations arise between object detection and semantic analysis, the **LLM** can be optionally invoked to **verify and reconcile** these differences, offering an additional layer of intelligent assessment to the scene understanding.
 
-* **Video Understanding**: Upload a video, and it will process frames at your chosen interval, detect and track objects over time, and even refresh the scene description periodically. It creates an annotated video output showing both object tracking. Plus, detailed frame-by-frame stats and an overall summary are included. The LLM can also be leveraged to generate more cohesive summaries or highlight key events across video segments in future iterations.
+* **Video Understanding**: Upload a video, and the system will extract frames at your chosen interval and run object detection on each frame. It provides frame-by-frame statistics and an overall summary in structured JSON format, showing which object classes appeared and how often.
+While object tracking and scene description updates are not yet implemented, the current architecture is designed to support future enhancements such as multi-frame tracking, dynamic scene understanding, and LLM-based video summarization.
 
 * **An Interface for Exploration:** All this analysis is presented through a **Gradio web app**. Easily upload images, tweak settings, and view results in organized tabs (annotated image, stats, full report). The LLM-enhanced descriptions are clearly marked, allowing you to appreciate the AI's advanced narrative capabilities.
 
