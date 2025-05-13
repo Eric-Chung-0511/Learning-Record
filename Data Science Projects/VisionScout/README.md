@@ -43,7 +43,7 @@ Think of Vision Scout as your AI companion for analyzing images. Here's a glimps
 So, how does Vision Scout figure all this out? It's a collaborative process where different AI components work in parallel and then bring their insights together. The flowchart below provides a high-level overview of this process, followed by a detailed step-by-step explanation:
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/FlowChart.svg" width="800">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/(LLM)VisionScout_YOLO_CLIP_Architecture.png" width="800">
 </p>
 
 
