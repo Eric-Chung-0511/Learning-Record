@@ -151,11 +151,11 @@ class LightingAnalyzer:
 
         avg_saturation = np.mean(s_channel)
 
-        # 天空亮度 
+        # 天空亮度
         upper_half = v_channel[:height//2, :]
         sky_brightness = np.mean(upper_half)
 
-        # 色調分析 
+        # 色調分析
         warm_colors = ((h_channel >= 0) & (h_channel <= 60)) | (h_channel >= 300)
         warm_ratio = np.sum(warm_colors) / (height * width)
 
@@ -186,16 +186,16 @@ class LightingAnalyzer:
         top_scale = scale_factor * 2  # 更積極的下採樣
         top_region = v_channel[:height//4:top_scale, ::top_scale]
         top_region_std = np.std(top_region)
-        ceiling_uniformity = 1.0 - min(1.0, top_region_std / max(np.mean(top_region), 1e-5))
+        ceiling_uniformity = 1.0 - min(1, top_region_std / max(np.mean(top_region), 1e-5))
 
         # 使用更簡單的方法檢測上部水平線
         top_gradients = np.abs(gy[:small_gray.shape[0]//4, :])
         horizontal_lines_strength = np.mean(top_gradients)
         # 標準化
-        horizontal_line_ratio = min(1.0, horizontal_lines_strength / 40)
+        horizontal_line_ratio = min(1, horizontal_lines_strength / 40)
 
         # 極簡的亮點檢測
-        sampled_v = v_channel[::scale_factor*2, ::scale_factor*2]  
+        sampled_v = v_channel[::scale_factor*2, ::scale_factor*2]
         light_threshold = min(220, avg_brightness + 2*brightness_std)
         is_bright = sampled_v > light_threshold
         bright_spot_count = np.sum(is_bright)
@@ -203,7 +203,7 @@ class LightingAnalyzer:
         # 圓形光源分析的簡化替代方法
         circular_light_score = 0
         indoor_light_score = 0
-        light_distribution_uniformity = 0.5  
+        light_distribution_uniformity = 0.5
 
         # 只有當檢測到亮點，且不是大量亮點時（可能是室外光反射）才進行光源分析
         if 1 < bright_spot_count < 20:
@@ -227,7 +227,7 @@ class LightingAnalyzer:
                     indoor_light_score = 0.3
 
         # 使用邊緣區域梯度來快速估計邊界
-        edge_scale = scale_factor * 2  
+        edge_scale = scale_factor * 2
 
         # 只採樣圖像邊緣部分進行分析
         left_edge = small_gray[:, :small_gray.shape[1]//6]
@@ -240,15 +240,15 @@ class LightingAnalyzer:
         top_gradient = np.mean(np.abs(cv2.Sobel(top_edge, cv2.CV_32F, 0, 1, ksize=3)))
 
         # 標準化
-        left_edge_density = min(1.0, left_gradient / 50.0)
-        right_edge_density = min(1.0, right_gradient / 50.0)
-        top_edge_density = min(1.0, top_gradient / 50.0)
+        left_edge_density = min(1.0, left_gradient / 50)
+        right_edge_density = min(1.0, right_gradient / 50)
+        top_edge_density = min(1.0, top_gradient / 50)
 
         # 封閉環境通常在圖像邊緣有較強的梯度
         boundary_edge_score = (left_edge_density + right_edge_density + top_edge_density) / 3
 
         # 簡單估計整體邊緣密度
-        edges_density = min(1.0, (np.mean(np.abs(gx)) + np.mean(np.abs(gy))) / 100.0)
+        edges_density = min(1, (np.mean(np.abs(gx)) + np.mean(np.abs(gy))) / 100)
 
         street_line_score = 0
 
@@ -319,16 +319,16 @@ class LightingAnalyzer:
         # 1. 藍色區域（天空）特徵 - 藍色區域多通常表示室外
         if features.get("blue_ratio", 0) > 0.2:
             # 檢查是否有室內指標，如果有明顯的室內特徵，則減少藍色的負面影響
-            if (features.get("ceiling_uniformity", 0) > 0.5 or 
-                features.get("boundary_edge_score", 0) > 0.3 or 
+            if (features.get("ceiling_uniformity", 0) > 0.5 or
+                features.get("boundary_edge_score", 0) > 0.3 or
                 features.get("indoor_light_score", 0) > 0.2 or
                 features.get("bright_spot_count", 0) > 0):
-                blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 8  
+                blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 8
             else:
                 blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 15
         else:
             blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 15
-        
+
         indoor_score += blue_score
         feature_contributions["blue_ratio"] = blue_score
 
@@ -351,14 +351,14 @@ class LightingAnalyzer:
             horizontal_line_ratio = features.get("horizontal_line_ratio", 0)
 
             # 增強天花板檢測的影響
-            if ceiling_uniformity > 0.5:  
-                ceiling_weight = 3  
-                ceiling_contribution = weights.get("ceiling_features", 1.5) * ceiling_weight 
+            if ceiling_uniformity > 0.5:
+                ceiling_weight = 3
+                ceiling_contribution = weights.get("ceiling_features", 1.5) * ceiling_weight
                 if horizontal_line_ratio > 0.2:  # 如果有水平線條，進一步增強
-                    ceiling_contribution *= 1.5  
-            elif ceiling_uniformity > 0.4:  
-                ceiling_contribution = weights.get("ceiling_features", 1.5) * 1.2  
-            
+                    ceiling_contribution *= 1.5
+            elif ceiling_uniformity > 0.4:
+                ceiling_contribution = weights.get("ceiling_features", 1.5) * 1.2
+
             indoor_score += ceiling_contribution
             feature_contributions["ceiling_features"] = ceiling_contribution
 
@@ -370,7 +370,7 @@ class LightingAnalyzer:
 
             # 加強對特定類型光源的檢測
             if circular_light_count >= 1:  # 即便只有一個圓形光源也很可能是室內
-                light_contribution = weights.get("light_features", 1.2) * 2.0  
+                light_contribution = weights.get("light_features", 1.2) * 2.0
             elif indoor_light_score > 0.3:
                 light_contribution = weights.get("light_features", 1.2) * 1.0
 
@@ -384,11 +384,11 @@ class LightingAnalyzer:
             edges_density = features.get("edges_density", 0)
 
             # 高邊界評分暗示封閉環境（室內）
-            if boundary_edge_score > 0.3: 
-                boundary_contribution = weights.get("boundary_features", 1.2) * 2  
-            elif boundary_edge_score > 0.2:  
-                boundary_contribution = weights.get("boundary_features", 1.2) * 1.2  
-            
+            if boundary_edge_score > 0.3:
+                boundary_contribution = weights.get("boundary_features", 1.2) * 2
+            elif boundary_edge_score > 0.2:
+                boundary_contribution = weights.get("boundary_features", 1.2) * 1.2
+
             indoor_score += boundary_contribution
             feature_contributions["boundary_features"] = boundary_contribution
 
@@ -415,7 +415,7 @@ class LightingAnalyzer:
             combined_uniformity = (features["brightness_uniformity"] +
                                 features.get("ceiling_uniformity", 0)) / 2
 
-            if combined_uniformity > 0.5:  
+            if combined_uniformity > 0.5:
                 gradient_contribution = weights["gradient_ratio"] * 0.7
             else:
                 gradient_contribution = -weights["gradient_ratio"] * 0.3
@@ -430,7 +430,7 @@ class LightingAnalyzer:
 
         # 調整亮點分析邏輯
         if circular_light_count >= 1:  # 即使只有一個圓形光源
-            bright_spot_contribution = weights["bright_spots"] * 1.5  
+            bright_spot_contribution = weights["bright_spots"] * 1.5
         elif bright_spot_count < 5:  # 適當放寬閾值
             bright_spot_contribution = weights["bright_spots"] * 0.5
         elif bright_spot_count > 15:  # 大量亮點比較有可能為室外
@@ -441,8 +441,8 @@ class LightingAnalyzer:
 
         # 8. 色調分析
         yellow_contribution = 0
-        if features["avg_brightness"] < 150 and features["yellow_orange_ratio"] > 0.15:  
-            if features.get("indoor_light_score", 0) > 0.2:  
+        if features["avg_brightness"] < 150 and features["yellow_orange_ratio"] > 0.15:
+            if features.get("indoor_light_score", 0) > 0.2:
                 yellow_contribution = weights["color_tone"] * 0.8
             else:
                 yellow_contribution = weights["color_tone"] * 0.5
@@ -452,10 +452,10 @@ class LightingAnalyzer:
 
         if features.get("blue_ratio", 0) > 0.7:
             # 檢查是否有室內指標，如果有明顯的室內特徵，則減少藍色的負面影響
-            if (features.get("ceiling_uniformity", 0) > 0.6 or 
-                features.get("boundary_edge_score", 0) > 0.3 or 
+            if (features.get("ceiling_uniformity", 0) > 0.6 or
+                features.get("boundary_edge_score", 0) > 0.3 or
                 features.get("indoor_light_score", 0) > 0):
-                blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 10  
+                blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 10
             else:
                 blue_score = -weights["blue_ratio"] * features["blue_ratio"] * 18
         else:
@@ -534,19 +534,19 @@ class LightingAnalyzer:
         # 1: 窗戶和牆壁形成的直角
         if features.get("brightness_uniformity", 0) > 0.6 and features.get("boundary_edge_score", 0) > 0.3:
             bedroom_indicators += 1.5  # 增加權重
-        
+
         # 2: 天花板和光源
         if features.get("ceiling_uniformity", 0) > 0.5 and features.get("bright_spot_count", 0) > 0:
-            bedroom_indicators += 2.5  
-        
+            bedroom_indicators += 2.5
+
         # 3: 良好對比度的牆壁顏色，適合臥房還有客廳
         if features.get("brightness_uniformity", 0) > 0.6 and features.get("avg_saturation", 0) < 100:
-            bedroom_indicators += 1.5  
-        
+            bedroom_indicators += 1.5
+
         # 特殊的檢測 4: 檢測窗戶
         if features.get("boundary_edge_score", 0) > 0.25 and features.get("brightness_std", 0) > 40:
-            bedroom_indicators += 1.5  
-        
+            bedroom_indicators += 1.5
+
         # 如果滿足足夠的家居指標，提高多點室內判斷分數
         if bedroom_indicators >= 3:
             # 增加家居環境評分
@@ -576,11 +576,11 @@ class LightingAnalyzer:
     def _determine_lighting_conditions(self, features, is_indoor):
         """
         基於特徵和室內/室外判斷確定光照條件。
-        
+
         Args:
             features: 特徵字典
             is_indoor: 是否是室內環境
-        
+
         Returns:
             Dict: 光照條件分析結果
         """
@@ -588,37 +588,37 @@ class LightingAnalyzer:
         time_of_day = "unknown"
         confidence = 0.5
         diagnostics = {}
-        
+
         avg_brightness = features["avg_brightness"]
         dark_pixel_ratio = features["dark_pixel_ratio"]
         yellow_orange_ratio = features["yellow_orange_ratio"]
         blue_ratio = features["blue_ratio"]
         gray_ratio = features["gray_ratio"]
-        
+
         # 基於室內/室外分別判斷
         if is_indoor:
             # 計算室內住宅自然光指標
             natural_window_light = 0
-            
+
             # 檢查窗戶特徵和光線特性
-            if (features.get("blue_ratio", 0) > 0.1 and 
+            if (features.get("blue_ratio", 0) > 0.1 and
                 features.get("sky_brightness", 0) > avg_brightness * 1.1):
                 natural_window_light += 1
-            
+
             # 檢查均勻柔和的光線分布
-            if (features.get("brightness_uniformity", 0) > 0.65 and 
+            if (features.get("brightness_uniformity", 0) > 0.65 and
                 features.get("brightness_std", 0) < 70):
                 natural_window_light += 1
-            
+
             # 檢查暖色調比例
             if features.get("warm_ratio", 0) > 0.2:
                 natural_window_light += 1
-            
+
             # 家居環境指標
             home_env_score = features.get("home_environment_pattern", 0)
             if home_env_score > 1.5:
                 natural_window_light += 1
-            
+
             # 1. 室內明亮環境，可能有窗戶自然光
             if avg_brightness > 130:
                 # 檢測自然光住宅空間 - 新增類型!
@@ -645,7 +645,7 @@ class LightingAnalyzer:
                 time_of_day = "indoor_dim"
                 confidence = 0.65 + dark_pixel_ratio / 3
                 diagnostics["reason"] = "Low brightness in indoor environment"
-            
+
             # 1. 檢測設計師風格住宅，可以偵測到比較多種類的狀況
             designer_residential_score = 0
             # 檢測特色燈具
@@ -660,19 +660,19 @@ class LightingAnalyzer:
             # 檢測家居環境特徵
             if home_env_score > 1.5:
                 designer_residential_score += 1
-                
+
             if designer_residential_score >= 3 and home_env_score > 1.5:
-                time_of_day = "indoor_designer_residential"  
+                time_of_day = "indoor_designer_residential"
                 confidence = 0.85
                 diagnostics["special_case"] = "Designer residential lighting with decorative elements"
-            
+
             # 2. 檢測餐廳/酒吧場景
             elif avg_brightness < 150 and yellow_orange_ratio > 0.2:
                 if features["warm_ratio"] > 0.4:
                     time_of_day = "indoor_restaurant"
                     confidence = 0.65 + yellow_orange_ratio / 4
                     diagnostics["special_case"] = "Warm, yellow-orange lighting suggests restaurant/bar setting"
-            
+
             # 3. 檢測商業照明空間
             elif avg_brightness > 120 and features["bright_spot_count"] > 4:
                 # 增加商業照明判別的精確度
@@ -685,7 +685,7 @@ class LightingAnalyzer:
                 # 整體照明結構化布局
                 if features.get("light_distribution_uniformity", 0) > 0.6:
                     commercial_score += 0.5
-                    
+
                 if commercial_score > 0.6 and designer_residential_score < 3:
                     time_of_day = "indoor_commercial"
                     confidence = 0.7 + commercial_score / 5
@@ -794,18 +794,18 @@ class LightingAnalyzer:
         """
         return {
             "indoor_outdoor_weights": {
-                "blue_ratio": 0.6,              
-                "brightness_uniformity": 1.2,    
-                "gradient_ratio": 0.7,           
-                "bright_spots": 0.8,             
-                "color_tone": 0.5,               
-                "sky_brightness": 0.9,           
-                "brightness_variation": 0.7,     
-                "ceiling_features": 1.5,         
-                "light_features": 1.1,           
-                "boundary_features": 2.8,        
-                "street_features": 2.0,          
-                "building_features": 1.6         
+                "blue_ratio": 0.6,
+                "brightness_uniformity": 1.2,
+                "gradient_ratio": 0.7,
+                "bright_spots": 0.8,
+                "color_tone": 0.5,
+                "sky_brightness": 0.9,
+                "brightness_variation": 0.7,
+                "ceiling_features": 1.5,
+                "light_features": 1.1,
+                "boundary_features": 2.8,
+                "street_features": 2,
+                "building_features": 1.6
             },
             "include_diagnostics": True
         }

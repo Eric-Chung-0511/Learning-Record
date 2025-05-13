@@ -20,11 +20,13 @@ class ImageProcessor:
     Separates processing logic from UI components
     """
 
-    def __init__(self):
+    def __init__(self, use_llm=True, llm_model_path=None):
         """Initialize the image processor with required components"""
         self.color_mapper = ColorMapper()
         self.model_instances = {}
         self.lighting_analyzer = LightingAnalyzer()
+        self.use_llm = use_llm
+        self.llm_model_path = llm_model_path
 
     def get_model_instance(self, model_name: str, confidence: float = 0.25, iou: float = 0.25) -> DetectionModel:
         """
@@ -65,7 +67,11 @@ class ImageProcessor:
         try:
             # Initialize scene analyzer if not already done
             if not hasattr(self, 'scene_analyzer'):
-                self.scene_analyzer = SceneAnalyzer(class_names=detection_result.names)
+                self.scene_analyzer = SceneAnalyzer(
+                    class_names=detection_result.names,
+                    use_llm=self.use_llm,
+                    llm_model_path=self.llm_model_path
+                )
 
             # 確保類名正確更新
             if self.scene_analyzer.class_names is None:

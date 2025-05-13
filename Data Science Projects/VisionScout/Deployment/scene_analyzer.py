@@ -6,6 +6,7 @@ from spatial_analyzer import SpatialAnalyzer
 from scene_description import SceneDescriptor
 from enhance_scene_describer import EnhancedSceneDescriber
 from clip_analyzer import CLIPAnalyzer
+from llm_enhancer import LLMEnhancer
 from scene_type import SCENE_TYPES
 from object_categories import OBJECT_CATEGORIES
 
@@ -14,7 +15,7 @@ class SceneAnalyzer:
     Core class for scene analysis and understanding based on object detection results.
     Analyzes detected objects, their relationships, and infers the scene type.
     """
-    def __init__(self, class_names: Dict[int, str] = None):
+    def __init__(self, class_names: Dict[int, str] = None, use_llm: bool = True, llm_model_path: str = None):
         """
         Initialize the scene analyzer with optional class name mappings.
         Args:
@@ -31,7 +32,7 @@ class SceneAnalyzer:
         self.descriptor = SceneDescriptor(scene_types=self.SCENE_TYPES, object_categories=self.OBJECT_CATEGORIES)
         self.scene_describer = EnhancedSceneDescriber(scene_types=self.SCENE_TYPES)
 
-        # 初始化 CLIP 分析器（新增）
+        # 初始化 CLIP 分析器
         try:
             self.clip_analyzer = CLIPAnalyzer()
             self.use_clip = True
@@ -39,6 +40,18 @@ class SceneAnalyzer:
             print(f"Warning: Could not initialize CLIP analyzer: {e}")
             print("Scene analysis will proceed without CLIP. Install CLIP with 'pip install clip' for enhanced scene understanding.")
             self.use_clip = False
+
+        # 初始化LLM Model
+        self.use_llm = use_llm
+        if use_llm:
+            try:
+                # from llm_enhancer import LLMEnhancer
+                self.llm_enhancer = LLMEnhancer(model_path=llm_model_path)
+                print(f"LLM enhancer initialized successfully.")
+            except Exception as e:
+                print(f"Warning: Could not initialize LLM enhancer: {e}")
+                print("Scene analysis will proceed without LLM. Make sure required packages are installed.")
+                self.use_llm = False
 
     def generate_scene_description(self,
                              scene_type,
@@ -106,8 +119,31 @@ class SceneAnalyzer:
         Returns:
             Dictionary with scene analysis results
         """
-        # If no result or no detections, return empty analysis
+        # If no result or no detections, handle with LLM if possible
         if detection_result is None or len(detection_result.boxes) == 0:
+            if self.use_llm and self.use_clip and detection_result is not None:
+                # 使用CLIP和LLM分析無物體檢測的情況
+                try:
+                    original_image = detection_result.orig_img
+                    clip_analysis = self.clip_analyzer.analyze_image(original_image)
+                    llm_description = self.llm_enhancer.handle_no_detection(clip_analysis)
+
+                    return {
+                        "scene_type": "llm_inferred",
+                        "confidence": clip_analysis.get("top_scene", ("unknown", 0))[1],
+                        "description": "No objects detected by standard detection.",
+                        "enhanced_description": llm_description,
+                        "objects_present": [],
+                        "object_count": 0,
+                        "regions": {},
+                        "possible_activities": [],
+                        "safety_concerns": [],
+                        "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0}
+                    }
+                except Exception as e:
+                    print(f"Error in LLM no-detection handling: {e}")
+
+            # 如果無法使用LLM/CLIP或處理失敗，返回原始的無檢測結果
             return {
                 "scene_type": "unknown",
                 "confidence": 0,
@@ -136,7 +172,7 @@ class SceneAnalyzer:
         if not detected_objects:
             return {
                 "scene_type": "unknown",
-                "confidence": 0.0,
+                "confidence": 0,
                 "description": "No objects with sufficient confidence detected.",
                 "objects_present": [],
                 "object_count": 0,
@@ -226,6 +262,53 @@ class SceneAnalyzer:
             functional_zones=functional_zones
         )
 
+        # 使用LLM進行增強處理
+        enhanced_description = None
+        llm_verification = None
+
+        if self.use_llm:
+            try:
+                # 準備用於LLM的場景數據
+                scene_data = {
+                    "original_description": scene_description,
+                    "scene_type": best_scene,
+                    "scene_name": self.SCENE_TYPES.get(best_scene, {}).get("name", "Unknown"),
+                    "detected_objects": detected_objects,
+                    "confidence": scene_confidence,
+                    "lighting_info": lighting_info,
+                    "functional_zones": functional_zones,
+                    "activities": activities,
+                    "safety_concerns": safety_concerns,
+                    "clip_analysis": clip_analysis
+                }
+
+                # 如果CLIP和YOLO結果之間存在顯著差異，使用LLM進行驗證
+                if self.use_clip and clip_analysis and "top_scene" in clip_analysis:
+                    clip_top_scene = clip_analysis["top_scene"][0]
+                    clip_confidence = clip_analysis["top_scene"][1]
+
+                    # 如果CLIP和YOLO的場景預測不同且都有較高的置信度，進行驗證
+                    if clip_top_scene != best_scene and clip_confidence > 0.4 and scene_confidence > 0.4:
+                        llm_verification = self.llm_enhancer.verify_detection(
+                            detected_objects,
+                            clip_analysis,
+                            best_scene,
+                            self.SCENE_TYPES.get(best_scene, {}).get("name", "Unknown"),
+                            scene_confidence
+                        )
+
+                        # 將驗證結果添加到場景數據中
+                        scene_data["verification_result"] = llm_verification.get("verification_text", "")
+
+                # 使用LLM生成增強描述
+                enhanced_description = self.llm_enhancer.enhance_description(scene_data)
+
+            except Exception as e:
+                print(f"Error in LLM enhancement: {e}")
+                import traceback
+                traceback.print_exc()
+                enhanced_description = None
+
         # Return comprehensive analysis
         result = {
             "scene_type": best_scene if scene_confidence >= scene_confidence_threshold else "unknown",
@@ -233,6 +316,7 @@ class SceneAnalyzer:
                         if scene_confidence >= scene_confidence_threshold else "Unknown Scene",
             "confidence": scene_confidence,
             "description": scene_description,
+            "enhanced_description": enhanced_description,  # 添加LLM增強的描述
             "objects_present": [
                 {"class_id": obj["class_id"],
                 "class_name": obj["class_name"],
@@ -248,7 +332,13 @@ class SceneAnalyzer:
             "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0}
         }
 
-        # 添加 CLIP 特定的結果（新增）
+        # 如果有LLM驗證結果，添加到輸出中
+        if llm_verification:
+            result["llm_verification"] = llm_verification.get("verification_text")
+            if llm_verification.get("has_errors", False):
+                result["detection_warnings"] = "LLM detected potential issues with object recognition"
+
+        # 添加 CLIP 特定的結果
         if clip_analysis and "error" not in clip_analysis:
             result["clip_analysis"] = {
                 "top_scene": clip_analysis.get("top_scene", ("unknown", 0)),
@@ -301,7 +391,7 @@ class SceneAnalyzer:
             optional_score = optional_ratio * 0.3  # 30% of score from optional objects
 
             # Bonus for having multiple instances of key objects
-            multiple_bonus = 0.0
+            multiple_bonus = 0
             for class_id in required_present:
                 if class_counts.get(class_id, 0) > 1:
                     multiple_bonus += 0.05  # 5% bonus per additional key object type

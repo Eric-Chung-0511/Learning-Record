@@ -268,6 +268,40 @@ class Style:
             padding: 0 !important;
         }
 
+        /* 場景分析描述區域樣式 */
+        .scene-description-box {
+            background-color: #f8f9fa !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 8px !important;
+            padding: 15px !important;
+            margin: 10px 0 20px 0 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+            font-family: Arial, sans-serif !important;
+            line-height: 1.7 !important;
+            color: #2D3748 !important;
+            font-size: 16px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        #scene_analysis_description_text {
+            background-color: #f0f0f0 !important; /* 淺灰色背景 */
+            padding: 15px !important;             /* 內邊距，讓文字和邊框有點空間 */
+            border-radius: 8px !important;        /* 圓角 */
+            margin: 10px 0 20px 0 !important;     /* 其他元素的間距，特別是上下的part */
+            display: block !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        #scene_analysis_description_text p {
+            margin: 0 !important;
+            color: #2D3748 !important; /* 確保文字顏色 */
+            font-family: Arial, sans-serif !important;
+            font-size: 16px !important; /* 你可以調整文字大小 */
+            line-height: 1.7 !important;
+        }
+
         /* 結果容器樣式 */
         .result-container {
             width: 100% !important;
@@ -356,6 +390,142 @@ class Style:
             box-sizing: border-box !important;
         }
 
+        /* Video summary HTML 容器與內容樣式 */
+        #video-summary-html-output {
+            width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .video-summary-content-wrapper {
+            width: 100% !important;
+            padding: 16px !important;
+            line-height: 1.8 !important;
+            white-space: pre-wrap !important;
+            word-wrap: break-word !important;
+            border-radius: 8px !important;
+            min-height: 250px !important;
+            max-height: 600px !important;
+            overflow-y: auto !important;
+            border: 1px solid #e2e8f0 !important;
+            background-color: white !important;
+            display: block !important;
+            font-family: 'Arial', sans-serif !important;
+            font-size: 14px !important;
+            margin: 0 !important;
+        }
+
+        .video-summary-content-wrapper pre {
+            white-space: pre-wrap !important;
+            word-wrap: break-word !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Arial', sans-serif !important;
+            font-size: 14px !important;
+            line-height: 1.8 !important;
+            color: #2D3748 !important;
+        }
+
+        /* 視頻結果面板相關樣式 */
+        .video-result-panel {
+            padding: 1rem !important;
+            background: white !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .video-output-container {
+            width: 100% !important;
+            margin-bottom: 1.5rem !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* 視頻統計資料顯示增強 */
+        .video-stats-display {
+            background: white !important;
+            border-radius: 8px !important;
+            padding: 1rem !important;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1) !important;
+            width: 100% !important;
+            min-height: 200px !important;
+            max-height: 400px !important;
+            overflow-y: auto !important;
+            font-family: monospace !important;
+            box-sizing: border-box !important;
+            color: #2D3748 !important;
+        }
+
+        .custom-video-url-input {
+            width: 100% !important;
+        }
+
+        .custom-video-url-input textarea {
+            width: 100% !important;
+            min-height: 120px !important;
+            padding: 15px !important;
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+            background-color: #F7FAFC !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+            border: 2px solid #CBD5E0 !important;
+            border-radius: 8px !important;
+        }
+
+        .custom-video-url-input textarea:focus {
+            border-color: #4299E1 !important;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2) !important;
+        }
+
+        /* 輸入框容器100%寬度 */
+        .custom-video-url-input > div {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* LLM 增強描述樣式 */
+        #llm_enhanced_description_text {
+            padding: 15px !important;
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            border: 1px solid #e2e8f0 !important;
+            margin-bottom: 20px !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+            font-family: Arial, sans-serif !important;
+            line-height: 1.7 !important;
+            color: #2D3748 !important;
+            font-size: 16px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            min-height: 200px !important;
+        }
+
+        /* 原始描述折疊區域樣式 */
+        #original_scene_analysis_accordion {
+            margin-top: 10px !important;
+            margin-bottom: 20px !important;
+            background-color: #f8f9fa !important;
+            border-radius: 8px !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* 確保折疊區域內容與頁面樣式協調 */
+        #original_scene_analysis_accordion > div:nth-child(2) {
+            padding: 15px !important;
+        }
+
+        /* 動畫效果, 增加互動感 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .video-result-panel > * {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
         /* 響應式調整 */
         @media (max-width: 768px) {
             .app-title {
@@ -375,5 +545,6 @@ class Style:
                 min-height: 150px !important;
             }
         }
+
         """
         return css

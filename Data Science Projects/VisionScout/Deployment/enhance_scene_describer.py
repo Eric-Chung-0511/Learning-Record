@@ -126,7 +126,7 @@ class EnhancedSceneDescriber:
                 }
             }
 
-        # 文化模板 
+        # 文化模板
         if "cultural_templates" not in templates:
             templates["cultural_templates"] = {
                 "asian": {
@@ -190,26 +190,23 @@ class EnhancedSceneDescriber:
         """
         # Handle unknown scene type or very low confidence
         if scene_type == "unknown" or confidence < 0.4:
-            return self._generate_generic_description(detected_objects, lighting_info)
+            return self._format_final_description(self._generate_generic_description(detected_objects, lighting_info))
 
         # Detect viewpoint
         viewpoint = self._detect_viewpoint(detected_objects)
 
+        # Process aerial viewpoint scene types
         if viewpoint == "aerial":
-            # 如果是十字路口相關的場景，確保使用正確的空中視角十字路口場景類型
             if "intersection" in scene_type or self._is_intersection(detected_objects):
                 scene_type = "aerial_view_intersection"
-            # 如果是商業區相關的場景
             elif any(keyword in scene_type for keyword in ["commercial", "shopping", "retail"]):
                 scene_type = "aerial_view_commercial_area"
-            # 如果是廣場相關的場景
             elif any(keyword in scene_type for keyword in ["plaza", "square"]):
                 scene_type = "aerial_view_plaza"
-            # 其他空中視角場景，預設使用十字路口
             else:
                 scene_type = "aerial_view_intersection"
 
-        # Detect cultural context - 只有在非空中視角時才檢測文化上下文
+        # Detect cultural context - only for non-aerial viewpoints
         cultural_context = None
         if viewpoint != "aerial":
             cultural_context = self._detect_cultural_context(scene_type, detected_objects)
@@ -224,7 +221,6 @@ class EnhancedSceneDescriber:
 
         # Get base description for the scene type
         if viewpoint == "aerial":
-            # 空中視角時使用已設定的基本描述
             if 'base_description' not in locals():
                 base_description = "An aerial view showing the layout and movement patterns from above"
         elif scene_type in self.scene_types:
@@ -240,25 +236,38 @@ class EnhancedSceneDescriber:
             viewpoint
         )
 
-        # 修正：根據人數改進描述
-        people_objs = [obj for obj in detected_objects if obj["class_id"] == 0]  # 人
+        # Start with the base description
+        description = base_description
+
+        # If there's a secondary description from the scene type template, append it properly
+        if scene_type in self.scene_types and "secondary_description" in self.scene_types[scene_type]:
+            secondary_desc = self.scene_types[scene_type]["secondary_description"]
+            if secondary_desc:
+                description = self._smart_append(description, secondary_desc)
+
+        # Improve description based on people count
+        people_objs = [obj for obj in detected_objects if obj["class_id"] == 0]  # Person class
         if people_objs:
             people_count = len(people_objs)
             if people_count > 5:
-                # 當人數很多時，用更精確的措辭
                 people_phrase = f"numerous people ({people_count})"
             else:
                 people_phrase = f"{people_count} {'people' if people_count > 1 else 'person'}"
 
-            # 將人數信息加入到場景詳情中
-            if "people" not in scene_details.lower() and "pedestrian" not in scene_details.lower():
-                scene_details += f" The scene includes {people_phrase}."
+            # Add people information to the scene details if not already mentioned
+            if "people" not in description.lower() and "pedestrian" not in description.lower():
+                description = self._smart_append(description, f"The scene includes {people_phrase}")
 
-        # Apply cultural context if detected (只在非空中視角時應用)
-        if cultural_context and scene_details and viewpoint != "aerial":
+        # Apply cultural context if detected (only for non-aerial viewpoints)
+        if cultural_context and viewpoint != "aerial":
             cultural_elements = self._generate_cultural_elements(cultural_context)
             if cultural_elements:
-                scene_details += f" {cultural_elements}"
+                description = self._smart_append(description, cultural_elements)
+
+        # Now append the detailed scene information if available
+        if scene_details:
+            # Use smart_append to ensure proper formatting between base description and details
+            description = self._smart_append(description, scene_details)
 
         # Include lighting information if available
         lighting_description = ""
@@ -267,22 +276,25 @@ class EnhancedSceneDescriber:
             if lighting_type in self.templates.get("lighting_templates", {}):
                 lighting_description = self.templates["lighting_templates"][lighting_type]
 
-        # Apply confidence template
-        description_template = self.templates["confidence_templates"].get(
-            confidence_level, "{description} {details}"
-        )
+        # Add lighting description if available
+        if lighting_description and lighting_description not in description:
+            description = self._smart_append(description, lighting_description)
 
-        # Fill the template
-        description = description_template.format(
-            description=base_description,
-            details=scene_details
-        )
-
-        # Add viewpoint observation if viewpoint is not standard
+        # Process viewpoint information
         if viewpoint != "eye_level" and viewpoint in self.templates.get("viewpoint_templates", {}):
             viewpoint_template = self.templates["viewpoint_templates"][viewpoint]
 
-            # 在空中視角時，確保觀察描述反映更多細節
+            # Special handling for viewpoint prefix
+            prefix = viewpoint_template.get('prefix', '')
+            if prefix and not description.startswith(prefix):
+                # Prefix is a phrase like "From above, " that should precede the description
+                if description and description[0].isupper():
+                    # Maintain the flow by lowercasing the first letter after the prefix
+                    description = prefix + description[0].lower() + description[1:]
+                else:
+                    description = prefix + description
+
+            # Get appropriate scene elements description based on viewpoint
             if viewpoint == "aerial":
                 scene_elements = "the crossing patterns and pedestrian movement"
             else:
@@ -292,65 +304,273 @@ class EnhancedSceneDescriber:
                 scene_elements=scene_elements
             )
 
-            # Add viewpoint prefix if needed
-            if not description.startswith(viewpoint_template.get("prefix", "")):
-                description = f"{viewpoint_template.get('prefix', '')}{description}"
-
             # Add viewpoint observation if not already included
-            if viewpoint_desc not in description:
-                description += f" {viewpoint_desc}"
-
-        # Add lighting description if available
-        if lighting_description and lighting_description not in description:
-            description += f" {lighting_description}"
+            if viewpoint_desc and viewpoint_desc not in description:
+                description = self._smart_append(description, viewpoint_desc)
 
         # Add information about functional zones if available
         if functional_zones and len(functional_zones) > 0:
             zones_desc = self._describe_functional_zones(functional_zones)
             if zones_desc:
-                description += f" {zones_desc}"
+                description = self._smart_append(description, zones_desc)
 
-        # 計算真實的人數
+        # Calculate actual people count
         people_count = len([obj for obj in detected_objects if obj["class_id"] == 0])
 
-        # 檢查描述中是否有人數信息的矛盾
+        # Check for inconsistencies in people count descriptions
         if people_count > 5:
-            # 識別可能含有較小人數信息的片段
+            # Identify fragments that might contain smaller people counts
             small_people_patterns = [
                 r"Area with \d+ people\.",
                 r"Area with \d+ person\.",
                 r"with \d+ people",
                 r"with \d+ person"
             ]
-            # 對每個模式檢查並移除
+
+            # Check and remove each pattern
             filtered_description = description
             for pattern in small_people_patterns:
                 matches = re.findall(pattern, filtered_description)
                 for match in matches:
-                    # 從匹配中提取人數
+                    # Extract the number from the match
                     number_match = re.search(r'\d+', match)
                     if number_match:
                         try:
                             people_mentioned = int(number_match.group())
-                            # 如果提到的人數小於總人數，移除整個句子
+                            # If the mentioned count is less than total, remove the entire sentence
                             if people_mentioned < people_count:
-                                # 將描述分割成句子
+                                # Split description into sentences
                                 sentences = re.split(r'(?<=[.!?])\s+', filtered_description)
-                                # 移除包含匹配片段的句子
+                                # Remove sentences containing the match
                                 filtered_sentences = []
                                 for sentence in sentences:
                                     if match not in sentence:
                                         filtered_sentences.append(sentence)
-                                # 重新組合描述
+                                # Recombine the description
                                 filtered_description = " ".join(filtered_sentences)
                         except ValueError:
-                            # 數字轉換失敗，繼續處理
+                            # Failed number conversion, continue processing
                             continue
 
-            # 使用過濾後的描述
+            # Use the filtered description
             description = filtered_description
 
-        return description
+        # Final formatting to ensure correct punctuation and capitalization
+        description = self._format_final_description(description)
+
+        description_lines = description.split('\n')
+        clean_description = []
+        skip_block = False  # 添加這個變數的定義
+
+        for line in description_lines:
+            # 檢查是否需要跳過這行
+            if line.strip().startswith(':param') or line.strip().startswith('"""'):
+                continue
+            if line.strip().startswith("Exercise") or "class SceneDescriptionSystem" in line:
+                skip_block = True
+                continue
+            if ('def generate_scene_description' in line or
+                'def enhance_scene_descriptions' in line or
+                'def __init__' in line):
+                skip_block = True
+                continue
+            if line.strip().startswith('#TEST'):
+                skip_block = True
+                continue
+
+            # 空行結束跳過模式
+            if skip_block and line.strip() == "":
+                skip_block = False
+
+            # 如果不需要跳過，添加這行到結果
+            if not skip_block:
+                clean_description.append(line)
+
+        # 如果過濾後的描述為空，返回原始描述
+        if not clean_description:
+            return description
+        else:
+            return '\n'.join(clean_description)
+
+    def _smart_append(self, current_text: str, new_fragment: str) -> str:
+        """
+        Intelligently append a new text fragment to the current text,
+        handling punctuation and capitalization correctly.
+
+        Args:
+            current_text: The existing text to append to
+            new_fragment: The new text fragment to append
+
+        Returns:
+            str: The combined text with proper formatting
+        """
+        # Handle empty cases
+        if not new_fragment:
+            return current_text
+
+        if not current_text:
+            # Ensure first character is uppercase for the first fragment
+            return new_fragment[0].upper() + new_fragment[1:] if new_fragment else ""
+
+        # Clean up existing text
+        current_text = current_text.rstrip()
+
+        # Check for ending punctuation
+        ends_with_sentence = current_text.endswith(('.', '!', '?'))
+        ends_with_comma = current_text.endswith(',')
+
+        # Specifically handle the "A xxx A yyy" pattern that's causing issues
+        if (current_text.startswith("A ") or current_text.startswith("An ")) and \
+        (new_fragment.startswith("A ") or new_fragment.startswith("An ")):
+            return current_text + ". " + new_fragment
+
+        # Decide how to join the texts
+        if ends_with_sentence:
+            # After a sentence, start with uppercase and add proper spacing
+            joined_text = current_text + " " + (new_fragment[0].upper() + new_fragment[1:])
+        elif ends_with_comma:
+            # After a comma, maintain flow with lowercase unless it's a proper noun or special case
+            if new_fragment.startswith(('I ', 'I\'', 'A ', 'An ', 'The ')) or new_fragment[0].isupper():
+                joined_text = current_text + " " + new_fragment
+            else:
+                joined_text = current_text + " " + new_fragment[0].lower() + new_fragment[1:]
+        elif "scene is" in new_fragment.lower() or "scene includes" in new_fragment.lower():
+            # When adding a new sentence about the scene, use a period
+            joined_text = current_text + ". " + new_fragment
+        else:
+            # For other cases, decide based on the content
+            if self._is_related_phrases(current_text, new_fragment):
+                if new_fragment.startswith(('I ', 'I\'', 'A ', 'An ', 'The ')) or new_fragment[0].isupper():
+                    joined_text = current_text + ", " + new_fragment
+                else:
+                    joined_text = current_text + ", " + new_fragment[0].lower() + new_fragment[1:]
+            else:
+                # Use period for unrelated phrases
+                joined_text = current_text + ". " + (new_fragment[0].upper() + new_fragment[1:])
+
+        return joined_text
+
+    def _is_related_phrases(self, text1: str, text2: str) -> bool:
+        """
+        Determine if two phrases are related and should be connected with a comma
+        rather than separated with a period.
+
+        Args:
+            text1: The first text fragment
+            text2: The second text fragment to be appended
+
+        Returns:
+            bool: Whether the phrases appear to be related
+        """
+        # Check if either phrase starts with "A" or "An" - these are likely separate descriptions
+        if (text1.startswith("A ") or text1.startswith("An ")) and \
+        (text2.startswith("A ") or text2.startswith("An ")):
+            return False  # These are separate descriptions, not related phrases
+
+        # Check if the second phrase starts with a connecting word
+        connecting_words = ["which", "where", "who", "whom", "whose", "with", "without",
+                        "this", "these", "that", "those", "and", "or", "but"]
+
+        first_word = text2.split()[0].lower() if text2 else ""
+        if first_word in connecting_words:
+            return True
+
+        # Check if the first phrase ends with something that suggests continuity
+        ending_patterns = ["such as", "including", "like", "especially", "particularly",
+                        "for example", "for instance", "namely", "specifically"]
+
+        for pattern in ending_patterns:
+            if text1.lower().endswith(pattern):
+                return True
+
+        # Check if both phrases are about the scene
+        if "scene" in text1.lower() and "scene" in text2.lower():
+            return False  # Separate statements about the scene should be separate sentences
+
+        return False
+
+    def _format_final_description(self, text: str) -> str:
+        """
+        Format the final description text to ensure correct punctuation,
+        capitalization, and spacing.
+
+        Args:
+            text: The text to format
+
+        Returns:
+            str: The properly formatted text
+        """
+        import re
+
+        if not text:
+            return ""
+
+        # 1. 特別處理連續以"A"開頭的片段 (這是一個常見問題)
+        text = re.sub(r'(A\s[^.!?]+?)\s+(A\s)', r'\1. \2', text, flags=re.IGNORECASE)
+        text = re.sub(r'(An\s[^.!?]+?)\s+(An?\s)', r'\1. \2', text, flags=re.IGNORECASE)
+
+        # 2. 確保第一個字母大寫
+        text = text[0].upper() + text[1:] if text else ""
+
+        # 3. 修正詞之間的空格問題
+        text = re.sub(r'\s{2,}', ' ', text)  # 多個空格改為一個
+        text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)  # 小寫後大寫間加空格
+
+        # 4. 修正詞連接問題
+        text = re.sub(r'([a-zA-Z])and', r'\1 and', text)  # "xxx"和"and"間加空格
+        text = re.sub(r'([a-zA-Z])with', r'\1 with', text)  # "xxx"和"with"間加空格
+        text = re.sub(r'plants(and|with|or)', r'plants \1', text)  # 修正"plantsand"這類問題
+
+        # 5. 修正標點符號後的大小寫問題
+        text = re.sub(r'\.(\s+)([a-z])', lambda m: f'.{m.group(1)}{m.group(2).upper()}', text)  # 句號後大寫
+
+        # 6. 修正逗號後接大寫單詞的問題
+        def fix_capitalization_after_comma(match):
+            word = match.group(2)
+            # 例外情況：保留專有名詞、人稱代詞等的大寫
+            if word in ["I", "I'm", "I've", "I'd", "I'll"]:
+                return match.group(0)  # 保持原樣
+
+            # 保留月份、星期、地名等專有名詞的大寫
+            proper_nouns = ["January", "February", "March", "April", "May", "June", "July",
+                            "August", "September", "October", "November", "December",
+                            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            if word in proper_nouns:
+                return match.group(0)  # 保持原樣
+
+            # 其他情況：將首字母改為小寫
+            return match.group(1) + word[0].lower() + word[1:]
+
+        # 匹配逗號後接空格再接大寫單詞的模式
+        text = re.sub(r'(,\s+)([A-Z][a-zA-Z]*)', fix_capitalization_after_comma, text)
+
+
+        common_phrases = [
+            (r'Social or seating area', r'social or seating area'),
+            (r'Sleeping area', r'sleeping area'),
+            (r'Dining area', r'dining area'),
+            (r'Living space', r'living space')
+        ]
+
+        for phrase, replacement in common_phrases:
+            # 只修改句中的術語，保留句首的大寫
+            text = re.sub(r'(?<=[.!?]\s)' + phrase, replacement, text)
+            # 修改句中的術語，但保留句首的大寫
+            text = re.sub(r'(?<=,\s)' + phrase, replacement, text)
+
+        # 7. 確保標點符號後有空格
+        text = re.sub(r'\s+([.,;:!?])', r'\1', text)  # 標點符號前不要空格
+        text = re.sub(r'([.,;:!?])([a-zA-Z0-9])', r'\1 \2', text)  # 標點符號後要有空格
+
+        # 8. 修正重複標點符號
+        text = re.sub(r'\.{2,}', '.', text)  # 多個句號變一個
+        text = re.sub(r',{2,}', ',', text)  # 多個逗號變一個
+
+        # 9. 確保文本以標點結束
+        if text and not text[-1] in '.!?':
+            text += '.'
+
+        return text
 
     def _is_intersection(self, detected_objects: List[Dict]) -> bool:
         """
@@ -358,27 +578,27 @@ class EnhancedSceneDescriber:
         """
         # 檢查行人分佈模式
         pedestrians = [obj for obj in detected_objects if obj["class_id"] == 0]
-        
+
         if len(pedestrians) >= 8:  # 需要足夠的行人來形成十字路口
             # 抓取行人位置
             positions = [obj.get("normalized_center", (0, 0)) for obj in pedestrians]
-            
+
             # 分析 x 和 y 坐標分佈
             x_coords = [pos[0] for pos in positions]
             y_coords = [pos[1] for pos in positions]
-            
+
             # 計算 x 和 y 坐標的變異數
             x_variance = np.var(x_coords) if len(x_coords) > 1 else 0
             y_variance = np.var(y_coords) if len(y_coords) > 1 else 0
-            
+
             # 計算範圍
             x_range = max(x_coords) - min(x_coords)
             y_range = max(y_coords) - min(y_coords)
-            
+
             # 如果 x 和 y 方向都有較大範圍且範圍相似，那就有可能是十字路口
             if x_range > 0.5 and y_range > 0.5 and 0.7 < (x_range / y_range) < 1.3:
                 return True
-                
+
         return False
 
     def _generate_generic_description(self, detected_objects: List[Dict], lighting_info: Optional[Dict] = None) -> str:
@@ -1165,27 +1385,27 @@ class EnhancedSceneDescriber:
         優化物品描述，避免重複列舉相同物品
         """
         import re
-        
+
         # 處理床鋪重複描述
         if "bed in the room" in description:
             description = description.replace("a bed in the room", "a bed")
-        
+
         # 處理重複的物品列表
         # 尋找格式如 "item, item, item" 的模式
         object_lists = re.findall(r'with ([^\.]+?)(?:\.|\band\b)', description)
-        
+
         for obj_list in object_lists:
             # 計算每個物品出現次數
             items = re.findall(r'([a-zA-Z\s]+)(?:,|\band\b|$)', obj_list)
             item_counts = {}
-            
+
             for item in items:
                 item = item.strip()
                 if item and item not in ["and", "with"]:
                     if item not in item_counts:
                         item_counts[item] = 0
                     item_counts[item] += 1
-            
+
             # 生成優化後的物品列表
             if item_counts:
                 new_items = []
@@ -1194,7 +1414,7 @@ class EnhancedSceneDescriber:
                         new_items.append(f"{count} {item}s")
                     else:
                         new_items.append(item)
-                
+
                 # 格式化新列表
                 if len(new_items) == 1:
                     new_list = new_items[0]
@@ -1202,10 +1422,10 @@ class EnhancedSceneDescriber:
                     new_list = f"{new_items[0]} and {new_items[1]}"
                 else:
                     new_list = ", ".join(new_items[:-1]) + f", and {new_items[-1]}"
-                
+
                 # 替換原始列表
                 description = description.replace(obj_list, new_list)
-        
+
         return description
 
     def _describe_functional_zones(self, functional_zones: Dict) -> str:
@@ -1288,7 +1508,7 @@ class EnhancedSceneDescriber:
 
         # 根據處理後的區域數量生成最終描述
         final_desc = ""
-        
+
         if len(processed_zones) == 1:
             _, zone_info = processed_zones[0]
             zone_desc = zone_info["description"]

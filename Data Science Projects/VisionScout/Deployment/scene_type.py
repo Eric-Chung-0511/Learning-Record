@@ -282,13 +282,6 @@ SCENE_TYPES = {
         "minimum_required": 1,
         "description": "A traditional Asian temple complex with visitors and cultural elements"
     },
-    "european_plaza": {
-        "name": "European Plaza",
-        "required_objects": [0],  # person
-        "optional_objects": [1, 2, 4, 9, 24, 26, 67],  # bicycle, car, airplane, traffic light, backpack, handbag, cell phone
-        "minimum_required": 1,
-        "description": "A European-style city plaza with historic architecture and pedestrian activity"
-    },
 
     # specific time item
     "nighttime_street": {

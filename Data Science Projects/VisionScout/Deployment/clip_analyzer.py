@@ -3,6 +3,7 @@ import clip
 import numpy as np
 from PIL import Image
 from typing import Dict, List, Tuple, Any, Optional, Union
+
 from clip_prompts import (
     SCENE_TYPE_PROMPTS,
     CULTURAL_SCENE_PROMPTS,
@@ -24,7 +25,7 @@ class CLIPAnalyzer:
         初始化 CLIP 分析器。
 
         Args:
-            model_name: CLIP Model name,  "ViT-B/32"、"ViT-B/16"、"ViT-L/14" 
+            model_name: CLIP Model name,  "ViT-B/32"、"ViT-B/16"、"ViT-L/14"
             device: Use GPU if it can use
         """
         # 自動選擇設備
