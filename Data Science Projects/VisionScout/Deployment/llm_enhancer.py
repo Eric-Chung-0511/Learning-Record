@@ -34,7 +34,7 @@ class LLMEnhancer:
         handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
         self.logger.addHandler(handler)
 
-        # 設置默認模型路徑就是用Llama3.2
+        # 默認用 Llama3.2
         self.model_path = model_path or "meta-llama/Llama-3.2-3B-Instruct"
         self.tokenizer_path = tokenizer_path or self.model_path
 
@@ -55,7 +55,7 @@ class LLMEnhancer:
 
         self._initialize_prompts()
 
-        # 只在需要時加載模型
+        # only if need to load the model
         self._model_loaded = False
 
         try:
@@ -70,7 +70,7 @@ class LLMEnhancer:
             self.logger.error(f"Error during Hugging Face login: {e}")
 
     def _load_model(self):
-        """懶加載模型 - 僅在首次需要時加載，使用 8 位量化以節省記憶體"""
+        """只在首次需要時加載，使用 8 位量化以節省記憶體"""
         if self._model_loaded:
             return
 
@@ -80,18 +80,16 @@ class LLMEnhancer:
             from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
             torch.cuda.empty_cache()
 
-            # 打印可用 GPU 記憶體
             if torch.cuda.is_available():
                 free_in_GB = torch.cuda.get_device_properties(0).total_memory / 1024**3
                 print(f"Total GPU memory: {free_in_GB:.2f} GB")
 
-            # 設置 8 位元量化配置
+            # 設置 8 位元配置(節省記憶體空間)
             quantization_config = BitsAndBytesConfig(
                 load_in_8bit=True,
                 llm_int8_enable_fp32_cpu_offload=True
             )
 
-            # 加載詞元處理器
             self.tokenizer = AutoTokenizer.from_pretrained(
                 self.tokenizer_path,
                 padding_side="left",
@@ -99,14 +97,14 @@ class LLMEnhancer:
                 token=self.hf_token
             )
 
-            # 設置特殊標記
+            # 特殊標記
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
             # 加載 8 位量化模型
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_path,
                 quantization_config=quantization_config,
-                device_map="auto",  
+                device_map="auto",
                 low_cpu_mem_usage=True,
                 token=self.hf_token
             )
@@ -122,7 +120,7 @@ class LLMEnhancer:
 
     def _initialize_prompts(self):
         """Return an optimized prompt template specifically for Zephyr model"""
-        # the prompt for the model
+        # the critical prompt for the model
         self.enhance_description_template = """
             <|system|>
             You are an expert visual analyst. Your task is to improve the readability and fluency of scene descriptions using STRICT factual accuracy.
@@ -153,7 +151,7 @@ class LLMEnhancer:
             """
 
 
-        # 錯誤檢測提示
+        # 錯誤檢測的prompt
         self.verify_detection_template = """
             Task: You are an advanced vision system that verifies computer vision detections for accuracy.
 
@@ -179,7 +177,7 @@ class LLMEnhancer:
             Verification Results:
             """
 
-        # 無檢測處理提示
+        # 無檢測處理的prompt
         self.no_detection_template = """
             Task: You are an advanced scene understanding system analyzing an image where standard object detection failed to identify specific objects.
 
@@ -232,6 +230,7 @@ class LLMEnhancer:
 
         return response
 
+    # For Future Usage
     def _detect_scene_type(self, detected_objects: List[Dict]) -> str:
         """
         Detect scene type based on object distribution and patterns
@@ -291,26 +290,6 @@ class LLMEnhancer:
 
         return response.strip()
 
-    def _validate_scene_facts(self, enhanced_desc: str, original_desc: str, people_count: int) -> str:
-        """Validate key facts in enhanced description"""
-        # Check if people count is preserved
-        if people_count > 0:
-            people_pattern = re.compile(r'(\d+)\s+(?:people|persons|pedestrians|individuals)', re.IGNORECASE)
-            people_match = people_pattern.search(enhanced_desc)
-
-            if not people_match or int(people_match.group(1)) != people_count:
-                # Replace incorrect count or add if missing
-                if people_match:
-                    enhanced_desc = people_pattern.sub(f"{people_count} people", enhanced_desc)
-                else:
-                    enhanced_desc = f"The scene shows {people_count} people. " + enhanced_desc
-
-        # Ensure aerial perspective is mentioned
-        if "aerial" in original_desc.lower() and "aerial" not in enhanced_desc.lower():
-            enhanced_desc = "From an aerial perspective, " + enhanced_desc[0].lower() + enhanced_desc[1:]
-
-        return enhanced_desc
-
     def reset_context(self):
         """在處理新圖像前重置模型上下文"""
         if self._model_loaded:
@@ -357,11 +336,11 @@ class LLMEnhancer:
             scene_type = scene_data.get("scene_type", "unknown scene")
             scene_type = self._clean_scene_type(scene_type)
 
-            # 提取檢測到的物件並過濾低置信度物件
+            # 提取檢測到的物件並過濾低信心度物件
             detected_objects = scene_data.get("detected_objects", [])
             filtered_objects = []
 
-            # 高置信度閾值，嚴格過濾物件
+            # 高信心度閾值，嚴格過濾物件
             high_confidence_threshold = 0.65
 
             for obj in detected_objects:
@@ -374,11 +353,11 @@ class LLMEnhancer:
                     if confidence < 0.75:  # 為這些類別設置更高閾值
                         continue
 
-                # 僅保留高置信度物件
+                # 只保留高信心度物件
                 if confidence >= high_confidence_threshold:
                     filtered_objects.append(obj)
 
-            # 計算物件列表和數量 - 僅使用過濾後的高置信度物件
+            # 計算物件列表和數量 - 僅使用過濾後的高信心度物件
             object_counts = {}
             for obj in filtered_objects:
                 class_name = obj.get("class_name", "")
@@ -389,7 +368,7 @@ class LLMEnhancer:
             # 將高置信度物件格式化為清單
             high_confidence_objects = ", ".join([f"{count} {obj}" for obj, count in object_counts.items()])
 
-            # 如果沒有高置信度物件，回退到使用原始描述中的關鍵詞
+            # 如果沒有高信心度物件，回退到使用原始描述中的關鍵詞
             if not high_confidence_objects:
                 # 從原始描述中提取物件提及
                 object_keywords = self._extract_objects_from_description(original_desc)
@@ -406,7 +385,7 @@ class LLMEnhancer:
                 is_indoor = lighting_info.get("is_indoor", False)
                 lighting_description = f"{'indoor' if is_indoor else 'outdoor'} {time_of_day} lighting"
 
-            # 構建提示詞，整合所有關鍵資訊
+            # 創建prompt，整合所有關鍵資訊
             prompt = self.enhance_description_template.format(
                 scene_type=scene_type,
                 object_list=high_confidence_objects,
@@ -421,8 +400,8 @@ class LLMEnhancer:
 
             # 檢查回應完整性的更嚴格標準
             is_incomplete = (
-                len(response) < 100 or  # 太短
-                (len(response) < 200 and "." not in response[-30:]) or  # 結尾沒有適當標點
+                len(response) < 100 or  # too short
+                (len(response) < 200 and "." not in response[-30:]) or  # 結尾沒有適當的標點符號
                 any(response.endswith(phrase) for phrase in ["in the", "with the", "and the"])  # 以不完整短語結尾
             )
 
@@ -439,24 +418,23 @@ class LLMEnhancer:
                                 (len(response) < 200 and "." not in response[-30:]) or
                                 any(response.endswith(phrase) for phrase in ["in the", "with the", "and the"]))
 
-            # 確保響應不為空
             if not response or len(response.strip()) < 10:
                 self.logger.warning("Generated response was empty or too short, returning original description")
                 return original_desc
 
-            # 清理響應 - 使用與模型相符的清理方法
+            # 使用與模型相符的清理方法
             if "llama" in self.model_path.lower():
                 result = self._clean_llama_response(response)
             else:
                 result = self._clean_model_response(response)
 
-            # 移除介紹性句子
+            # 移除介紹性type句子
             result = self._remove_introduction_sentences(result)
 
-            # 移除解釋性注釋
+            # 移除explanation
             result = self._remove_explanatory_notes(result)
 
-            # 進行事實準確性檢查
+            # fact check
             result = self._verify_factual_accuracy(original_desc, result, high_confidence_objects)
 
             # 確保場景類型和視角一致性
@@ -546,36 +524,6 @@ class LLMEnhancer:
         }
 
         return result
-
-    def _validate_content_consistency(self, original_desc: str, enhanced_desc: str) -> str:
-        """驗證增強描述的內容與原始描述一致"""
-        # 提取原始描述中的關鍵數值
-        people_count_match = re.search(r'(\d+)\s+people', original_desc, re.IGNORECASE)
-        people_count = int(people_count_match.group(1)) if people_count_match else None
-
-        # 驗證人數一致性
-        if people_count:
-            enhanced_count_match = re.search(r'(\d+)\s+people', enhanced_desc, re.IGNORECASE)
-            if not enhanced_count_match or int(enhanced_count_match.group(1)) != people_count:
-                # 保留原始人數
-                if enhanced_count_match:
-                    enhanced_desc = re.sub(r'\b\d+\s+people\b', f"{people_count} people", enhanced_desc, flags=re.IGNORECASE)
-                elif "people" in enhanced_desc.lower():
-                    enhanced_desc = re.sub(r'\bpeople\b', f"{people_count} people", enhanced_desc, flags=re.IGNORECASE)
-
-        # 驗證視角/透視一致性
-        perspective_terms = ["aerial", "bird's-eye", "overhead", "ground level", "eye level"]
-
-        for term in perspective_terms:
-            if term in original_desc.lower() and term not in enhanced_desc.lower():
-                # 添加缺失的視角信息
-                if enhanced_desc[0].isupper():
-                    enhanced_desc = f"From {term} view, {enhanced_desc[0].lower()}{enhanced_desc[1:]}"
-                else:
-                    enhanced_desc = f"From {term} view, {enhanced_desc}"
-                break
-
-        return enhanced_desc
 
     def _remove_explanatory_notes(self, response: str) -> str:
         """移除解釋性注釋、說明和其他非描述性內容"""
@@ -669,7 +617,7 @@ class LLMEnhancer:
         # 1. 處理連續標點符號問題
         text = re.sub(r'([.,;:!?])\1+', r'\1', text)
 
-        # 2. 修復不完整句子的標點（如 "Something," 後沒有繼續句子）
+        # 2. 修復不完整句子的標點（如 "Something," 後沒有繼續接續下去）
         text = re.sub(r',\s*$', '.', text)
 
         # 3. 修復如 "word." 後未加空格即接下一句的問題
@@ -686,7 +634,7 @@ class LLMEnhancer:
 
     def _fact_check_description(self, original_desc: str, enhanced_desc: str, scene_type: str, detected_objects: List[str]) -> str:
         """
-        驗證並可能修正增強後的描述，確保其保持事實準確性，針對普遍事實而非特定場景。
+        驗證並可能修正增強後的描述，確保有保持事實準確性。
 
         Args:
             original_desc: 原始場景描述
@@ -772,7 +720,7 @@ class LLMEnhancer:
 
         # 3. 檢查場景類型一致性
         if scene_type and scene_type.lower() != "unknown" and scene_type.lower() not in enhanced_desc.lower():
-            # 優雅地添加場景類型
+            # 添加場景類型
             if enhanced_desc.startswith("This ") or enhanced_desc.startswith("The "):
                 # 避免產生 "This scene" 和 "This intersection" 的重複
                 if "scene" in enhanced_desc[:15].lower():
@@ -895,12 +843,12 @@ class LLMEnhancer:
             if "llama" in self.model_path.lower():
                 generation_params.update({
                     "temperature": 0.4,        # 不要太高, 否則模型可能會太有主觀意見
-                    "max_new_tokens": 600,      
-                    "do_sample": True,          
-                    "top_p": 0.8,              
+                    "max_new_tokens": 600,
+                    "do_sample": True,
+                    "top_p": 0.8,
                     "repetition_penalty": 1.2,  # 重複的懲罰權重,可避免掉重複字
-                    "num_beams": 4 ,            
-                    "length_penalty": 1.2,      
+                    "num_beams": 4 ,
+                    "length_penalty": 1.2,
                 })
 
             else:
@@ -926,7 +874,7 @@ class LLMEnhancer:
             if assistant_tag in full_response:
                 response = full_response.split(assistant_tag)[-1].strip()
 
-                # 檢查是否有未閉合的 <|assistant|> 
+                # 檢查是否有未閉合的 <|assistant|>
                 user_tag = "<|user|>"
                 if user_tag in response:
                     response = response.split(user_tag)[0].strip()
@@ -1118,7 +1066,7 @@ class LLMEnhancer:
 
         # 14. 統一格式 - 確保輸出始終是單一段落
         response = re.sub(r'\s*\n\s*', ' ', response)  # 將所有換行符替換為空格
-        response = ' '.join(response.split())  
+        response = ' '.join(response.split())
 
         return response.strip()
 
@@ -1133,44 +1081,6 @@ class LLMEnhancer:
 
         return "\n- " + "\n- ".join(formatted)
 
-    def _format_lighting(self, lighting_info: Dict) -> str:
-        """格式化光照信息以用於提示"""
-        if not lighting_info:
-            return "Unknown lighting conditions"
-
-        time = lighting_info.get("time_of_day", "unknown")
-        conf = lighting_info.get("confidence", 0)
-        is_indoor = lighting_info.get("is_indoor", False)
-
-        base_info = f"{'Indoor' if is_indoor else 'Outdoor'} {time} (confidence: {conf:.2f})"
-
-        # 添加更詳細的診斷信息
-        diagnostics = lighting_info.get("diagnostics", {})
-        if diagnostics:
-            diag_str = "\nAdditional lighting diagnostics:"
-            for key, value in diagnostics.items():
-                diag_str += f"\n- {key}: {value}"
-            base_info += diag_str
-
-        return base_info
-
-    def _format_zones(self, zones: Dict) -> str:
-        """格式化功能區域以用於提示"""
-        if not zones:
-            return "No distinct functional zones identified"
-
-        formatted = ["Identified functional zones:"]
-        for zone_name, zone_data in zones.items():
-            desc = zone_data.get("description", "")
-            objects = zone_data.get("objects", [])
-
-            zone_str = f"- {zone_name}: {desc}"
-            if objects:
-                zone_str += f" (Contains: {', '.join(objects)})"
-
-            formatted.append(zone_str)
-
-        return "\n".join(formatted)
 
     def _format_clip_results(self, clip_analysis: Dict) -> str:
         """格式化CLIP分析結果以用於提示"""
