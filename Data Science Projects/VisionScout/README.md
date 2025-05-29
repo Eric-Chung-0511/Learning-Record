@@ -150,6 +150,25 @@ There's always more to explore! Here are some ideas for where Vision Scout could
 
 ---
 
+## 🌍 The Vision Behind Vision Scout
+
+Vision Scout started with a simple thought:  
+**What if AI could help people understand the world they can’t see?**
+
+For those who are visually impaired, whether from birth or due to illness or injury, daily life can be filled with unseen challenges. Vision is often called "the window to the soul," and I began to wonder if technology could offer a different kind of window — one that communicates.
+
+I wanted to see if AI could go further than just recognizing objects.  
+Could it understand what’s happening in a scene, how things are arranged, what the atmosphere feels like, and express that in clear, human-like language?
+
+At the same time, I saw value in helping fields like public safety.  
+Imagine if AI could notice details people might miss, or help investigators piece together the story behind a place just by analyzing how it's structured and lit.
+
+Vision Scout is my way of bringing these ideas together.  
+It’s not just about detecting *what’s there*, but understanding *what it means*.
+
+---
+
+
 ## 📜 License
 ![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-lightgray)
 
