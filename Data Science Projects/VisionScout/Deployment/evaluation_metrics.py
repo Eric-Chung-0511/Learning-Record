@@ -138,7 +138,7 @@ class EvaluationMetrics:
             # Create empty plot if error
             fig, ax = plt.subplots(figsize=figsize)
             ax.text(0.5, 0.5, viz_data["error"],
-                    ha='center', va='center', fontsize=14, fontfamily='Arial')
+                    ha='center', va='center', fontsize=14)
             ax.set_xlim(0, 1)
             ax.set_ylim(0, 1)
             ax.axis('off')
@@ -148,7 +148,7 @@ class EvaluationMetrics:
             # Create empty plot if no data
             fig, ax = plt.subplots(figsize=figsize)
             ax.text(0.5, 0.5, "No detection data available",
-                    ha='center', va='center', fontsize=14, fontfamily='Arial')
+                    ha='center', va='center', fontsize=14)
             ax.set_xlim(0, 1)
             ax.set_ylim(0, 1)
             ax.axis('off')
@@ -163,7 +163,6 @@ class EvaluationMetrics:
         colors = [item["color"] for item in class_data]
 
         # Create figure and horizontal bar chart with improved styling
-        plt.rcParams['font.family'] = 'Arial'
         fig, ax = plt.subplots(figsize=figsize)
 
         # Set background color to white
@@ -181,15 +180,15 @@ class EvaluationMetrics:
             conf = class_data[i]["average_confidence"]
             ax.text(width + 0.3, bar.get_y() + bar.get_height()/2,
                     f"{width:.0f} (conf: {conf:.2f})",
-                    va='center', fontsize=12, fontfamily='Arial')
+                    va='center', fontsize=12)
 
         # Customize axis and labels with larger fonts
         ax.set_yticks(y_pos)
-        ax.set_yticklabels(class_names, fontsize=14, fontfamily='Arial')
+        ax.set_yticklabels(class_names, fontsize=14)
         ax.invert_yaxis()  # Labels read top-to-bottom
-        ax.set_xlabel('Count', fontsize=14, fontfamily='Arial')
+        ax.set_xlabel('Count', fontsize=14)
         ax.set_title(f'Objects Detected: {viz_data["total_objects"]} Total',
-                    fontsize=16, fontfamily='Arial', fontweight='bold')
+                    fontsize=16, fontweight='bold')
 
         # Add grid for better readability
         ax.set_axisbelow(True)
@@ -204,7 +203,7 @@ class EvaluationMetrics:
             f"Average Confidence: {viz_data['average_confidence']:.2f}\n"
             f"Unique Classes: {len(viz_data['class_data'])}"
         )
-        plt.figtext(0.02, 0.02, summary_text, fontsize=12, fontfamily='Arial',
+        plt.figtext(0.02, 0.02, summary_text, fontsize=12,
                 bbox=dict(facecolor='white', alpha=0.9, boxstyle='round,pad=0.5',
                             edgecolor='#E5E7EB'))
 

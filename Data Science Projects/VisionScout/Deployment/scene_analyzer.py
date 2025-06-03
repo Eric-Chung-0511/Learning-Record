@@ -1,100 +1,333 @@
+
 import os
 import numpy as np
+import logging
+import traceback
 from typing import Dict, List, Tuple, Any, Optional
+from PIL import Image
 
-from spatial_analyzer import SpatialAnalyzer
-from scene_description import SceneDescriptor
-from enhance_scene_describer import EnhancedSceneDescriber
-from clip_analyzer import CLIPAnalyzer
-from llm_enhancer import LLMEnhancer
-from scene_type import SCENE_TYPES
-from object_categories import OBJECT_CATEGORIES
+from component_initializer import ComponentInitializer
+from scene_scoring_engine import SceneScoringEngine
+from landmark_processing_manager import LandmarkProcessingManager
+from scene_analysis_coordinator import SceneAnalysisCoordinator
 
 class SceneAnalyzer:
     """
     Core class for scene analysis and understanding based on object detection results.
     Analyzes detected objects, their relationships, and infers the scene type.
+    此class為場景理解的總窗口
+
+    This is the main Facade class that coordinates all scene analysis components
+    while maintaining the original public interface for backward compatibility.
     """
-    def __init__(self, class_names: Dict[int, str] = None, use_llm: bool = True, llm_model_path: str = None):
+
+    EVERYDAY_SCENE_TYPE_KEYS = [
+        "general_indoor_space", "generic_street_view",
+        "desk_area_workspace", "outdoor_gathering_spot",
+        "kitchen_counter_or_utility_area"
+    ]
+
+    def __init__(self, class_names: Dict[int, str] = None, use_llm: bool = True,
+                 use_clip: bool = True, enable_landmark: bool = True,
+                 llm_model_path: str = None):
         """
         Initialize the scene analyzer with optional class name mappings.
+
         Args:
             class_names: Dictionary mapping class IDs to class names (optional)
+            use_llm: Whether to enable LLM enhancement functionality
+            use_clip: Whether to enable CLIP analysis functionality
+            enable_landmark: Whether to enable landmark detection functionality
+            llm_model_path: Path to LLM model (optional)
         """
-        self.class_names = class_names
+        self.logger = logging.getLogger(__name__)
 
-        # 加載場景類型和物體類別
-        self.SCENE_TYPES = SCENE_TYPES
-        self.OBJECT_CATEGORIES = OBJECT_CATEGORIES
-
-        # 初始化其他組件，將數據傳遞給 SceneDescriptor
-        self.spatial_analyzer = SpatialAnalyzer(class_names=class_names, object_categories=self.OBJECT_CATEGORIES)
-        self.descriptor = SceneDescriptor(scene_types=self.SCENE_TYPES, object_categories=self.OBJECT_CATEGORIES)
-        self.scene_describer = EnhancedSceneDescriber(scene_types=self.SCENE_TYPES)
-
-        # 初始化 CLIP 分析器
         try:
-            self.clip_analyzer = CLIPAnalyzer()
-            self.use_clip = True
+            # Initialize all components through the component initializer
+            self.component_initializer = ComponentInitializer(
+                class_names=class_names,
+                use_llm=use_llm,
+                use_clip=use_clip,
+                enable_landmark=enable_landmark,
+                llm_model_path=llm_model_path
+            )
+
+            # Get data structures for easy access
+            self.SCENE_TYPES = self.component_initializer.get_data_structure('SCENE_TYPES')
+            self.OBJECT_CATEGORIES = self.component_initializer.get_data_structure('OBJECT_CATEGORIES')
+            self.LANDMARK_ACTIVITIES = self.component_initializer.get_data_structure('LANDMARK_ACTIVITIES')
+
+            # Initialize specialized engines
+            self.scene_scoring_engine = SceneScoringEngine(
+                scene_types=self.SCENE_TYPES,
+                enable_landmark=enable_landmark
+            )
+
+            self.landmark_processing_manager = LandmarkProcessingManager(
+                enable_landmark=enable_landmark,
+                use_clip=use_clip
+            )
+
+            # Initialize the main coordinator
+            self.scene_analysis_coordinator = SceneAnalysisCoordinator(
+                component_initializer=self.component_initializer,
+                scene_scoring_engine=self.scene_scoring_engine,
+                landmark_processing_manager=self.landmark_processing_manager
+            )
+
+            # Store configuration for backward compatibility
+            self.class_names = class_names
+            self.use_clip = use_clip
+            self.use_llm = use_llm
+            self.enable_landmark = enable_landmark
+            self.use_landmark_detection = enable_landmark
+
+            # Get component references for backward compatibility
+            self.spatial_analyzer = self.component_initializer.get_component('spatial_analyzer')
+            self.descriptor = self.component_initializer.get_component('descriptor')
+            self.scene_describer = self.component_initializer.get_component('scene_describer')
+            self.clip_analyzer = self.component_initializer.get_component('clip_analyzer')
+            self.llm_enhancer = self.component_initializer.get_component('llm_enhancer')
+            self.landmark_classifier = self.component_initializer.get_component('landmark_classifier')
+
+            # Set landmark classifier in the processing manager
+            if self.landmark_classifier:
+                self.landmark_processing_manager.set_landmark_classifier(self.landmark_classifier)
+
+            self.logger.info("SceneAnalyzer initialized successfully with all components")
+
         except Exception as e:
-            print(f"Warning: Could not initialize CLIP analyzer: {e}")
-            print("Scene analysis will proceed without CLIP. Install CLIP with 'pip install clip' for enhanced scene understanding.")
-            self.use_clip = False
+            self.logger.error(f"Critical error during SceneAnalyzer initialization: {e}")
+            traceback.print_exc()
+            raise
 
-        # 初始化LLM Model
-        self.use_llm = use_llm
-        if use_llm:
-            try:
-                # from llm_enhancer import LLMEnhancer
-                self.llm_enhancer = LLMEnhancer(model_path=llm_model_path)
-                print(f"LLM enhancer initialized successfully.")
-            except Exception as e:
-                print(f"Warning: Could not initialize LLM enhancer: {e}")
-                print("Scene analysis will proceed without LLM. Make sure required packages are installed.")
-                self.use_llm = False
-
-    def generate_scene_description(self,
-                             scene_type,
-                             detected_objects,
-                             confidence,
-                             lighting_info=None,
-                             functional_zones=None):
+    def analyze(self, detection_result: Any, lighting_info: Optional[Dict] = None,
+                class_confidence_threshold: float = 0.25, scene_confidence_threshold: float = 0.6,
+                enable_landmark: bool = True, places365_info: Optional[Dict] = None) -> Dict:
         """
-        生成場景描述。
+        Analyze detection results to determine scene type and provide understanding.
+
         Args:
-            scene_type: 識別的場景類型
-            detected_objects: 檢測到的物體列表
-            confidence: 場景分類置信度
-            lighting_info: 照明條件信息（可選）
-            functional_zones: 功能區域信息（可選）
+            detection_result: Detection result from YOLOv8 or similar
+            lighting_info: Optional lighting condition analysis results
+            class_confidence_threshold: Minimum confidence to consider an object
+            scene_confidence_threshold: Minimum confidence to determine a scene
+            enable_landmark: Whether to enable landmark detection and recognition for this run
+            places365_info: Optional Places365 scene classification results
+
         Returns:
-            str: 生成的場景描述
+            Dictionary with scene analysis results
         """
-        return self.scene_describer.generate_description(
-            scene_type,
-            detected_objects,
-            confidence,
-            lighting_info,
-            functional_zones
+        try:
+            return self.scene_analysis_coordinator.analyze(
+                detection_result=detection_result,
+                lighting_info=lighting_info,
+                class_confidence_threshold=class_confidence_threshold,
+                scene_confidence_threshold=scene_confidence_threshold,
+                enable_landmark=enable_landmark,
+                places365_info=places365_info
+            )
+        except Exception as e:
+            self.logger.error(f"Error in scene analysis: {e}")
+            traceback.print_exc()
+            # Return a safe fallback result
+            return {
+                "scene_type": "unknown",
+                "confidence": 0.0,
+                "description": "Scene analysis failed due to an internal error.",
+                "enhanced_description": "An error occurred during scene analysis. Please check the system logs for details.",
+                "objects_present": [],
+                "object_count": 0,
+                "regions": {},
+                "possible_activities": [],
+                "safety_concerns": [],
+                "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0.0}
+            }
+
+    def generate_scene_description(self, scene_type: str, detected_objects: List[Dict],
+                                 confidence: float, lighting_info: Optional[Dict] = None,
+                                 functional_zones: Optional[Dict] = None,
+                                 enable_landmark: bool = True,
+                                 scene_scores: Optional[Dict] = None,
+                                 spatial_analysis: Optional[Dict] = None,
+                                 image_dimensions: Optional[Tuple[int, int]] = None) -> str:
+        """
+        Generate scene description and pass all necessary context to the underlying describer.
+
+        Args:
+            scene_type: Identified scene type
+            detected_objects: List of detected objects
+            confidence: Scene classification confidence
+            lighting_info: Lighting condition information (optional)
+            functional_zones: Functional zone information (optional)
+            enable_landmark: Whether to enable landmark description (optional)
+            scene_scores: Scene scores (optional)
+            spatial_analysis: Spatial analysis results (optional)
+            image_dimensions: Image dimensions (width, height) (optional)
+
+        Returns:
+            str: Generated scene description
+        """
+        try:
+            # Convert functional_zones from Dict to List[str] and filter technical terms
+            functional_zones_list = []
+            if functional_zones and isinstance(functional_zones, dict):
+                # Filter out technical terms, keep only meaningful descriptions
+                filtered_zones = {k: v for k, v in functional_zones.items()
+                                if not k.endswith('_zone') or k in ['dining_zone', 'seating_zone', 'work_zone']}
+                functional_zones_list = [v.get('description', k) for k, v in filtered_zones.items()
+                                       if isinstance(v, dict) and v.get('description')]
+            elif functional_zones and isinstance(functional_zones, list):
+                # Filter technical terms from list
+                functional_zones_list = [zone for zone in functional_zones
+                                       if not zone.endswith('_zone') or 'area' in zone]
+
+            # Generate detailed object statistics
+            object_statistics = {}
+            for obj in detected_objects:
+                class_name = obj.get("class_name", "unknown")
+                if class_name not in object_statistics:
+                    object_statistics[class_name] = {
+                        "count": 0,
+                        "avg_confidence": 0.0,
+                        "max_confidence": 0.0,
+                        "instances": []
+                    }
+
+                stats = object_statistics[class_name]
+                stats["count"] += 1
+                stats["instances"].append(obj)
+                stats["max_confidence"] = max(stats["max_confidence"], obj.get("confidence", 0.0))
+
+            # Calculate average confidence
+            for class_name, stats in object_statistics.items():
+                if stats["count"] > 0:
+                    total_conf = sum(inst.get("confidence", 0.0) for inst in stats["instances"])
+                    stats["avg_confidence"] = total_conf / stats["count"]
+
+            if self.scene_describer:
+                return self.scene_describer.generate_description(
+                    scene_type=scene_type,
+                    detected_objects=detected_objects,
+                    confidence=confidence,
+                    lighting_info=lighting_info,
+                    functional_zones=functional_zones_list,
+                    enable_landmark=enable_landmark,
+                    scene_scores=scene_scores,
+                    spatial_analysis=spatial_analysis,
+                    image_dimensions=image_dimensions,
+                    object_statistics=object_statistics
+                )
+            else:
+                return f"A {scene_type} scene with {len(detected_objects)} detected objects."
+
+        except Exception as e:
+            self.logger.error(f"Error generating scene description: {e}")
+            return f"A {scene_type} scene."
+
+    def process_unknown_objects(self, detection_result, detected_objects):
+        """
+        Process objects that YOLO failed to identify or have low confidence for landmark detection.
+
+        Args:
+            detection_result: YOLO detection results
+            detected_objects: List of identified objects
+
+        Returns:
+            tuple: (updated object list, landmark object list)
+        """
+        try:
+            return self.landmark_processing_manager.process_unknown_objects(
+                detection_result, detected_objects, self.clip_analyzer
+            )
+        except Exception as e:
+            self.logger.error(f"Error processing unknown objects: {e}")
+            traceback.print_exc()
+            return detected_objects, []
+
+    def _compute_scene_scores(self, detected_objects: List[Dict],
+                            spatial_analysis_results: Optional[Dict] = None) -> Dict[str, float]:
+        """
+        Compute confidence scores for each scene type based on detected objects.
+
+        Args:
+            detected_objects: List of detected objects with their details
+            spatial_analysis_results: Optional output from SpatialAnalyzer
+
+        Returns:
+            Dictionary mapping scene types to confidence scores
+        """
+        return self.scene_scoring_engine.compute_scene_scores(
+            detected_objects, spatial_analysis_results
         )
 
-    def _generate_scene_description(self, scene_type, detected_objects, confidence, lighting_info=None):
+    def _determine_scene_type(self, scene_scores: Dict[str, float]) -> Tuple[str, float]:
         """
-        Use new implement
-        """
-        # get the functional zones info
-        functional_zones = self.spatial_analyzer._identify_functional_zones(detected_objects, scene_type)
+        Determine the most likely scene type based on scores.
 
-        return self.generate_scene_description(
-            scene_type,
-            detected_objects,
-            confidence,
-            lighting_info,
-            functional_zones
+        Args:
+            scene_scores: Dictionary mapping scene types to confidence scores
+
+        Returns:
+            Tuple of (best_scene_type, confidence)
+        """
+        return self.scene_scoring_engine.determine_scene_type(scene_scores)
+
+    def _fuse_scene_scores(self, yolo_scene_scores: Dict[str, float],
+                          clip_scene_scores: Dict[str, float],
+                          num_yolo_detections: int = 0,
+                          avg_yolo_confidence: float = 0.0,
+                          lighting_info: Optional[Dict] = None,
+                          places365_info: Optional[Dict] = None) -> Dict[str, float]:
+        """
+        Fuse scene scores from YOLO-based object detection, CLIP-based analysis, and Places365.
+
+        Args:
+            yolo_scene_scores: Scene scores based on YOLO object detection
+            clip_scene_scores: Scene scores based on CLIP analysis
+            num_yolo_detections: Total number of non-landmark objects detected by YOLO
+            avg_yolo_confidence: Average confidence of non-landmark objects detected by YOLO
+            lighting_info: Optional lighting condition analysis results
+            places365_info: Optional Places365 scene classification results
+
+        Returns:
+            Dict: Fused scene scores incorporating all analysis sources
+        """
+        return self.scene_scoring_engine.fuse_scene_scores(
+            yolo_scene_scores, clip_scene_scores, num_yolo_detections,
+            avg_yolo_confidence, lighting_info, places365_info
         )
+
+    def _get_alternative_scene_type(self, landmark_scene_type, detected_objects, scene_scores):
+        """
+        Select appropriate alternative type for landmark scene types.
+
+        Args:
+            landmark_scene_type: Original landmark scene type
+            detected_objects: List of detected objects
+            scene_scores: All scene type scores
+
+        Returns:
+            str: Appropriate alternative scene type
+        """
+        return self.landmark_processing_manager.get_alternative_scene_type(
+            landmark_scene_type, detected_objects, scene_scores
+        )
+
+    def _remove_landmark_references(self, text):
+        """
+        Remove all landmark references from text.
+
+        Args:
+            text: Input text
+
+        Returns:
+            str: Text with landmark references removed
+        """
+        return self.landmark_processing_manager.remove_landmark_references(text)
 
     def _define_image_regions(self):
-        """Define regions of the image for spatial analysis (3x3 grid)"""
+        """Define regions of the image for spatial analysis (3x3 grid)."""
         self.regions = {
             "top_left": (0, 0, 1/3, 1/3),
             "top_center": (1/3, 0, 2/3, 1/3),
@@ -107,380 +340,42 @@ class SceneAnalyzer:
             "bottom_right": (2/3, 2/3, 1, 1)
         }
 
-
-    def analyze(self, detection_result: Any, lighting_info: Optional[Dict] = None, class_confidence_threshold: float = 0.35, scene_confidence_threshold: float = 0.6) -> Dict:
+    def get_component_status(self) -> Dict[str, bool]:
         """
-        Analyze detection results to determine scene type and provide understanding.
-        Args:
-            detection_result: Detection result from YOLOv8
-            lighting_info: Optional lighting condition analysis results
-            class_confidence_threshold: Minimum confidence to consider an object
-            scene_confidence_threshold: Minimum confidence to determine a scene
+        Get the initialization status of all components.
+
         Returns:
-            Dictionary with scene analysis results
+            Dictionary mapping component names to their initialization status
         """
-        # If no result or no detections, handle with LLM if possible
-        if detection_result is None or len(detection_result.boxes) == 0:
-            if self.use_llm and self.use_clip and detection_result is not None:
-                # 使用CLIP和LLM分析無物體檢測的情況
-                try:
-                    original_image = detection_result.orig_img
-                    clip_analysis = self.clip_analyzer.analyze_image(original_image)
-                    llm_description = self.llm_enhancer.handle_no_detection(clip_analysis)
+        return self.component_initializer.get_initialization_summary()
 
-                    return {
-                        "scene_type": "llm_inferred",
-                        "confidence": clip_analysis.get("top_scene", ("unknown", 0))[1],
-                        "description": "No objects detected by standard detection.",
-                        "enhanced_description": llm_description,
-                        "objects_present": [],
-                        "object_count": 0,
-                        "regions": {},
-                        "possible_activities": [],
-                        "safety_concerns": [],
-                        "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0}
-                    }
-                except Exception as e:
-                    print(f"Error in LLM no-detection handling: {e}")
-
-            # 如果無法使用LLM/CLIP或處理失敗，返回原始的無檢測結果
-            return {
-                "scene_type": "unknown",
-                "confidence": 0,
-                "description": "No objects detected in the image.",
-                "objects_present": [],
-                "object_count": 0,
-                "regions": {},
-                "possible_activities": [],
-                "safety_concerns": [],
-                "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0}
-            }
-
-        # Get class names from detection result if not already set
-        if self.class_names is None:
-            self.class_names = detection_result.names
-            # Also update class names in spatial analyzer
-            self.spatial_analyzer.class_names = self.class_names
-
-        # Extract detected objects with confidence above threshold
-        detected_objects = self.spatial_analyzer._extract_detected_objects(
-            detection_result,
-            confidence_threshold=class_confidence_threshold
-        )
-
-        # No objects above confidence threshold
-        if not detected_objects:
-            return {
-                "scene_type": "unknown",
-                "confidence": 0,
-                "description": "No objects with sufficient confidence detected.",
-                "objects_present": [],
-                "object_count": 0,
-                "regions": {},
-                "possible_activities": [],
-                "safety_concerns": [],
-                "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0}
-            }
-
-        # Analyze object distribution in regions
-        region_analysis = self.spatial_analyzer._analyze_regions(detected_objects)
-
-        # Compute scene type scores based on object detection
-        yolo_scene_scores = self._compute_scene_scores(detected_objects)
-
-        # 使用 CLIP 分析圖像
-        clip_scene_scores = {}
-        clip_analysis = None
-        if self.use_clip:
-            try:
-                # 獲取原始圖像
-                original_image = detection_result.orig_img
-
-                # Use CLIP analyze image
-                clip_analysis = self.clip_analyzer.analyze_image(original_image)
-
-                # get CLIP's score
-                clip_scene_scores = clip_analysis.get("scene_scores", {})
-
-                if "asian_commercial_street" in clip_scene_scores and clip_scene_scores["asian_commercial_street"] > 0.2:
-                    # 使用對比提示進一步區分室內/室外
-                    comparative_results = self.clip_analyzer.calculate_similarity(
-                        original_image,
-                        self.clip_analyzer.comparative_prompts["indoor_vs_outdoor"]
-                    )
-
-                    # 分析對比結果
-                    indoor_score = sum(s for p, s in comparative_results.items() if "indoor" in p or "enclosed" in p)
-                    outdoor_score = sum(s for p, s in comparative_results.items() if "outdoor" in p or "open-air" in p)
-
-                    # 如果 CLIP 認為這是室外場景，且光照分析認為是室內
-                    if outdoor_score > indoor_score and lighting_info and lighting_info.get("is_indoor", False):
-                        # 修正光照分析結果
-                        print(f"CLIP indicates outdoor commercial street (score: {outdoor_score:.2f} vs {indoor_score:.2f}), adjusting lighting analysis")
-                        lighting_info["is_indoor"] = False
-                        lighting_info["indoor_probability"] = 0.3
-                        # 把CLIP 分析結果加到光照診斷
-                        if "diagnostics" not in lighting_info:
-                            lighting_info["diagnostics"] = {}
-                        lighting_info["diagnostics"]["clip_override"] = {
-                            "reason": "CLIP detected outdoor commercial street",
-                            "outdoor_score": float(outdoor_score),
-                            "indoor_score": float(indoor_score)
-                        }
-
-                # 如果 CLIP 檢測到了光照條件但沒有提供 lighting_info
-                if not lighting_info and "lighting_condition" in clip_analysis:
-                    lighting_type, lighting_conf = clip_analysis["lighting_condition"]
-                    lighting_info = {
-                        "time_of_day": lighting_type,
-                        "confidence": lighting_conf
-                    }
-            except Exception as e:
-                print(f"Error in CLIP analysis: {e}")
-
-        # 融合 YOLO 和 CLIP 的場景分數
-        scene_scores = self._fuse_scene_scores(yolo_scene_scores, clip_scene_scores)
-
-        # Determine best matching scene type
-        best_scene, scene_confidence = self._determine_scene_type(scene_scores)
-
-        # Generate possible activities based on scene
-        activities = self.descriptor._infer_possible_activities(best_scene, detected_objects)
-
-        # Identify potential safety concerns
-        safety_concerns = self.descriptor._identify_safety_concerns(detected_objects, best_scene)
-
-        # Calculate functional zones
-        functional_zones = self.spatial_analyzer._identify_functional_zones(detected_objects, best_scene)
-
-        # Generate scene description
-        scene_description = self.generate_scene_description(
-            best_scene,
-            detected_objects,
-            scene_confidence,
-            lighting_info=lighting_info,
-            functional_zones=functional_zones
-        )
-
-        # 使用LLM進行增強處理
-        enhanced_description = None
-        llm_verification = None
-
-        if self.use_llm:
-            try:
-                # 準備用於LLM的場景數據
-                scene_data = {
-                    "original_description": scene_description,
-                    "scene_type": best_scene,
-                    "scene_name": self.SCENE_TYPES.get(best_scene, {}).get("name", "Unknown"),
-                    "detected_objects": detected_objects,
-                    "confidence": scene_confidence,
-                    "lighting_info": lighting_info,
-                    "functional_zones": functional_zones,
-                    "activities": activities,
-                    "safety_concerns": safety_concerns,
-                    "clip_analysis": clip_analysis
-                }
-
-                # 如果CLIP和YOLO結果之間存在顯著差異，使用LLM進行驗證
-                if self.use_clip and clip_analysis and "top_scene" in clip_analysis:
-                    clip_top_scene = clip_analysis["top_scene"][0]
-                    clip_confidence = clip_analysis["top_scene"][1]
-
-                    # 如果CLIP和YOLO的場景預測不同且都有較高的置信度，進行驗證
-                    if clip_top_scene != best_scene and clip_confidence > 0.4 and scene_confidence > 0.4:
-                        llm_verification = self.llm_enhancer.verify_detection(
-                            detected_objects,
-                            clip_analysis,
-                            best_scene,
-                            self.SCENE_TYPES.get(best_scene, {}).get("name", "Unknown"),
-                            scene_confidence
-                        )
-
-                        # 將驗證結果添加到場景數據中
-                        scene_data["verification_result"] = llm_verification.get("verification_text", "")
-
-                # 使用LLM生成增強描述
-                enhanced_description = self.llm_enhancer.enhance_description(scene_data)
-
-            except Exception as e:
-                print(f"Error in LLM enhancement: {e}")
-                import traceback
-                traceback.print_exc()
-                enhanced_description = None
-
-        # Return comprehensive analysis
-        result = {
-            "scene_type": best_scene if scene_confidence >= scene_confidence_threshold else "unknown",
-            "scene_name": self.SCENE_TYPES.get(best_scene, {}).get("name", "Unknown")
-                        if scene_confidence >= scene_confidence_threshold else "Unknown Scene",
-            "confidence": scene_confidence,
-            "description": scene_description,
-            "enhanced_description": enhanced_description,  # 添加LLM增強的描述
-            "objects_present": [
-                {"class_id": obj["class_id"],
-                "class_name": obj["class_name"],
-                "confidence": obj["confidence"]}
-                for obj in detected_objects
-            ],
-            "object_count": len(detected_objects),
-            "regions": region_analysis,
-            "possible_activities": activities,
-            "safety_concerns": safety_concerns,
-            "functional_zones": functional_zones,
-            "alternative_scenes": self.descriptor._get_alternative_scenes(scene_scores, scene_confidence_threshold, top_k=2),
-            "lighting_conditions": lighting_info or {"time_of_day": "unknown", "confidence": 0}
-        }
-
-        # 如果有LLM驗證結果，添加到輸出中
-        if llm_verification:
-            result["llm_verification"] = llm_verification.get("verification_text")
-            if llm_verification.get("has_errors", False):
-                result["detection_warnings"] = "LLM detected potential issues with object recognition"
-
-        # 添加 CLIP 特定的結果
-        if clip_analysis and "error" not in clip_analysis:
-            result["clip_analysis"] = {
-                "top_scene": clip_analysis.get("top_scene", ("unknown", 0)),
-                "cultural_analysis": clip_analysis.get("cultural_analysis", {})
-            }
-
-        return result
-
-    def _compute_scene_scores(self, detected_objects: List[Dict]) -> Dict[str, float]:
+    def is_component_available(self, component_name: str) -> bool:
         """
-        Compute confidence scores for each scene type based on detected objects.
+        Check if a specific component is available and properly initialized.
+
         Args:
-            detected_objects: List of detected objects
+            component_name: Name of the component to check
+
         Returns:
-            Dictionary mapping scene types to confidence scores
+            bool: Whether the component is available
         """
-        scene_scores = {}
-        detected_class_ids = [obj["class_id"] for obj in detected_objects]
-        detected_classes_set = set(detected_class_ids)
+        return self.component_initializer.is_component_available(component_name)
 
-        # Count occurrence of each class
-        class_counts = {}
-        for obj in detected_objects:
-            class_id = obj["class_id"]
-            if class_id not in class_counts:
-                class_counts[class_id] = 0
-            class_counts[class_id] += 1
-
-        # Evaluate each scene type
-        for scene_type, scene_def in self.SCENE_TYPES.items():
-            # Count required objects present
-            required_objects = set(scene_def["required_objects"])
-            required_present = required_objects.intersection(detected_classes_set)
-
-            # Count optional objects present
-            optional_objects = set(scene_def["optional_objects"])
-            optional_present = optional_objects.intersection(detected_classes_set)
-
-            # Skip if minimum required objects aren't present
-            if len(required_present) < scene_def["minimum_required"]:
-                scene_scores[scene_type] = 0
-                continue
-
-            # Base score from required objects
-            required_ratio = len(required_present) / max(1, len(required_objects))
-            required_score = required_ratio * 0.7  # 70% of score from required objects
-
-            # Additional score from optional objects
-            optional_ratio = len(optional_present) / max(1, len(optional_objects))
-            optional_score = optional_ratio * 0.3  # 30% of score from optional objects
-
-            # Bonus for having multiple instances of key objects
-            multiple_bonus = 0
-            for class_id in required_present:
-                if class_counts.get(class_id, 0) > 1:
-                    multiple_bonus += 0.05  # 5% bonus per additional key object type
-
-            # Cap the bonus at 15%
-            multiple_bonus = min(0.15, multiple_bonus)
-
-            # Calculate final score
-            final_score = required_score + optional_score + multiple_bonus
-
-            if "priority" in scene_def:
-                final_score *= scene_def["priority"]
-
-            # Normalize to 0-1 range
-            scene_scores[scene_type] = min(1.0, final_score)
-
-        return scene_scores
-
-    def _determine_scene_type(self, scene_scores: Dict[str, float]) -> Tuple[str, float]:
+    def update_landmark_enable_status(self, enable_landmark: bool):
         """
-        Determine the most likely scene type based on scores.
+        Update the landmark detection enable status across all components.
+
         Args:
-            scene_scores: Dictionary mapping scene types to confidence scores
-        Returns:
-            Tuple of (best_scene_type, confidence)
+            enable_landmark: Whether to enable landmark detection
         """
-        if not scene_scores:
-            return "unknown", 0
+        self.enable_landmark = enable_landmark
+        self.use_landmark_detection = enable_landmark
 
-        # Find scene with highest score
-        best_scene = max(scene_scores, key=scene_scores.get)
-        best_score = scene_scores[best_scene]
+        # Update all related components
+        self.component_initializer.update_landmark_enable_status(enable_landmark)
+        self.scene_scoring_engine.update_enable_landmark_status(enable_landmark)
+        self.landmark_processing_manager.update_enable_landmark_status(enable_landmark)
 
-        return best_scene, best_score
-
-
-    def _fuse_scene_scores(self, yolo_scene_scores: Dict[str, float], clip_scene_scores: Dict[str, float]) -> Dict[str, float]:
-        """
-        融合基於 YOLO 物體檢測和 CLIP 分析的場景分數。
-        Args:
-            yolo_scene_scores: 基於 YOLO 物體檢測的場景分數
-            clip_scene_scores: 基於 CLIP 分析的場景分數
-        Returns:
-            Dict: 融合後的場景分數
-        """
-        # 如果沒有 CLIP 分數，直接返回 YOLO 分數
-        if not clip_scene_scores:
-            return yolo_scene_scores
-
-        # 如果沒有 YOLO 分數，直接返回 CLIP 分數
-        if not yolo_scene_scores:
-            return clip_scene_scores
-
-        # 融合分數
-        fused_scores = {}
-
-        # 獲取所有場景類型
-        all_scene_types = set(list(yolo_scene_scores.keys()) + list(clip_scene_scores.keys()))
-
-        for scene_type in all_scene_types:
-            # 獲取兩個模型的分數
-            yolo_score = yolo_scene_scores.get(scene_type, 0)
-            clip_score = clip_scene_scores.get(scene_type, 0)
-
-            # 設置基本權重
-            yolo_weight = 0.7  # YOLO 可提供比較好的物體資訊
-            clip_weight = 0.3  # CLIP 強項是理解整體的場景關係
-
-            # 對特定類型場景調整權重
-            # 文化特定場景或具有特殊布局的場景，CLIP可能比較能理解
-            if any(keyword in scene_type for keyword in ["asian", "cultural", "aerial"]):
-                yolo_weight = 0.3
-                clip_weight = 0.7
-
-            # 對室內家居場景，物體檢測通常更準確
-            elif any(keyword in scene_type for keyword in ["room", "kitchen", "office", "bedroom"]):
-                yolo_weight = 0.8
-                clip_weight = 0.2
-            elif scene_type == "beach_water_recreation":
-                yolo_weight = 0.8  # 衝浪板等特定物品的檢測
-                clip_weight = 0.2
-            elif scene_type == "sports_venue":
-                yolo_weight = 0.7
-                clip_weight = 0.3
-            elif scene_type == "professional_kitchen":
-                yolo_weight = 0.8  # 廚房用具的檢測非常重要
-                clip_weight = 0.2
-
-            # 計算加權分數
-            fused_scores[scene_type] = (yolo_score * yolo_weight) + (clip_score * clip_weight)
-
-        return fused_scores
+        # Update the coordinator's enable_landmark status
+        if hasattr(self.scene_analysis_coordinator, 'enable_landmark'):
+            self.scene_analysis_coordinator.enable_landmark = enable_landmark

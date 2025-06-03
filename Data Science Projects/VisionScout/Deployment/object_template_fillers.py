@@ -74,5 +74,10 @@ OBJECT_TEMPLATE_FILLERS = {
                 "playing_surface": ["marked court boundaries", "manicured field turf", "running tracks", "competition equipment", "sports field markers"],
                 "construction_equipment": ["tower cranes", "excavators", "cement mixers", "scaffolding structures", "construction barriers"],
                 "medical_elements": ["examination furniture", "monitoring equipment", "sanitation stations", "privacy screens", "medical supply carts"],
-                "educational_furniture": ["student desks", "lecture podiums", "laboratory benches", "learning stations", "collaborative workspace tables"]
-            }
+                "educational_furniture": ["student desks", "lecture podiums", "laboratory benches", "learning stations", "collaborative workspace tables"],
+
+                "landmark_features": ["distinctive architecture", "iconic structural elements", "famous design features", "recognized silhouette", "impressive proportions"],
+                "tourist_activities": ["sightseeing", "guided tours", "photography",  "cultural exploration", "souvenir shopping"],
+                "outdoor_activities": ["nature photography", "hiking",  "scenic viewing", "wildlife observation", "outdoor exploration"],
+                "historical_elements": ["cultural heritage", "historical events", "architectural periods", "traditional craftsmanship", "significant achievements"]
+                }

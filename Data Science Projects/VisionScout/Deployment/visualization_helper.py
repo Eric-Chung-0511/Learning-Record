@@ -16,7 +16,6 @@ class VisualizationHelper:
                             filter_classes: Optional[List[int]] = None) -> Optional[Image.Image]:
         """
         Visualize detection results on a single image
-
         Args:
             image: Image path or numpy array
             result: Detection result object

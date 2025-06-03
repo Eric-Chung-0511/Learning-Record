@@ -19,8 +19,57 @@ from video_processor import VideoProcessor
 from llm_enhancer import LLMEnhancer
 
 # Initialize Processors with LLM support
-image_processor = ImageProcessor(use_llm=True, llm_model_path="meta-llama/Llama-3.2-3B-Instruct")
-video_processor = VideoProcessor(image_processor)
+image_processor = None
+video_processor = None
+
+def initialize_processors():
+    global image_processor, video_processor
+
+    try:
+        print("Attempting to initialize ImageProcessor with LLM support...")
+        image_processor = ImageProcessor(use_llm=True, llm_model_path="meta-llama/Llama-3.2-3B-Instruct")
+        print("ImageProcessor initialized successfully with LLM")
+
+        # 添加診斷檢查
+        if hasattr(image_processor, 'scene_analyzer'):
+            if image_processor.scene_analyzer is not None:
+                print(f"scene_analyzer initialized: {type(image_processor.scene_analyzer)}")
+                if hasattr(image_processor.scene_analyzer, 'use_llm'):
+                    print(f"scene_analyzer.use_llm available: {image_processor.scene_analyzer.use_llm}")
+            else:
+                print("WARNING: scene_analyzer is None after initialization")
+        else:
+            print("WARNING: scene_analyzer attribute not found in image_processor")
+
+        video_processor = VideoProcessor(image_processor)
+        print("VideoProcessor initialized successfully")
+        return True
+
+    except Exception as e:
+        print(f"Error initializing processors with LLM: {e}")
+        import traceback
+        traceback.print_exc()
+
+        # Create fallback processor without LLM
+        try:
+            print("Attempting fallback initialization without LLM...")
+            image_processor = ImageProcessor(use_llm=False, enable_places365=False)
+            video_processor = VideoProcessor(image_processor)
+            print("Fallback processors initialized successfully without LLM and Places365")
+            return True
+
+        except Exception as fallback_error:
+            print(f"Fatal error: Cannot initialize processors: {fallback_error}")
+            import traceback
+            traceback.print_exc()
+            image_processor = None
+            video_processor = None
+            return False
+
+# Initialize processors
+initialization_success = initialize_processors()
+if not initialization_success:
+    print("WARNING: Failed to initialize processors. Application may not function correctly.")
 
 # Helper Function
 def get_all_classes():
@@ -57,15 +106,94 @@ def get_all_classes():
     }
     return sorted(default_classes.items())
 
-@spaces.GPU
-def handle_image_upload(image, model_name, confidence_threshold, filter_classes=None, use_llm=True):
+@spaces.GPU(duration=180)
+def handle_image_upload(image, model_name, confidence_threshold, filter_classes=None, use_llm=True, enable_landmark=True):
     """Processes a single uploaded image."""
-    print(f"Processing image with model: {model_name}, confidence: {confidence_threshold}, use_llm: {use_llm}")
+    # Enhanced safety check for image_processor
+    if image_processor is None:
+        error_msg = "Image processor is not initialized. Please restart the application or check system dependencies."
+        print(f"ERROR: {error_msg}")
+
+        # Create error plot
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.text(0.5, 0.5, "Initialization Error\nProcessor Not Available",
+                color="red", ha="center", va="center", fontsize=14, fontweight="bold")
+        ax.axis('off')
+
+        return (None, error_msg, {}, fig, f"<div style='color: red; font-weight: bold;'>Error: {error_msg}</div>",
+                "<div style='color: red;'>Error: System not initialized</div>",
+                [["System Error"]], [["System Error"]], {}, {"time_of_day": "error", "confidence": 0})
+
+    # Additional safety check for processor attributes
+    if not hasattr(image_processor, 'use_llm'):
+        error_msg = "Image processor is corrupted. Missing required attributes."
+        print(f"ERROR: {error_msg}")
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.text(0.5, 0.5, "Processor Error\nCorrupted State",
+                color="red", ha="center", va="center", fontsize=14, fontweight="bold")
+        ax.axis('off')
+
+        return (None, error_msg, {}, fig, f"<div style='color: red; font-weight: bold;'>Error: {error_msg}</div>",
+                "<div style='color: red;'>Error: Processor corrupted</div>",
+                [["Processor Error"]], [["Processor Error"]], {}, {"time_of_day": "error", "confidence": 0})
+
+    print(f"DIAGNOSTIC: Image upload handled with enable_landmark={enable_landmark}, use_llm={use_llm}")
+    print(f"Processing image with model: {model_name}, confidence: {confidence_threshold}, use_llm: {use_llm}, enable_landmark: {enable_landmark}")
     try:
         image_processor.use_llm = use_llm
-        if hasattr(image_processor, 'scene_analyzer'):
-            image_processor.scene_analyzer.use_llm = use_llm
-            print(f"Updated existing scene_analyzer use_llm setting to: {use_llm}")
+
+        # 確保 scene_analyzer 不是 None
+        if hasattr(image_processor, 'scene_analyzer') and image_processor.scene_analyzer is not None:
+            if hasattr(image_processor.scene_analyzer, 'use_llm'):
+                image_processor.scene_analyzer.use_llm = use_llm
+                print(f"Updated existing scene_analyzer use_llm setting to: {use_llm}")
+
+            # 檢查並設置 landmark detection
+            if hasattr(image_processor.scene_analyzer, 'use_landmark_detection'):
+                # 設置所有相關標記
+                image_processor.scene_analyzer.use_landmark_detection = enable_landmark
+                image_processor.scene_analyzer.enable_landmark = enable_landmark
+
+                # 確保處理器也設置了這選項
+                image_processor.enable_landmark = enable_landmark
+
+                # 檢查並設置更深層次的組件
+                if hasattr(image_processor.scene_analyzer, 'scene_describer') and image_processor.scene_analyzer.scene_describer is not None:
+                    image_processor.scene_analyzer.scene_describer.enable_landmark = enable_landmark
+
+                # 檢查並設置CLIP分析器上的標記
+                if hasattr(image_processor.scene_analyzer, 'clip_analyzer') and image_processor.scene_analyzer.clip_analyzer is not None:
+                    if hasattr(image_processor.scene_analyzer.clip_analyzer, 'enable_landmark'):
+                        image_processor.scene_analyzer.clip_analyzer.enable_landmark = enable_landmark
+
+                # 檢查並設置LLM增強器
+                if hasattr(image_processor.scene_analyzer, 'llm_enhancer') and image_processor.scene_analyzer.llm_enhancer is not None:
+                    if hasattr(image_processor.scene_analyzer.llm_enhancer, 'enable_landmark'):
+                        image_processor.scene_analyzer.llm_enhancer.enable_landmark = enable_landmark
+                        print(f"Updated LLM enhancer enable_landmark to: {enable_landmark}")
+
+                print(f"Updated all landmark detection settings to: {enable_landmark}")
+        else:
+            print("WARNING: scene_analyzer is None or not available")
+            if hasattr(image_processor, 'enable_landmark'):
+                image_processor.enable_landmark = enable_landmark
+
+                # 設置更深層次的組別
+                if hasattr(image_processor.scene_analyzer, 'scene_describer'):
+                    image_processor.scene_analyzer.scene_describer.enable_landmark = enable_landmark
+
+                # 設置CLIP分析器上的標記
+                if hasattr(image_processor.scene_analyzer, 'clip_analyzer'):
+                    if hasattr(image_processor.scene_analyzer.clip_analyzer, 'enable_landmark'):
+                        image_processor.scene_analyzer.clip_analyzer.enable_landmark = enable_landmark
+
+                # 如果有LLM增強器，也設置它
+                if hasattr(image_processor.scene_analyzer, 'llm_enhancer'):
+                    image_processor.scene_analyzer.llm_enhancer.enable_landmark = enable_landmark
+                    print(f"Updated LLM enhancer enable_landmark to: {enable_landmark}")
+
+                print(f"Updated all landmark detection settings to: {enable_landmark}")
 
         class_ids_to_filter = None
         if filter_classes:
@@ -92,11 +220,13 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
             print(f"Filtering image results for class IDs: {class_ids_to_filter}")
 
         # Call the existing image processing logic
+        print(f"DEBUG: app.py 傳遞 enable_landmark={enable_landmark} 到 process_image")
         result_image, result_text, stats = image_processor.process_image(
             image,
             model_name,
             confidence_threshold,
-            class_ids_to_filter
+            class_ids_to_filter,
+            enable_landmark
         )
 
         # Format stats for JSON display
@@ -191,15 +321,13 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
 
         print(f"Original scene description (first 50 chars): {scene_desc[:50]}...")
 
-        # 確保使用的是有效的描述
+        # determine original description
         clean_scene_desc = clean_description(scene_desc)
         print(f"Cleaned scene description (first 50 chars): {clean_scene_desc[:50]}...")
 
-        # 即使清理後為空也確保顯示原始內容
         if not clean_scene_desc.strip():
             clean_scene_desc = scene_desc
 
-        # 創建原始描述的HTML
         scene_desc_html = f"<div>{clean_scene_desc}</div>"
 
         # 獲取LLM增強描述並且確保設置默認值為空字符串而非 None，不然會有None type Error
@@ -210,18 +338,18 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
         if not enhanced_description or not enhanced_description.strip():
             print("WARNING: LLM enhanced description is empty!")
 
-        # 準備徽章和描述標籤
+        # bedge & label
         llm_badge = ""
         description_to_show = ""
 
+        # 在 Original Scene Analysis 折疊區顯示原始的描述
         if use_llm and enhanced_description:
             llm_badge = '<span style="display:inline-block; margin-left:8px; padding:3px 10px; border-radius:12px; background: linear-gradient(90deg, #38b2ac, #4299e1); color:white; font-size:0.7rem; font-weight:bold; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">LLM Enhanced</span>'
             description_to_show = enhanced_description
-            # 在 Original Scene Analysis 折疊區顯示原始的描述
+
         else:
             llm_badge = '<span style="display:inline-block; margin-left:8px; padding:3px 10px; border-radius:12px; background-color:#718096; color:white; font-size:0.7rem; font-weight:bold;">Basic</span>'
             description_to_show = clean_scene_desc
-            # 不使用 LLM 時，折疊區不顯示內容
 
         # 使用LLM敘述時會有徽章標籤在標題上
         scene_description_html = f'''
@@ -271,7 +399,7 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
             print("WARNING: LLM enhanced description is empty!")
 
         return (result_image, result_text, formatted_stats, plot_figure,
-            scene_description_html, original_desc_html, 
+            scene_description_html, original_desc_html,
             activities_list_data, safety_data, zones, lighting)
 
     except Exception as e:
@@ -471,6 +599,12 @@ def create_interface():
                                     info="Provides more detailed and natural language descriptions (may increase processing time)"
                                 )
 
+                                use_landmark_detection = gr.Checkbox(
+                                    label="Use CLIP for Landmark Detection",
+                                    value=False,
+                                    info="Detect famous landmarks, monuments, and tourist attractions that standard object detection cannot recognize (increases processing time)"
+                                )
+
                                 with gr.Accordion("Filter Classes", open=False):
                                      gr.HTML('<div class="section-heading" style="font-size: 1rem;">Common Categories</div>')
                                      with gr.Row():
@@ -490,23 +624,37 @@ def create_interface():
                         with gr.Group(elem_classes="how-to-use"):
                              gr.HTML('<div class="section-heading">How to Use (Image)</div>')
                              gr.Markdown("""
-                                    1. Upload an image or use the camera
-                                    2. (Optional) Adjust settings like confidence threshold or model size (n, m=balanced, x=accurate)
-                                    3. In Analysis Settings, you can uncheck "Use LLM for enhanced scene descriptions" if you prefer faster processing
-                                    4. Optionally filter to specific object classes
-                                    5. Click **Detect Objects** button
+                                1. Upload an image or use the camera
+                                2. *(Optional)* Adjust settings like confidence threshold or model size (n, m = balanced, x = accurate)
+                                3. In **Analysis Settings**, you can:
+                                    * Uncheck **Use LLM** to skip enhanced descriptions (faster)
+                                    * Check **Use CLIP for Landmark Detection** to identify famous landmarks like museums, monuments, and tourist attractions *(may take longer)*
+                                    * Filter object classes to focus on specific types of objects *(optional)*
+                                4. Click **Analyze Image** button
+
+                                **💡 Tip:** For landmark recognition (e.g. Louvre Museum), make sure to enable **CLIP for Landmark Detection** in the settings above.
                                 """)
+
+
                         # Image Examples
                         gr.Examples(
                             examples=[
                                 "room_01.jpg",
-                                "room_02.jpg",
-                                "street_02.jpg",
-                                "street_04.jpg"
+                                "street_04.jpg",
+                                "street_05.jpg",
+                                "landmark_Louvre_01.jpg"
                                 ],
                             inputs=image_input,
                             label="Example Images"
                          )
+
+                        gr.HTML("""
+                            <div style="text-align: center; margin-top: 8px; padding: 6px; background-color: #f8f9fa; border-radius: 4px; border: 1px solid #e2e8f0;">
+                                <p style="font-size: 12px; color: #718096; margin: 0;">
+                                    📷 Sample images sourced from <a href="https://unsplash.com" target="_blank" style="color: #3182ce; text-decoration: underline;">Unsplash</a>
+                                </p>
+                            </div>
+                        """)
 
                     # Right Column: Image Results
                     with gr.Column(scale=6, elem_classes="output-panel"):
@@ -540,8 +688,8 @@ def create_interface():
                                         </p>
                                     </div>
                                     ''')
-                                image_scene_description_html = gr.HTML(label=None, elem_id="scene_analysis_description_text")  
-                                
+                                image_scene_description_html = gr.HTML(label=None, elem_id="scene_analysis_description_text")
+
                                 # 使用LLM增強敘述時也會顯示原本敘述內容
                                 with gr.Accordion("Original Scene Analysis", open=False, elem_id="original_scene_analysis_accordion"):
                                     image_llm_description = gr.HTML(label=None, elem_id="original_scene_description_text")
@@ -709,7 +857,7 @@ def create_interface():
 
         image_detect_btn.click(
             fn=handle_image_upload,
-            inputs=[image_input, image_model_dropdown, image_confidence, image_class_filter, use_llm],
+            inputs=[image_input, image_model_dropdown, image_confidence, image_class_filter, use_llm, use_landmark_detection ],
             outputs=[
                 image_result_image, image_result_text, image_stats_json, image_plot_output,
                 image_scene_description_html, image_llm_description, image_activities_list, image_safety_list, image_zones_json,
@@ -732,18 +880,18 @@ def create_interface():
 
         # Footer
         gr.HTML("""
-             <div class="footer" style="padding: 25px 0; text-align: center; background: linear-gradient(to right, #f5f9fc, #e1f5fe); border-top: 1px solid #e2e8f0; margin-top: 30px;">
-                 <div style="margin-bottom: 15px;">
-                     <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Powered by YOLOv8, CLIP, Meta Llama3.2 and Ultralytics • Created with Gradio</p>
-                 </div>
-                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 15px;">
-                     <p style="font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 2px; background: linear-gradient(90deg, #38b2ac, #4299e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; display: inline-block;">EXPLORE THE CODE →</p>
-                     <a href="https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout" target="_blank" style="text-decoration: none;">
-                         <img src="https://img.shields.io/badge/GitHub-VisionScout-4299e1?logo=github&style=for-the-badge">
-                     </a>
-                 </div>
-             </div>
-         """)
+            <div class="footer" style="padding: 25px 0; text-align: center; background: linear-gradient(to right, #f5f9fc, #e1f5fe); border-top: 1px solid #e2e8f0; margin-top: 30px;">
+                <div style="margin-bottom: 15px;">
+                    <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Powered by YOLOv8, CLIP, Places365, Meta Llama3.2 and Ultralytics • Created with Gradio</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 15px;">
+                    <p style="font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 2px; background: linear-gradient(90deg, #38b2ac, #4299e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; display: inline-block;">EXPLORE THE CODE →</p>
+                    <a href="https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout" target="_blank" style="text-decoration: none;">
+                        <img src="https://img.shields.io/badge/GitHub-VisionScout-4299e1?logo=github&style=for-the-badge">
+                    </a>
+                </div>
+            </div>
+        """)
 
     return demo
 
@@ -751,4 +899,4 @@ def create_interface():
 if __name__ == "__main__":
     demo_interface = create_interface()
 
-    demo_interface.launch()
+    demo_interface.launch(debug=True)

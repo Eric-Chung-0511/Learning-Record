@@ -7,7 +7,7 @@ from scene_detail_templates import SCENE_DETAIL_TEMPLATES
 from object_template_fillers import OBJECT_TEMPLATE_FILLERS
 from activity_templates import ACTIVITY_TEMPLATES
 from safety_templates import SAFETY_TEMPLATES
-from confifence_templates import CONFIDENCE_TEMPLATES
+from confidence_templates import CONFIDENCE_TEMPLATES
 
 class SceneDescriptor:
     """
@@ -59,7 +59,7 @@ class SceneDescriptor:
             "low": "This might be {description}, but the confidence is low. {details}"
         }
 
-        # 僅提供最基本的模板作為後備
+        # 只提供最基本的模板作為後備
         self.scene_detail_templates = {
             "default": ["A space with various objects."]
         }
@@ -105,53 +105,90 @@ class SceneDescriptor:
         return alternatives
 
 
-    def _infer_possible_activities(self, scene_type: str, detected_objects: List[Dict]) -> List[str]:
+    def _infer_possible_activities(self, scene_type: str, detected_objects: List[Dict], enable_landmark: bool = True, scene_scores: Optional[Dict] = None) -> List[str]:
         """
         Infer possible activities based on scene type and detected objects.
 
         Args:
             scene_type: Identified scene type
             detected_objects: List of detected objects
+            enable_landmark: Whether landmark detection is enabled
+            scene_scores: Optional dictionary of scene type scores
 
         Returns:
             List of possible activities
         """
         activities = []
 
+        # Dynamically replace landmark scene types when landmark detection is disabled
+        if not enable_landmark and scene_type in ["tourist_landmark", "natural_landmark", "historical_monument"]:
+            alternative_scene_type = self._get_alternative_scene_type(scene_type, detected_objects, scene_scores)
+            print(f"Replacing landmark scene type '{scene_type}' with '{alternative_scene_type}' for activity inference")
+            scene_type = alternative_scene_type
+
+        # Process aerial view scenes
         if scene_type.startswith("aerial_view_"):
             if scene_type == "aerial_view_intersection":
-                # 使用預定義的十字路口活動
+                # Use predefined intersection activities
                 activities.extend(self.activity_templates.get("aerial_view_intersection", []))
-                
-                # 添加與行人和車輛相關的特定活動
+
+                # Add pedestrian and vehicle specific activities
                 pedestrians = [obj for obj in detected_objects if obj["class_id"] == 0]
                 vehicles = [obj for obj in detected_objects if obj["class_id"] in [2, 5, 7]]  # Car, bus, truck
-                
+
                 if pedestrians and vehicles:
                     activities.append("Waiting for an opportunity to cross the street")
                     activities.append("Obeying traffic signals")
-            
+
             elif scene_type == "aerial_view_commercial_area":
                 activities.extend(self.activity_templates.get("aerial_view_commercial_area", []))
-                
+
             elif scene_type == "aerial_view_plaza":
                 activities.extend(self.activity_templates.get("aerial_view_plaza", []))
-            
+
             else:
-                # 處理其他未明確定義的空中視角場景
+                # Handle other undefined aerial view scenes
                 aerial_activities = [
-                    "Street crossing", 
-                    "Waiting for signals", 
-                    "Following traffic rules", 
+                    "Street crossing",
+                    "Waiting for signals",
+                    "Following traffic rules",
                     "Pedestrian movement"
                 ]
                 activities.extend(aerial_activities)
 
+        # Add scene-specific activities from templates
         if scene_type in self.activity_templates:
             activities.extend(self.activity_templates[scene_type])
         elif "default" in self.activity_templates:
             activities.extend(self.activity_templates["default"])
 
+        # Filter out landmark-related activities when landmark detection is disabled
+        if not enable_landmark:
+            filtered_activities = []
+            landmark_keywords = ["sightseeing", "landmark", "tourist", "monument", "historical",
+                                "guided tour", "photography", "cultural tourism", "heritage"]
+
+            for activity in activities:
+                if not any(keyword in activity.lower() for keyword in landmark_keywords):
+                    filtered_activities.append(activity)
+
+            activities = filtered_activities
+
+        # If we filtered out all activities, add some generic ones based on scene type
+        if not activities:
+            generic_activities = {
+                "city_street": ["Walking", "Commuting", "Shopping"],
+                "intersection": ["Crossing the street", "Waiting for traffic signals"],
+                "commercial_district": ["Shopping", "Walking", "Dining"],
+                "pedestrian_area": ["Walking", "Socializing", "Shopping"],
+                "park_area": ["Relaxing", "Walking", "Exercise"],
+                "outdoor_natural_area": ["Walking", "Nature observation", "Relaxation"],
+                "urban_architecture": ["Walking", "Urban exploration", "Photography"]
+            }
+
+            activities.extend(generic_activities.get(scene_type, ["Walking", "Observing surroundings"]))
+
+        # Add activities based on detected objects
         detected_class_ids = [obj["class_id"] for obj in detected_objects]
 
         # Add activities based on specific object combinations
@@ -181,8 +218,48 @@ class SceneDescriptor:
             if 24 in detected_class_ids or 26 in detected_class_ids:  # Backpack or handbag
                 activities.append("Carrying personal items")
 
-        # Remove duplicates
-        return list(set(activities))
+            # Add more person count-dependent activities
+            person_count = detected_class_ids.count(0)
+            if person_count > 3:
+                activities.append("Group gathering")
+            elif person_count > 1:
+                activities.append("Social interaction")
+
+        # Add additional activities based on significant objects
+        if 43 in detected_class_ids:  # cup
+            activities.append("Drinking beverages")
+
+        if 32 in detected_class_ids:  # sports ball
+            activities.append("Playing sports")
+
+        if 25 in detected_class_ids:  # umbrella
+            activities.append("Sheltering from weather")
+
+        # Add location-specific activities based on environment objects
+        if any(furniture in detected_class_ids for furniture in [56, 57, 58, 59, 60]):  # furniture items
+            activities.append("Using indoor facilities")
+
+        if any(outdoor_item in detected_class_ids for outdoor_item in [13, 14, 15]):  # bench, outdoor items
+            activities.append("Enjoying outdoor spaces")
+
+        # Remove duplicates and ensure reasonable number of activities
+        unique_activities = list(set(activities))
+
+        # Limit to reasonable number (maximum 8 activities)
+        if len(unique_activities) > 8:
+            # Prioritize more specific activities over general ones
+            general_activities = ["Walking", "Observing surroundings", "Commuting", "Using indoor facilities"]
+            specific_activities = [a for a in unique_activities if a not in general_activities]
+
+            # Take all specific activities first, then fill with general ones if needed
+            if len(specific_activities) <= 8:
+                result = specific_activities + general_activities[:8-len(specific_activities)]
+            else:
+                result = specific_activities[:8]
+        else:
+            result = unique_activities
+
+        return result
 
     def _identify_safety_concerns(self, detected_objects: List[Dict], scene_type: str) -> List[str]:
         """
@@ -197,8 +274,6 @@ class SceneDescriptor:
         """
         concerns = []
         detected_class_ids = [obj["class_id"] for obj in detected_objects]
-
-        # ORIGINAL SAFETY CONCERNS LOGIC
 
         # General safety concerns
         if 42 in detected_class_ids or 43 in detected_class_ids:  # Fork or knife
@@ -231,8 +306,6 @@ class SceneDescriptor:
             if obj["class_id"] in [39, 40, 41, 45]:  # Bottle, wine glass, cup, bowl
                 if obj["region"] in ["top_left", "top_center", "top_right"] and obj["normalized_area"] > 0.05:
                     concerns.append(f"Elevated {obj['class_name']} might be unstable")
-
-        # NEW SAFETY CONCERNS LOGIC FOR ADDITIONAL SCENE TYPES
 
         # Upscale dining safety concerns
         if scene_type == "upscale_dining":
@@ -295,7 +368,6 @@ class SceneDescriptor:
                 concerns.append("Two-wheeled vehicles in pedestrian areas")
 
             # Check for potential trip hazards
-            # We can't directly detect this, but can infer from context
             if scene_type == "asian_commercial_street" and "bottom" in " ".join([obj["region"] for obj in detected_objects if obj["class_id"] == 0]):
                 # If people are in bottom regions, they might be walking on uneven surfaces
                 concerns.append("Potential uneven walking surfaces in commercial area")
@@ -324,7 +396,6 @@ class SceneDescriptor:
                     concerns.append("Busy traffic area potentially without visible traffic signals in view")
 
             # Time of day considerations
-            # We don't have direct time data, but can infer from vehicle lights
             vehicle_objs = [obj for obj in detected_objects if obj["class_id"] in [2, 5, 7]]
             if vehicle_objs and any("lighting_conditions" in obj for obj in detected_objects):
                 # If vehicles are present and it might be evening/night

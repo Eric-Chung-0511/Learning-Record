@@ -384,4 +384,127 @@ SCENE_TYPES = {
     "minimum_required": 3,
     "description": "A commercial kitchen with professional cooking equipment and food preparation areas"
     },
+    "tourist_landmark": {
+        "name": "Tourist Landmark",
+        "required_objects": [0],  # person
+        "optional_objects": [24, 26, 67],  # backpack, handbag, cell phone
+        "minimum_required": 0,  # 可能沒有人，但仍然是地標
+        "description": "A location featuring a famous landmark with tourist activity",
+        "priority": 1.2  # 提高優先級
+    },
+    "natural_landmark": {
+        "name": "Natural Landmark",
+        "required_objects": [0],  # person
+        "optional_objects": [24, 26, 67],  # backpack, handbag, cell phone
+        "minimum_required": 0,
+        "description": "A natural landmark site with scenic views",
+        "priority": 1.2
+    },
+    "historical_monument": {
+        "name": "Historical Monument",
+        "required_objects": [0],  # person
+        "optional_objects": [24, 26, 67],  # backpack, handbag, cell phone
+        "minimum_required": 0,
+        "description": "A historical monument or heritage site",
+        "priority": 1.2
+    },
+    "general_indoor_space": {
+        "name": "General Indoor Space",
+        "required_objects": [], # No strict required objects, depends on combination
+        "optional_objects": [
+            56, # chair
+            57, # couch
+            58, # potted plant
+            59, # bed
+            60, # dining table
+            61, # toilet
+            62, # tv
+            63, # laptop
+            66, # keyboard
+            67, # cell phone
+            73, # book
+            74, # clock
+            75, # vase
+            39, # bottle
+            41, # cup
+        ],
+        "minimum_required": 2, # Needs at least a few common indoor items
+        "description": "An indoor area with various common household or functional items.",
+        "priority": 0.8 # Lower priority than more specific scenes
+    },
+    "generic_street_view": {
+        "name": "Generic Street View",
+        "required_objects": [], # More about the combination
+        "optional_objects": [
+            0,  # person
+            1,  # bicycle
+            2,  # car
+            3,  # motorcycle
+            5,  # bus
+            7,  # truck
+            9,  # traffic light
+            10, # fire hydrant
+            11, # stop sign
+            13, # bench
+            # Consider adding building if YOLO detects it (not a standard COCO class for YOLOv8, but some custom models might)
+        ],
+        "minimum_required": 2, # e.g., a car and a person, or multiple vehicles
+        "description": "An outdoor street view, likely in an urban or suburban setting, with vehicles and/or pedestrians.",
+        "priority": 0.85
+    },
+    "desk_area_workspace": {
+        "name": "Desk Area / Workspace",
+        "required_objects": [
+            63, # laptop or 62 (tv as monitor) or 66 (keyboard)
+        ],
+        "optional_objects": [
+            56, # chair
+            60, # dining table (often used as a desk)
+            64, # mouse
+            66, # keyboard
+            73, # book
+            41, # cup
+            67, # cell phone
+            74, # clock
+        ],
+        "minimum_required": 2, # e.g., laptop and chair, or table and keyboard
+        "description": "A workspace or desk area, typically featuring a computer and related accessories.",
+        "priority": 0.9
+    },
+    "outdoor_gathering_spot": {
+        "name": "Outdoor Gathering Spot",
+        "required_objects": [
+            0,  # person
+        ],
+        "optional_objects": [
+            13, # bench
+            32, # sports ball
+            24, # backpack
+            25, # umbrella
+            29, # frisbee
+            33, # kite
+            58, # potted plant (if in a more structured park area)
+        ],
+        "minimum_required": 2, # e.g., person and bench, or multiple people
+        "description": "An outdoor area where people might gather for leisure or activity.",
+        "priority": 0.8
+    },
+    "kitchen_counter_or_utility_area": {
+        "name": "Kitchen Counter or Utility Area",
+        "required_objects": [],
+        "optional_objects": [
+            39, # bottle
+            41, # cup
+            44, # spoon
+            45, # bowl
+            68, # microwave
+            69, # oven
+            70, # toaster
+            71, # sink
+            72, # refrigerator
+        ],
+        "minimum_required": 2, # e.g., sink and microwave, or refrigerator and bottles
+        "description": "An area likely used for food preparation or kitchen utilities.",
+        "priority": 0.9
+    }
 }

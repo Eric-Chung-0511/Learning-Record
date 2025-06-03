@@ -320,5 +320,61 @@ ACTIVITY_TEMPLATES = {
                 "Chef activities",
                 "Commercial food handling",
                 "Restaurant meal preparation"
+            ],
+            "tourist_landmark": [
+                "Sightseeing",
+                "Photography",
+                "Guided tours",
+                "Learning about landmark history",
+                "Souvenir shopping",
+                "Cultural appreciation",
+                "Architectural observation"
+            ],
+            "natural_landmark": [
+                "Nature photography",
+                "Scenic viewing",
+                "Hiking",
+                "Nature appreciation",
+                "Wildlife watching",
+                "Outdoor recreation",
+                "Environmental education"
+            ],
+            "historical_monument": [
+                "Historical tours",
+                "Cultural heritage appreciation",
+                "Educational visits",
+                "Historical photography",
+                "Learning about past events",
+                "Architectural study",
+                "Heritage tourism"
+            ],
+             "general_indoor_space": [
+                "Engaging in general indoor activities",
+                "Resting or relaxing in an indoor setting",
+                "Possibly having a conversation or reading"
+            ],
+            "generic_street_view": [
+                "People walking or commuting",
+                "Vehicles driving on the road",
+                "Observing street traffic and urban activity",
+                "Waiting at a crosswalk or bus stop (if applicable objects present)"
+            ],
+            "desk_area_workspace": [
+                "Working on a computer or laptop",
+                "Studying or reading documents",
+                "Writing or taking notes",
+                "Participating in an online meeting (if computer present)"
+            ],
+            "outdoor_gathering_spot": [
+                "People socializing outdoors",
+                "Relaxing on a bench or in a park-like setting",
+                "Engaging in light recreational activities",
+                "Having a picnic (if food items or backpacks are present)"
+            ],
+            "kitchen_counter_or_utility_area": [
+                "Preparing food or drinks",
+                "Using kitchen appliances like a microwave or toaster",
+                "Washing dishes or cleaning",
+                "Storing food items"
             ]
         }

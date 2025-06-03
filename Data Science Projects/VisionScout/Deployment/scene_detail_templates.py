@@ -200,4 +200,19 @@ SCENE_DETAIL_TEMPLATES = {
                 "This professional culinary area contains {kitchen_equipment} arranged in stations for {food_preparation}.",
                 "An industrial kitchen featuring {kitchen_equipment} designed for efficient {food_preparation}."
             ],
+            "tourist_landmark": [
+                "This notable landmark attracts visitors who come to see {landmark_features} and experience {tourist_activities}.",
+                "A famous landmark site where tourists can observe {landmark_features} and engage in {tourist_activities}.",
+                "This iconic landmark showcases {landmark_features} and is a popular destination for {tourist_activities}."
+            ],
+            "natural_landmark": [
+                "This natural landmark features {landmark_features} and offers opportunities for {outdoor_activities}.",
+                "A scenic natural formation with {landmark_features} where visitors enjoy {outdoor_activities}.",
+                "This impressive natural landmark displays {landmark_features} and attracts nature enthusiasts for {outdoor_activities}."
+            ],
+            "historical_monument": [
+                "This historical monument exhibits {landmark_features} and has significance related to {historical_elements}.",
+                "An important historical site featuring {landmark_features} and representing {historical_elements}.",
+                "This heritage monument showcases {landmark_features} and commemorates {historical_elements}."
+            ]
         }

@@ -137,7 +137,7 @@ COMPARATIVE_PROMPTS = {
     "asian_vs_western_commercial": [
         "An Asian shopping street with vertical signage and compact multi-level shops.",
         "A Western commercial street with horizontal storefronts and wider sidewalks.",
-        "An East Asian retail area with dense signage in Asian scripts and narrow walkways.",
+        "An East Asian retail area with dense signage in Asian scripts and narrow walkways."
         "A Western shopping district with uniform building heights and Latin alphabetic signs."
     ],
     "daytime_vs_nighttime": [

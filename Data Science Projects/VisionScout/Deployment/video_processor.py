@@ -222,8 +222,8 @@ class VideoProcessor:
                             else:
                                 obj_id = next_object_id
                                 next_object_id += 1
-                                # 為新物體分配固定顏色 - 使用更明顯的顏色
-                                # 使用更明顯的顏色，避免白色
+
+                                # 使用更明顯的顏色
                                 bright_colors = [
                                     (0, 0, 255),    # red
                                     (0, 255, 0),    # green

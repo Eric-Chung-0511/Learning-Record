@@ -13,6 +13,36 @@ LIGHTING_CONDITIONS = {
         "medium": "The scene has even, soft lighting typical of a cloudy day.",
         "dim": "The scene has the muted lighting of a heavily overcast day."
         },
+         "day_cloudy_gray": {
+        "general": "The scene is captured during an overcast day with muted gray lighting.",
+        "bright": "The scene has bright but diffused gray daylight from heavy cloud cover.",
+        "medium": "The scene has even, muted lighting typical of a gray, overcast day.",
+        "dim": "The scene has subdued lighting under thick gray clouds."
+        },
+        "indoor_residential_natural": {
+            "general": "The scene is captured in a residential setting with natural window lighting.",
+            "bright": "The residential space is brightly lit with abundant natural light from windows.",
+            "medium": "The home interior has comfortable natural lighting complemented by artificial sources.",
+            "dim": "The residential space has soft natural lighting creating a cozy atmosphere."
+        },
+        "indoor_designer_residential": {
+            "general": "The scene is captured in a well-designed residential space with curated lighting.",
+            "bright": "The residential interior features bright, designer lighting creating an elegant atmosphere.",
+            "medium": "The home space has thoughtfully planned lighting balancing aesthetics and functionality.",
+            "dim": "The residential area has sophisticated mood lighting enhancing the design elements."
+        },
+        "indoor_bright_natural_mix": {
+            "general": "The scene is captured indoors with a blend of natural and artificial lighting.",
+            "bright": "The indoor space combines bright natural window light with artificial illumination.",
+            "medium": "The interior has balanced mixed lighting from windows and electric sources.",
+            "dim": "The indoor area has gentle mixed lighting creating comfortable illumination."
+        },
+        "indoor_restaurant_bar": {
+            "general": "The scene is captured inside a restaurant or bar with characteristic warm lighting.",
+            "bright": "The dining establishment is well-lit with warm illumination emphasizing ambiance.",
+            "medium": "The restaurant/bar has moderate warm lighting creating a comfortable social atmosphere.",
+            "dim": "The establishment features soft, warm lighting creating an intimate dining or social atmosphere."
+        },
         "sunset/sunrise": {
         "general": "The scene is captured during golden hour with warm lighting.",
         "bright": "The scene is illuminated with bright golden hour light with long shadows.",
@@ -81,6 +111,10 @@ LIGHTING_CONDITIONS = {
         "beach_lighting": "sun-drenched",
         "sports_venue_lighting": "arena-lit",
         "professional_kitchen_lighting": "kitchen-task lit",
+        "day_cloudy_gray": "gray-lit",
+        "indoor_residential_natural": "naturally-lit residential",
+        "indoor_designer_residential": "designer-lit residential",
+        "indoor_bright_natural_mix": "mixed-lit indoor",
         "unknown": ""
     },
     "activity_modifiers": {
@@ -127,5 +161,11 @@ LIGHTING_CONDITIONS = {
         "bright": "The space blends bright natural and artificial light sources across indoor-outdoor boundaries.",
         "medium": "The area combines moderate indoor lighting with outdoor illumination in a balanced way.",
         "dim": "The transition space features subtle lighting gradients between indoor and outdoor zones."
+    },
+    "stadium_or_floodlit_area": {
+    "general": "The scene is captured under powerful floodlights creating uniform bright illumination.",
+    "bright": "The area is intensely illuminated by floodlights, similar to stadium conditions.",
+    "medium": "The space has even, powerful lighting typical of sports facilities or outdoor events.",
+    "dim": "The area has moderate floodlight illumination providing consistent lighting across the space."
     }
 }
