@@ -60,15 +60,18 @@ Vision Scout works like a team of AI specialists, each examining your image from
 **The Complete Journey**
 
 1.  **Image Input and Preprocessing**
+
     When you upload an image, Vision Scout first ensures it's in the right format for analysis. Whether you provide a PIL Image, Numpy array, or other format, the system converts and temporarily stores it, setting the stage for all the analytical work ahead.
 
 2.  **Multi-Modal Perception: The Initial Assessment**
+
     This is where the magic starts. Your image gets sent down multiple analytical pathways simultaneously, like having several experts examine the same scene at once:
 
     * **Places365 Scene Classification** jumps in first with a ResNet50 model that's been trained on 365 different scene categories. Think of it as the generalist who takes one look and says "this feels like a kitchen" or "looks like a park to me." It provides that crucial first impression along with a confidence score, plus an early guess about whether we're looking at an indoor or outdoor scene.
     * At the same time, **YOLOv8 Object Detection** gets busy with the detailed inventory work. It's scanning the image to identify specific objects and exactly where they're located, complete with bounding boxes and confidence levels for each detection. This gives us the concrete "what's actually in this picture" foundation that everything else builds on.
 
 3.  **Feature Enhancement and Deep Analysis**
+
     Now things get really interesting as the system layers on more sophisticated analysis:
 
     * The **Lighting Analysis** component dives deep into the visual characteristics, examining brightness levels, color distributions, and textures to figure out the lighting conditions. Is this a sunny day? A dimly lit indoor room? Night scene with artificial lighting? It's smart enough to consider that initial indoor/outdoor hint from Places365 to refine its assessment.
@@ -77,20 +80,26 @@ Vision Scout works like a team of AI specialists, each examining your image from
     * **Semantic Scene Analysis** employs CLIP to create a unique "fingerprint" of your image, then compares this against hundreds of text descriptions to understand the overall meaning and context. This captures things like atmosphere, cultural context, and subtle visual cues that pure object detection might miss.
 
 4.  **Multi-Dimensional Scoring Engine**
+
     Here's where the different analytical streams start coming together. The system runs three parallel scoring mechanisms:
 
     * **YOLO-based scoring** focuses on object-driven scene assessment, **CLIP-based scoring** emphasizes semantic and contextual understanding, while **Places365-based scoring** provides classification confidence. Each approach brings its own perspective to the table.
 
 5.  **Dynamic Weight Fusion: The Intelligent Decision**
-    The system acts like a smart conductor, intelligently combining all these different viewpoints. It doesn't just average the scores; instead, it dynamically adjusts the importance of each analytical component based on the scene type. For example, a kitchen scene heavily relies on YOLO detecting specific appliances, while a bustling market scene might lean more on CLIP's understanding of atmosphere and cultural context. **Crucially, when Landmark Recognition is enabled and identifies a high-confidence landmark, this finding significantly influences the Dynamic Weight Fusion process. The system will then give greater weight to semantic context and landmark-specific knowledge, potentially overriding or re-interpreting scores from general object detection or scene classification if they conflict with a strong landmark identification. For instance, if the Eiffel Tower is confidently identified, the scene will be strongly steered towards a 'tourist landmark' or similar category, even if other components initially suggested a generic 'city street'.**
+
+    The system acts like a smart conductor, intelligently combining all these different viewpoints. It doesn't just average the scores; instead, it dynamically adjusts the importance of each analytical component based on the scene type. For example, a kitchen scene heavily relies on YOLO detecting specific appliances, while a bustling market scene might lean more on CLIP's understanding of atmosphere and cultural context.
+
+    **Crucially, when Landmark Recognition is enabled and identifies a high-confidence landmark, this finding significantly influences the Dynamic Weight Fusion process. The system will then give greater weight to semantic context and landmark-specific knowledge, potentially overriding or re-interpreting scores from general object detection or scene classification if they conflict with a strong landmark identification. For instance, if the Eiffel Tower is confidently identified, the scene will be strongly steered towards a 'tourist landmark' or similar category, even if other components initially suggested a generic 'city street'.**
 
 6.  **Context Reasoning Engine**
+
     With the main scene identified, Vision Scout adds layers of contextual intelligence:
 
     * **Functional Zone Identification** analyzes the spatial layout to identify specific areas within the scene. In an office, it might spot workstation areas where desks and chairs cluster together. In a street scene, it could delineate pedestrian walkways from vehicle traffic zones.
     * **Activity and Safety Inference** consults the system's knowledge base to infer probable activities and flag potential safety concerns. This draws from templates and definitions that understand what typically happens in different environments and what risks might be present.
 
 7.  **Natural Language Generation Pipeline**
+
     This is where all the analytical insights transform into human-readable narrative:
 
     * **Template-Based Scene Description** serves as the initial storyteller, gathering all the insights about scene type, key objects (including **any identified landmarks if that feature was enabled**), lighting conditions, spatial layout, inferred activities (**which may include landmark-specific activities**), and safety notes. It weaves these elements together using sophisticated templates to create a comprehensive initial description.
@@ -98,6 +107,7 @@ Vision Scout works like a team of AI specialists, each examining your image from
     * **LLM Enhancement Process** uses Llama 3.2 to refine and polish the narrative, making it more fluent and insightful while strictly maintaining factual accuracy. The LLM receives specific instructions to only reference objects that were actually detected and to respect quantities and other verified facts.
 
 8.  **Structured Output Assembly and Presentation**
+
     Finally, the complete analysis gets organized and presented through the Gradio Interface. You'll see your image with bounding boxes around detected objects, detailed statistics about what was found, and the rich, refined scene understanding report. The interface clearly indicates when descriptions have been LLM-enhanced and often provides options to compare with the original template-based description.
 
 The beauty of this system lies in how all these components work together, each contributing their specialty while the intelligent fusion process ensures you get the most accurate and insightful understanding of your image possible.
