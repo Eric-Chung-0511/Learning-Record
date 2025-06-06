@@ -12,6 +12,14 @@ While many tools detect objects, Vision Scout offers more:
 
 ---
 
+## 📊 Project Impact
+**This project has achieved:**
+
+> ![Visits](https://img.shields.io/badge/Total%20Visits-9.3k+-blue)
+![Model Runs](https://img.shields.io/badge/Model%20Runs-3.7k+-green)
+
+---
+
 ## ⚠️ Important Notice
 **Due to a current GitHub issue with rendering Jupyter notebooks (missing 'state' key in metadata.widgets), the notebook code and outputs may not display properly in this repository.**
 
