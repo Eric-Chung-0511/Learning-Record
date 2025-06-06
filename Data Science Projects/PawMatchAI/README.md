@@ -10,8 +10,8 @@ As an extension of its core classification capabilities, PawMatchAI includes a *
 ## 📊 Project Impact
 **This project has achieved:**
 
-> ![Visits](https://img.shields.io/badge/Total%20Visits-30k+-blue)
-![Model Runs](https://img.shields.io/badge/Model%20Runs-11k+-green)
+> ![Visits](https://img.shields.io/badge/Total%20Visits-31k+-blue)
+![Model Runs](https://img.shields.io/badge/Model%20Runs-13k+-green)
 ![Weekly Users](https://img.shields.io/badge/Weekly%20Users-6k+-orange)
 
 
@@ -19,7 +19,7 @@ As an extension of its core classification capabilities, PawMatchAI includes a *
 **Due to a current GitHub issue with rendering Jupyter notebooks (missing 'state' key in metadata.widgets), the notebook code and outputs may not display properly in this repository.**
 
 For the complete notebook with all outputs and visualizations, please access the project via this Google Colab link:  
-👉 [View Complete Project in Google Colab](https://colab.research.google.com/drive/1mHOMvKWZMGGVJQylkT0KL5u1op2Vy5Sn?usp=sharing)
+👉 [View Complete Project](https://colab.research.google.com/drive/1mHOMvKWZMGGVJQylkT0KL5u1op2Vy5Sn?usp=sharing)
 
 The issue is being tracked by GitHub and will be resolved as soon as possible. Thank you for your understanding!
 
