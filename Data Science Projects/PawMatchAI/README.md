@@ -12,7 +12,6 @@ As an extension of its core classification capabilities, PawMatchAI includes a *
 
 > ![Visits](https://img.shields.io/badge/Total%20Visits-31k+-blue)
 ![Model Runs](https://img.shields.io/badge/Model%20Runs-13k+-green)
-![Weekly Users](https://img.shields.io/badge/Weekly%20Users-6k+-orange)
 
 
 ## ⚠️ Important Notice
