@@ -279,7 +279,7 @@ class ObjectExtractor:
                 "bedroom": [59],  # bed
                 "kitchen": [68, 69, 71, 72],  # microwave, oven, sink, refrigerator
                 "living_room": [57, 58, 62],  # sofa, chair, tv
-                "dining_area": [60, 46, 47],  # dining table, fork, knife
+                "dining_area": [60, 42, 43],  # dining table, fork, knife
                 "office_workspace": [63, 64, 66, 73]  # laptop, mouse, keyboard, book
             }
 
