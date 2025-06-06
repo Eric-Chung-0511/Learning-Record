@@ -150,16 +150,19 @@ The easiest way to try Vision Scout is via the deployed Hugging Face Space:
 ---
 
 ## 🌱 Future Directions
-
 There's always more to explore! Here are some ideas for where Vision Scout could go next:
 
-* **Dynamic and Temporal Analysis**: Extend beyond static analysis by implementing more advanced video understanding—such as temporal consistency checks, motion pattern recognition, multi-frame activity inference, and higher-level object interactions over time. This would enable the system to not just describe scenes frame-by-frame, but to understand evolving stories, like detecting group behavior, spotting anomalies, or summarizing key events from a full video.
+* **Advanced Temporal Intelligence**: While Vision Scout already supports video processing with object tracking capabilities, future development could focus on higher-level temporal reasoning—such as long-term behavioral pattern analysis, complex event causality inference, cross-scene continuity understanding, and narrative-driven video summarization that goes beyond frame-by-frame analysis to comprehend evolving stories and predict future events.
 
-* **Domain Specialization:**  Fine-tuning the core models (YOLOv8, potentially CLIP) on domain-specific data could significantly boost performance for targeted applications like indoor navigation assistance or retail shelf analysis.
-  
-* **Broader Knowledge and Context:** Continuously expand the internal "Knowledge Base" (the `.py` definition and template files). This involves adding definitions for a wider variety of scene types, recognizing more diverse objects, understanding more complex activities, and incorporating richer cultural contexts to make the analysis more globally applicable and robust.
-  
-* **Expanded Object Recognition:** Improve core object detection capabilities by training or fine-tuning YOLOv8 on custom datasets. This would allow Vision Scout to recognize specific objects relevant to niche domains that go beyond the standard 80 COCO classes, leading to more accurate and specialized analyses where needed.
+* **Zero-Shot Domain Expansion**: Leveraging Vision Scout's existing CLIP zero-shot architecture, the system can instantly adapt to specialized domains through sophisticated prompt engineering without requiring model retraining. Future expansions could include safety monitoring (fire, smoke, hazard detection), sports analytics (equipment and gameplay analysis), medical imaging support, industrial inspection, and environmental monitoring—all achieved through carefully crafted prompt libraries and domain-specific relationship scoring.
+
+* **Intelligent Knowledge Ecosystem**: Building upon the current modular knowledge management architecture (TemplateManager, CulturalContextAnalyzer), future development could establish expert collaboration frameworks, automated knowledge acquisition pipelines, and community-driven prompt optimization systems. This would enable continuous knowledge expansion while maintaining system consistency and reliability.
+
+* **Multi-Modal Perception Integration**: Extend beyond visual analysis by incorporating audio processing, sensor data fusion, and environmental context awareness. This comprehensive sensory approach would provide richer scene understanding and enable applications like smart city monitoring, autonomous navigation assistance, and immersive accessibility solutions.
+
+* **Adaptive Learning Framework**: Implement real-time optimization mechanisms that dynamically adjust prompt strategies, detection thresholds, and analysis depth based on user feedback, scene characteristics, and performance metrics. This self-improving capability would ensure continuous enhancement without requiring model redeployment or extensive manual tuning.
+
+* **Cross-Platform Intelligence Deployment**: Develop deployment strategies for edge devices, cloud services, and hybrid architectures while maintaining analysis quality and response speed across different hardware constraints. This includes optimizing the balance between local processing capabilities and cloud-based advanced reasoning for real-time applications.
 
 ---
 
