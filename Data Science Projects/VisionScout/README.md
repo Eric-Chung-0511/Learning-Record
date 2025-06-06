@@ -59,58 +59,57 @@ Vision Scout works like a team of AI specialists, each examining your image from
 
 **The Complete Journey**
 
-1.  **Image Input and Preprocessing**
+1. **Image Input and Preprocessing**
 
-    When you upload an image, Vision Scout first ensures it's in the right format for analysis. Whether you provide a PIL Image, Numpy array, or other format, the system converts and temporarily stores it, setting the stage for all the analytical work ahead.
+   When you upload an image, Vision Scout first ensures it's in the right format for analysis. Whether you provide a PIL Image, Numpy array, or other format, the system converts it to RGB format and temporarily stores it, setting the stage for all the analytical work ahead.
 
-2.  **Multi-Modal Perception: The Initial Assessment**
+2. **Multi-Modal Perception: The Initial Assessment**
 
-    This is where the magic starts. Your image gets sent down multiple analytical pathways simultaneously, like having several experts examine the same scene at once:
+   This is where the magic starts. Your image gets sent down multiple analytical pathways in a carefully orchestrated sequence:
 
-    * **Places365 Scene Classification** jumps in first with a ResNet50 model that's been trained on 365 different scene categories. Think of it as the generalist who takes one look and says "this feels like a kitchen" or "looks like a park to me." It provides that crucial first impression along with a confidence score, plus an early guess about whether we're looking at an indoor or outdoor scene.
-    * At the same time, **YOLOv8 Object Detection** gets busy with the detailed inventory work. It's scanning the image to identify specific objects and exactly where they're located, complete with bounding boxes and confidence levels for each detection. This gives us the concrete "what's actually in this picture" foundation that everything else builds on.
+   * **Places365 Scene Classification** initiates the process with a ResNet50 model trained on 365 different scene categories. Think of it as the generalist who takes one look and says "this feels like a kitchen" or "looks like a park to me." It provides that crucial first impression along with a confidence score, plus an early assessment about whether we're looking at an indoor or outdoor scene.
+   * **YOLOv8 Object Detection** operates in parallel, conducting detailed inventory work by scanning the image to identify specific objects and their exact locations, complete with bounding boxes and confidence levels for each detection. This provides the concrete "what's actually in this picture" foundation that everything else builds upon.
 
-3.  **Feature Enhancement and Deep Analysis**
+3. **Feature Enhancement and Deep Analysis**
 
-    Now things get really interesting as the system layers on more sophisticated analysis:
+   Now the system layers on more sophisticated analysis through coordinated processing:
 
-    * The **Lighting Analysis** component dives deep into the visual characteristics, examining brightness levels, color distributions, and textures to figure out the lighting conditions. Is this a sunny day? A dimly lit indoor room? Night scene with artificial lighting? It's smart enough to consider that initial indoor/outdoor hint from Places365 to refine its assessment.
-    * **Spatial Object Mapping** takes the object locations from YOLO and maps them onto a spatial grid, understanding how things are arranged across different regions of the image. This spatial awareness becomes crucial for identifying functional zones later on.
-    * **Landmark Recognition**, **an optional yet powerful feature that can be enabled by the user,** uses CLIP's zero-shot classification capabilities to spot famous landmarks that might be missed by standard object detectors. **When activated,** it cleverly examines the entire image and potentially specific regions (especially those where YOLO had low confidence or identified large, undefined structures) using multi-scale analysis to identify well-known global and regional points of interest.
-    * **Semantic Scene Analysis** employs CLIP to create a unique "fingerprint" of your image, then compares this against hundreds of text descriptions to understand the overall meaning and context. This captures things like atmosphere, cultural context, and subtle visual cues that pure object detection might miss.
+   * **Lighting Analysis** dives deep into visual characteristics, examining brightness levels, color distributions, and textures to determine lighting conditions. Is this a sunny day? A dimly lit indoor room? Night scene with artificial lighting? It intelligently incorporates the indoor/outdoor assessment from Places365 to refine its conclusions.
+   * **Spatial Object Mapping** takes the object locations from YOLO and maps them onto a spatial grid, understanding how elements are arranged across different regions of the image. This spatial awareness becomes crucial for identifying functional zones later in the process.
+   * **Semantic Scene Analysis** employs CLIP to create a unique "fingerprint" of your image, then compares this against hundreds of text descriptions to understand overall meaning and context. This captures atmosphere, cultural context, and subtle visual cues that pure object detection might miss.
+   * **Landmark Recognition**, an optional yet powerful feature that can be enabled by the user, uses CLIP's zero-shot classification capabilities to spot famous landmarks that might be missed by standard object detectors. When activated, it intelligently examines the entire image and specific regions where YOLO had low confidence or identified large, undefined structures, using multi-scale analysis to identify well-known global and regional points of interest.
 
-4.  **Multi-Dimensional Scoring Engine**
+4. **Multi-Dimensional Scoring Engine**
 
-    Here's where the different analytical streams start coming together. The system runs three parallel scoring mechanisms:
+   Here's where the different analytical streams converge through the Scene Analysis Coordinator. The system runs three parallel scoring mechanisms:
 
-    * **YOLO-based scoring** focuses on object-driven scene assessment, **CLIP-based scoring** emphasizes semantic and contextual understanding, while **Places365-based scoring** provides classification confidence. Each approach brings its own perspective to the table.
+   * **YOLO-based scoring** focuses on object-driven scene assessment, **CLIP-based scoring** emphasizes semantic and contextual understanding, while **Places365-based scoring** provides classification confidence. Each approach contributes its unique perspective to the comprehensive analysis.
 
-5.  **Dynamic Weight Fusion: The Intelligent Decision**
+5. **Dynamic Weight Fusion: The Intelligent Decision**
 
-    The system acts like a smart conductor, intelligently combining all these different viewpoints. It doesn't just average the scores; instead, it dynamically adjusts the importance of each analytical component based on the scene type. For example, a kitchen scene heavily relies on YOLO detecting specific appliances, while a bustling market scene might lean more on CLIP's understanding of atmosphere and cultural context.
+   The system acts as an intelligent conductor, combining all these different viewpoints through sophisticated algorithms. Rather than simply averaging scores, it dynamically adjusts the importance of each analytical component based on scene characteristics and detection quality. For example, a kitchen scene heavily relies on YOLO detecting specific appliances, while a bustling market scene might lean more on CLIP's understanding of atmosphere and cultural context.
 
-    **Crucially, when Landmark Recognition is enabled and identifies a high-confidence landmark, this finding significantly influences the Dynamic Weight Fusion process. The system will then give greater weight to semantic context and landmark-specific knowledge, potentially overriding or re-interpreting scores from general object detection or scene classification if they conflict with a strong landmark identification. For instance, if the Eiffel Tower is confidently identified, the scene will be strongly steered towards a 'tourist landmark' or similar category, even if other components initially suggested a generic 'city street'.**
+   Crucially, when Landmark Recognition is enabled and identifies a high-confidence landmark, this finding significantly influences the Dynamic Weight Fusion process. The system then gives greater weight to semantic context and landmark-specific knowledge, potentially overriding or re-interpreting scores from general object detection or scene classification when they conflict with strong landmark identification. For instance, if the Eiffel Tower is confidently identified, the scene will be strongly directed towards a 'tourist landmark' category, even if other components initially suggested a generic 'city street.'
 
-6.  **Context Reasoning Engine**
+6. **Context Reasoning Engine**
 
-    With the main scene identified, Vision Scout adds layers of contextual intelligence:
+   With the main scene type established through the fusion process, Vision Scout adds layers of contextual intelligence:
 
-    * **Functional Zone Identification** analyzes the spatial layout to identify specific areas within the scene. In an office, it might spot workstation areas where desks and chairs cluster together. In a street scene, it could delineate pedestrian walkways from vehicle traffic zones.
-    * **Activity and Safety Inference** consults the system's knowledge base to infer probable activities and flag potential safety concerns. This draws from templates and definitions that understand what typically happens in different environments and what risks might be present.
+   * **Functional Zone Identification** analyzes the spatial layout to identify specific areas within the scene based on the determined scene type. In an office, it might spot workstation areas where desks and chairs cluster together. In a street scene, it could delineate pedestrian walkways from vehicle traffic zones.
+   * **Activity and Safety Inference** consults the system's knowledge base to infer probable activities and flag potential safety concerns. This draws from templates and definitions that understand what typically happens in different environments and what risks might be present.
 
-7.  **Natural Language Generation Pipeline**
+7. **Natural Language Generation Pipeline**
 
-    This is where all the analytical insights transform into human-readable narrative:
+   This is where all analytical insights transform into human-readable narrative through a structured process:
 
-    * **Template-Based Scene Description** serves as the initial storyteller, gathering all the insights about scene type, key objects (including **any identified landmarks if that feature was enabled**), lighting conditions, spatial layout, inferred activities (**which may include landmark-specific activities**), and safety notes. It weaves these elements together using sophisticated templates to create a comprehensive initial description.
-    * **Factual Verification System** performs consistency and accuracy checks, ensuring that the generated content aligns with the actual analytical findings and resolving any conflicts between different components.
-    * **LLM Enhancement Process** uses Llama 3.2 to refine and polish the narrative, making it more fluent and insightful while strictly maintaining factual accuracy. The LLM receives specific instructions to only reference objects that were actually detected and to respect quantities and other verified facts.
+   * **Template-Based Scene Description** serves as the initial storyteller, gathering insights about scene type, key objects (including any identified landmarks if that feature was enabled), lighting conditions, spatial layout, inferred activities (which may include landmark-specific activities), and safety notes. It weaves these elements together using sophisticated templates to create a comprehensive initial description.
+   * **LLM Enhancement Process** uses Llama 3.2 to refine and polish the narrative, making it more fluent and insightful while strictly maintaining factual accuracy. The LLM receives specific instructions to reference only objects that were actually detected and to respect quantities and other verified facts. This process includes built-in factual verification mechanisms to ensure consistency between the generated content and actual analytical findings.
 
-8.  **Structured Output Assembly and Presentation**
+8. **Structured Output Assembly and Presentation**
 
-    Finally, the complete analysis gets organized and presented through the Gradio Interface. You'll see your image with bounding boxes around detected objects, detailed statistics about what was found, and the rich, refined scene understanding report. The interface clearly indicates when descriptions have been LLM-enhanced and often provides options to compare with the original template-based description.
+   Finally, the complete analysis gets organized and presented through the Gradio Interface. You'll see your image with bounding boxes around detected objects, detailed statistics about what was found, and the rich, refined scene understanding report. The interface clearly indicates when descriptions have been LLM-enhanced and provides options to compare with the original template-based description.
 
-The beauty of this system lies in how all these components work together, each contributing their specialty while the intelligent fusion process ensures you get the most accurate and insightful understanding of your image possible.
+The beauty of this system lies in how all these components work together through intelligent coordination, each contributing their specialty while the sophisticated fusion and reasoning processes ensure you get the most accurate and insightful understanding of your image possible.
 
 ---
 
