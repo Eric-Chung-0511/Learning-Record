@@ -59,18 +59,18 @@ Vision Scout works like a team of AI specialists, each examining your image from
 
 **The Complete Journey**
 
-1. **Image Input and Preprocessing**
+1️⃣ **Image Input and Preprocessing**
 
    When you upload an image, Vision Scout first ensures it's in the right format for analysis. Whether you provide a PIL Image, Numpy array, or other format, the system converts it to RGB format and temporarily stores it, setting the stage for all the analytical work ahead.
 
-2. **Multi-Modal Perception: The Initial Assessment**
+2️⃣ **Multi-Modal Perception: The Initial Assessment**
 
    This is where the magic starts. Your image gets sent down multiple analytical pathways in a carefully orchestrated sequence:
 
    * **Places365 Scene Classification** initiates the process with a ResNet50 model trained on 365 different scene categories. Think of it as the generalist who takes one look and says "this feels like a kitchen" or "looks like a park to me." It provides that crucial first impression along with a confidence score, plus an early assessment about whether we're looking at an indoor or outdoor scene.
    * **YOLOv8 Object Detection** operates in parallel, conducting detailed inventory work by scanning the image to identify specific objects and their exact locations, complete with bounding boxes and confidence levels for each detection. This provides the concrete "what's actually in this picture" foundation that everything else builds upon.
 
-3. **Feature Enhancement and Deep Analysis**
+3️⃣ **Feature Enhancement and Deep Analysis**
 
    Now the system layers on more sophisticated analysis through coordinated processing:
 
@@ -79,33 +79,33 @@ Vision Scout works like a team of AI specialists, each examining your image from
    * **Semantic Scene Analysis** employs CLIP to create a unique "fingerprint" of your image, then compares this against hundreds of text descriptions to understand overall meaning and context. This captures atmosphere, cultural context, and subtle visual cues that pure object detection might miss.
    * **Landmark Recognition**, an optional yet powerful feature that can be enabled by the user, uses CLIP's zero-shot classification capabilities to spot famous landmarks that might be missed by standard object detectors. When activated, it intelligently examines the entire image and specific regions where YOLO had low confidence or identified large, undefined structures, using multi-scale analysis to identify well-known global and regional points of interest.
 
-4. **Multi-Dimensional Scoring Engine**
+4️⃣ **Multi-Dimensional Scoring Engine**
 
    Here's where the different analytical streams converge through the Scene Analysis Coordinator. The system runs three parallel scoring mechanisms:
 
    * **YOLO-based scoring** focuses on object-driven scene assessment, **CLIP-based scoring** emphasizes semantic and contextual understanding, while **Places365-based scoring** provides classification confidence. Each approach contributes its unique perspective to the comprehensive analysis.
 
-5. **Dynamic Weight Fusion: The Intelligent Decision**
+5️⃣ **Dynamic Weight Fusion: The Intelligent Decision**
 
    The system acts as an intelligent conductor, combining all these different viewpoints through sophisticated algorithms. Rather than simply averaging scores, it dynamically adjusts the importance of each analytical component based on scene characteristics and detection quality. For example, a kitchen scene heavily relies on YOLO detecting specific appliances, while a bustling market scene might lean more on CLIP's understanding of atmosphere and cultural context.
 
    Crucially, when Landmark Recognition is enabled and identifies a high-confidence landmark, this finding significantly influences the Dynamic Weight Fusion process. The system then gives greater weight to semantic context and landmark-specific knowledge, potentially overriding or re-interpreting scores from general object detection or scene classification when they conflict with strong landmark identification. For instance, if the Eiffel Tower is confidently identified, the scene will be strongly directed towards a 'tourist landmark' category, even if other components initially suggested a generic 'city street.'
 
-6. **Context Reasoning Engine**
+6️⃣ **Context Reasoning Engine**
 
    With the main scene type established through the fusion process, Vision Scout adds layers of contextual intelligence:
 
    * **Functional Zone Identification** analyzes the spatial layout to identify specific areas within the scene based on the determined scene type. In an office, it might spot workstation areas where desks and chairs cluster together. In a street scene, it could delineate pedestrian walkways from vehicle traffic zones.
    * **Activity and Safety Inference** consults the system's knowledge base to infer probable activities and flag potential safety concerns. This draws from templates and definitions that understand what typically happens in different environments and what risks might be present.
 
-7. **Natural Language Generation Pipeline**
+7️⃣ **Natural Language Generation Pipeline**
 
    This is where all analytical insights transform into human-readable narrative through a structured process:
 
    * **Template-Based Scene Description** serves as the initial storyteller, gathering insights about scene type, key objects (including any identified landmarks if that feature was enabled), lighting conditions, spatial layout, inferred activities (which may include landmark-specific activities), and safety notes. It weaves these elements together using sophisticated templates to create a comprehensive initial description.
    * **LLM Enhancement Process** uses Llama 3.2 to refine and polish the narrative, making it more fluent and insightful while strictly maintaining factual accuracy. The LLM receives specific instructions to reference only objects that were actually detected and to respect quantities and other verified facts. This process includes built-in factual verification mechanisms to ensure consistency between the generated content and actual analytical findings.
 
-8. **Structured Output Assembly and Presentation**
+8️⃣ **Structured Output Assembly and Presentation**
 
    Finally, the complete analysis gets organized and presented through the Gradio Interface. You'll see your image with bounding boxes around detected objects, detailed statistics about what was found, and the rich, refined scene understanding report. The interface clearly indicates when descriptions have been LLM-enhanced and provides options to compare with the original template-based description.
 
