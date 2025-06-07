@@ -11,7 +11,7 @@ class FunctionalZoneIdentifier:
     整合區域評估和場景特定的區域辨識邏輯，提供統一的功能區域辨識接口
     """
 
-    def __init__(self, zone_evaluator=None, scene_zone_identifier=None, scene_viewpoint_analyzer=None):
+    def __init__(self, zone_evaluator=None, scene_zone_identifier=None, scene_viewpoint_analyzer=None, object_categories=None):
         """
         初始化功能區域識別器
 
@@ -26,6 +26,7 @@ class FunctionalZoneIdentifier:
 
             self.scene_viewpoint_analyzer = scene_viewpoint_analyzer
             self.viewpoint_detector = scene_viewpoint_analyzer
+            self.OBJECT_CATEGORIES = object_categories or {}
 
             logger.info("FunctionalZoneIdentifier initialized successfully with SceneViewpointAnalyzer")
 
@@ -68,7 +69,7 @@ class FunctionalZoneIdentifier:
                     logger.info("Insufficient objects for zone identification")
                     return {}
 
-            # 5. 建立 category_regions 
+            # 5. 建立 category_regions
             category_regions = self._build_category_regions_mapping(detected_objects)
             zones = {}
 
@@ -247,7 +248,7 @@ class FunctionalZoneIdentifier:
             objects = zone_data.get("objects", [])
             region = zone_data.get("region", "")
 
-            # 優先檢查是否含有 traffic light 
+            # 優先檢查是否含有 traffic light
             if any(obj == "traffic light" or "traffic light" in obj for obj in objects):
                 return "traffic control zone"
 
@@ -438,36 +439,42 @@ class FunctionalZoneIdentifier:
     def _categorize_object(self, obj: Dict) -> str:
         """
         將檢測到的物件分類到功能類別中，用於區域識別
-
-        Args:
-            obj: 物件字典
-
-        Returns:
-            物件功能類別字串
+        確保所有返回值都使用自然語言格式，避免底線或技術性標識符
         """
         try:
             class_id = obj.get("class_id", -1)
-            class_name = obj.get("class_name", "").lower()
+            class_name = obj.get("class_name", "").lower().strip()
 
-            # 使用現有的類別映射（如果可用）
+            # 優先處理 traffic light
+            # 只要 class_id == 9 或 class_name 包含 "traffic light"，就分類為 "traffic light"
+            if class_id == 9 or "traffic light" in class_name:
+                return "traffic light"
+
+            # 如果有自訂的 OBJECT_CATEGORIES 映射，優先使用它
             if hasattr(self, 'OBJECT_CATEGORIES') and self.OBJECT_CATEGORIES:
                 for category, ids in self.OBJECT_CATEGORIES.items():
                     if class_id in ids:
-                        return category
+                        # 確保返回的類別名稱使用自然語言格式
+                        return self._clean_category_name(category)
 
-            # 基於COCO類別名稱的後備分類
+            # COCO class default name
             furniture_items = ["chair", "couch", "bed", "dining table", "toilet"]
             plant_items = ["potted plant"]
             electronic_items = ["tv", "laptop", "mouse", "remote", "keyboard", "cell phone"]
             vehicle_items = ["bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat"]
             person_items = ["person"]
-            kitchen_items = ["bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
-                            "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog",
-                            "pizza", "donut", "cake", "refrigerator", "oven", "toaster", "sink", "microwave"]
-            sports_items = ["frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
-                        "baseball glove", "skateboard", "surfboard", "tennis racket"]
+            kitchen_items = [
+                "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
+                "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog",
+                "pizza", "donut", "cake", "refrigerator", "oven", "toaster", "sink", "microwave"
+            ]
+            sports_items = [
+                "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
+                "baseball glove", "skateboard", "surfboard", "tennis racket"
+            ]
             personal_items = ["handbag", "tie", "suitcase", "umbrella", "backpack"]
 
+            # fallback natural language
             if any(item in class_name for item in furniture_items):
                 return "furniture"
             elif any(item in class_name for item in plant_items):
@@ -479,17 +486,53 @@ class FunctionalZoneIdentifier:
             elif any(item in class_name for item in person_items):
                 return "person"
             elif any(item in class_name for item in kitchen_items):
-                return "kitchen_items"
+                return "kitchen items"  # 移除底線
             elif any(item in class_name for item in sports_items):
                 return "sports"
             elif any(item in class_name for item in personal_items):
-                return "personal_items"
+                return "personal items"  # 移除底線
             else:
                 return "misc"
 
         except Exception as e:
             logger.error(f"Error categorizing object: {str(e)}")
             logger.error(traceback.format_exc())
+            return "misc"
+
+    def _clean_category_name(self, category: str) -> str:
+        """
+        清理類別名稱，移除底線並轉換為較自然的格式
+
+        Args:
+            category: 原始類別名稱
+
+        Returns:
+            str: 清理後的類別名稱
+        """
+        try:
+            if not category:
+                return "misc"
+
+            # 將底線替換為空格
+            cleaned = category.replace('_', ' ')
+
+            # 處理常見的技術性命名模式
+            replacements = {
+                'kitchen items': 'kitchen items',
+                'personal items': 'personal items',
+                'traffic light': 'traffic light',
+                'misc items': 'misc'
+            }
+
+            # 應用特定的替換規則
+            for old_term, new_term in replacements.items():
+                if cleaned == old_term:
+                    return new_term
+
+            return cleaned.strip()
+
+        except Exception as e:
+            logger.warning(f"Error cleaning category name '{category}': {str(e)}")
             return "misc"
 
     def _identify_default_zones(self, category_regions: Dict, detected_objects: List[Dict]) -> Dict:
@@ -791,7 +834,7 @@ class FunctionalZoneIdentifier:
 
         }
 
-        # 1. 統計 current_zones 裡，已使用掉的 (class_name, region) 次數 
+        # 1. 統計 current_zones 裡，已使用掉的 (class_name, region) 次數
         used_count = {}
         for zone_info in current_zones.values():
             rg = zone_info.get("region", "")
@@ -799,7 +842,7 @@ class FunctionalZoneIdentifier:
                 key = (obj_name, rg)
                 used_count[key] = used_count.get(key, 0) + 1
 
-        # 2. 統計 all_detected_objects 裡的 (class_name, region) 總次數 
+        # 2. 統計 all_detected_objects 裡的 (class_name, region) 總次數
         total_count = {}
         for obj in all_detected_objects:
             cname = obj.get("class_name", "")
@@ -807,7 +850,7 @@ class FunctionalZoneIdentifier:
             key = (cname, rg)
             total_count[key] = total_count.get(key, 0) + 1
 
-        # 3. 把 default_classes 轉換成「class_name → fallback 區域 type」的對照表 
+        # 3. 把 default_classes 轉換成「class_name → fallback 區域 type」的對照表
         category_to_fallback = {
             # 行人與交通工具
             "person":        "pedestrian area",
@@ -906,12 +949,12 @@ class FunctionalZoneIdentifier:
             "potted plant":  "decorative area",
         }
 
-        # 4. 計算缺少的 (class_name, region) 並建立 fallback zone 
+        # 4. 計算缺少的 (class_name, region) 並建立 fallback zone
         for (cname, rg), total in total_count.items():
             used = used_count.get((cname, rg), 0)
             missing = total - used
             if missing <= 0:
-                continue  
+                continue
 
             # (A) 決定這個 cname 在 fallback 裡屬於哪個大 class（zone_type）
             zone_type = category_to_fallback.get(cname, "miscellaneous area")

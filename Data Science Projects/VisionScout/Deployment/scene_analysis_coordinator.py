@@ -333,6 +333,9 @@ class SceneAnalysisCoordinator:
             scene_confidence, lighting_info, functional_zones, landmark_results, image_dims_val
         )
         possible_activities = self._extract_possible_activities(detected_objects_from_landmarks_list, landmark_results)
+        safety_concerns = []
+        if self.descriptor and hasattr(self.descriptor, '_identify_safety_concerns'):
+            safety_concerns = self.descriptor._identify_safety_concerns(detected_objects_from_landmarks_list, best_scene_val)
 
         # 準備最終結果
         return {
@@ -345,6 +348,7 @@ class SceneAnalysisCoordinator:
             "object_count": len(detected_objects_from_landmarks_list),
             "regions": region_analysis,
             "possible_activities": possible_activities,
+            "safety_concerns": safety_concerns,
             "functional_zones": functional_zones,
             "detected_landmarks": [lm for lm in detected_objects_from_landmarks_list if lm.get("is_landmark", False)],
             "primary_landmark": primary_landmark,
@@ -463,25 +467,17 @@ class SceneAnalysisCoordinator:
         # 空間分析
         region_analysis_val = self.spatial_analyzer._analyze_regions(detected_objects_main)
 
+        if current_run_enable_landmark:
+            self.logger.info("Using landmark detection logic for YOLO scene")
+            return self._handle_no_yolo_detections(
+                original_image_pil, image_dims_val, current_run_enable_landmark,
+                lighting_info, places365_info
+            )
+
         # 地標處理和整合
         landmark_objects_identified = []
         landmark_specific_activities = []
         final_landmark_info = {}
-
-        if self.use_clip and current_run_enable_landmark:
-            detected_objects_main, landmark_objects_identified = self.landmark_processing_manager.process_unknown_objects(
-                detection_result, detected_objects_main, self.clip_analyzer
-            )
-
-            if landmark_objects_identified:
-                landmark_specific_activities = self.landmark_processing_manager.extract_landmark_specific_activities(
-                    landmark_objects_identified
-                )
-                final_landmark_info = {
-                    "detected_landmarks": landmark_objects_identified,
-                    "primary_landmark": max(landmark_objects_identified, key=lambda x: x.get("confidence", 0.0), default=None),
-                    "detailed_landmarks": landmark_objects_identified
-                }
 
         # 如果當前運行禁用地標檢測，清理地標物體
         if not current_run_enable_landmark:

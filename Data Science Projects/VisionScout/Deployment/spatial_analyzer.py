@@ -5,6 +5,7 @@ import logging
 import traceback
 from typing import Dict, List, Tuple, Any, Optional
 
+from object_categories import OBJECT_CATEGORIES
 from region_analyzer import RegionAnalyzer
 from object_extractor import ObjectExtractor
 from scene_viewpoint_analyzer import SceneViewpointAnalyzer
@@ -31,6 +32,9 @@ class SpatialAnalyzer:
         """
         try:
             # 初始化所有子組件
+            self.class_names = class_names
+            self.OBJECT_CATEGORIES = object_categories or {}
+
             self.region_analyzer = RegionAnalyzer()
             self.object_extractor = ObjectExtractor(class_names, object_categories)
 
@@ -41,11 +45,9 @@ class SpatialAnalyzer:
             self.functional_zone_identifier = FunctionalZoneIdentifier(
                 zone_evaluator=self.zone_evaluator,
                 scene_zone_identifier=self.scene_zone_identifier,
-                scene_viewpoint_analyzer=self.scene_viewpoint_analyzer
+                scene_viewpoint_analyzer=self.scene_viewpoint_analyzer,
+                object_categories=self.OBJECT_CATEGORIES
             )
-
-            self.class_names = class_names
-            self.OBJECT_CATEGORIES = object_categories or {}
 
             self.enhance_descriptor = None
 
@@ -170,105 +172,6 @@ class SpatialAnalyzer:
             logger.error(f"Error in _identify_functional_zones: {str(e)}")
             logger.error(traceback.format_exc())
             return {}
-
-    def _categorize_object(self, obj: Dict) -> str:
-        """
-        將檢測到的物件分類到功能類別中，用於區域識別
-        確保所有返回值都使用自然語言格式，避免底線或技術性標識符
-        """
-        try:
-            class_id = obj.get("class_id", -1)
-            class_name = obj.get("class_name", "").lower().strip()
-
-            # 優先處理 traffic light
-            # 只要 class_id == 9 或 class_name 包含 "traffic light"，就分類為 "traffic light"
-            if class_id == 9 or "traffic light" in class_name:
-                return "traffic light"
-
-            # 如果有自訂的 OBJECT_CATEGORIES 映射，優先使用它
-            if hasattr(self, 'OBJECT_CATEGORIES') and self.OBJECT_CATEGORIES:
-                for category, ids in self.OBJECT_CATEGORIES.items():
-                    if class_id in ids:
-                        # 確保返回的類別名稱使用自然語言格式
-                        return self._clean_category_name(category)
-
-            # COCO class default name
-            furniture_items = ["chair", "couch", "bed", "dining table", "toilet"]
-            plant_items = ["potted plant"]
-            electronic_items = ["tv", "laptop", "mouse", "remote", "keyboard", "cell phone"]
-            vehicle_items = ["bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat"]
-            person_items = ["person"]
-            kitchen_items = [
-                "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
-                "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog",
-                "pizza", "donut", "cake", "refrigerator", "oven", "toaster", "sink", "microwave"
-            ]
-            sports_items = [
-                "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
-                "baseball glove", "skateboard", "surfboard", "tennis racket"
-            ]
-            personal_items = ["handbag", "tie", "suitcase", "umbrella", "backpack"]
-
-            # fallback natural language
-            if any(item in class_name for item in furniture_items):
-                return "furniture"
-            elif any(item in class_name for item in plant_items):
-                return "plant"
-            elif any(item in class_name for item in electronic_items):
-                return "electronics"
-            elif any(item in class_name for item in vehicle_items):
-                return "vehicle"
-            elif any(item in class_name for item in person_items):
-                return "person"
-            elif any(item in class_name for item in kitchen_items):
-                return "kitchen items"  # 移除底線
-            elif any(item in class_name for item in sports_items):
-                return "sports"
-            elif any(item in class_name for item in personal_items):
-                return "personal items"  # 移除底線
-            else:
-                return "misc"
-
-        except Exception as e:
-            logger.error(f"Error categorizing object: {str(e)}")
-            logger.error(traceback.format_exc())
-            return "misc"
-
-    def _clean_category_name(self, category: str) -> str:
-        """
-        清理類別名稱，移除底線並轉換為較自然的格式
-
-        Args:
-            category: 原始類別名稱
-
-        Returns:
-            str: 清理後的類別名稱
-        """
-        try:
-            if not category:
-                return "misc"
-
-            # 將底線替換為空格
-            cleaned = category.replace('_', ' ')
-
-            # 處理常見的技術性命名模式
-            replacements = {
-                'kitchen items': 'kitchen items',
-                'personal items': 'personal items',
-                'traffic light': 'traffic light',
-                'misc items': 'misc'
-            }
-
-            # 應用特定的替換規則
-            for old_term, new_term in replacements.items():
-                if cleaned == old_term:
-                    return new_term
-
-            return cleaned.strip()
-
-        except Exception as e:
-            logger.warning(f"Error cleaning category name '{category}': {str(e)}")
-            return "misc"
 
     def _get_object_categories(self, detected_objects: List[Dict]) -> set:
         """

@@ -17,12 +17,20 @@ from style import Style
 from image_processor import ImageProcessor
 from video_processor import VideoProcessor
 from llm_enhancer import LLMEnhancer
+from ui_manager import UIManager
 
 # Initialize Processors with LLM support
 image_processor = None
 video_processor = None
+ui_manager = None
 
 def initialize_processors():
+    """
+    Initialize the image and video processors with LLM support.
+    
+    Returns:
+        bool: True if initialization was successful, False otherwise
+    """
     global image_processor, video_processor
 
     try:
@@ -30,7 +38,7 @@ def initialize_processors():
         image_processor = ImageProcessor(use_llm=True, llm_model_path="meta-llama/Llama-3.2-3B-Instruct")
         print("ImageProcessor initialized successfully with LLM")
 
-        # 添加診斷檢查
+        # 檢查狀態
         if hasattr(image_processor, 'scene_analyzer'):
             if image_processor.scene_analyzer is not None:
                 print(f"scene_analyzer initialized: {type(image_processor.scene_analyzer)}")
@@ -66,49 +74,41 @@ def initialize_processors():
             video_processor = None
             return False
 
-# Initialize processors
-initialization_success = initialize_processors()
-if not initialization_success:
-    print("WARNING: Failed to initialize processors. Application may not function correctly.")
-
-# Helper Function
-def get_all_classes():
-    """Gets all available COCO classes."""
-    # Try to get from a loaded model first
-    if image_processor and image_processor.model_instances:
-         for model_instance in image_processor.model_instances.values():
-              if model_instance and model_instance.is_model_loaded:
-                   try:
-                        # Ensure class_names is a dict {id: name}
-                        if isinstance(model_instance.class_names, dict):
-                             return sorted([(int(idx), name) for idx, name in model_instance.class_names.items()])
-                   except Exception as e:
-                        print(f"Error getting class names from model: {e}")
-
-    # Fallback to standard COCO (ensure keys are ints)
-    default_classes = {
-        0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
-        6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant',
-        11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat',
-        16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant', 21: 'bear',
-        22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag',
-        27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard',
-        32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove',
-        36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle',
-        40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl',
-        46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli',
-        51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair',
-        57: 'couch', 58: 'potted plant', 59: 'bed', 60: 'dining table', 61: 'toilet',
-        62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard',
-        67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
-        72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors',
-        77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'
-    }
-    return sorted(default_classes.items())
+def initialize_ui_manager():
+    """
+    Initialize the UI manager and set up references to processors.
+    
+    Returns:
+        UIManager: Initialized UI manager instance
+    """
+    global ui_manager, image_processor
+    
+    ui_manager = UIManager()
+    
+    # Set image processor reference for dynamic class retrieval
+    if image_processor:
+        ui_manager.set_image_processor(image_processor)
+    
+    return ui_manager
 
 @spaces.GPU(duration=180)
 def handle_image_upload(image, model_name, confidence_threshold, filter_classes=None, use_llm=True, enable_landmark=True):
-    """Processes a single uploaded image."""
+    """
+    Processes a single uploaded image.
+    
+    Args:
+        image: PIL Image object
+        model_name: Name of the YOLO model to use
+        confidence_threshold: Confidence threshold for detections
+        filter_classes: List of class names/IDs to filter
+        use_llm: Whether to use LLM for enhanced descriptions
+        enable_landmark: Whether to enable landmark detection
+        
+    Returns:
+        Tuple: (result_image, result_text, formatted_stats, plot_figure, 
+                scene_description_html, original_desc_html, activities_list_data, 
+                safety_data, zones, lighting)
+    """
     # Enhanced safety check for image_processor
     if image_processor is None:
         error_msg = "Image processor is not initialized. Please restart the application or check system dependencies."
@@ -140,6 +140,7 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
 
     print(f"DIAGNOSTIC: Image upload handled with enable_landmark={enable_landmark}, use_llm={use_llm}")
     print(f"Processing image with model: {model_name}, confidence: {confidence_threshold}, use_llm: {use_llm}, enable_landmark: {enable_landmark}")
+    
     try:
         image_processor.use_llm = use_llm
 
@@ -155,19 +156,19 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
                 image_processor.scene_analyzer.use_landmark_detection = enable_landmark
                 image_processor.scene_analyzer.enable_landmark = enable_landmark
 
-                # 確保處理器也設置了這選項
+                # 確保處理器也設置了這選項(檢測地標用)
                 image_processor.enable_landmark = enable_landmark
 
                 # 檢查並設置更深層次的組件
                 if hasattr(image_processor.scene_analyzer, 'scene_describer') and image_processor.scene_analyzer.scene_describer is not None:
                     image_processor.scene_analyzer.scene_describer.enable_landmark = enable_landmark
 
-                # 檢查並設置CLIP分析器上的標記
+                # 檢查並設置CLIP Analyzer
                 if hasattr(image_processor.scene_analyzer, 'clip_analyzer') and image_processor.scene_analyzer.clip_analyzer is not None:
                     if hasattr(image_processor.scene_analyzer.clip_analyzer, 'enable_landmark'):
                         image_processor.scene_analyzer.clip_analyzer.enable_landmark = enable_landmark
 
-                # 檢查並設置LLM增強器
+                # 檢查並設置LLM方面
                 if hasattr(image_processor.scene_analyzer, 'llm_enhancer') and image_processor.scene_analyzer.llm_enhancer is not None:
                     if hasattr(image_processor.scene_analyzer.llm_enhancer, 'enable_landmark'):
                         image_processor.scene_analyzer.llm_enhancer.enable_landmark = enable_landmark
@@ -198,7 +199,7 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
         class_ids_to_filter = None
         if filter_classes:
             class_ids_to_filter = []
-            available_classes_dict = dict(get_all_classes())
+            available_classes_dict = dict(ui_manager.get_all_classes())
             name_to_id = {name: id for id, name in available_classes_dict.items()}
             for class_str in filter_classes:
                 class_name_or_id = class_str.split(":")[0].strip()
@@ -235,7 +236,7 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
         # Prepare visualization data for the plot
         plot_figure = None
         if stats and "class_statistics" in stats and stats["class_statistics"]:
-            available_classes_dict = dict(get_all_classes())
+            available_classes_dict = dict(ui_manager.get_all_classes())
             viz_data = image_processor.prepare_visualization_data(stats, available_classes_dict)
             if "error" not in viz_data:
                  plot_figure = EvaluationMetrics.create_enhanced_stats_plot(viz_data)
@@ -485,8 +486,20 @@ def download_video_from_url(video_url, max_duration_minutes=10):
 
 @spaces.GPU
 def handle_video_upload(video_input, video_url, input_type, model_name, confidence_threshold, process_interval):
-    """Handles video upload or URL input and calls the VideoProcessor."""
-
+    """
+    Handles video upload or URL input and calls the VideoProcessor.
+    
+    Args:
+        video_input: Uploaded video file
+        video_url: Video URL (if using URL input)
+        input_type: Type of input ("upload" or "url")
+        model_name: Name of the YOLO model to use
+        confidence_threshold: Confidence threshold for detections
+        process_interval: Frame processing interval
+        
+    Returns:
+        Tuple: (output_video_path, summary_html, formatted_stats)
+    """
     print(f"Received video request: input_type={input_type}")
     video_path = None
 
@@ -534,369 +547,34 @@ def handle_video_upload(video_input, video_url, input_type, model_name, confiden
         return None, error_html, {"error": str(e)}
 
 
-# Create Gradio Interface
-def create_interface():
-    """Creates the Gradio interface with Tabs."""
-    css = Style.get_css()
-    available_models = DetectionModel.get_available_models()
-    model_choices = [model["model_file"] for model in available_models]
-    class_choices_formatted = [f"{id}: {name}" for id, name in get_all_classes()] # Use formatted choices
-
-    with gr.Blocks(css=css, theme=gr.themes.Soft(primary_hue="teal", secondary_hue="blue")) as demo:
-
-        # Header
-        with gr.Group(elem_classes="app-header"):
-              gr.HTML("""
-                    <div style="text-align: center; width: 100%; padding: 2rem 0 3rem 0; background: linear-gradient(135deg, #f0f9ff, #e1f5fe);">
-                        <h1 style="font-size: 3.5rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #38b2ac, #4299e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; font-family: 'Arial', sans-serif;">VisionScout</h1>
-                        <h2 style="color: #4A5568; font-size: 1.2rem; font-weight: 400; margin-top: 0.5rem; margin-bottom: 1.5rem; font-family: 'Arial', sans-serif;">Object Detection and Scene Understanding</h2>
-                        <div style="display: flex; justify-content: center; gap: 10px; margin: 0.5rem 0;"><div style="height: 3px; width: 80px; background: linear-gradient(90deg, #38b2ac, #4299e1);"></div></div>
-                        <div style="display: flex; justify-content: center; gap: 25px; margin-top: 1.5rem;">
-                            <div style="padding: 8px 15px; border-radius: 20px; background: rgba(66, 153, 225, 0.15); color: #2b6cb0; font-weight: 500; font-size: 0.9rem;"><span style="margin-right: 6px;">🖼️</span> Image Analysis</div>
-                            <div style="padding: 8px 15px; border-radius: 20px; background: rgba(56, 178, 172, 0.15); color: #2b6cb0; font-weight: 500; font-size: 0.9rem;"><span style="margin-right: 6px;">🎬</span> Video Analysis</div>
-                        </div>
-                         <div style="margin-top: 20px; padding: 10px 15px; background-color: rgba(255, 248, 230, 0.9); border-left: 3px solid #f6ad55; border-radius: 6px; max-width: 600px; margin-left: auto; margin-right: auto; text-align: left;">
-                             <p style="margin: 0; font-size: 0.9rem; color: #805ad5; font-weight: 500;">
-                                 <span style="margin-right: 5px;">📱</span> iPhone users: HEIC images may not be supported.
-                                 <a href="https://cloudconvert.com/heic-to-jpg" target="_blank" style="color: #3182ce; text-decoration: underline;">Convert HEIC to JPG</a> before uploading if needed.
-                             </p>
-                         </div>
-                    </div>
-                """)
-
-        # Main Content with Tabs
-        with gr.Tabs(elem_classes="tabs"):
-
-            # Tab 1: Image Processing
-            with gr.Tab("Image Processing"):
-                current_image_model = gr.State("yolov8m.pt") # State for image model selection
-                with gr.Row(equal_height=False): # Allow columns to have different heights
-                    # Left Column: Image Input & Controls
-                    with gr.Column(scale=4, elem_classes="input-panel"):
-                        with gr.Group():
-                            gr.HTML('<div class="section-heading">Upload Image</div>')
-                            image_input = gr.Image(type="pil", label="Upload an image", elem_classes="upload-box")
-
-                            with gr.Accordion("Image Analysis Settings", open=False):
-                                image_model_dropdown = gr.Dropdown(
-                                    choices=model_choices,
-                                    value="yolov8m.pt", # Default for images
-                                    label="Select Model",
-                                    info="Choose speed vs. accuracy (n=fast, m=balanced, x=accurate)"
-                                )
-                                # Display model info
-                                image_model_info = gr.Markdown(DetectionModel.get_model_description("yolov8m.pt"))
-
-                                image_confidence = gr.Slider(
-                                    minimum=0.1, maximum=0.9, value=0.25, step=0.05,
-                                    label="Confidence Threshold",
-                                    info="Minimum confidence for displaying a detected object"
-                                )
-
-                                use_llm = gr.Checkbox(
-                                    label="Use LLM for enhanced scene descriptions",
-                                    value=True,
-                                    info="Provides more detailed and natural language descriptions (may increase processing time)"
-                                )
-
-                                use_landmark_detection = gr.Checkbox(
-                                    label="Use CLIP for Landmark Detection",
-                                    value=False,
-                                    info="Detect famous landmarks, monuments, and tourist attractions that standard object detection cannot recognize (increases processing time)"
-                                )
-
-                                with gr.Accordion("Filter Classes", open=False):
-                                     gr.HTML('<div class="section-heading" style="font-size: 1rem;">Common Categories</div>')
-                                     with gr.Row():
-                                         people_btn = gr.Button("People", size="sm")
-                                         vehicles_btn = gr.Button("Vehicles", size="sm")
-                                         animals_btn = gr.Button("Animals", size="sm")
-                                         objects_btn = gr.Button("Common Objects", size="sm")
-                                     image_class_filter = gr.Dropdown(
-                                         choices=class_choices_formatted, # Use formatted choices
-                                         multiselect=True,
-                                         label="Select Classes to Display",
-                                         info="Leave empty to show all detected objects"
-                                     )
-
-                        image_detect_btn = gr.Button("Analyze Image", variant="primary", elem_classes="detect-btn")
-
-                        with gr.Group(elem_classes="how-to-use"):
-                             gr.HTML('<div class="section-heading">How to Use (Image)</div>')
-                             gr.Markdown("""
-                                1. Upload an image or use the camera
-                                2. *(Optional)* Adjust settings like confidence threshold or model size (n, m = balanced, x = accurate)
-                                3. In **Analysis Settings**, you can:
-                                    * Uncheck **Use LLM** to skip enhanced descriptions (faster)
-                                    * Check **Use CLIP for Landmark Detection** to identify famous landmarks like museums, monuments, and tourist attractions *(may take longer)*
-                                    * Filter object classes to focus on specific types of objects *(optional)*
-                                4. Click **Analyze Image** button
-
-                                **💡 Tip:** For landmark recognition (e.g. Louvre Museum), make sure to enable **CLIP for Landmark Detection** in the settings above.
-                                """)
-
-
-                        # Image Examples
-                        gr.Examples(
-                            examples=[
-                                "room_01.jpg",
-                                "street_04.jpg",
-                                "street_05.jpg",
-                                "landmark_Louvre_01.jpg"
-                                ],
-                            inputs=image_input,
-                            label="Example Images"
-                         )
-
-                        gr.HTML("""
-                            <div style="text-align: center; margin-top: 8px; padding: 6px; background-color: #f8f9fa; border-radius: 4px; border: 1px solid #e2e8f0;">
-                                <p style="font-size: 12px; color: #718096; margin: 0;">
-                                    📷 Sample images sourced from <a href="https://unsplash.com" target="_blank" style="color: #3182ce; text-decoration: underline;">Unsplash</a>
-                                </p>
-                            </div>
-                        """)
-
-                    # Right Column: Image Results
-                    with gr.Column(scale=6, elem_classes="output-panel"):
-                        with gr.Tabs(elem_classes="tabs"):
-                            with gr.Tab("Detection Result"):
-                                image_result_image = gr.Image(type="pil", label="Detection Result")
-                                gr.HTML('<div class="section-heading">Detection Details</div>')
-                                image_result_text = gr.Textbox(label=None, lines=10, elem_id="detection-details", container=False)
-
-                            with gr.Tab("Scene Understanding"):
-                                gr.HTML('<div class="section-heading">Scene Analysis</div>')
-                                gr.HTML("""
-                                    <details class="info-details" style="margin: 5px 0 15px 0;">
-                                        <summary style="padding: 8px; background-color: #f0f7ff; border-radius: 6px; border-left: 3px solid #4299e1; font-weight: bold; cursor: pointer; color: #2b6cb0;">
-                                            🔍 The AI Vision Scout Report: Click for important notes about this analysis
-                                        </summary>
-                                        <div style="margin-top: 8px; padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                            <p style="font-size: 13px; color: #718096; margin: 0;">
-                                                <b>About this analysis:</b> This analysis is the model's best guess based on visible objects.
-                                                Like human scouts, it sometimes gets lost or sees things that aren't there (but don't we all?).
-                                                Consider this an educated opinion rather than absolute truth. For critical applications, always verify with human eyes! 🧐
-                                            </p>
-                                        </div>
-                                    </details>
-                                """)
-
-                                gr.HTML('''
-                                    <div style="margin-top: 5px; padding: 6px 10px; background-color: #f0f9ff; border-radius: 4px; border-left: 3px solid #63b3ed; font-size: 12px; margin-bottom: 10px;">
-                                        <p style="margin: 0; color: #4a5568;">
-                                            <b>Note:</b> AI descriptions may vary slightly with each generation, reflecting the creative nature of AI. This is similar to how a person might use different words each time they describe the same image. Processing time may be longer during first use or when analyzing complex scenes, as the LLM enhancement requires additional computational resources.
-                                        </p>
-                                    </div>
-                                    ''')
-                                image_scene_description_html = gr.HTML(label=None, elem_id="scene_analysis_description_text")
-
-                                # 使用LLM增強敘述時也會顯示原本敘述內容
-                                with gr.Accordion("Original Scene Analysis", open=False, elem_id="original_scene_analysis_accordion"):
-                                    image_llm_description = gr.HTML(label=None, elem_id="original_scene_description_text")
-
-                                with gr.Row():
-                                     with gr.Column(scale=1):
-                                         gr.HTML('<div class="section-heading" style="font-size:1rem; text-align:left;">Possible Activities</div>')
-                                         image_activities_list = gr.Dataframe(headers=["Activity"], datatype=["str"], row_count=5, col_count=1, wrap=True)
-
-                                     with gr.Column(scale=1):
-                                         gr.HTML('<div class="section-heading" style="font-size:1rem; text-align:left;">Safety Concerns</div>')
-                                         image_safety_list = gr.Dataframe(headers=["Concern"], datatype=["str"], row_count=5, col_count=1, wrap=True)
-
-                                gr.HTML('<div class="section-heading">Functional Zones</div>')
-                                image_zones_json = gr.JSON(label=None, elem_classes="json-box")
-
-                                gr.HTML('<div class="section-heading">Lighting Conditions</div>')
-                                image_lighting_info = gr.JSON(label=None, elem_classes="json-box")
-
-                            with gr.Tab("Statistics"):
-                                with gr.Row():
-                                    with gr.Column(scale=3, elem_classes="plot-column"):
-                                        gr.HTML('<div class="section-heading">Object Distribution</div>')
-                                        image_plot_output = gr.Plot(label=None, elem_classes="large-plot-container")
-                                    with gr.Column(scale=2, elem_classes="stats-column"):
-                                        gr.HTML('<div class="section-heading">Detection Statistics</div>')
-                                        image_stats_json = gr.JSON(label=None, elem_classes="enhanced-json-display")
-
-            # Tab 2: Video Processing
-            with gr.Tab("Video Processing"):
-                with gr.Row(equal_height=False):
-                    # Left Column: Video Input & Controls
-                    with gr.Column(scale=4, elem_classes="input-panel"):
-                        with gr.Group():
-                            gr.HTML('<div class="section-heading">Video Input</div>')
-
-                            # Add input type selection
-                            video_input_type = gr.Radio(
-                                ["upload", "url"],
-                                label="Input Method",
-                                value="upload",
-                                info="Choose how to provide the video"
-                            )
-
-                            # File upload (will be shown/hidden based on selection)
-                            with gr.Group(elem_id="upload-video-group"):
-                                video_input = gr.Video(
-                                    label="Upload a video file (MP4, AVI, MOV)",
-                                    sources=["upload"],
-                                    visible=True
-                                )
-
-                            # URL input (will be shown/hidden based on selection)
-                            with gr.Group(elem_id="url-video-group"):
-                                video_url_input = gr.Textbox(
-                                    label="Enter video URL (YouTube or direct video link)",
-                                    placeholder="https://www.youtube.com/watch?v=...",
-                                    visible=False,
-                                    elem_classes="custom-video-url-input"
-                                )
-                                gr.HTML("""
-                                    <div style="padding: 8px; margin-top: 5px; background-color: #fff8f8; border-radius: 4px; border-left: 3px solid #f87171; font-size: 12px;">
-                                        <p style="margin: 0; color: #4b5563;">
-                                            Note: Currently only YouTube URLs are supported. Maximum video duration is 10 minutes. Due to YouTube's anti-bot protection, some videos may not be downloadable. For protected videos, please upload a local video file instead.
-                                        </p>
-                                    </div>
-                                """)
-
-                            with gr.Accordion("Video Analysis Settings", open=True):
-                                video_model_dropdown = gr.Dropdown(
-                                    choices=model_choices,
-                                    value="yolov8n.pt", # Default 'n' for video
-                                    label="Select Model (Video)",
-                                    info="Faster models (like 'n') are recommended"
-                                )
-                                video_confidence = gr.Slider(
-                                    minimum=0.1, maximum=0.9, value=0.4, step=0.05,
-                                    label="Confidence Threshold (Video)"
-                                )
-                                video_process_interval = gr.Slider(
-                                    minimum=1, maximum=60, value=10, step=1, # Allow up to 60 frame interval
-                                    label="Processing Interval (Frames)",
-                                    info="Analyze every Nth frame (higher value = faster)"
-                                )
-                        video_process_btn = gr.Button("Process Video", variant="primary", elem_classes="detect-btn")
-
-                        with gr.Group(elem_classes="how-to-use"):
-                            gr.HTML('<div class="section-heading">How to Use (Video)</div>')
-                            gr.Markdown("""
-                            1. Choose your input method: Upload a file or enter a URL.
-                            2. Adjust settings if needed (using a faster model and larger interval is recommended for longer videos).
-                            3. Click "Process Video". **Processing can take a significant amount of time.**
-                            4. The annotated video and summary will appear on the right when finished.
-                            """)
-
-                        # Add video examples
-                        gr.HTML('<div class="section-heading">Example Videos</div>')
-                        gr.HTML("""
-                            <div style="padding: 10px; background-color: #f0f7ff; border-radius: 6px; margin-bottom: 15px;">
-                                <p style="font-size: 14px; color: #4A5568; margin: 0;">
-                                    Upload any video containing objects that YOLO can detect. For testing, find sample videos
-                                    <a href="https://www.pexels.com/search/videos/street/" target="_blank" style="color: #3182ce; text-decoration: underline;">here</a>.
-                                </p>
-                            </div>
-                        """)
-
-                    # Right Column: Video Results
-                    with gr.Column(scale=6, elem_classes="output-panel video-result-panel"):
-                        gr.HTML("""
-                            <div class="section-heading">Video Result</div>
-                            <details class="info-details" style="margin: 5px 0 15px 0;">
-                                <summary style="padding: 8px; background-color: #f0f7ff; border-radius: 6px; border-left: 3px solid #4299e1; font-weight: bold; cursor: pointer; color: #2b6cb0;">
-                                    🎬 Video Processing Notes
-                                </summary>
-                                <div style="margin-top: 8px; padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e2e8f0;">
-                                    <p style="font-size: 13px; color: #718096; margin: 0;">
-                                        The processed video includes bounding boxes around detected objects. For longer videos,
-                                        consider using a faster model (like YOLOv8n) and a higher frame interval to reduce processing time.
-                                    </p>
-                                </div>
-                            </details>
-                        """)
-                        video_output = gr.Video(label="Processed Video", elem_classes="video-output-container") # Output for the processed video file
-
-                        gr.HTML('<div class="section-heading">Processing Summary</div>')
-                        # 使用HTML顯示影片的摘要
-                        video_summary_text = gr.HTML(
-                            label=None,
-                            elem_id="video-summary-html-output"
-                        )
-
-                        gr.HTML('<div class="section-heading">Aggregated Statistics</div>')
-                        video_stats_json = gr.JSON(label=None, elem_classes="video-stats-display") # Display statistics
-
-        # Event Listeners
-        # Image Model Change Handler
-        image_model_dropdown.change(
-            fn=lambda model: (model, DetectionModel.get_model_description(model)),
-            inputs=[image_model_dropdown],
-            outputs=[current_image_model, image_model_info] # Update state and description
-        )
-
-        # Image Filter Buttons
-        available_classes_list = get_all_classes() # Get list of (id, name)
-        people_classes_ids = [0]
-        vehicles_classes_ids = [1, 2, 3, 4, 5, 6, 7, 8]
-        animals_classes_ids = list(range(14, 24))
-        common_objects_ids = [39, 41, 42, 43, 44, 45, 56, 57, 60, 62, 63, 67, 73] # Bottle, cup, fork, knife, spoon, bowl, chair, couch, table, tv, laptop, phone, book
-
-        people_btn.click(lambda: [f"{id}: {name}" for id, name in available_classes_list if id in people_classes_ids], outputs=image_class_filter)
-        vehicles_btn.click(lambda: [f"{id}: {name}" for id, name in available_classes_list if id in vehicles_classes_ids], outputs=image_class_filter)
-        animals_btn.click(lambda: [f"{id}: {name}" for id, name in available_classes_list if id in animals_classes_ids], outputs=image_class_filter)
-        objects_btn.click(lambda: [f"{id}: {name}" for id, name in available_classes_list if id in common_objects_ids], outputs=image_class_filter)
-
-        video_input_type.change(
-            fn=lambda input_type: [
-                # Show/hide file upload
-                gr.update(visible=(input_type == "upload")),
-                # Show/hide URL input
-                gr.update(visible=(input_type == "url"))
-            ],
-            inputs=[video_input_type],
-            outputs=[video_input, video_url_input]
-        )
-
-        image_detect_btn.click(
-            fn=handle_image_upload,
-            inputs=[image_input, image_model_dropdown, image_confidence, image_class_filter, use_llm, use_landmark_detection ],
-            outputs=[
-                image_result_image, image_result_text, image_stats_json, image_plot_output,
-                image_scene_description_html, image_llm_description, image_activities_list, image_safety_list, image_zones_json,
-                image_lighting_info
-            ]
-        )
-
-        video_process_btn.click(
-            fn=handle_video_upload,
-            inputs=[
-                video_input,
-                video_url_input,
-                video_input_type,
-                video_model_dropdown,
-                video_confidence,
-                video_process_interval
-            ],
-            outputs=[video_output, video_summary_text, video_stats_json]
-        )
-
-        # Footer
-        gr.HTML("""
-            <div class="footer" style="padding: 25px 0; text-align: center; background: linear-gradient(to right, #f5f9fc, #e1f5fe); border-top: 1px solid #e2e8f0; margin-top: 30px;">
-                <div style="margin-bottom: 15px;">
-                    <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Powered by YOLOv8, CLIP, Places365, Meta Llama3.2 and Ultralytics • Created with Gradio</p>
-                </div>
-                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 15px;">
-                    <p style="font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 2px; background: linear-gradient(90deg, #38b2ac, #4299e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; display: inline-block;">EXPLORE THE CODE →</p>
-                    <a href="https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout" target="_blank" style="text-decoration: none;">
-                        <img src="https://img.shields.io/badge/GitHub-VisionScout-4299e1?logo=github&style=for-the-badge">
-                    </a>
-                </div>
-            </div>
-        """)
-
-    return demo
+def main():
+    """
+    Main function to initialize processors and launch the Gradio interface.
+    """
+    global ui_manager
+    
+    # Initialize processors
+    print("Initializing processors...")
+    initialization_success = initialize_processors()
+    if not initialization_success:
+        print("WARNING: Failed to initialize processors. Application may not function correctly.")
+        return
+    
+    # Initialize UI manager
+    print("Initializing UI manager...")
+    ui_manager = initialize_ui_manager()
+    
+    # Create and launch the Gradio interface
+    print("Creating Gradio interface...")
+    demo_interface = ui_manager.create_interface(
+        handle_image_upload_fn=handle_image_upload,
+        handle_video_upload_fn=handle_video_upload,
+        download_video_from_url_fn=download_video_from_url
+    )
+    
+    print("Launching application...")
+    demo_interface.launch(debug=True)
 
 
 if __name__ == "__main__":
-    demo_interface = create_interface()
-
-    demo_interface.launch(debug=True)
+    main()
