@@ -1042,15 +1042,56 @@ class TemplateManager:
                 else:
                     replacements["plant_elements"] = f"multiple potted plants ({count} total)"
 
-            # 處理座位
+            # 處理座位(椅子)相關
             if "chair" in object_statistics:
                 count = object_statistics["chair"]["count"]
+                
+                # 使用統一的數字轉換邏輯
+                number_words = {
+                    1: "one", 2: "two", 3: "three", 4: "four", 
+                    5: "five", 6: "six", 7: "seven", 8: "eight", 
+                    9: "nine", 10: "ten", 11: "eleven", 12: "twelve"
+                }
+                
                 if count == 1:
                     replacements["seating"] = "a chair"
-                elif count <= 4:
-                    replacements["seating"] = f"{count} chairs"
+                    replacements["furniture"] = "a chair"
+                elif count in number_words:
+                    word_count = number_words[count]
+                    replacements["seating"] = f"{word_count} chairs"
+                    replacements["furniture"] = f"{word_count} chairs"
+                elif count <= 20:
+                    replacements["seating"] = f"several chairs"
+                    replacements["furniture"] = f"several chairs"
                 else:
                     replacements["seating"] = f"numerous chairs ({count} total)"
+                    replacements["furniture"] = f"numerous chairs"
+
+
+            # 處理混合家具情況（當存在多種家具類型時）
+            furniture_items = []
+            furniture_counts = []
+
+            # 收集所有家具類型的統計
+            for furniture_type in ["chair", "dining table", "couch", "bed"]:
+                if furniture_type in object_statistics:
+                    count = object_statistics[furniture_type]["count"]
+                    if count > 0:
+                        furniture_items.append(furniture_type)
+                        furniture_counts.append(count)
+
+            # 如果只有椅子,那就用上面的方式
+            # 如果有多種家具類型，生成組合描述
+            if len(furniture_items) > 1 and "furniture" not in replacements:
+                main_furniture = furniture_items[0]  # 數量最多的家具類型
+                main_count = furniture_counts[0]
+                
+                if main_furniture == "chair":
+                    number_words = ["", "one", "two", "three", "four", "five", "six"]
+                    if main_count <= 6:
+                        replacements["furniture"] = f"{number_words[main_count]} chairs and other furniture"
+                    else:
+                        replacements["furniture"] = "multiple chairs and other furniture"
 
             # 處理人員
             if "person" in object_statistics:

@@ -652,6 +652,44 @@ class ResponseProcessor:
                 pattern = re.compile(r'\b' + re.escape(word_to_replace) + r'\b', re.IGNORECASE)
                 processed_response = pattern.sub(replacer_instance, processed_response)
 
+            # 移除 identical 等重複性描述詞彙
+            identical_cleanup_patterns = [
+                (r'\b(\d+)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
+                (r'\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
+                (r'\bidentical\s+([a-zA-Z\s]+)', r'\1'),
+                (r'\bcomprehensive arrangement of\b', 'arrangement of'),
+                (r'\bcomprehensive view featuring\b', 'scene featuring'),
+                (r'\bcomprehensive display of\b', 'display of'),
+            ]
+
+            for pattern, replacement in identical_cleanup_patterns:
+                processed_response = re.sub(pattern, replacement, processed_response, flags=re.IGNORECASE)
+
+            # 數字到文字
+            number_conversions = {
+                '2': 'two', '3': 'three', '4': 'four', '5': 'five', '6': 'six',
+                '7': 'seven', '8': 'eight', '9': 'nine', '10': 'ten', 
+                '11': 'eleven', '12': 'twelve'
+            }
+
+            # 處理各種語法結構中的數字
+            for digit, word in number_conversions.items():
+                # 模式1: 數字 + 單一複數詞 (如 "7 chairs")
+                pattern1 = rf'\b{digit}\s+([a-zA-Z]+s)\b'
+                processed_response = re.sub(pattern1, rf'{word} \1', processed_response)
+                
+                # 模式2: 數字 + 修飾詞 + 複數詞 (如 "7 more chairs")
+                pattern2 = rf'\b{digit}\s+(more|additional|other|identical)\s+([a-zA-Z]+s)\b'
+                processed_response = re.sub(pattern2, rf'{word} \1 \2', processed_response, flags=re.IGNORECASE)
+                
+                # 模式3: 數字 + 形容詞 + 複數詞 (如 "2 dining tables")
+                pattern3 = rf'\b{digit}\s+([a-zA-Z]+)\s+([a-zA-Z]+s)\b'
+                processed_response = re.sub(pattern3, rf'{word} \1 \2', processed_response)
+                
+                # 模式4: 介詞片語中的數字 (如 "around 2 tables")
+                pattern4 = rf'\b(around|approximately|about)\s+{digit}\s+([a-zA-Z]+s)\b'
+                processed_response = re.sub(pattern4, rf'\1 {word} \2', processed_response, flags=re.IGNORECASE)
+
             return processed_response
 
         except Exception as e:

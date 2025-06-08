@@ -7,17 +7,17 @@ from style import Style
 
 class UIManager:
     """
-    Manages all UI-related functionality for the VisionScout application.
+    Manages all UI-related functionality 
     Handles Gradio interface creation, component definitions, and event binding.
     """
-    
+
     def __init__(self):
         """Initialize the UI Manager."""
         self.available_models = None
         self.model_choices = []
         self.class_choices_formatted = []
         self._setup_model_choices()
-    
+
     def _setup_model_choices(self):
         """Setup model choices for dropdowns."""
         try:
@@ -26,14 +26,14 @@ class UIManager:
         except ImportError:
             # Fallback model choices if DetectionModel is not available
             self.model_choices = ["yolov8n.pt", "yolov8s.pt", "yolov8m.pt", "yolov8l.pt", "yolov8x.pt"]
-        
+
         # Setup class choices
         self.class_choices_formatted = [f"{id}: {name}" for id, name in self.get_all_classes()]
-    
+
     def get_all_classes(self):
         """
         Gets all available COCO classes.
-        
+
         Returns:
             List[Tuple[int, str]]: List of (class_id, class_name) tuples
         """
@@ -52,7 +52,7 @@ class UIManager:
         except Exception:
             pass
 
-        # Fallback to standard COCO (ensure keys are ints)
+        # COCO Classes
         default_classes = {
             0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
             6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant',
@@ -72,27 +72,27 @@ class UIManager:
             77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'
         }
         return sorted(default_classes.items())
-    
+
     def set_image_processor(self, image_processor):
         """
         Set the image processor reference for dynamic class retrieval.
-        
+
         Args:
             image_processor: The ImageProcessor instance
         """
         self._image_processor = image_processor
-    
+
     def get_css_styles(self):
         """
         Get CSS styles for the interface.
-        
+
         Returns:
             str: CSS styles
         """
         try:
             return Style.get_css()
         except ImportError:
-            # Fallback CSS if Style module is not available
+            # fallback defualt CSS style
             return """
             .app-header {
                 text-align: center;
@@ -111,15 +111,23 @@ class UIManager:
                 border: none !important;
                 border-radius: 8px !important;
             }
+            .video-summary-content-wrapper {
+                max-height: 400px;
+                overflow-y: auto;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border: 1px solid #e2e8f0;
+            }
             """
-    
+
     def get_model_description(self, model_name):
         """
         Get model description for the given model name.
-        
+
         Args:
             model_name: Name of the model
-            
+
         Returns:
             str: Model description
         """
@@ -127,11 +135,11 @@ class UIManager:
             return DetectionModel.get_model_description(model_name)
         except ImportError:
             return f"Model: {model_name}"
-    
+
     def create_header(self):
         """
         Create the application header.
-        
+
         Returns:
             gr.HTML: Header HTML component
         """
@@ -142,7 +150,7 @@ class UIManager:
                 <div style="display: flex; justify-content: center; gap: 10px; margin: 0.5rem 0;"><div style="height: 3px; width: 80px; background: linear-gradient(90deg, #38b2ac, #4299e1);"></div></div>
                 <div style="display: flex; justify-content: center; gap: 25px; margin-top: 1.5rem;">
                     <div style="padding: 8px 15px; border-radius: 20px; background: rgba(66, 153, 225, 0.15); color: #2b6cb0; font-weight: 500; font-size: 0.9rem;"><span style="margin-right: 6px;">🖼️</span> Image Analysis</div>
-                    <div style="padding: 8px 15px; border-radius: 20px; background: rgba(56, 178, 172, 0.15); color: #2b6cb0; font-weight: 500; font-size: 0.9rem;"><span style="margin-right: 6px;">🎬</span> Video Analysis</div>
+                    <div style="padding: 8px 15px; border-radius: 20px; background: rgba(56, 178, 172, 0.15); color: #2b6cb0; font-weight: 500; font-size: 0.9rem;"><span style="margin-right: 6px;">🎬</span> Video Analysis with Temporal Tracking</div>
                 </div>
                  <div style="margin-top: 20px; padding: 10px 15px; background-color: rgba(255, 248, 230, 0.9); border-left: 3px solid #f6ad55; border-radius: 6px; max-width: 600px; margin-left: auto; margin-right: auto; text-align: left;">
                      <p style="margin: 0; font-size: 0.9rem; color: #805ad5; font-weight: 500;">
@@ -152,18 +160,18 @@ class UIManager:
                  </div>
             </div>
         """)
-    
+
     def create_footer(self):
         """
         Create the application footer.
-        
+
         Returns:
             gr.HTML: Footer HTML component
         """
         return gr.HTML("""
             <div class="footer" style="padding: 25px 0; text-align: center; background: linear-gradient(to right, #f5f9fc, #e1f5fe); border-top: 1px solid #e2e8f0; margin-top: 30px;">
                 <div style="margin-bottom: 15px;">
-                    <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Powered by YOLOv8, CLIP, Places365, Meta Llama3.2 and Ultralytics • Created with Gradio</p>
+                    <p style="font-size: 14px; color: #4A5568; margin: 5px 0;">Powered by YOLOv8, CLIP, Places365, Meta Llama3.2 and Ultralytics • Enhanced Video Processing with Temporal Analysis • Created with Gradio</p>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 15px;">
                     <p style="font-family: 'Arial', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 2px; background: linear-gradient(90deg, #38b2ac, #4299e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; text-transform: uppercase; display: inline-block;">EXPLORE THE CODE →</p>
@@ -173,27 +181,27 @@ class UIManager:
                 </div>
             </div>
         """)
-    
+
     def create_image_tab(self):
         """
         Create the image processing tab with all components.
-        
+
         Returns:
             Dict: Dictionary containing all image tab components
         """
         components = {}
-        
+
         with gr.Tab("Image Processing"):
             components['current_image_model'] = gr.State("yolov8m.pt")
-            
+
             with gr.Row(equal_height=False):
                 # Left Column: Image Input & Controls
                 with gr.Column(scale=4, elem_classes="input-panel"):
                     with gr.Group():
                         gr.HTML('<div class="section-heading">Upload Image</div>')
                         components['image_input'] = gr.Image(
-                            type="pil", 
-                            label="Upload an image", 
+                            type="pil",
+                            label="Upload an image",
                             elem_classes="upload-box"
                         )
 
@@ -204,7 +212,7 @@ class UIManager:
                                 label="Select Model",
                                 info="Choose speed vs. accuracy (n=fast, m=balanced, x=accurate)"
                             )
-                            
+
                             components['image_model_info'] = gr.Markdown(
                                 self.get_model_description("yolov8m.pt")
                             )
@@ -234,7 +242,7 @@ class UIManager:
                                     components['vehicles_btn'] = gr.Button("Vehicles", size="sm")
                                     components['animals_btn'] = gr.Button("Animals", size="sm")
                                     components['objects_btn'] = gr.Button("Common Objects", size="sm")
-                                
+
                                 components['image_class_filter'] = gr.Dropdown(
                                     choices=self.class_choices_formatted,
                                     multiselect=True,
@@ -243,8 +251,8 @@ class UIManager:
                                 )
 
                     components['image_detect_btn'] = gr.Button(
-                        "Analyze Image", 
-                        variant="primary", 
+                        "Analyze Image",
+                        variant="primary",
                         elem_classes="detect-btn"
                     )
 
@@ -289,21 +297,21 @@ class UIManager:
                         # Detection Result Tab
                         with gr.Tab("Detection Result"):
                             components['image_result_image'] = gr.Image(
-                                type="pil", 
+                                type="pil",
                                 label="Detection Result"
                             )
                             gr.HTML('<div class="section-heading">Detection Details</div>')
                             components['image_result_text'] = gr.Textbox(
-                                label=None, 
-                                lines=10, 
-                                elem_id="detection-details", 
+                                label=None,
+                                lines=10,
+                                elem_id="detection-details",
                                 container=False
                             )
 
                         # Scene Understanding Tab
                         with gr.Tab("Scene Understanding"):
                             gr.HTML('<div class="section-heading">Scene Analysis</div>')
-                            
+
                             # Info details
                             gr.HTML("""
                                 <details class="info-details" style="margin: 5px 0 15px 0;">
@@ -327,16 +335,16 @@ class UIManager:
                                     </p>
                                 </div>
                             ''')
-                            
+
                             components['image_scene_description_html'] = gr.HTML(
-                                label=None, 
+                                label=None,
                                 elem_id="scene_analysis_description_text"
                             )
 
                             # Original Scene Analysis accordion
                             with gr.Accordion("Original Scene Analysis", open=False, elem_id="original_scene_analysis_accordion"):
                                 components['image_llm_description'] = gr.HTML(
-                                    label=None, 
+                                    label=None,
                                     elem_id="original_scene_description_text"
                                 )
 
@@ -344,32 +352,32 @@ class UIManager:
                                 with gr.Column(scale=1):
                                     gr.HTML('<div class="section-heading" style="font-size:1rem; text-align:left;">Possible Activities</div>')
                                     components['image_activities_list'] = gr.Dataframe(
-                                        headers=["Activity"], 
-                                        datatype=["str"], 
-                                        row_count=5, 
-                                        col_count=1, 
+                                        headers=["Activity"],
+                                        datatype=["str"],
+                                        row_count=5,
+                                        col_count=1,
                                         wrap=True
                                     )
 
                                 with gr.Column(scale=1):
                                     gr.HTML('<div class="section-heading" style="font-size:1rem; text-align:left;">Safety Concerns</div>')
                                     components['image_safety_list'] = gr.Dataframe(
-                                        headers=["Concern"], 
-                                        datatype=["str"], 
-                                        row_count=5, 
-                                        col_count=1, 
+                                        headers=["Concern"],
+                                        datatype=["str"],
+                                        row_count=5,
+                                        col_count=1,
                                         wrap=True
                                     )
 
                             gr.HTML('<div class="section-heading">Functional Zones</div>')
                             components['image_zones_json'] = gr.JSON(
-                                label=None, 
+                                label=None,
                                 elem_classes="json-box"
                             )
 
                             gr.HTML('<div class="section-heading">Lighting Conditions</div>')
                             components['image_lighting_info'] = gr.JSON(
-                                label=None, 
+                                label=None,
                                 elem_classes="json-box"
                             )
 
@@ -379,27 +387,28 @@ class UIManager:
                                 with gr.Column(scale=3, elem_classes="plot-column"):
                                     gr.HTML('<div class="section-heading">Object Distribution</div>')
                                     components['image_plot_output'] = gr.Plot(
-                                        label=None, 
+                                        label=None,
                                         elem_classes="large-plot-container"
                                     )
                                 with gr.Column(scale=2, elem_classes="stats-column"):
                                     gr.HTML('<div class="section-heading">Detection Statistics</div>')
                                     components['image_stats_json'] = gr.JSON(
-                                        label=None, 
+                                        label=None,
                                         elem_classes="enhanced-json-display"
                                     )
-        
+
         return components
     
     def create_video_tab(self):
         """
         Create the video processing tab with all components.
-        
+        注意：移除了複雜的時序分析控制項，簡化為基本的統計分析
+
         Returns:
             Dict: Dictionary containing all video tab components
         """
         components = {}
-        
+
         with gr.Tab("Video Processing"):
             with gr.Row(equal_height=False):
                 # Left Column: Video Input & Controls
@@ -444,21 +453,35 @@ class UIManager:
                                 choices=self.model_choices,
                                 value="yolov8n.pt",
                                 label="Select Model (Video)",
-                                info="Faster models (like 'n') are recommended"
+                                info="Faster models (like 'n') are recommended for video processing"
                             )
                             components['video_confidence'] = gr.Slider(
                                 minimum=0.1, maximum=0.9, value=0.4, step=0.05,
-                                label="Confidence Threshold (Video)"
+                                label="Confidence Threshold (Video)",
+                                info="Higher threshold reduces false detections"
                             )
                             components['video_process_interval'] = gr.Slider(
                                 minimum=1, maximum=60, value=10, step=1,
                                 label="Processing Interval (Frames)",
-                                info="Analyze every Nth frame (higher value = faster)"
+                                info="Analyze every Nth frame (higher value = faster processing)"
                             )
-                    
+                            
+                            # 簡化的分析說明
+                            gr.HTML("""
+                                <div style="padding: 8px; margin-top: 10px; background-color: #f0f7ff; border-radius: 4px; border-left: 3px solid #4299e1; font-size: 12px;">
+                                    <p style="margin: 0; color: #4a5568;">
+                                        <b>Analysis Features:</b><br>
+                                        • Accurate object counting with duplicate detection removal<br>
+                                        • Timeline analysis showing when objects first appear<br>
+                                        • Duration tracking for object presence in video<br>
+                                        • Simple, clear statistical summaries
+                                    </p>
+                                </div>
+                            """)
+
                     components['video_process_btn'] = gr.Button(
-                        "Process Video", 
-                        variant="primary", 
+                        "Analyze Video",
+                        variant="primary",
                         elem_classes="detect-btn"
                     )
 
@@ -467,9 +490,17 @@ class UIManager:
                         gr.HTML('<div class="section-heading">How to Use (Video)</div>')
                         gr.Markdown("""
                         1. Choose your input method: Upload a file or enter a URL.
-                        2. Adjust settings if needed (using a faster model and larger interval is recommended for longer videos).
-                        3. Click "Process Video". **Processing can take a significant amount of time.**
-                        4. The annotated video and summary will appear on the right when finished.
+                        2. Adjust settings if needed:
+                            * Use **faster models** (yolov8n) for quicker processing
+                            * Set **larger intervals** (15+ frames) for longer videos
+                            * Adjust **confidence threshold** to filter low-quality detections
+                        3. Click "Analyze Video". **Processing time varies based on video length.**
+                        4. Review the results: annotated video and statistical analysis.
+                        
+                        **⚡ Performance Tips:**
+                        * For videos longer than 2 minutes, use interval ≥ 15 frames
+                        * YOLOv8n model provides best speed for video processing
+                        * Higher confidence thresholds reduce processing noise
                         """)
 
                     # Video examples
@@ -477,8 +508,9 @@ class UIManager:
                     gr.HTML("""
                         <div style="padding: 10px; background-color: #f0f7ff; border-radius: 6px; margin-bottom: 15px;">
                             <p style="font-size: 14px; color: #4A5568; margin: 0;">
-                                Upload any video containing objects that YOLO can detect. For testing, find sample videos
-                                <a href="https://www.pexels.com/search/videos/street/" target="_blank" style="color: #3182ce; text-decoration: underline;">here</a>.
+                                Upload any video containing objects that YOLO can detect. For testing, find sample videos from
+                                <a href="https://www.pexels.com/search/videos/street/" target="_blank" style="color: #3182ce; text-decoration: underline;">Pexels</a> or
+                                <a href="https://www.youtube.com/results?search_query=traffic+camera+footage" target="_blank" style="color: #3182ce; text-decoration: underline;">YouTube traffic footage</a>.
                             </p>
                         </div>
                     """)
@@ -486,48 +518,87 @@ class UIManager:
                 # Right Column: Video Results
                 with gr.Column(scale=6, elem_classes="output-panel video-result-panel"):
                     gr.HTML("""
-                        <div class="section-heading">Video Result</div>
+                        <div class="section-heading">Video Analysis Results</div>
                         <details class="info-details" style="margin: 5px 0 15px 0;">
                             <summary style="padding: 8px; background-color: #f0f7ff; border-radius: 6px; border-left: 3px solid #4299e1; font-weight: bold; cursor: pointer; color: #2b6cb0;">
-                                🎬 Video Processing Notes
+                                🎬 Simplified Video Analysis Features
                             </summary>
                             <div style="margin-top: 8px; padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e2e8f0;">
                                 <p style="font-size: 13px; color: #718096; margin: 0;">
-                                    The processed video includes bounding boxes around detected objects. For longer videos,
-                                    consider using a faster model (like YOLOv8n) and a higher frame interval to reduce processing time.
+                                    <b>Focus on practical insights:</b> This analysis provides accurate object counts and timing information 
+                                    without complex tracking. The system uses spatial clustering to eliminate duplicate detections and 
+                                    provides clear timeline data showing when objects first appear and how long they remain visible.
+                                    <br><br>
+                                    <b>Key benefits:</b> Reliable object counting, clear timeline analysis, and easy-to-understand results 
+                                    that directly answer questions like "How many cars are in this video?" and "When do they appear?"
                                 </p>
                             </div>
                         </details>
                     """)
-                    
+
                     components['video_output'] = gr.Video(
-                        label="Processed Video", 
+                        label="Analyzed Video with Object Detection",
                         elem_classes="video-output-container"
                     )
 
-                    gr.HTML('<div class="section-heading">Processing Summary</div>')
-                    components['video_summary_text'] = gr.HTML(
-                        label=None,
-                        elem_id="video-summary-html-output"
-                    )
+                    with gr.Tabs(elem_classes="video-results-tabs"):
+                        # Analysis Summary Tab
+                        with gr.Tab("Analysis Summary"):
+                            gr.HTML('<div class="section-heading">Video Analysis Report</div>')
+                            gr.HTML("""
+                                <div style="margin-bottom: 10px; padding: 8px; background-color: #f0f9ff; border-radius: 4px; border-left: 3px solid #4299e1; font-size: 12px;">
+                                    <p style="margin: 0; color: #4a5568;">
+                                        This summary provides object counts, timeline information, and insights about what appears in your video.
+                                        Results are based on spatial clustering analysis to ensure accurate counting.
+                                    </p>
+                                </div>
+                            """)
+                            components['video_summary_text'] = gr.HTML(
+                                label=None,
+                                elem_id="video-summary-html-output"
+                            )
 
-                    gr.HTML('<div class="section-heading">Aggregated Statistics</div>')
-                    components['video_stats_json'] = gr.JSON(
-                        label=None, 
-                        elem_classes="video-stats-display"
-                    )
-        
+                        # Detailed Statistics Tab  
+                        with gr.Tab("Detailed Statistics"):
+                            gr.HTML('<div class="section-heading">Complete Analysis Data</div>')
+                            
+                            with gr.Accordion("Processing Information", open=True):
+                                gr.HTML("""
+                                    <div style="padding: 6px; background-color: #f8f9fa; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
+                                        <p style="margin: 0; color: #4a5568;">
+                                            Basic information about video processing parameters and performance.
+                                        </p>
+                                    </div>
+                                """)
+                                components['video_stats_json'] = gr.JSON(
+                                    label=None,
+                                    elem_classes="video-stats-display"
+                                )
+                            
+                            with gr.Accordion("Object Details", open=False):
+                                gr.HTML("""
+                                    <div style="padding: 6px; background-color: #f8f9fa; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
+                                        <p style="margin: 0; color: #4a5568;">
+                                            Detailed breakdown of each object type detected, including timing and confidence information.
+                                        </p>
+                                    </div>
+                                """)
+                                components['video_object_details'] = gr.JSON(
+                                    label="Object-by-Object Analysis",
+                                    elem_classes="object-details-display"
+                                )
+
         return components
-    
+
     def get_filter_button_mappings(self):
         """
         Get the class ID mappings for filter buttons.
-        
+
         Returns:
             Dict: Dictionary containing class ID lists for different categories
         """
         available_classes_list = self.get_all_classes()
-        
+
         return {
             'people_classes_ids': [0],
             'vehicles_classes_ids': [1, 2, 3, 4, 5, 6, 7, 8],
@@ -535,36 +606,36 @@ class UIManager:
             'common_objects_ids': [39, 41, 42, 43, 44, 45, 56, 57, 60, 62, 63, 67, 73],
             'available_classes_list': available_classes_list
         }
-    
-    def create_interface(self, 
-                        handle_image_upload_fn, 
-                        handle_video_upload_fn, 
+
+    def create_interface(self,
+                        handle_image_upload_fn,
+                        handle_video_upload_fn,
                         download_video_from_url_fn):
         """
         Create the complete Gradio interface.
-        
+
         Args:
             handle_image_upload_fn: Function to handle image upload
             handle_video_upload_fn: Function to handle video upload
             download_video_from_url_fn: Function to download video from URL
-            
+
         Returns:
             gr.Blocks: Complete Gradio interface
         """
         css = self.get_css_styles()
-        
+
         with gr.Blocks(css=css, theme=gr.themes.Soft(primary_hue="teal", secondary_hue="blue")) as demo:
-            
+
             # Header
             with gr.Group(elem_classes="app-header"):
                 self.create_header()
 
             # Main Content with Tabs
             with gr.Tabs(elem_classes="tabs"):
-                
+
                 # Image Processing Tab
                 image_components = self.create_image_tab()
-                
+
                 # Video Processing Tab
                 video_components = self.create_video_tab()
 
@@ -573,22 +644,22 @@ class UIManager:
 
             # Setup Event Listeners
             self._setup_event_listeners(
-                image_components, 
-                video_components, 
-                handle_image_upload_fn, 
+                image_components,
+                video_components,
+                handle_image_upload_fn,
                 handle_video_upload_fn
             )
 
         return demo
-    
-    def _setup_event_listeners(self, 
-                              image_components, 
-                              video_components, 
-                              handle_image_upload_fn, 
+
+    def _setup_event_listeners(self,
+                              image_components,
+                              video_components,
+                              handle_image_upload_fn,
                               handle_video_upload_fn):
         """
         Setup all event listeners for the interface.
-        
+
         Args:
             image_components: Dictionary of image tab components
             video_components: Dictionary of video tab components
@@ -611,73 +682,74 @@ class UIManager:
         common_objects_ids = filter_mappings['common_objects_ids']
 
         image_components['people_btn'].click(
-            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in people_classes_ids], 
+            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in people_classes_ids],
             outputs=image_components['image_class_filter']
         )
         image_components['vehicles_btn'].click(
-            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in vehicles_classes_ids], 
+            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in vehicles_classes_ids],
             outputs=image_components['image_class_filter']
         )
         image_components['animals_btn'].click(
-            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in animals_classes_ids], 
+            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in animals_classes_ids],
             outputs=image_components['image_class_filter']
         )
         image_components['objects_btn'].click(
-            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in common_objects_ids], 
+            lambda: [f"{id}: {name}" for id, name in available_classes_list if id in common_objects_ids],
             outputs=image_components['image_class_filter']
         )
 
         # Video Input Type Change Handler
         video_components['video_input_type'].change(
-            fn=lambda input_type: [
-                # Show/hide file upload
-                gr.update(visible=(input_type == "upload")),
-                # Show/hide URL input
-                gr.update(visible=(input_type == "url"))
-            ],
-            inputs=[video_components['video_input_type']],
-            outputs=[video_components['video_input'], video_components['video_url_input']]
+        fn=lambda input_type: [
+            # Show/hide file upload
+            gr.update(visible=(input_type == "upload")),
+            # Show/hide URL input
+            gr.update(visible=(input_type == "url"))
+        ],
+        inputs=[video_components['video_input_type']],
+        outputs=[video_components['video_input'], video_components['video_url_input']]
         )
 
         # Image Detect Button Click Handler
         image_components['image_detect_btn'].click(
             fn=handle_image_upload_fn,
             inputs=[
-                image_components['image_input'], 
-                image_components['image_model_dropdown'], 
-                image_components['image_confidence'], 
-                image_components['image_class_filter'], 
-                image_components['use_llm'], 
+                image_components['image_input'],
+                image_components['image_model_dropdown'],
+                image_components['image_confidence'],
+                image_components['image_class_filter'],
+                image_components['use_llm'],
                 image_components['use_landmark_detection']
             ],
             outputs=[
-                image_components['image_result_image'], 
-                image_components['image_result_text'], 
-                image_components['image_stats_json'], 
+                image_components['image_result_image'],
+                image_components['image_result_text'],
+                image_components['image_stats_json'],
                 image_components['image_plot_output'],
-                image_components['image_scene_description_html'], 
-                image_components['image_llm_description'], 
-                image_components['image_activities_list'], 
-                image_components['image_safety_list'], 
+                image_components['image_scene_description_html'],
+                image_components['image_llm_description'],
+                image_components['image_activities_list'],
+                image_components['image_safety_list'],
                 image_components['image_zones_json'],
                 image_components['image_lighting_info']
             ]
         )
 
-        # Video Process Button Click Handler
+        # Video Process Button Click Handler 
         video_components['video_process_btn'].click(
-            fn=handle_video_upload_fn,
-            inputs=[
-                video_components['video_input'],
-                video_components['video_url_input'],
-                video_components['video_input_type'],
-                video_components['video_model_dropdown'],
-                video_components['video_confidence'],
-                video_components['video_process_interval']
+        fn=handle_video_upload_fn,
+        inputs=[
+            video_components['video_input'],
+            video_components['video_url_input'],
+            video_components['video_input_type'],
+            video_components['video_model_dropdown'],
+            video_components['video_confidence'],
+            video_components['video_process_interval']
             ],
-            outputs=[
-                video_components['video_output'], 
-                video_components['video_summary_text'], 
-                video_components['video_stats_json']
+        outputs=[
+            video_components['video_output'],
+            video_components['video_summary_text'],
+            video_components['video_stats_json'],
+            video_components['video_object_details'] 
             ]
         )

@@ -239,6 +239,16 @@ class TextFormatter:
             # 11. 移除最終標點符號前的空格（如果規則7意外添加）
             text = re.sub(r'\s+([.!?])$', r'\1', text)
 
+            # 12. 移除重複性描述詞彙的最終檢查
+            identical_cleanup_patterns = [
+                (r'\b(\d+)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
+                (r'\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
+                (r'\bidentical\s+([a-zA-Z\s]+)', r'\1'),
+                (r'\bcomprehensive arrangement of\b', 'arrangement of'),
+            ]
+            for pattern, replacement in identical_cleanup_patterns:
+                text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
+
             return text.strip()  # 最終修剪
 
         except Exception as e:
@@ -543,3 +553,107 @@ class TextFormatter:
         except Exception as e:
             self.logger.warning(f"Error getting text statistics: {str(e)}")
             return {"characters": 0, "words": 0, "sentences": 0}
+
+    def deduplicate_sentences_in_description(self, description: str, similarity_threshold: float = 0.80) -> str:
+        """
+        從一段描述文本中移除重複或高度相似的句子。
+        此方法會嘗試保留更長、資訊更豐富的句子版本。
+
+        Args:
+            description (str): 原始描述文本。
+            similarity_threshold (float): 判斷句子是否相似的 Jaccard 相似度閾值 (0 到 1)。
+                                         預設為 0.8，表示詞彙重疊度達到80%即視為相似。
+
+        Returns:
+            str: 移除了重複或高度相似句子後的文本。
+        """
+        try:
+            if not description or not description.strip():
+                self.logger.debug("deduplicate_sentences_in_description: Received empty or blank description.")
+                return ""
+
+            # 使用正則表達式分割句子，保留句尾標點符號
+            sentences = re.split(r'(?<=[.!?])\s+', description.strip())
+
+            if not sentences:
+                self.logger.debug("deduplicate_sentences_in_description: No sentences found after splitting.")
+                return ""
+
+            unique_sentences_data = []  # 存儲 (原始句子文本, 該句子的詞彙集合)
+
+            for current_sentence_text in sentences:
+                current_sentence_text = current_sentence_text.strip()
+                if not current_sentence_text:
+                    continue
+
+                # 預處理當前句子以進行比較：轉小寫、移除標點、分割成詞彙集合
+                simplified_current_text = re.sub(r'[^\w\s\d]', '', current_sentence_text.lower()) # 保留數字
+                current_sentence_words = set(simplified_current_text.split())
+
+                if not current_sentence_words: # 如果處理後是空集合 (例如句子只包含標點)
+                    # 如果原始句子有內容（例如只有一個標點），就保留它
+                    if current_sentence_text and not unique_sentences_data: # 避免在開頭加入孤立標點
+                         unique_sentences_data.append((current_sentence_text, current_sentence_words))
+                    continue
+
+                is_subsumed_or_highly_similar = False
+                index_to_replace = -1
+
+                for i, (kept_sentence_text, kept_sentence_words) in enumerate(unique_sentences_data):
+                    if not kept_sentence_words: # 跳過已保留的空詞彙集合
+                        continue
+
+                    # 計算 Jaccard 相似度
+                    intersection_len = len(current_sentence_words.intersection(kept_sentence_words))
+                    union_len = len(current_sentence_words.union(kept_sentence_words))
+
+                    jaccard_similarity = 0.0
+                    if union_len > 0:
+                        jaccard_similarity = intersection_len / union_len
+                    elif not current_sentence_words and not kept_sentence_words: # 兩個都是空的
+                        jaccard_similarity = 1.0
+
+
+                    if jaccard_similarity >= similarity_threshold:
+                        # 如果當前句子比已保留的句子長，則標記替換舊的
+                        if len(current_sentence_words) > len(kept_sentence_words):
+                            self.logger.debug(f"Deduplication: Replacing shorter \"{kept_sentence_text[:50]}...\" "
+                                              f"with longer similar \"{current_sentence_text[:50]}...\" (Jaccard: {jaccard_similarity:.2f})")
+                            index_to_replace = i
+                            break # 找到一個可以被替換的，就跳出內層循環
+                        # 如果當前句子比已保留的句子短，或者長度相近但內容高度相似，則標記當前句子為重複
+                        else: # current_sentence_words is shorter or of similar length
+                            is_subsumed_or_highly_similar = True
+                            self.logger.debug(f"Deduplication: Current sentence \"{current_sentence_text[:50]}...\" "
+                                              f"is subsumed by or highly similar to \"{kept_sentence_text[:50]}...\" (Jaccard: {jaccard_similarity:.2f}). Skipping.")
+                            break
+
+                if index_to_replace != -1:
+                    unique_sentences_data[index_to_replace] = (current_sentence_text, current_sentence_words)
+                elif not is_subsumed_or_highly_similar:
+                    unique_sentences_data.append((current_sentence_text, current_sentence_words))
+
+            # 從 unique_sentences_data 中提取最終的句子文本
+            final_sentences = [s_data[0] for s_data in unique_sentences_data]
+
+            # 重組句子，確保每個句子以標點符號結尾，並且句子間有空格
+            reconstructed_response = ""
+            for i, s_text in enumerate(final_sentences):
+                s_text = s_text.strip()
+                if not s_text:
+                    continue
+                # 確保句子以標點結尾
+                if not re.search(r'[.!?]$', s_text):
+                    s_text += "."
+
+                reconstructed_response += s_text
+                if i < len(final_sentences) - 1: # 如果不是最後一句，添加空格
+                    reconstructed_response += " "
+
+            self.logger.debug(f"Deduplicated description (len {len(reconstructed_response.strip())}): '{reconstructed_response.strip()[:150]}...'")
+            return reconstructed_response.strip()
+
+        except Exception as e:
+            self.logger.error(f"Error in deduplicate_sentences_in_description: {str(e)}")
+            self.logger.error(traceback.format_exc())
+            return description # 發生錯誤時返回原始描述

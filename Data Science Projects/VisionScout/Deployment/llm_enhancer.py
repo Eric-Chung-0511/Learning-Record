@@ -1,5 +1,6 @@
 import logging
 import traceback
+import re
 from typing import Dict, List, Any, Optional
 
 from model_manager import ModelManager
@@ -146,12 +147,23 @@ class LLMEnhancer:
             if perspective and perspective.lower() not in cleaned_response.lower():
                 cleaned_response = f"{perspective}, {cleaned_response[0].lower()}{cleaned_response[1:]}"
 
+            # 13.5. 最終的 identical 詞彙清理（確保LLM輸出不包含重複性描述）
+            identical_final_cleanup = [
+                (r'\b(\d+)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
+                (r'\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
+                (r'\bidentical\s+([a-zA-Z\s]+)', r'\1'),
+                (r'\bcomprehensive arrangement of\b', 'arrangement of'),
+            ]
+
+            for pattern, replacement in identical_final_cleanup:
+                cleaned_response = re.sub(pattern, replacement, cleaned_response, flags=re.IGNORECASE)
+
             # 14. 最終驗證：如果結果過短，嘗試fallback
             final_result = cleaned_response.strip()
             if not final_result or len(final_result) < 20:
                 self.logger.warning("Enhanced description too short; attempting fallback")
 
-                # Fallback prompt 
+                # Fallback prompt
                 fallback_scene_data = enhanced_scene_data.copy()
                 fallback_scene_data["is_fallback"] = True
                 fallback_prompt = self.prompt_manager.format_enhancement_prompt_with_landmark(

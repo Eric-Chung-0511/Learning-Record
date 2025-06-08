@@ -8,6 +8,8 @@ import cv2
 from PIL import Image
 import tempfile
 import uuid
+import time
+import traceback
 import spaces
 
 from detection_model import DetectionModel
@@ -27,7 +29,7 @@ ui_manager = None
 def initialize_processors():
     """
     Initialize the image and video processors with LLM support.
-    
+
     Returns:
         bool: True if initialization was successful, False otherwise
     """
@@ -49,8 +51,9 @@ def initialize_processors():
         else:
             print("WARNING: scene_analyzer attribute not found in image_processor")
 
-        video_processor = VideoProcessor(image_processor)
-        print("VideoProcessor initialized successfully")
+        # 初始化獨立的VideoProcessor
+        video_processor = VideoProcessor()
+        print("VideoProcessor initialized successfully as independent module")
         return True
 
     except Exception as e:
@@ -62,7 +65,7 @@ def initialize_processors():
         try:
             print("Attempting fallback initialization without LLM...")
             image_processor = ImageProcessor(use_llm=False, enable_places365=False)
-            video_processor = VideoProcessor(image_processor)
+            video_processor = VideoProcessor()  
             print("Fallback processors initialized successfully without LLM and Places365")
             return True
 
@@ -77,25 +80,25 @@ def initialize_processors():
 def initialize_ui_manager():
     """
     Initialize the UI manager and set up references to processors.
-    
+
     Returns:
         UIManager: Initialized UI manager instance
     """
     global ui_manager, image_processor
-    
+
     ui_manager = UIManager()
-    
+
     # Set image processor reference for dynamic class retrieval
     if image_processor:
         ui_manager.set_image_processor(image_processor)
-    
+
     return ui_manager
 
 @spaces.GPU(duration=180)
 def handle_image_upload(image, model_name, confidence_threshold, filter_classes=None, use_llm=True, enable_landmark=True):
     """
     Processes a single uploaded image.
-    
+
     Args:
         image: PIL Image object
         model_name: Name of the YOLO model to use
@@ -103,10 +106,10 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
         filter_classes: List of class names/IDs to filter
         use_llm: Whether to use LLM for enhanced descriptions
         enable_landmark: Whether to enable landmark detection
-        
+
     Returns:
-        Tuple: (result_image, result_text, formatted_stats, plot_figure, 
-                scene_description_html, original_desc_html, activities_list_data, 
+        Tuple: (result_image, result_text, formatted_stats, plot_figure,
+                scene_description_html, original_desc_html, activities_list_data,
                 safety_data, zones, lighting)
     """
     # Enhanced safety check for image_processor
@@ -140,7 +143,7 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
 
     print(f"DIAGNOSTIC: Image upload handled with enable_landmark={enable_landmark}, use_llm={use_llm}")
     print(f"Processing image with model: {model_name}, confidence: {confidence_threshold}, use_llm: {use_llm}, enable_landmark: {enable_landmark}")
-    
+
     try:
         image_processor.use_llm = use_llm
 
@@ -366,7 +369,7 @@ def handle_image_upload(image, model_name, confidence_threshold, filter_classes=
         </div>
         '''
 
-        # 原始描述只在使用 LLM 且有增強描述時在折疊區顯示
+        # 原始描述只在使用 LLM 且有增強敘述時會在折疊區顯示
         original_desc_visibility = "block" if use_llm and enhanced_description else "none"
         original_desc_html = f'''
         <div id="original_scene_analysis_accordion" style="display: {original_desc_visibility};">
@@ -483,95 +486,219 @@ def download_video_from_url(video_url, max_duration_minutes=10):
         print(f"Error downloading video: {e}\n{error_details}")
         return None, f"Error downloading video: {str(e)}"
 
-
-@spaces.GPU
-def handle_video_upload(video_input, video_url, input_type, model_name, confidence_threshold, process_interval):
+def generate_basic_video_summary(analysis_results: Dict) -> str:
     """
-    Handles video upload or URL input and calls the VideoProcessor.
+    生成基本的視頻統計摘要
     
     Args:
-        video_input: Uploaded video file
-        video_url: Video URL (if using URL input)
-        input_type: Type of input ("upload" or "url")
-        model_name: Name of the YOLO model to use
-        confidence_threshold: Confidence threshold for detections
-        process_interval: Frame processing interval
+        analysis_results (Dict): 新的分析結果結構
         
     Returns:
-        Tuple: (output_video_path, summary_html, formatted_stats)
+        str: 詳細的統計摘要
     """
-    print(f"Received video request: input_type={input_type}")
-    video_path = None
+    summary_lines = ["=== Video Analysis Summary ===", ""]
+    
+    # process info
+    processing_info = analysis_results.get("processing_info", {})
+    duration = processing_info.get("video_duration_seconds", 0)
+    total_frames = processing_info.get("total_frames", 0)
+    analyzed_frames = processing_info.get("frames_analyzed", 0)
+    
+    summary_lines.extend([
+        f"Video Duration: {duration:.1f} seconds ({total_frames} total frames)",
+        f"Frames Analyzed: {analyzed_frames} frames (every {processing_info.get('processing_interval', 1)} frames)",
+        ""
+    ])
+    
+    # object detected summary
+    object_summary = analysis_results.get("object_summary", {})
+    total_objects = object_summary.get("total_unique_objects_detected", 0)
+    object_types = object_summary.get("object_types_found", 0)
+    
+    summary_lines.extend([
+        f"Objects Detected: {total_objects} total objects across {object_types} categories",
+        ""
+    ])
+    
+    # detailed counting number
+    detailed_counts = object_summary.get("detailed_counts", {})
+    if detailed_counts:
+        summary_lines.extend([
+            "Object Breakdown:",
+            *[f"  • {count} {name}(s)" for name, count in detailed_counts.items()],
+            ""
+        ])
+    
+    # 實用分析摘要
+    practical_analytics = analysis_results.get("practical_analytics", {})
+    
+    # 物體密度分析
+    density_info = practical_analytics.get("object_density", {})
+    if density_info:
+        objects_per_min = density_info.get("objects_per_minute", 0)
+        peak_periods = density_info.get("peak_activity_periods", [])
+        summary_lines.extend([
+            f"Activity Level: {objects_per_min:.1f} objects per minute",
+            f"Peak Activity Periods: {len(peak_periods)} identified",
+            ""
+        ])
+    
+    # 場景適合性
+    scene_info = practical_analytics.get("scene_appropriateness", {})
+    if scene_info.get("scene_detected", False):
+        scene_name = scene_info.get("scene_name", "unknown")
+        appropriateness = scene_info.get("appropriateness_score", 0)
+        summary_lines.extend([
+            f"Scene Type: {scene_name}",
+            f"Object-Scene Compatibility: {appropriateness:.1%}",
+            ""
+        ])
+    
+    # 品質指標
+    quality_info = practical_analytics.get("quality_metrics", {})
+    if quality_info:
+        quality_grade = quality_info.get("quality_grade", "unknown")
+        overall_confidence = quality_info.get("overall_confidence", 0)
+        summary_lines.extend([
+            f"Detection Quality: {quality_grade.title()} (avg confidence: {overall_confidence:.3f})",
+            ""
+        ])
+    
+    summary_lines.append(f"Processing completed in {processing_info.get('processing_time_seconds', 0):.1f} seconds.")
+    
+    return "\n".join(summary_lines)
 
-    # Handle based on input type
+@spaces.GPU
+def handle_video_upload(video_input, video_url, input_type, model_name, 
+                       confidence_threshold, process_interval):
+    """
+    處理影片上傳的函數
+    
+    Args:
+        video_input: 上傳的視頻文件
+        video_url: 視頻URL（如果使用URL輸入）
+        input_type: 輸入類型（"upload" 或 "url"）
+        model_name: YOLO模型名稱
+        confidence_threshold: 置信度閾值
+        process_interval: 處理間隔（每N幀處理一次）
+        
+    Returns:
+        Tuple: (output_video_path, summary_html, formatted_stats, object_details)
+    """
+    if video_processor is None:
+        error_msg = "Error: Video processor not initialized."
+        error_html = f"<div class='video-summary-content-wrapper'><pre>{error_msg}</pre></div>"
+        empty_object_details = {}
+        return None, error_html, {"error": "Video processor not available"}, empty_object_details
+
+    video_path = None
+    
+    # 根據輸入類型處理
     if input_type == "upload" and video_input:
-        print(f"Processing uploaded video file")
         video_path = video_input
+        print(f"Processing uploaded video file: {video_path}")
     elif input_type == "url" and video_url:
         print(f"Processing video from URL: {video_url}")
-        # Download video from URL
-        video_path, error_message = download_video_from_url(video_url)
-        if error_message:
-            error_html = f"<div class='video-summary-content-wrapper'><pre>{error_message}</pre></div>"
-            return None, error_html, {"error": error_message}
-    else:
-        print("No valid video input provided.")
-        return None, "<div class='video-summary-content-wrapper'><pre>Please upload a video file or provide a valid video URL.</pre></div>", {}
+        video_path, error_msg = download_video_from_url(video_url)
+        if error_msg:
+            error_html = f"<div class='video-summary-content-wrapper'><pre>{error_msg}</pre></div>"
+            empty_object_details = {}
+            return None, error_html, {"error": error_msg}, empty_object_details
+    
+    if not video_path:
+        error_msg = "Please provide a video file or valid URL."
+        error_html = f"<div class='video-summary-content-wrapper'><pre>{error_msg}</pre></div>"
+        empty_object_details = {}
+        return None, error_html, {"error": "No video input provided"}, empty_object_details
 
-    print(f"Starting video processing with: model={model_name}, confidence={confidence_threshold}, interval={process_interval}")
+    print(f"Starting practical video analysis: model={model_name}, confidence={confidence_threshold}, interval={process_interval}")
+    
+    processing_start_time = time.time()
+    
     try:
-        # Call the VideoProcessor method
-        output_video_path, summary_text, stats_dict = video_processor.process_video_file(
+        output_video_path, analysis_results = video_processor.process_video(
             video_path=video_path,
             model_name=model_name,
             confidence_threshold=confidence_threshold,
-            process_interval=int(process_interval) # Ensure interval is int
+            process_interval=int(process_interval)
         )
-        print(f"Video processing function returned: path={output_video_path}, summary length={len(summary_text)}")
+        
+        print(f"Video processing function returned: path={output_video_path}")
+        
+        if output_video_path is None:
+            error_msg = analysis_results.get("error", "Unknown error occurred during video processing")
+            error_html = f"<div class='video-summary-content-wrapper'><pre>Processing failed: {error_msg}</pre></div>"
+            empty_object_details = {}
+            return None, error_html, analysis_results, empty_object_details
+        
+        # 生成摘要，直接用統計數據
+        basic_summary = generate_basic_video_summary(analysis_results)
+        
+        # Final Result
+        processing_time = time.time() - processing_start_time
+        processing_info = analysis_results.get("processing_info", {})
+        
+        summary_lines = [
+            f"Video processing completed in {processing_time:.2f} seconds.",
+            f"Analyzed {processing_info.get('frames_analyzed', 0)} frames out of {processing_info.get('total_frames', 0)} total frames.",
+            f"Processing interval: every {process_interval} frames",
+            basic_summary
+        ]
 
-        # Wrap processing summary in HTML tags for consistent styling with scene understanding page
-        summary_html = f"<div class='video-summary-content-wrapper'><pre>{summary_text}</pre></div>"
-
-        # Format statistics for better display
-        formatted_stats = {}
-        if stats_dict and isinstance(stats_dict, dict):
-            formatted_stats = stats_dict
-
-        return output_video_path, summary_html, formatted_stats
+        summary_content = '\n'.join(summary_lines)
+        summary_html = f"<div class='video-summary-content-wrapper'><pre>{summary_content}</pre></div>"
+        
+        # 提取物體詳情數據用於第四個輸出組件
+        timeline_analysis = analysis_results.get("timeline_analysis", {})
+        object_appearances = timeline_analysis.get("object_appearances", {})
+        
+        # 格式化物體詳情數據以便在JSON組件中顯示
+        object_details_formatted = {}
+        for obj_name, details in object_appearances.items():
+            object_details_formatted[obj_name] = {
+                "Estimated Count": details.get("estimated_count", 0),
+                "First Appearance": details.get("first_appearance", "Unknown"),
+                "Last Seen": details.get("last_seen", "Unknown"), 
+                "Duration in Video": details.get("duration_in_video", "Unknown"),
+                "Detection Confidence": details.get("detection_confidence", 0.0),
+                "First Appearance (seconds)": details.get("first_appearance_seconds", 0),
+                "Duration (seconds)": details.get("duration_seconds", 0)
+            }
+        
+        print(f"Extracted object details for {len(object_details_formatted)} object types")
+        
+        return output_video_path, summary_html, analysis_results, object_details_formatted
 
     except Exception as e:
         print(f"Error in handle_video_upload: {e}")
-        import traceback
-        error_msg = f"Error processing video: {str(e)}\n{traceback.format_exc()}"
+        traceback.print_exc()
+        error_msg = f"Video processing failed: {str(e)}"
         error_html = f"<div class='video-summary-content-wrapper'><pre>{error_msg}</pre></div>"
-        return None, error_html, {"error": str(e)}
-
+        empty_object_details = {}
+        return None, error_html, {"error": str(e)}, empty_object_details
 
 def main():
-    """
-    Main function to initialize processors and launch the Gradio interface.
-    """
+    """主函數，初始化並啟動Gradio"""
     global ui_manager
     
-    # Initialize processors
+    print("=== VisionScout Application Starting ===")
+    
     print("Initializing processors...")
     initialization_success = initialize_processors()
     if not initialization_success:
-        print("WARNING: Failed to initialize processors. Application may not function correctly.")
+        print("ERROR: Failed to initialize processors. Application cannot start.")
         return
-    
-    # Initialize UI manager
+
     print("Initializing UI manager...")
     ui_manager = initialize_ui_manager()
-    
-    # Create and launch the Gradio interface
+
     print("Creating Gradio interface...")
     demo_interface = ui_manager.create_interface(
         handle_image_upload_fn=handle_image_upload,
         handle_video_upload_fn=handle_video_upload,
         download_video_from_url_fn=download_video_from_url
     )
-    
+
     print("Launching application...")
     demo_interface.launch(debug=True)
 
