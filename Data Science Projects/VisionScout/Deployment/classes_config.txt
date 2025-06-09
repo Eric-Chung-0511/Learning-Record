@@ -55,4 +55,5 @@
 55.response_processor.py
 56.text_quality_validator.py
 57.llm_enhancer.py
-58.app.py
+58.ui_manager.py
+59.app.py
