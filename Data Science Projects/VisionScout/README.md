@@ -151,6 +151,30 @@ This project relies on a sophisticated ensemble of cutting-edge models and custo
 
 ## 🏗️ Architectural Excellence: Three-Layer Facade Design
 
+<p align="center">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Architecture%20Diagram.png" width="1800">
+  <br>
+  <em>Vision Scout Three-Layer Facade Architecture</em>
+</p>
+
+### **Dependency Flow and Data Pipeline**
+
+The architectural diagram above illustrates how Vision Scout transforms complex multi-modal AI coordination into a manageable, professional-grade system. The data flow moves systematically from the Application Layer through the Facade Layer, where intelligent coordination occurs, down to the Module Layer for functional integration, and finally to the Utility Layer for specialized processing. The Knowledge Base Layer provides essential static resources that inform decision-making across all operational layers.
+
+This design demonstrates a clear separation of concerns where higher layers depend on abstractions rather than concrete implementations, enabling flexible component replacement and system evolution. The arrow flows in the diagram show how user requests cascade through each layer, with processed results flowing back up through the same hierarchical structure, ensuring consistent data transformation and error handling at each level.
+
+### **Design Principles in Action**
+
+The three-layer architecture embodies fundamental software engineering principles that make complex AI systems maintainable and scalable. The **Single Responsibility Principle** ensures each class handles one specific aspect of visual intelligence, from the `FeatureExtractor` performing pixel-level analysis to the `SceneAnalysisCoordinator` managing workflow orchestration. The **Open-Closed Principle** allows new AI models or analytical capabilities to be added through the utility layer without modifying existing facade or module implementations.
+
+Most importantly, the **Dependency Inversion Principle** enables high-level modules like the `SceneAnalyzer` facade to coordinate complex operations without depending on the specific implementations of YOLO detection algorithms, CLIP semantic analysis, or Llama language processing. This abstraction allows the system to adapt to newer AI models or different processing strategies while maintaining the same clean interface for client applications.
+
+### **Scalability Through Architectural Foresight**
+
+The facade pattern implementation provides multiple pathways for system evolution and enhancement. New analytical capabilities can be seamlessly integrated by adding utility-layer components and updating module-layer coordinators, without requiring changes to the facade interfaces that client applications depend on. This architectural flexibility has already enabled Vision Scout to incorporate landmark recognition, video processing, and LLM enhancement features while maintaining backward compatibility.
+
+The modular knowledge base architecture supports domain-specific customization through template systems and prompt libraries, allowing the same core engine to adapt to specialized applications like medical imaging, industrial inspection, or accessibility assistance. The standardized interface protocols ensure that adding new scene types, cultural contexts, or analytical dimensions requires only knowledge base updates rather than fundamental code restructuring.
+
 Vision Scout exemplifies sophisticated software engineering through its implementation of a **Three-Layer Facade Architecture**, transforming 33,000+ lines of code across 59+ specialized classes into a cohesive, maintainable system. This architectural approach demonstrates how complex multi-modal AI coordination can be achieved while maintaining clean interfaces and professional-grade reliability.
 
 **Layer 1: Utility Foundation**
