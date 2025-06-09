@@ -41,6 +41,8 @@ class TemplateManager:
             # 載入模板數據庫
             self.templates = self._load_templates()
 
+            self.template_registry = self._initialize_template_registry()
+
             # 如果提供了自定義模板，則進行合併
             if custom_templates_db:
                 self._merge_custom_templates(custom_templates_db)
@@ -1045,14 +1047,14 @@ class TemplateManager:
             # 處理座位(椅子)相關
             if "chair" in object_statistics:
                 count = object_statistics["chair"]["count"]
-                
+
                 # 使用統一的數字轉換邏輯
                 number_words = {
-                    1: "one", 2: "two", 3: "three", 4: "four", 
-                    5: "five", 6: "six", 7: "seven", 8: "eight", 
+                    1: "one", 2: "two", 3: "three", 4: "four",
+                    5: "five", 6: "six", 7: "seven", 8: "eight",
                     9: "nine", 10: "ten", 11: "eleven", 12: "twelve"
                 }
-                
+
                 if count == 1:
                     replacements["seating"] = "a chair"
                     replacements["furniture"] = "a chair"
@@ -1085,7 +1087,7 @@ class TemplateManager:
             if len(furniture_items) > 1 and "furniture" not in replacements:
                 main_furniture = furniture_items[0]  # 數量最多的家具類型
                 main_count = furniture_counts[0]
-                
+
                 if main_furniture == "chair":
                     number_words = ["", "one", "two", "three", "four", "five", "six"]
                     if main_count <= 6:
@@ -1841,16 +1843,6 @@ class TemplateManager:
         except Exception as e:
             self.logger.warning(f"Error getting scene detail templates for '{scene_type}': {str(e)}")
             return ["A scene with various elements and objects."]
-
-    def reload_templates(self):
-        """
-        重新載入所有模板
-        """
-        try:
-            self.template_manager.reload_templates()
-            self.logger.info("Templates reloaded successfully")
-        except Exception as e:
-            self.logger.error(f"Error reloading templates: {str(e)}")
 
     def get_template_categories(self) -> List[str]:
         """
