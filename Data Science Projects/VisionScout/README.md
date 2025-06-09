@@ -65,7 +65,6 @@ Vision Scout works like a team of AI specialists, each examining your image from
   <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Project_FlowChart.svg" width="800">
 </p>
 
-**The Complete Journey**
 
 1️⃣ **Image Input and Preprocessing**
 
