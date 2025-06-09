@@ -152,7 +152,7 @@ This project relies on a sophisticated ensemble of cutting-edge models and custo
 
 <p align="center">
  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer1_Utility.svg" width="1200"> 
- <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer2_Module.svg" width="1200">
+ <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer2_Module_.svg" width="1200">
  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer3_Facade.svg" width="400">
  <br>
  <em>Vision Scout Three-Layer Facade Architecture</em>
