@@ -152,7 +152,9 @@ This project relies on a sophisticated ensemble of cutting-edge models and custo
 ## 🏗️ Architectural Excellence: Three-Layer Facade Design
 
 <p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Architecture%20Diagram.png" width="1800">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Editor%20_%20Mermaid%20Chart-2025-06-09-114737.svg" width="1200">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Editor%20_%20Mermaid%20Chart-2025-06-09-114824.svg" width="1200">
+  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Editor%20_%20Mermaid%20Chart-2025-06-09-115039.svg" width="400">
   <br>
   <em>Vision Scout Three-Layer Facade Architecture</em>
 </p>
