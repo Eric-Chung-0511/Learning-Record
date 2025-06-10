@@ -388,61 +388,176 @@ class ObjectDescriptionGenerator:
 
     def optimize_object_description(self, description: str) -> str:
         """
-        優化物件描述，避免重複列舉相同物件
+        優化物件描述文本，消除冗餘重複並改善表達流暢度
+        
+        這個函數是後處理階段的關鍵組件，負責清理和精簡自然語言生成系統
+        產出的描述文字。它專門處理常見的重複問題，如相同物件的重複
+        列舉和冗餘的空間描述，讓最終的描述更簡潔自然。
 
         Args:
-            description: 原始描述文本
+            description: 原始的場景描述文本，可能包含重複或冗餘的表達
 
         Returns:
-            str: 優化後的描述文本
+            str: 經過優化清理的描述文本，如果處理失敗則返回原始文本
         """
         try:
             import re
+            
+            # 1. 處理冗餘的空間限定表達
+            # 使用通用模式來識別和移除不必要的空間描述
+            # 例如："bed in the room" -> "bed"，因為床本身就表示是室內環境
+            description = self._remove_redundant_spatial_qualifiers(description)
 
-            # 處理床鋪重複描述
-            if "bed in the room" in description:
-                description = description.replace("a bed in the room", "a bed")
-
-            # 處理重複的物件列表
-            object_lists = re.findall(r'with ([^\.]+?)(?:\.|\band\b)', description)
-
+            # 2. 識別並處理物件列表的重複問題 
+            # 尋找形如 "with X, Y, Z" 或 "with X and Y" 的物件列表模式
+            # 使用正則表達式捕獲 "with" 關鍵字後的物件序列
+            # 注意：正則表達式需要修正以避免貪婪匹配的問題
+            object_lists = re.findall(r'with ([^.]+?)(?=\.|$)', description)
+            
+            # 遍歷每個找到的物件列表進行重複檢測和優化
             for obj_list in object_lists:
-                # 計算每個物件出現次數
-                items = re.findall(r'([a-zA-Z\s]+)(?:,|\band\b|$)', obj_list)
+                # 3. 解析單個物件列表中的項目 
+                # 使用更精確的正則表達式來分割物件項目
+                # 處理 "X, Y, and Z" 或 "X and Y" 格式的列表
+                # 需要特別注意處理最後一個 "and" 的情況
+                
+                # 先處理逗號格式 "A, B, and C"
+                if ", and " in obj_list:
+                    # 分割 ", and " 前後的部分
+                    before_last_and = obj_list.rsplit(", and ", 1)[0]
+                    last_item = obj_list.rsplit(", and ", 1)[1]
+                    
+                    # 處理前面的項目（用逗號分割）
+                    front_items = [item.strip() for item in before_last_and.split(",")]
+                    # 添加最後一個項目
+                    all_items = front_items + [last_item.strip()]
+                elif " and " in obj_list:
+                    # 處理簡單的 "A and B" 格式
+                    all_items = [item.strip() for item in obj_list.split(" and ")]
+                else:
+                    # 處理純逗號分隔的列表
+                    all_items = [item.strip() for item in obj_list.split(",")]
+                
+                # 4. 統計物件出現頻率 
+                # 建立字典來記錄每個物件的出現次數
                 item_counts = {}
-
-                for item in items:
+                
+                for item in all_items:
+                    # 清理項目文字並過濾無效內容
                     item = item.strip()
-                    if item and item not in ["and", "with"]:
-                        if item not in item_counts:
-                            item_counts[item] = 0
-                        item_counts[item] += 1
-
-                # 生成優化後的物件列表
+                    # 過濾掉連接詞和空白項目
+                    if item and item not in ["and", "with", ""]:
+                        # 移除可能的冠詞前綴以便正確計數
+                        # 例如 "a car" 和 "car" 應該被視為同一項目
+                        clean_item = self._normalize_item_for_counting(item)
+                        if clean_item not in item_counts:
+                            item_counts[clean_item] = 0
+                        item_counts[clean_item] += 1
+                
+                # 5. 生成優化後的物件列表 
                 if item_counts:
                     new_items = []
+                    
                     for item, count in item_counts.items():
                         if count > 1:
-                            new_items.append(f"{count} {item}s")
+                            # 對於重複項目，使用數字加複數形式
+                            plural_item = self._make_plural(item)
+                            new_items.append(f"{count} {plural_item}")
                         else:
+                            # 單個項目保持原樣
                             new_items.append(item)
-
-                    # 格式化新列表
+                    
+                    # 6. 重新格式化物件列表 
+                    # 使用標準的英文列表連接格式
                     if len(new_items) == 1:
                         new_list = new_items[0]
                     elif len(new_items) == 2:
                         new_list = f"{new_items[0]} and {new_items[1]}"
                     else:
+                        # 使用逗號格式確保清晰度
                         new_list = ", ".join(new_items[:-1]) + f", and {new_items[-1]}"
-
-                    # 替換原始列表
+                    
+                    # 7. 在原文中替換優化後的列表
+                    # 將原始的冗餘列表替換為優化後的簡潔版本
                     description = description.replace(obj_list, new_list)
-
+            
             return description
-
+        
         except Exception as e:
             self.logger.warning(f"Error optimizing object description: {str(e)}")
             return description
+
+    def _remove_redundant_spatial_qualifiers(self, description: str) -> str:
+        """
+        移除描述中冗餘的空間限定詞
+        
+        這個方法使用模式匹配來識別和移除不必要的空間描述，例如
+        "bed in the room" 中的 "in the room" 部分通常是多餘的，因為
+        床這個物件本身就是室內環境。
+        
+        Args:
+            description: 包含可能多餘空間描述的文本
+            
+        Returns:
+            str: 移除多餘空間限定詞後的文本
+        """
+        import re
+        
+        # 定義常見的多餘空間表達模式
+        # 這些模式捕獲「物件 + 不必要的空間限定」的情況
+        redundant_patterns = [
+            # 室內物件的多餘房間描述
+            (r'\b(bed|sofa|couch|chair|table|desk|dresser|nightstand)\s+in\s+the\s+(room|bedroom|living\s+room)', r'\1'),
+            # 廚房物件的多餘描述
+            (r'\b(refrigerator|stove|oven|sink|microwave)\s+in\s+the\s+kitchen', r'\1'),
+            # 浴室物件的多餘描述
+            (r'\b(toilet|shower|bathtub|sink)\s+in\s+the\s+(bathroom|restroom)', r'\1'),
+            # 一般性的多餘表達：「在場景中」、「在圖片中」等
+            (r'\b([\w\s]+)\s+in\s+the\s+(scene|image|picture|frame)', r'\1'),
+        ]
+        
+        for pattern, replacement in redundant_patterns:
+            description = re.sub(pattern, replacement, description, flags=re.IGNORECASE)
+        
+        return description
+
+
+    def _normalize_item_for_counting(self, item: str) -> str:
+        """
+        正規化物件項目以便準確計數
+        
+        移除冠詞和其他可能影響計數準確性的前綴詞彙，
+        確保 "a car" 和 "car" 被視為同一物件類型。
+        
+        Args:
+            item: 原始物件項目字串
+            
+        Returns:
+            str: 正規化後的物件項目
+        """
+        # 移除常見的英文冠詞
+        item = re.sub(r'^(a|an|the)\s+', '', item.lower())
+        return item.strip()
+
+    def _make_plural(self, item: str) -> str:
+        """
+        將單數名詞轉換為複數形式
+              
+        Args:
+            item: 單數形式的名詞
+            
+        Returns:
+            str: 複數形式的名詞
+        """
+        # 重用已經實現的複數化邏輯
+        if item.endswith("y") and len(item) > 1 and item[-2].lower() not in 'aeiou':
+            return item[:-1] + "ies"
+        elif item.endswith(("s", "sh", "ch", "x", "z")):
+            return item + "es"
+        elif not item.endswith("s"):
+            return item + "s"
+        else:
+            return item
 
     def generate_dynamic_everyday_description(self,
                                             detected_objects: List[Dict],
@@ -639,15 +754,15 @@ class ObjectDescriptionGenerator:
                             if object_statistics and class_name in object_statistics:
                                 actual_count = object_statistics[class_name]["count"]
                                 formatted_name_with_exact_count = self._format_object_count_description(
-                                    normalized_class_name, 
+                                    normalized_class_name,
                                     actual_count,
-                                    scene_type=scene_type  
+                                    scene_type=scene_type
                                 )
                             else:
                                 formatted_name_with_exact_count = self._format_object_count_description(
-                                    normalized_class_name, 
+                                    normalized_class_name,
                                     count,
-                                    scene_type=scene_type  
+                                    scene_type=scene_type
                                 )
 
                             if formatted_name_with_exact_count == "no specific objects clearly identified" or not formatted_name_with_exact_count:
@@ -746,67 +861,67 @@ class ObjectDescriptionGenerator:
     def _remove_repetitive_descriptors(self, description: str) -> str:
         """
         移除描述中的重複性和不適當的描述詞彙，特別是 "identical" 等詞彙
-        
+
         Args:
             description: 原始描述文本
-            
+
         Returns:
             str: 清理後的描述文本
         """
         try:
             import re
-            
+
             # 定義需要移除或替換的模式
             cleanup_patterns = [
                 # 移除 "identical" 描述模式
                 (r'\b(\d+)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
                 (r'\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
                 (r'\bidentical\s+([a-zA-Z\s]+)', r'\1'),
-                
+
                 # 改善 "comprehensive arrangement" 等過於技術性的表達
                 (r'\bcomprehensive arrangement of\b', 'arrangement of'),
                 (r'\bcomprehensive view featuring\b', 'scene featuring'),
                 (r'\bcomprehensive display of\b', 'display of'),
-                
+
                 # 簡化過度描述性的短語
                 (r'\bpositioning around\s+(\d+)\s+identical\b', r'positioning around \1'),
                 (r'\barranged around\s+(\d+)\s+identical\b', r'arranged around \1'),
             ]
-            
+
             processed_description = description
             for pattern, replacement in cleanup_patterns:
                 processed_description = re.sub(pattern, replacement, processed_description, flags=re.IGNORECASE)
-            
+
             # 進一步清理可能的多餘空格
             processed_description = re.sub(r'\s+', ' ', processed_description).strip()
-            
+
             self.logger.debug(f"Cleaned description: removed repetitive descriptors")
             return processed_description
-            
+
         except Exception as e:
             self.logger.warning(f"Error removing repetitive descriptors: {str(e)}")
             return description
 
-    def _format_object_count_description(self, class_name: str, count: int, 
+    def _format_object_count_description(self, class_name: str, count: int,
                                     scene_type: Optional[str] = None,
                                     detected_objects: Optional[List[Dict]] = None,
                                     avg_confidence: float = 0.0) -> str:
         """
         格式化物件數量描述的核心方法，整合空間排列、材質推斷和場景語境
-        
+
         這個方法是整個物件描述系統的核心，它將多個子功能整合在一起：
         1. 數字到文字的轉換（避免阿拉伯數字）
         2. 基於場景的材質推斷
         3. 空間排列模式的描述
         4. 語境化的物件描述
-        
+
         Args:
             class_name: 標準化後的類別名稱
             count: 物件數量
             scene_type: 場景類型，用於語境化描述
             detected_objects: 該類型的所有檢測物件，用於空間分析
             avg_confidence: 平均檢測置信度，影響材質推斷的可信度
-            
+
         Returns:
             str: 完整的格式化數量描述
         """
@@ -816,14 +931,14 @@ class ObjectDescriptionGenerator:
 
             # 獲取基礎的複數形式
             plural_form = self._get_plural_form(class_name)
-            
+
             # 單數情況的處理
             if count == 1:
-                return self._format_single_object_description(class_name, scene_type, 
+                return self._format_single_object_description(class_name, scene_type,
                                                             detected_objects, avg_confidence)
-            
+
             # 複數情況的處理
-            return self._format_multiple_objects_description(class_name, count, plural_form, 
+            return self._format_multiple_objects_description(class_name, count, plural_form,
                                                         scene_type, detected_objects, avg_confidence)
 
         except Exception as e:
@@ -831,55 +946,55 @@ class ObjectDescriptionGenerator:
             return f"{count} {class_name}s" if count > 1 else class_name
 
     def _format_single_object_description(self, class_name: str, scene_type: Optional[str],
-                                        detected_objects: Optional[List[Dict]], 
+                                        detected_objects: Optional[List[Dict]],
                                         avg_confidence: float) -> str:
         """
         處理單個物件的描述生成
-        
+
         對於單個物件，我們重點在於通過材質推斷和位置描述來豐富描述內容，
         避免簡單的 "a chair" 這樣的描述，而是生成 "a wooden dining chair" 這樣的表達
-        
+
         Args:
             class_name: 物件類別名稱
             scene_type: 場景類型
             detected_objects: 檢測物件列表
             avg_confidence: 平均置信度
-            
+
         Returns:
             str: 單個物件的完整描述
         """
         article = "an" if class_name[0].lower() in 'aeiou' else "a"
-        
+
         # 獲取材質描述符
         material_descriptor = self._get_material_descriptor(class_name, scene_type, avg_confidence)
-        
+
         # 獲取位置或特徵描述符
         feature_descriptor = self._get_single_object_feature(class_name, scene_type, detected_objects)
-        
+
         # 組合描述
         descriptors = []
         if material_descriptor:
             descriptors.append(material_descriptor)
         if feature_descriptor:
             descriptors.append(feature_descriptor)
-        
+
         if descriptors:
             return f"{article} {' '.join(descriptors)} {class_name}"
         else:
             return f"{article} {class_name}"
 
     def _format_multiple_objects_description(self, class_name: str, count: int, plural_form: str,
-                                        scene_type: Optional[str], detected_objects: Optional[List[Dict]], 
+                                        scene_type: Optional[str], detected_objects: Optional[List[Dict]],
                                         avg_confidence: float) -> str:
         """
         處理多個物件的描述生成
-        
+
         對於多個物件，我們的重點是：
         1. 將數字轉換為文字表達
         2. 分析空間排列模式
         3. 添加適當的材質或功能描述
         4. 生成自然流暢的描述
-        
+
         Args:
             class_name: 物件類別名稱
             count: 物件數量
@@ -887,17 +1002,17 @@ class ObjectDescriptionGenerator:
             scene_type: 場景類型
             detected_objects: 檢測物件列表
             avg_confidence: 平均置信度
-            
+
         Returns:
             str: 多個物件的完整描述
         """
         # 數字到文字的轉換映射
         number_words = {
             2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
-            7: "seven", 8: "eight", 9: "nine", 10: "ten", 
+            7: "seven", 8: "eight", 9: "nine", 10: "ten",
             11: "eleven", 12: "twelve"
         }
-        
+
         # 確定基礎數量表達
         if count in number_words:
             count_expression = number_words[count]
@@ -905,48 +1020,48 @@ class ObjectDescriptionGenerator:
             count_expression = "several"
         else:
             count_expression = "numerous"
-        
+
         # 獲取材質或功能描述符
         material_descriptor = self._get_material_descriptor(class_name, scene_type, avg_confidence)
-        
+
         # 獲取空間排列描述
-        spatial_descriptor = self._get_spatial_arrangement_descriptor(class_name, scene_type, 
+        spatial_descriptor = self._get_spatial_arrangement_descriptor(class_name, scene_type,
                                                                     detected_objects, count)
-        
+
         # 組合最終描述
         descriptors = []
         if material_descriptor:
             descriptors.append(material_descriptor)
-        
+
         # 構建基礎描述
         base_description = f"{count_expression} {' '.join(descriptors)} {plural_form}".strip()
-        
+
         # 添加空間排列信息
         if spatial_descriptor:
             return f"{base_description} {spatial_descriptor}"
         else:
             return base_description
 
-    def _get_material_descriptor(self, class_name: str, scene_type: Optional[str], 
+    def _get_material_descriptor(self, class_name: str, scene_type: Optional[str],
                             avg_confidence: float) -> Optional[str]:
         """
         基於場景語境和置信度進行材質推斷
-        
+
         這個方法實現了智能的材質推斷，它不依賴複雜的圖像分析，
         而是基於常識和場景邏輯來推斷最可能的材質描述
-        
+
         Args:
             class_name: 物件類別名稱
             scene_type: 場景類型
             avg_confidence: 檢測置信度，影響推斷的保守程度
-            
+
         Returns:
             Optional[str]: 材質描述符，如果無法推斷則返回None
         """
         # 只有在置信度足夠高時才進行材質推斷
         if avg_confidence < 0.5:
             return None
-        
+
         # 餐廳和用餐相關場景
         if scene_type and scene_type in ["dining_area", "restaurant", "upscale_dining", "cafe"]:
             material_mapping = {
@@ -956,7 +1071,7 @@ class ObjectDescriptionGenerator:
                 "vase": "decorative"
             }
             return material_mapping.get(class_name)
-        
+
         # 辦公場景
         elif scene_type and scene_type in ["office_workspace", "meeting_room", "conference_room"]:
             material_mapping = {
@@ -966,7 +1081,7 @@ class ObjectDescriptionGenerator:
                 "book": "reference"
             }
             return material_mapping.get(class_name)
-        
+
         # 客廳場景
         elif scene_type and scene_type in ["living_room"]:
             material_mapping = {
@@ -976,7 +1091,7 @@ class ObjectDescriptionGenerator:
                 "vase": "decorative"
             }
             return material_mapping.get(class_name)
-        
+
         # 室外場景
         elif scene_type and scene_type in ["city_street", "park_area", "parking_lot"]:
             material_mapping = {
@@ -985,7 +1100,7 @@ class ObjectDescriptionGenerator:
                 "bicycle": "stationed"
             }
             return material_mapping.get(class_name)
-        
+
         # 如果沒有特定的場景映射，返回通用描述符
         generic_mapping = {
             "chair": "comfortable",
@@ -993,30 +1108,30 @@ class ObjectDescriptionGenerator:
             "car": "parked",
             "person": "present"
         }
-        
+
         return generic_mapping.get(class_name)
 
     def _get_spatial_arrangement_descriptor(self, class_name: str, scene_type: Optional[str],
-                                        detected_objects: Optional[List[Dict]], 
+                                        detected_objects: Optional[List[Dict]],
                                         count: int) -> Optional[str]:
         """
         分析物件的空間排列模式並生成相應描述
-        
+
         這個方法通過分析物件的位置分布來判斷排列模式，
         然後根據物件類型和場景生成適當的空間描述
-        
+
         Args:
             class_name: 物件類別名稱
             scene_type: 場景類型
             detected_objects: 該類型的所有檢測物件
             count: 物件數量
-            
+
         Returns:
             Optional[str]: 空間排列描述，如果無法分析則返回None
         """
         if not detected_objects or len(detected_objects) < 2:
             return None
-        
+
         try:
             # 提取物件的標準化位置
             positions = []
@@ -1024,17 +1139,17 @@ class ObjectDescriptionGenerator:
                 center = obj.get("normalized_center", [0.5, 0.5])
                 if isinstance(center, (list, tuple)) and len(center) >= 2:
                     positions.append(center)
-            
+
             if len(positions) < 2:
                 return None
-            
+
             # 分析排列模式
             arrangement_pattern = self._analyze_arrangement_pattern(positions)
-            
+
             # 根據物件類型和場景生成描述
-            return self._generate_arrangement_description(class_name, scene_type, 
+            return self._generate_arrangement_description(class_name, scene_type,
                                                         arrangement_pattern, count)
-        
+
         except Exception as e:
             self.logger.warning(f"Error analyzing spatial arrangement: {str(e)}")
             return None
@@ -1042,43 +1157,43 @@ class ObjectDescriptionGenerator:
     def _analyze_arrangement_pattern(self, positions: List[List[float]]) -> str:
         """
         分析位置點的排列模式
-        
+
         這個方法使用簡單的幾何分析來判斷物件的排列類型，
         幫助我們理解物件在空間中的組織方式
-        
+
         Args:
             positions: 標準化的位置座標列表
-            
+
         Returns:
             str: 排列模式類型（linear, clustered, scattered, circular等）
         """
         import numpy as np
-        
+
         if len(positions) < 2:
             return "single"
-        
+
         # 轉換為numpy陣列便於計算
         pos_array = np.array(positions)
-        
+
         # 計算位置的分布特徵
         x_coords = pos_array[:, 0]
         y_coords = pos_array[:, 1]
-        
+
         # 分析x和y方向的變異程度
         x_variance = np.var(x_coords)
         y_variance = np.var(y_coords)
-        
+
         # 計算物件間的平均距離
         distances = []
         for i in range(len(positions)):
             for j in range(i + 1, len(positions)):
-                dist = np.sqrt((positions[i][0] - positions[j][0])**2 + 
+                dist = np.sqrt((positions[i][0] - positions[j][0])**2 +
                             (positions[i][1] - positions[j][1])**2)
                 distances.append(dist)
-        
+
         avg_distance = np.mean(distances) if distances else 0
         distance_variance = np.var(distances) if distances else 0
-        
+
         # 判斷排列模式
         if len(positions) >= 4 and self._is_circular_pattern(positions):
             return "circular"
@@ -1096,35 +1211,35 @@ class ObjectDescriptionGenerator:
     def _is_circular_pattern(self, positions: List[List[float]]) -> bool:
         """
         檢查位置是否形成圓形或環形排列
-        
+
         Args:
             positions: 位置座標列表
-            
+
         Returns:
             bool: 是否為圓形排列
         """
         import numpy as np
-        
+
         if len(positions) < 4:
             return False
-        
+
         try:
             pos_array = np.array(positions)
-            
+
             # 計算中心點
             center_x = np.mean(pos_array[:, 0])
             center_y = np.mean(pos_array[:, 1])
-            
+
             # 計算每個點到中心的距離
             distances_to_center = []
             for pos in positions:
                 dist = np.sqrt((pos[0] - center_x)**2 + (pos[1] - center_y)**2)
                 distances_to_center.append(dist)
-            
+
             # 如果所有距離都相近，可能是圓形排列
             distance_variance = np.var(distances_to_center)
             return distance_variance < 0.05 and np.mean(distances_to_center) > 0.2
-        
+
         except:
             return False
 
@@ -1132,16 +1247,16 @@ class ObjectDescriptionGenerator:
                                         arrangement_pattern: str, count: int) -> Optional[str]:
         """
         根據物件類型、場景和排列模式生成空間描述
-        
+
         這個方法將抽象的排列模式轉換為自然語言描述，
         並根據具體的物件類型和場景語境進行定制
-        
+
         Args:
             class_name: 物件類別名稱
             scene_type: 場景類型
             arrangement_pattern: 排列模式
             count: 物件數量
-            
+
         Returns:
             Optional[str]: 生成的空間排列描述
         """
@@ -1177,7 +1292,7 @@ class ObjectDescriptionGenerator:
                 "distributed": "positioned throughout the scene"
             }
         }
-        
+
         # 獲取對應的描述模板
         if class_name in arrangement_templates:
             template_dict = arrangement_templates[class_name]
@@ -1193,30 +1308,30 @@ class ObjectDescriptionGenerator:
                 "distributed": "thoughtfully placed"
             }
             base_description = generic_templates.get(arrangement_pattern, "positioned in the scene")
-        
+
         return base_description
 
     def _get_single_object_feature(self, class_name: str, scene_type: Optional[str],
                                 detected_objects: Optional[List[Dict]]) -> Optional[str]:
         """
         為單個物件生成特徵描述符
-        
+
         當只有一個物件時，我們可以提供更具體的位置或功能描述
-        
+
         Args:
             class_name: 物件類別名稱
             scene_type: 場景類型
             detected_objects: 檢測物件（單個）
-            
+
         Returns:
             Optional[str]: 特徵描述符
         """
         if not detected_objects or len(detected_objects) != 1:
             return None
-        
+
         obj = detected_objects[0]
         region = obj.get("region", "").lower()
-        
+
         # 基於位置的描述
         if "center" in region:
             if class_name == "dining table":
@@ -1225,14 +1340,14 @@ class ObjectDescriptionGenerator:
                 return "centrally placed"
         elif "corner" in region or "left" in region or "right" in region:
             return "positioned"
-        
+
         # 基於場景的功能描述
         if scene_type and scene_type in ["dining_area", "restaurant"]:
             if class_name == "chair":
                 return "dining"
             elif class_name == "vase":
                 return "decorative"
-        
+
         return None
 
     def _get_plural_form(self, word: str) -> str:
