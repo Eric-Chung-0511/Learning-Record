@@ -180,7 +180,7 @@ graph TB
         end
         
         subgraph "🧠 LLM Tools"
-            LLMTools["ModelManager<br/>PromptTemplateManager<br/>ResponseProcessor<br/>TextQualityValidator"]
+            LLMTools["LLMModelManager<br/>PromptTemplateManager<br/>ResponseProcessor<br/>TextQualityValidator"]
         end
     end
 
