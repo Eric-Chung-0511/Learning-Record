@@ -152,13 +152,133 @@ This project relies on a sophisticated ensemble of cutting-edge models and custo
 
 ## 🏗️ Architectural Excellence: Three-Layer Facade Design
 
-<p align="center">
- <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer1_Utility.svg" width="1200"> 
- <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer2_Module_.svg" width="1200">
- <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Layer3_Facade.svg" width="400">
- <br>
- <em>Vision Scout Three-Layer Facade Architecture</em>
-</p>
+```mermaid
+graph TB
+    %% Knowledge Base - Top Reference
+    subgraph "📚 Knowledge Base"
+        direction TB
+        KnowledgeFiles["scene_type.py<br/>object_categories.py<br/>landmark_data.py<br/>landmark_activities.py<br/>clip_prompts.py<br/>confidence_templates.py<br/>scene_detail_templates.py<br/>object_template_fillers.py<br/>safety_templates.py<br/>activity_templates.py<br/>lighting_conditions.py<br/>viewpoint_templates.py<br/>cultural_templates.py"]
+    end
+
+    %% Utility Layer - Foundation
+    subgraph "🛠️ Utility Layer"
+        direction TB
+        subgraph "🗺️ Spatial Tools"
+            SpatialTools["RegionAnalyzer<br/>ObjectExtractor<br/>ZoneEvaluator<br/>SceneZoneIdentifier<br/>FunctionalZoneIdentifier<br/>SceneViewpointAnalyzer"]
+        end
+        
+        subgraph "🌅 Lighting Tools"
+            LightingTools["ConfigurationManager<br/>FeatureExtractor<br/>IndoorOutdoorClassifier<br/>LightingConditionAnalyzer"]
+        end
+        
+        subgraph "🔍 CLIP Tools"
+            CLIPTools["CLIPModelManager<br/>LandmarkDataManager<br/>ImageAnalyzer<br/>ConfidenceManager<br/>ResultCacheManager"]
+        end
+        
+        subgraph "✍️ Description Tools"
+            DescriptionTools["TemplateManager<br/>ObjectDescriptionGenerator<br/>CulturalContextAnalyzer<br/>TextFormatter<br/>SceneDescription<br/>ViewpointDetector"]
+        end
+        
+        subgraph "🧠 LLM Tools"
+            LLMTools["ModelManager<br/>PromptTemplateManager<br/>ResponseProcessor<br/>TextQualityValidator"]
+        end
+    end
+
+    %% Module Layer
+    subgraph "🔧 Module Layer"
+        direction TB
+        SpatialAnalyzer["📐 SpatialAnalyzer"]
+        LightingAnalyzer["💡 LightingAnalyzer"]
+        EnhancedSceneDescriber["📝 EnhancedSceneDescriber"]
+        LLMEnhancer["🤖 LLMEnhancer"]
+        CLIPAnalyzer["🖼️ CLIPAnalyzer"]
+        CLIPZeroShotClassifier["🎯 CLIPZeroShotClassifier"]
+        SceneScoringEngine["📊 SceneScoringEngine"]
+        LandmarkProcessingManager["🏛️ LandmarkProcessingManager"]
+    end
+
+    %% Facade Layer
+    subgraph "🎭 Facade Layer"
+        direction LR
+        ComponentInitializer["⚙️ ComponentInitializer"]
+        SceneAnalysisCoordinator["🎯 SceneAnalysisCoordinator"]
+    end
+
+    %% Scene Analyzer - Main Coordinator (Standalone)
+    SceneAnalyzer["🧠 SceneAnalyzer"]
+
+    %% Processor Layer - Contains both processors and supporting services
+    subgraph "💻 Processor Layer"
+        direction LR
+        subgraph "🤖 Supporting Services"
+            ServicesList["🎯 DetectionModel (YOLO)<br/>🏞️ Places365Model<br/>🌈 ColorMapper<br/>📊 VisualizationHelper<br/>📈 EvaluationMetrics"]
+        end
+        ImageProcessor["📷 ImageProcessor"]
+        VideoProcessor["🎬 VideoProcessor"]
+    end
+
+    %% Application - Main App (Standalone)
+    App["🚀 App"]
+
+    %% Application Layer Components - Side Group
+    subgraph "📱 Application Layer"
+        direction TB
+        Style["💫 Style"]
+        UIManager["🎨 UIManager"]
+    end
+
+    %% Utility to Module Layer (Vertical Flow)
+    SpatialTools --> SpatialAnalyzer
+    LightingTools --> LightingAnalyzer
+    DescriptionTools --> EnhancedSceneDescriber
+    LLMTools --> LLMEnhancer
+    CLIPTools --> CLIPAnalyzer
+    CLIPTools --> CLIPZeroShotClassifier
+
+    %% Module to Facade Layer (Vertical Flow)
+    SpatialAnalyzer --> ComponentInitializer
+    LightingAnalyzer --> ComponentInitializer
+    EnhancedSceneDescriber --> ComponentInitializer
+    LLMEnhancer --> ComponentInitializer
+    CLIPAnalyzer --> ComponentInitializer
+    CLIPZeroShotClassifier --> ComponentInitializer
+
+    SceneScoringEngine --> SceneAnalysisCoordinator
+    LandmarkProcessingManager --> SceneAnalysisCoordinator
+
+    %% Facade Layer Integration
+    ComponentInitializer --> SceneAnalyzer
+    SceneAnalysisCoordinator --> SceneAnalyzer
+
+    %% Main Vertical Flow - Straight down arrows only
+    SceneAnalyzer --> ImageProcessor
+
+    %% Processor Layer to App - Straight down arrow
+    ImageProcessor --> App
+    VideoProcessor --> App
+    
+    %% Application Layer Components - Side connections
+    Style --> UIManager
+    UIManager --> App
+
+    %% Styling for Clear Visual Hierarchy
+    classDef applicationLayer fill:#e3f2fd,stroke:#0d47a1,stroke-width:3px,color:#000,font-weight:bold
+    classDef processorLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:3px,color:#000,font-weight:bold
+    classDef servicesLayer fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef sceneAnalyzer fill:#fff8e1,stroke:#f57c00,stroke-width:4px,color:#000,font-weight:bold
+    classDef facadeLayer fill:#fff8e1,stroke:#f57c00,stroke-width:3px,color:#000,font-weight:bold
+    classDef moduleLayer fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef utilityLayer fill:#f1f8e9,stroke:#33691e,stroke-width:2px,color:#000
+    classDef knowledgeLayer fill:#fce4ec,stroke:#880e4f,stroke-width:2px,color:#000
+
+    class App,UIManager,Style applicationLayer
+    class ImageProcessor,VideoProcessor,ServicesList processorLayer
+    class SceneAnalyzer sceneAnalyzer
+    class ComponentInitializer,SceneAnalysisCoordinator facadeLayer
+    class SpatialAnalyzer,LightingAnalyzer,EnhancedSceneDescriber,LLMEnhancer,CLIPAnalyzer,CLIPZeroShotClassifier,SceneScoringEngine,LandmarkProcessingManager moduleLayer
+    class SpatialTools,LightingTools,CLIPTools,DescriptionTools,LLMTools utilityLayer
+    class KnowledgeFiles knowledgeLayer
+```
 
 ### **Why I Chose This Architecture**
 
