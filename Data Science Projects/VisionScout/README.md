@@ -24,7 +24,7 @@ While many tools detect objects, Vision Scout offers more:
 **Due to a current GitHub issue with rendering Jupyter notebooks (missing 'state' key in metadata.widgets), the notebook code and outputs may not display properly in this repository.**
 
 For the complete notebook with all outputs and visualizations, please access the project via this Google Colab link:  
-👉 [View Complete Project](https://colab.research.google.com/drive/1tBsUhN_Xbg8YtUfG6rZqLvKNr7vd8Lsb?usp=sharing)
+👉 [View Complete Project](https://colab.research.google.com/drive/1UnPVmbW0IdvYYQL7BONJ2DShgn46AHsU?usp=sharing)
 
 The issue is being tracked by GitHub and will be resolved as soon as possible. Thank you for your understanding!
 
@@ -282,7 +282,7 @@ graph TB
 
 ### **Why I Chose This Architecture**
 
-When building Vision Scout, I faced the challenge of coordinating multiple AI models (YOLO, CLIP, Places365, Llama) while keeping the codebase maintainable and extensible. Rather than creating a monolithic system, I implemented a three-layer facade pattern that transforms 33,000+ lines of code across 59 specialized classes into a cohesive, manageable system.
+When building Vision Scout, I faced the challenge of coordinating multiple AI models (YOLO, CLIP, Places365, Llama) while keeping the codebase maintainable and extensible. Rather than creating a monolithic system, I implemented a three-layer facade pattern that transforms 34,000+ lines of code across 59 specialized classes into a cohesive, manageable system.
 
 The data flow moves systematically from the utility layer through the module layer to the facade layer, where intelligent coordination occurs. Each layer has a clear purpose and well-defined boundaries, making it easier to understand how components interact and where to make changes when needed.
 
