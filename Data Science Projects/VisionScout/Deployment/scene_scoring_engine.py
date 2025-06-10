@@ -249,10 +249,11 @@ class SceneScoringEngine:
         Returns:
             (最佳場景類型, 置信度) 的元組
         """
+        print(f"DEBUG: determine_scene_type input scores: {scene_scores}")
         if not scene_scores:
             return "unknown", 0.0
 
-        # 檢查地標相關分數是否達到門檻，如果是，直接回傳 "tourist_landmark" 
+        # 檢查地標相關分數是否達到門檻，如果是，直接回傳 "tourist_landmark"
         # 假設場景分數 dictionary 中，"tourist_landmark"、"historical_monument"、"natural_landmark" 三個 key
         # 分別代表不同類型地標。將它們加總，若總分超過 0.3，就認定為地標場景。
         landmark_score = (
@@ -267,6 +268,7 @@ class SceneScoringEngine:
         # 找分數最高的那個場景
         best_scene = max(scene_scores, key=scene_scores.get)
         best_score = scene_scores[best_scene]
+        print(f"DEBUG: determine_scene_type result: scene={best_scene}, score={best_score}")
         return best_scene, float(best_score)
 
     def fuse_scene_scores(self, yolo_scene_scores: Dict[str, float],
@@ -292,6 +294,13 @@ class SceneScoringEngine:
         """
         # 處理其中一個分數字典可能為空或所有分數實際上為零的情況
         # 提取和處理 Places365 場景分數
+        # print(f"DEBUG: fuse_scene_scores input - yolo_scores: {yolo_scene_scores}")
+        # print(f"DEBUG: fuse_scene_scores input - clip_scores: {clip_scene_scores}")
+        # print(f"DEBUG: fuse_scene_scores input - num_yolo_detections: {num_yolo_detections}")
+        # print(f"DEBUG: fuse_scene_scores input - avg_yolo_confidence: {avg_yolo_confidence}")
+        # print(f"DEBUG: fuse_scene_scores input - lighting_info: {lighting_info}")
+        # print(f"DEBUG: fuse_scene_scores input - places365_info: {places365_info}")
+
         places365_scene_scores_map = {}  # 修改變數名稱以避免與傳入的字典衝突
         if places365_info and places365_info.get('confidence', 0) > 0.1:
             mapped_scene_type = places365_info.get('mapped_scene_type', 'unknown')
@@ -352,6 +361,9 @@ class SceneScoringEngine:
             current_yolo_weight = default_yolo_weight
             current_clip_weight = default_clip_weight
             current_places365_weight = default_places365_weight
+            print(f"DEBUG: Scene {scene_type} - yolo_score: {yolo_score}, clip_score: {clip_score}, places365_score: {places365_score}")
+            print(f"DEBUG: Scene {scene_type} - weights: yolo={current_yolo_weight:.3f}, clip={current_clip_weight:.3f}, places365={current_places365_weight:.3f}")
+
 
             scene_definition = self.scene_types.get(scene_type, {})
 
@@ -383,8 +395,8 @@ class SceneScoringEngine:
                      "professional_kitchen", "cafe", "library", "gym", "retail_store",
                      "supermarket", "classroom", "conference_room", "medical_facility",
                      "educational_setting", "dining_area"]):
-                current_yolo_weight = 0.55
-                current_clip_weight = 0.20
+                current_yolo_weight = 0.50
+                current_clip_weight = 0.25
                 current_places365_weight = 0.25
 
             # 對於特定室外常見場景（非地標），物體仍然重要
@@ -480,6 +492,7 @@ class SceneScoringEngine:
             fused_scores[scene_type] = min(1.0, max(0.0, fused_score))
 
         return fused_scores
+        print(f"DEBUG: fuse_scene_scores final result: {fused_scores}")
 
     def update_enable_landmark_status(self, enable_landmark: bool):
         """

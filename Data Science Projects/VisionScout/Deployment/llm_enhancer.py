@@ -3,7 +3,7 @@ import traceback
 import re
 from typing import Dict, List, Any, Optional
 
-from model_manager import ModelManager
+from llm_model_manager import LLMModelManager
 from prompt_template_manager import PromptTemplateManager
 from response_processor import ResponseProcessor
 from text_quality_validator import TextQualityValidator
@@ -44,7 +44,7 @@ class LLMEnhancer:
 
         try:
             # 初始化四個核心組件
-            self.model_manager = ModelManager(
+            self.model_manager = LLMModelManager(
                 model_path=model_path,
                 tokenizer_path=tokenizer_path,
                 device=device,

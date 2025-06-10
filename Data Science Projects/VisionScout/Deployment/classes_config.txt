@@ -49,11 +49,11 @@
 49.scene_analysis_coordinator.py
 50.scene_analyzer.py
 51.image_processor.py
-52.video_processor.py
-53.model_manager.py
-54.prompt_template_manager.py
-55.response_processor.py
-56.text_quality_validator.py
-57.llm_enhancer.py
+52.llm_model_manager.py
+53.prompt_template_manager.py
+54.response_processor.py
+55.text_quality_validator.py
+56.llm_enhancer.py
+57.video_processor.py
 58.ui_manager.py
 59.app.py

@@ -15,7 +15,7 @@ class ModelGenerationError(Exception):
     pass
 
 
-class ModelManager:
+class LLMModelManager:
     """
     負責LLM模型的載入、設備管理和文本生成。
     管理模型、記憶體優化和設備配置。
@@ -194,7 +194,7 @@ class ModelManager:
             self.call_count += 1
             self.logger.info(f"Generating response (call #{self.call_count})")
 
-            # clean GPU 
+            # clean GPU
             self._clear_gpu_cache()
 
             # 設置固定種子以提高一致性
