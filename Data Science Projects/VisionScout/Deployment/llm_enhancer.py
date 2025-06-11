@@ -126,6 +126,18 @@ class LLMEnhancer:
             # 10. 移除解釋性注釋
             cleaned_response = self.response_processor.remove_explanatory_notes(raw_cleaned)
 
+            # self.logger.info(f"DEBUG: Before factual verification: {cleaned_response[:50]}...")
+
+            # 10.5 事實準確性驗證
+            try:
+                cleaned_response = self.quality_validator.verify_factual_accuracy(
+                    original_desc, cleaned_response, object_list
+                )
+            except Exception:
+                self.logger.warning("Fact verification failed; using response without verification")
+
+            # self.logger.info(f"DEBUG: After factual verification: {cleaned_response[:50]}...")
+
             # 11. 事實準確性驗證
             try:
                 cleaned_response = self.quality_validator.verify_factual_accuracy(
@@ -142,12 +154,9 @@ class LLMEnhancer:
                     cleaned_response, scene_type, original_desc
                 )
 
-            # 13. 視角一致性處理
-            perspective = self.quality_validator.extract_perspective_from_description(original_desc)
-            if perspective and perspective.lower() not in cleaned_response.lower():
-                cleaned_response = f"{perspective}, {cleaned_response[0].lower()}{cleaned_response[1:]}"
+            # print(f"DEBUG: After scene type consistency: {cleaned_response[:50]}...")
 
-            # 13.5. 最終的 identical 詞彙清理（確保LLM輸出不包含重複性描述）
+            # 13. 最終的 identical 詞彙清理（確保LLM輸出不包含重複性描述）
             identical_final_cleanup = [
                 (r'\b(\d+)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
                 (r'\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+identical\s+([a-zA-Z\s]+)', r'\1 \2'),
@@ -157,6 +166,7 @@ class LLMEnhancer:
 
             for pattern, replacement in identical_final_cleanup:
                 cleaned_response = re.sub(pattern, replacement, cleaned_response, flags=re.IGNORECASE)
+            # print(f"DEBUG: After identical cleanup: {cleaned_response[:50]}...")
 
             # 14. 最終驗證：如果結果過短，嘗試fallback
             final_result = cleaned_response.strip()
@@ -183,6 +193,7 @@ class LLMEnhancer:
 
             # 15. display enhanced description
             self.logger.info(f"Scene description enhancement completed successfully ({len(final_result)} chars)")
+            # print(f"DEBUG: LLMEnhancer final_result before return: {final_result[:50]}..." if final_result else "DEBUG: LLMEnhancer final_result is empty")
             return final_result
 
         except Exception as e:

@@ -1,3 +1,4 @@
+import re
 import logging
 import traceback
 from typing import Dict, List, Tuple, Optional, Any
@@ -389,7 +390,7 @@ class ObjectDescriptionGenerator:
     def optimize_object_description(self, description: str) -> str:
         """
         優化物件描述文本，消除冗餘重複並改善表達流暢度
-        
+
         這個函數是後處理階段的關鍵組件，負責清理和精簡自然語言生成系統
         產出的描述文字。它專門處理常見的重複問題，如相同物件的重複
         列舉和冗餘的空間描述，讓最終的描述更簡潔自然。
@@ -402,31 +403,31 @@ class ObjectDescriptionGenerator:
         """
         try:
             import re
-            
-            # 1. 處理冗餘的空間限定表達
+
+            # 1. 處理多餘的空間限定表達
             # 使用通用模式來識別和移除不必要的空間描述
             # 例如："bed in the room" -> "bed"，因為床本身就表示是室內環境
             description = self._remove_redundant_spatial_qualifiers(description)
 
-            # 2. 識別並處理物件列表的重複問題 
-            # 尋找形如 "with X, Y, Z" 或 "with X and Y" 的物件列表模式
+            # 2. 辨識並處理物件列表的重複問題
+            # 尋找形如 "with X, Y, Z" 或 "with X and Y" 的物件列表
             # 使用正則表達式捕獲 "with" 關鍵字後的物件序列
             # 注意：正則表達式需要修正以避免貪婪匹配的問題
             object_lists = re.findall(r'with ([^.]+?)(?=\.|$)', description)
-            
+
             # 遍歷每個找到的物件列表進行重複檢測和優化
             for obj_list in object_lists:
-                # 3. 解析單個物件列表中的項目 
+                # 3. 解析單個物件列表中的項目
                 # 使用更精確的正則表達式來分割物件項目
                 # 處理 "X, Y, and Z" 或 "X and Y" 格式的列表
                 # 需要特別注意處理最後一個 "and" 的情況
-                
+
                 # 先處理逗號格式 "A, B, and C"
                 if ", and " in obj_list:
                     # 分割 ", and " 前後的部分
                     before_last_and = obj_list.rsplit(", and ", 1)[0]
                     last_item = obj_list.rsplit(", and ", 1)[1]
-                    
+
                     # 處理前面的項目（用逗號分割）
                     front_items = [item.strip() for item in before_last_and.split(",")]
                     # 添加最後一個項目
@@ -437,11 +438,11 @@ class ObjectDescriptionGenerator:
                 else:
                     # 處理純逗號分隔的列表
                     all_items = [item.strip() for item in obj_list.split(",")]
-                
-                # 4. 統計物件出現頻率 
+
+                # 4. 統計物件出現頻率
                 # 建立字典來記錄每個物件的出現次數
                 item_counts = {}
-                
+
                 for item in all_items:
                     # 清理項目文字並過濾無效內容
                     item = item.strip()
@@ -453,11 +454,11 @@ class ObjectDescriptionGenerator:
                         if clean_item not in item_counts:
                             item_counts[clean_item] = 0
                         item_counts[clean_item] += 1
-                
-                # 5. 生成優化後的物件列表 
+
+                # 5. 生成優化後的物件列表
                 if item_counts:
                     new_items = []
-                    
+
                     for item, count in item_counts.items():
                         if count > 1:
                             # 對於重複項目，使用數字加複數形式
@@ -466,8 +467,8 @@ class ObjectDescriptionGenerator:
                         else:
                             # 單個項目保持原樣
                             new_items.append(item)
-                    
-                    # 6. 重新格式化物件列表 
+
+                    # 6. 重新格式化物件列表
                     # 使用標準的英文列表連接格式
                     if len(new_items) == 1:
                         new_list = new_items[0]
@@ -476,13 +477,13 @@ class ObjectDescriptionGenerator:
                     else:
                         # 使用逗號格式確保清晰度
                         new_list = ", ".join(new_items[:-1]) + f", and {new_items[-1]}"
-                    
+
                     # 7. 在原文中替換優化後的列表
-                    # 將原始的冗餘列表替換為優化後的簡潔版本
+                    # 將原始的多餘列表替換為優化後的簡潔版本
                     description = description.replace(obj_list, new_list)
-            
+
             return description
-        
+
         except Exception as e:
             self.logger.warning(f"Error optimizing object description: {str(e)}")
             return description
@@ -490,19 +491,19 @@ class ObjectDescriptionGenerator:
     def _remove_redundant_spatial_qualifiers(self, description: str) -> str:
         """
         移除描述中冗餘的空間限定詞
-        
+
         這個方法使用模式匹配來識別和移除不必要的空間描述，例如
         "bed in the room" 中的 "in the room" 部分通常是多餘的，因為
         床這個物件本身就是室內環境。
-        
+
         Args:
             description: 包含可能多餘空間描述的文本
-            
+
         Returns:
             str: 移除多餘空間限定詞後的文本
         """
         import re
-        
+
         # 定義常見的多餘空間表達模式
         # 這些模式捕獲「物件 + 不必要的空間限定」的情況
         redundant_patterns = [
@@ -515,23 +516,23 @@ class ObjectDescriptionGenerator:
             # 一般性的多餘表達：「在場景中」、「在圖片中」等
             (r'\b([\w\s]+)\s+in\s+the\s+(scene|image|picture|frame)', r'\1'),
         ]
-        
+
         for pattern, replacement in redundant_patterns:
             description = re.sub(pattern, replacement, description, flags=re.IGNORECASE)
-        
+
         return description
 
 
     def _normalize_item_for_counting(self, item: str) -> str:
         """
         正規化物件項目以便準確計數
-        
+
         移除冠詞和其他可能影響計數準確性的前綴詞彙，
         確保 "a car" 和 "car" 被視為同一物件類型。
-        
+
         Args:
             item: 原始物件項目字串
-            
+
         Returns:
             str: 正規化後的物件項目
         """
@@ -542,10 +543,10 @@ class ObjectDescriptionGenerator:
     def _make_plural(self, item: str) -> str:
         """
         將單數名詞轉換為複數形式
-              
+
         Args:
             item: 單數形式的名詞
-            
+
         Returns:
             str: 複數形式的名詞
         """
@@ -589,22 +590,23 @@ class ObjectDescriptionGenerator:
             self.logger.debug(f"Generating dynamic description for {len(detected_objects)} objects, "
                             f"viewpoint: {viewpoint}, lighting: {lighting_info is not None}")
 
-            # 1. 整體氛圍（照明和視角）
+            # 1. 整體氛圍（照明和視角）- 移除室內外標籤
             ambiance_parts = []
             if lighting_info:
                 time_of_day = lighting_info.get("time_of_day", "unknown lighting")
                 is_indoor = lighting_info.get("is_indoor")
-                ambiance_statement = "This is"
-                if is_indoor is True:
-                    ambiance_statement += " an indoor scene"
-                elif is_indoor is False:
-                    ambiance_statement += " an outdoor scene"
-                else:
-                    ambiance_statement += " a scene"
 
-                # remove underline
-                readable_lighting = f"with {time_of_day.replace('_', ' ')} lighting conditions"
-                ambiance_statement += f", likely {readable_lighting}."
+                # 直接描述照明條件，不加入室內外標籤
+                readable_lighting = f"{time_of_day.replace('_', ' ')} lighting conditions"
+
+                # 根據室內外環境調整描述但不直接標明
+                if is_indoor is True:
+                    ambiance_statement = f"The scene features {readable_lighting} characteristic of an interior space."
+                elif is_indoor is False:
+                    ambiance_statement = f"The scene displays {readable_lighting} typical of an outdoor environment."
+                else:
+                    ambiance_statement = f"The scene presents {readable_lighting}."
+
                 ambiance_parts.append(ambiance_statement)
 
             if viewpoint and viewpoint != "eye_level":

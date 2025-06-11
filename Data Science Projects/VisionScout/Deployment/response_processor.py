@@ -60,7 +60,11 @@ class ResponseProcessor:
                 "Here is a rewritten scene description that adheres to the provided critical rules:",
                 "Here is the rewritten scene description:",
                 "Here's a rewritten scene description:",
-                "The rewritten scene description is as follows:"
+                "The rewritten scene description is as follows:",
+                "indoor,",
+                "outdoor,",
+                "indoor ",
+                "outdoor "
             ]
 
             # 設置需要移除的後綴短語
@@ -187,23 +191,13 @@ class ResponseProcessor:
             raise ResponseProcessingError(error_msg) from e
 
     def clean_response(self, response: str, model_type: str = "general") -> str:
-        """
-        清理LLM回應
-
-        Args:
-            response: 原始LLM回應
-            model_type: 模型類型（用於特定清理規則）
-
-        Returns:
-            str: 清理後的回應
-
-        Raises:
-            ResponseProcessingError: 當回應處理失敗時
-        """
         if not response:
             raise ResponseProcessingError("Empty response provided for cleaning")
 
         try:
+            # 調試：記錄清理前的原始回應
+            self.logger.info(f"DEBUG: Response before cleaning: {response}")
+
             self.logger.debug(f"Starting response cleaning (original length: {len(response)})")
 
             # 保存原始回應作為備份
@@ -214,6 +208,9 @@ class ResponseProcessor:
                 cleaned_response = self._clean_llama_response(response)
             else:
                 cleaned_response = self._clean_general_response(response)
+
+            # 調試：記錄清理後的回應
+            self.logger.info(f"DEBUG: Response after cleaning: {cleaned_response}")
 
             # 如果清理後內容過短，嘗試從原始回應中恢復
             if len(cleaned_response.strip()) < 40:
@@ -447,23 +444,52 @@ class ResponseProcessor:
         return response
 
     def _remove_introduction_prefixes(self, response: str) -> str:
-        """移除介紹性前綴"""
-        # 處理 "Here is..." 類型的prefix
-        intro_prefixes = [
-            r'^Here\s+is\s+(?:a\s+|the\s+)?(?:rewritten\s+|enhanced\s+)?scene\s+description.*?:\s*',
-            r'^The\s+(?:rewritten\s+|enhanced\s+)?(?:scene\s+)?description\s+is.*?:\s*',
-            r'^Here\'s\s+(?:a\s+|the\s+)?(?:rewritten\s+|enhanced\s+)?description.*?:\s*'
+        """
+        移除介紹性前綴，強化對多種模式的處理。
+        """
+        if not response:
+            return ""
+
+        cleaned_response = response.strip()
+
+        # 1. 將所有要移除的前綴模式合併成一個大的正則表達式
+        #    - r'^(?: ... )' 表示從字串開頭匹配非捕獲分組
+        #    - '|' 用於分隔不同的模式
+        #    - re.escape() 用於安全地處理 self.prefixes_to_remove 中的特殊字符
+        #    - `\\s*,?` 處理可選的逗號和空格
+        #    - `\\s*` 處理結尾的任意空格
+        all_prefix_patterns = [
+            r'Here\s+is\s+(?:a\s+|the\s+)?(?:rewritten\s+|enhanced\s+)?scene\s+description.*?:',
+            r'The\s+(?:rewritten\s+|enhanced\s+)?(?:scene\s+)?description\s+is.*?:',
+            r'Here\'s\s+(?:a\s+|the\s+)?(?:rewritten\s+|enhanced\s+)?description.*?:',
+
+            # 這個模式會匹配這些詞，無論後面是逗號還是空格
+            r'(?:indoor|outdoor|inside|outside)\s*,?'
         ]
 
-        for prefix_pattern in intro_prefixes:
-            response = re.sub(prefix_pattern, '', response, flags=re.IGNORECASE)
+        # 將 self.prefixes_to_remove 中的字符串也轉換為正則表達式模式
+        # 確保 self.prefixes_to_remove 存在，否則提供一個空列表
+        prefixes_to_add = getattr(self, 'prefixes_to_remove', [])
+        for prefix in prefixes_to_add:
+            # 使用 re.escape 來確保前綴中的任何特殊字符被正確處理
+            all_prefix_patterns.append(re.escape(prefix))
 
-        # 處理固定prefix
-        for prefix in self.prefixes_to_remove:
-            if response.lower().startswith(prefix.lower()):
-                response = response[len(prefix):].strip()
+        cleaned_response = re.sub(r'^(?:indoor|outdoor|inside|outside)\s*,?\s*', '', cleaned_response, flags=re.IGNORECASE).strip()
 
-        return response
+        # 將所有模式用 '|' 連接起來，形成一個大的組合模式
+        # 我們在模式的結尾加上 \\s* 來匹配並移除前綴後可能跟隨的空格
+        combined_pattern = r'^(?:' + '|'.join(all_prefix_patterns) + r')\s*'
+
+        # 2. 執行一次性的替換，並忽略大小寫
+        # 這一行程式碼會移除所有匹配到的前綴
+        cleaned_response = re.sub(combined_pattern, '', cleaned_response, flags=re.IGNORECASE).strip()
+
+        # 3. 確保首字母大寫
+        # 移除前綴後，新的句首可能變成小寫, 這邊得修正
+        if cleaned_response:
+            cleaned_response = cleaned_response[0].upper() + cleaned_response[1:]
+
+        return cleaned_response
 
     def _remove_format_markers(self, response: str) -> str:
         """移除格式標記和上下文標籤（保留括號內的地理與細節資訊）"""
@@ -668,7 +694,7 @@ class ResponseProcessor:
             # 數字到文字
             number_conversions = {
                 '2': 'two', '3': 'three', '4': 'four', '5': 'five', '6': 'six',
-                '7': 'seven', '8': 'eight', '9': 'nine', '10': 'ten', 
+                '7': 'seven', '8': 'eight', '9': 'nine', '10': 'ten',
                 '11': 'eleven', '12': 'twelve'
             }
 
@@ -677,15 +703,15 @@ class ResponseProcessor:
                 # 模式1: 數字 + 單一複數詞 (如 "7 chairs")
                 pattern1 = rf'\b{digit}\s+([a-zA-Z]+s)\b'
                 processed_response = re.sub(pattern1, rf'{word} \1', processed_response)
-                
+
                 # 模式2: 數字 + 修飾詞 + 複數詞 (如 "7 more chairs")
                 pattern2 = rf'\b{digit}\s+(more|additional|other|identical)\s+([a-zA-Z]+s)\b'
                 processed_response = re.sub(pattern2, rf'{word} \1 \2', processed_response, flags=re.IGNORECASE)
-                
+
                 # 模式3: 數字 + 形容詞 + 複數詞 (如 "2 dining tables")
                 pattern3 = rf'\b{digit}\s+([a-zA-Z]+)\s+([a-zA-Z]+s)\b'
                 processed_response = re.sub(pattern3, rf'{word} \1 \2', processed_response)
-                
+
                 # 模式4: 介詞片語中的數字 (如 "around 2 tables")
                 pattern4 = rf'\b(around|approximately|about)\s+{digit}\s+([a-zA-Z]+s)\b'
                 processed_response = re.sub(pattern4, rf'\1 {word} \2', processed_response, flags=re.IGNORECASE)
@@ -978,6 +1004,25 @@ class ResponseProcessor:
 
     def _final_formatting(self, response: str) -> str:
         """最終格式化處理"""
+        # 專門處理 "indoor," 前綴問題
+        indoor_patterns = [
+            r'^indoor\s*,\s*',
+            r'^outdoor\s*,\s*',
+            r'^inside\s*,\s*',
+            r'^outside\s*,\s*',
+            r'^indoor\s+',
+            r'^outdoor\s+',
+        ]
+
+        for pattern in indoor_patterns:
+            response = re.sub(pattern, '', response, flags=re.IGNORECASE)
+
+        # 移除開頭的空白和標點符號
+        response = re.sub(r'^[\s,;:.-]+', '', response)
+
+        # 修復常見的語法問題
+        response = self._fix_grammatical_issues(response)
+
         # 確保首字母大寫
         if response and response[0].islower():
             response = response[0].upper() + response[1:]
@@ -987,6 +1032,35 @@ class ResponseProcessor:
         response = ' '.join(response.split())
 
         return response.strip()
+
+    def _fix_grammatical_issues(self, response: str) -> str:
+        """修復常見的語法問題"""
+        if not response:
+            return response
+
+        # 修復不完整的句子開頭
+        grammar_fixes = [
+            # 修復 "A dining table with... A dining table..." 重複問題
+            (r'\b(A|An)\s+([^.!?]*?)\s+\1\s+\2', r'\1 \2'),
+
+            # 修復 "This scene presents a scene" 重複
+            (r'\bThis scene presents a scene\b', 'This scene presents'),
+
+            # 修復不完整的句子 "A dining table with four chairs and a dining table"
+            (r'\b([A-Z][^.!?]*?)\s+and\s+a\s+\1\b', r'\1'),
+
+            # 修復空的介詞短語
+            (r'\bwith\s+with\b', 'with'),
+            (r'\band\s+and\b', 'and'),
+
+            # 確保句子完整性
+            (r'(\w+)\s*\.\s*(\w+)', r'\1. \2'),
+        ]
+
+        for pattern, replacement in grammar_fixes:
+            response = re.sub(pattern, replacement, response, flags=re.IGNORECASE)
+
+        return response
 
     def _recover_from_overcleaning(self, original_response: str) -> str:
         """從過度清理中恢復內容"""

@@ -1,6 +1,8 @@
 import os
+import re
 import torch
 import logging
+import threading
 from typing import Dict, Optional, Any
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from huggingface_hub import login
@@ -19,7 +21,22 @@ class LLMModelManager:
     """
     負責LLM模型的載入、設備管理和文本生成。
     管理模型、記憶體優化和設備配置。
+    實現單例模式確保全應用程式只有一個模型載入方式。
     """
+    
+    _instance = None
+    _initialized = False
+    _lock = threading.Lock()
+
+    def __new__(cls, *args, **kwargs):
+        """
+        單例模式實現：確保整個應用程式只創建一個 LLMModelManager 
+        """
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super(LLMModelManager, cls).__new__(cls)
+        return cls._instance
 
     def __init__(self,
                  model_path: Optional[str] = None,
@@ -29,7 +46,7 @@ class LLMModelManager:
                  temperature: float = 0.3,
                  top_p: float = 0.85):
         """
-        初始化模型管理器
+        初始化模型管理器（只在第一次創建實例時執行）
 
         Args:
             model_path: LLM模型的路徑或HuggingFace模型名稱，默認使用Llama 3.2
@@ -39,36 +56,48 @@ class LLMModelManager:
             temperature: 生成文本的溫度參數
             top_p: 生成文本時的核心採樣機率閾值
         """
-        # 設置專屬logger
-        self.logger = logging.getLogger(self.__class__.__name__)
-        if not self.logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-            handler.setFormatter(formatter)
-            self.logger.addHandler(handler)
-            self.logger.setLevel(logging.INFO)
+        # 避免重複初始化
+        if self._initialized:
+            return
+            
+        with self._lock:
+            if self._initialized:
+                return
+                
+            # set logger
+            self.logger = logging.getLogger(self.__class__.__name__)
+            if not self.logger.handlers:
+                handler = logging.StreamHandler()
+                formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+                handler.setFormatter(formatter)
+                self.logger.addHandler(handler)
+                self.logger.setLevel(logging.INFO)
 
-        # 模型配置
-        self.model_path = model_path or "meta-llama/Llama-3.2-3B-Instruct"
-        self.tokenizer_path = tokenizer_path or self.model_path
+            # model config
+            self.model_path = model_path or "meta-llama/Llama-3.2-3B-Instruct"
+            self.tokenizer_path = tokenizer_path or self.model_path
 
-        # 設備管理
-        self.device = self._detect_device(device)
-        self.logger.info(f"Device selected: {self.device}")
+            # device management
+            self.device = self._detect_device(device)
+            self.logger.info(f"Device selected: {self.device}")
 
-        # 生成參數
-        self.max_length = max_length
-        self.temperature = temperature
-        self.top_p = top_p
+            # 生成參數
+            self.max_length = max_length
+            self.temperature = temperature
+            self.top_p = top_p
 
-        # 模型狀態
-        self.model = None
-        self.tokenizer = None
-        self._model_loaded = False
-        self.call_count = 0
+            # 模型狀態
+            self.model = None
+            self.tokenizer = None
+            self._model_loaded = False
+            self.call_count = 0
 
-        # HuggingFace認證
-        self.hf_token = self._setup_huggingface_auth()
+            # HuggingFace認證
+            self.hf_token = self._setup_huggingface_auth()
+            
+            # 標記為已初始化
+            self._initialized = True
+            self.logger.info("LLMModelManager singleton initialized")
 
     def _detect_device(self, device: Optional[str]) -> str:
         """
@@ -118,11 +147,16 @@ class LLMModelManager:
     def _load_model(self):
         """
         載入LLM模型和tokenizer，使用8位量化以節省記憶體
+        增強的狀態檢查確保模型只載入一次
 
         Raises:
             ModelLoadingError: 當模型載入失敗時
         """
-        if self._model_loaded:
+        # 完整的模型狀態檢查
+        if (self._model_loaded and 
+            hasattr(self, 'model') and self.model is not None and
+            hasattr(self, 'tokenizer') and self.tokenizer is not None):
+            self.logger.info("Model already loaded, skipping reload")
             return
 
         try:
@@ -159,7 +193,7 @@ class LLMModelManager:
             )
 
             self._model_loaded = True
-            self.logger.info("Model loaded successfully")
+            self.logger.info("Model loaded successfully (singleton instance)")
 
         except Exception as e:
             error_msg = f"Failed to load model: {str(e)}"
@@ -173,19 +207,6 @@ class LLMModelManager:
             self.logger.debug("GPU cache cleared")
 
     def generate_response(self, prompt: str, **generation_kwargs) -> str:
-        """
-        生成LLM回應
-
-        Args:
-            prompt: 輸入提示詞
-            **generation_kwargs: 額外的生成參數，可覆蓋預設值
-
-        Returns:
-            str: 生成的回應文本
-
-        Raises:
-            ModelGenerationError: 當生成失敗時
-        """
         # 確保模型已載入
         if not self._model_loaded:
             self._load_model()
@@ -193,6 +214,10 @@ class LLMModelManager:
         try:
             self.call_count += 1
             self.logger.info(f"Generating response (call #{self.call_count})")
+
+            # # record input prompt
+            # self.logger.info(f"DEBUG: Input prompt length: {len(prompt)}")
+            # self.logger.info(f"DEBUG: Input prompt preview: {prompt[:200]}...")
 
             # clean GPU
             self._clear_gpu_cache()
@@ -216,13 +241,20 @@ class LLMModelManager:
                 "use_cache": True,
             })
 
-            # resposne
+            # response
             with torch.no_grad():
                 outputs = self.model.generate(inputs.input_ids, **generation_params)
 
             # 解碼回應
             full_response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+            # # record whole response
+            # self.logger.info(f"DEBUG: Full LLM response: {full_response}")
+
             response = self._extract_generated_response(full_response, prompt)
+
+            # # 記錄提取後的回應
+            # self.logger.info(f"DEBUG: Extracted response: {response}")
 
             if not response or len(response.strip()) < 10:
                 raise ModelGenerationError("Generated response is too short or empty")
@@ -281,13 +313,6 @@ class LLMModelManager:
     def _extract_generated_response(self, full_response: str, prompt: str) -> str:
         """
         從完整回應中提取生成的部分
-
-        Args:
-            full_response: 模型的完整輸出
-            prompt: 原始提示詞
-
-        Returns:
-            str: 提取的生成回應
         """
         # 尋找assistant標記
         assistant_tag = "<|assistant|>"
@@ -298,20 +323,48 @@ class LLMModelManager:
             user_tag = "<|user|>"
             if user_tag in response:
                 response = response.split(user_tag)[0].strip()
+        else:
+            # 移除輸入提示詞
+            if full_response.startswith(prompt):
+                response = full_response[len(prompt):].strip()
+            else:
+                response = full_response.strip()
 
+        # 移除不自然的場景類型前綴
+        response = self._remove_scene_type_prefixes(response)
+
+        return response
+
+    def _remove_scene_type_prefixes(self, response: str) -> str:
+        """
+        移除LLM生成回應中的場景類型前綴
+
+        Args:
+            response: 原始LLM回應
+
+        Returns:
+            str: 移除前綴後的回應
+        """
+        if not response:
             return response
 
-        # 移除輸入提示詞
-        if full_response.startswith(prompt):
-            return full_response[len(prompt):].strip()
+        prefix_patterns = [r'^[A-Za-z]+\,\s*']
 
-        return full_response.strip()
+        # 應用清理模式
+        for pattern in prefix_patterns:
+            response = re.sub(pattern, '', response, flags=re.IGNORECASE)
+
+        # 確保首字母大寫
+        if response and response[0].islower():
+            response = response[0].upper() + response[1:]
+
+        return response.strip()
 
     def reset_context(self):
         """重置模型上下文，清理GPU緩存"""
         if self._model_loaded:
             self._clear_gpu_cache()
-            self.logger.info("Model context reset")
+            self.logger.info("Model context reset (singleton instance)")
         else:
             self.logger.info("Model not loaded, no context to reset")
 
@@ -354,5 +407,20 @@ class LLMModelManager:
             "device": self.device,
             "is_loaded": self._model_loaded,
             "call_count": self.call_count,
-            "has_hf_token": self.hf_token is not None
+            "has_hf_token": self.hf_token is not None,
+            "is_singleton": True
         }
+
+    @classmethod
+    def reset_singleton(cls):
+        """
+        重置單例實例（僅用於測試或應用程式重啟）
+        注意：這會導致模型需要重新載入
+        """
+        with cls._lock:
+            if cls._instance is not None:
+                instance = cls._instance
+                if hasattr(instance, 'logger'):
+                    instance.logger.info("Resetting singleton instance")
+                cls._instance = None
+                cls._initialized = False
