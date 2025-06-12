@@ -24,7 +24,7 @@ While many tools detect objects, Vision Scout offers more:
 **Due to a current GitHub issue with rendering Jupyter notebooks (missing 'state' key in metadata.widgets), the notebook code and outputs may not display properly in this repository.**
 
 For the complete notebook with all outputs and visualizations, please access the project via this Google Colab link:  
-👉 [View Complete Project](https://colab.research.google.com/drive/1o3DrST3j2CyDI0xf-M_Ym8Cav7t0y28H?usp=sharing)
+👉 [View Complete Project](https://colab.research.google.com/drive/1m_IA1rQ7ApmLLzRG-g_YZhbm9rw0FIrc?usp=sharing)
 
 The issue is being tracked by GitHub and will be resolved as soon as possible. Thank you for your understanding!
 
