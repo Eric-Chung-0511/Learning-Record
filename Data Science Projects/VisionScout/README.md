@@ -164,7 +164,7 @@ graph TB
     subgraph "🛠️ Utility Layer"
         direction TB
         subgraph "🗺️ Spatial Tools"
-            SpatialTools["RegionAnalyzer<br/>ObjectExtractor<br/>ZoneEvaluator<br/>SceneZoneIdentifier<br/>FunctionalZoneIdentifier<br/>SceneViewpointAnalyzer"]
+            SpatialTools["RegionAnalyzer<br/>ObjectExtractor<br/>ZoneEvaluator<br/>FunctionalZoneDetector<br/>PatternAnalyzer<br/>SpecializedSceneProcessor<br/>SceneZoneIdentifier<br/>FunctionalZoneIdentifier<br/>SceneViewpointAnalyzer"]
         end
         
         subgraph "🌅 Lighting Tools"
@@ -176,7 +176,7 @@ graph TB
         end
         
         subgraph "✍️ Description Tools"
-            DescriptionTools["TemplateManager<br/>ObjectDescriptionGenerator<br/>CulturalContextAnalyzer<br/>TextFormatter<br/>SceneDescription<br/>ViewpointDetector"]
+            DescriptionTools["TemplateRepository<br/>ContentGenerator<br/>StatisticsProcessor<br/>TemplateProcessor<br/>TemplateManager<br/>ProminenceCalculator<br/>SpatialLocationHandler<br/>TextOptimizer<br/>ObjectGroupProcessor<br/>ObjectDescriptionGenerator<br/>CulturalContextAnalyzer<br/>TextFormatter<br/>SceneDescription<br/>ViewpointDetector"]
         end
         
         subgraph "🧠 LLM Tools"
@@ -282,7 +282,7 @@ graph TB
 
 ### **Why I Chose This Architecture**
 
-When building Vision Scout, I faced the challenge of coordinating multiple AI models (YOLO, CLIP, Places365, Llama) while keeping the codebase maintainable and extensible. Rather than creating a monolithic system, I implemented a three-layer facade pattern that transforms 34,000+ lines of code across 59 specialized classes into a cohesive, manageable system.
+When building Vision Scout, I faced the challenge of coordinating multiple AI models (YOLO, CLIP, Places365, Llama) while keeping the codebase maintainable and extensible. Rather than creating a monolithic system, I implemented a three-layer facade pattern that transforms 34,000+ lines of code across 70 specialized classes into a cohesive, manageable system.
 
 The data flow moves systematically from the utility layer through the module layer to the facade layer, where intelligent coordination occurs. Each layer has a clear purpose and well-defined boundaries, making it easier to understand how components interact and where to make changes when needed.
 
