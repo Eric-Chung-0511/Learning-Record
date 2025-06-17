@@ -16,7 +16,7 @@ from confidence_templates import CONFIDENCE_TEMPLATES
 from landmark_data import ALL_LANDMARKS
 from region_analyzer import RegionAnalyzer
 from viewpoint_detector import ViewpointDetector, ViewpointDetectionError
-from template_manager import TemplateManager, TemplateLoadingError, TemplateFillError
+from template_manager import TemplateManager
 from object_description_generator import ObjectDescriptionGenerator, ObjectDescriptionError
 from cultural_context_analyzer import CulturalContextAnalyzer, CulturalContextError
 from text_formatter import TextFormatter, TextFormattingError
@@ -123,7 +123,7 @@ class EnhancedSceneDescriber:
     def generate_description(self, scene_type: str, detected_objects: List[Dict], confidence: float,
                            lighting_info: Dict, functional_zones: List[str], enable_landmark: bool = True,
                            scene_scores: Optional[Dict] = None, spatial_analysis: Optional[Dict] = None,
-                           image_dimensions: Optional[Tuple[int, int]] = None, # 改為 Tuple
+                           image_dimensions: Optional[Tuple[int, int]] = None,
                            places365_info: Optional[Dict] = None,
                            object_statistics: Optional[Dict] = None) -> str:
         try:
@@ -815,47 +815,36 @@ class EnhancedSceneDescriber:
                           max_categories_to_return: Optional[int] = None,
                           max_total_objects: Optional[int] = None) -> List[Dict]:
         """
-        獲取最重要的物件
-
-        Args:
-            detected_objects: 檢測到的物件列表
-            min_prominence_score: 最小重要性分數閾值，預設為0.5
-            max_categories_to_return: 可選的最大返回類別數量限制
-            max_total_objects: 可選的最大返回物件總數限制
-
-        Returns:
-            List[Dict]: 重要物件列表
+        獲取最重要的物件，避免重複過濾邏輯
         """
         try:
-            # 傳遞所有參數
+            # 第一步：獲取基礎的重要物件
             prominent_objects = self.object_description_generator.get_prominent_objects(
                 detected_objects,
                 min_prominence_score,
-                max_categories_to_return
+                max_categories_to_return=None  
             )
 
-            # 如果指定了最大物件總數限制，進行額外過濾
+            # 第二步：應用總數限制
             if max_total_objects is not None and max_total_objects > 0:
-                # 限制總物件數量，保持重要性排序
                 prominent_objects = prominent_objects[:max_total_objects]
 
-            # 如果指定了最大類別數量限制，則進行額外過濾
+            # 第三步：應用objects限制
             if max_categories_to_return is not None and max_categories_to_return > 0:
-                # 按類別分組物件
                 categories_seen = set()
                 filtered_objects = []
 
                 for obj in prominent_objects:
                     class_name = obj.get("class_name", "unknown")
+                    
+                    # 如果是新類別且未達到限制
                     if class_name not in categories_seen:
-                        categories_seen.add(class_name)
-                        filtered_objects.append(obj)
-
-                        # 如果已達到最大類別數量，停止添加新類別
-                        if len(categories_seen) >= max_categories_to_return:
-                            break
-                    elif class_name in categories_seen:
-                        # 如果是已見過的類別，仍然添加該物件
+                        if len(categories_seen) < max_categories_to_return:
+                            categories_seen.add(class_name)
+                            filtered_objects.append(obj)
+                        # 如果已達到類別限制，跳過新類別的物件
+                    else:
+                        # 直接添加已見過的objects
                         filtered_objects.append(obj)
 
                 return filtered_objects
@@ -1034,11 +1023,9 @@ class EnhancedSceneDescriber:
         Returns:
             模板內容
         """
-        try:
-            return self.template_manager.get_template(category, key)
-        except (TemplateLoadingError, TemplateFillError) as e:
-            self.logger.warning(f"Error getting template: {str(e)}")
-            return None
+
+        return self.template_manager.get_template(category, key)
+
 
     def get_viewpoint_confidence(self, detected_objects: List[Dict]) -> Tuple[str, float]:
         """
@@ -1108,17 +1095,6 @@ class EnhancedSceneDescriber:
         except TextFormattingError as e:
             self.logger.warning(f"Error getting text statistics: {str(e)}")
             return {"characters": 0, "words": 0, "sentences": 0}
-
-    def reload_templates(self):
-        """
-        重新載入所有模板
-        """
-        try:
-            self.template_manager.reload_templates()
-            self.logger.info("Templates reloaded successfully")
-        except (TemplateLoadingError, TemplateFillError) as e:
-            self.logger.error(f"Error reloading templates: {str(e)}")
-            raise EnhancedSceneDescriberError(f"Failed to reload templates: {str(e)}") from e
 
     def get_configuration(self) -> Dict[str, Any]:
         """
