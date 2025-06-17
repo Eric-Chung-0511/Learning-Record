@@ -15,8 +15,8 @@ While many tools detect objects, Vision Scout offers more:
 ## 📊 Project Impact
 **This project has achieved:**
 
-> ![Visits](https://img.shields.io/badge/Total%20Visits-9.3k+-blue)
-![Model Runs](https://img.shields.io/badge/Model%20Runs-3.7k+-green)
+> ![Visits](https://img.shields.io/badge/Total%20Visits-9.5k+-blue)
+![Model Runs](https://img.shields.io/badge/Model%20Runs-3.8k+-green)
 
 ---
 
