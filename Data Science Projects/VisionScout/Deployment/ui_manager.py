@@ -7,7 +7,7 @@ from style import Style
 
 class UIManager:
     """
-    Manages all UI-related functionality 
+    Manages all UI-related functionality
     Handles Gradio interface creation, component definitions, and event binding.
     """
 
@@ -274,9 +274,9 @@ class UIManager:
                     # Image Examples
                     gr.Examples(
                         examples=[
-                            "room_04.jpg",
+                            "room_05.jpg",
+                            "street_03.jpg",
                             "street_04.jpg",
-                            "street_05.jpg",
                             "landmark_Louvre_01.jpg"
                         ],
                         inputs=components['image_input'],
@@ -398,7 +398,7 @@ class UIManager:
                                     )
 
         return components
-    
+
     def create_video_tab(self):
         """
         Create the video processing tab with all components.
@@ -465,7 +465,7 @@ class UIManager:
                                 label="Processing Interval (Frames)",
                                 info="Analyze every Nth frame (higher value = faster processing)"
                             )
-                            
+
                             # 簡化的分析說明
                             gr.HTML("""
                                 <div style="padding: 8px; margin-top: 10px; background-color: #f0f7ff; border-radius: 4px; border-left: 3px solid #4299e1; font-size: 12px;">
@@ -496,7 +496,7 @@ class UIManager:
                             * Adjust **confidence threshold** to filter low-quality detections
                         3. Click "Analyze Video". **Processing time varies based on video length.**
                         4. Review the results: annotated video and statistical analysis.
-                        
+
                         **⚡ Performance Tips:**
                         * For videos longer than 2 minutes, use interval ≥ 15 frames
                         * YOLOv8n model provides best speed for video processing
@@ -525,11 +525,11 @@ class UIManager:
                             </summary>
                             <div style="margin-top: 8px; padding: 10px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e2e8f0;">
                                 <p style="font-size: 13px; color: #718096; margin: 0;">
-                                    <b>Focus on practical insights:</b> This analysis provides accurate object counts and timing information 
-                                    without complex tracking. The system uses spatial clustering to eliminate duplicate detections and 
+                                    <b>Focus on practical insights:</b> This analysis provides accurate object counts and timing information
+                                    without complex tracking. The system uses spatial clustering to eliminate duplicate detections and
                                     provides clear timeline data showing when objects first appear and how long they remain visible.
                                     <br><br>
-                                    <b>Key benefits:</b> Reliable object counting, clear timeline analysis, and easy-to-understand results 
+                                    <b>Key benefits:</b> Reliable object counting, clear timeline analysis, and easy-to-understand results
                                     that directly answer questions like "How many cars are in this video?" and "When do they appear?"
                                 </p>
                             </div>
@@ -558,10 +558,10 @@ class UIManager:
                                 elem_id="video-summary-html-output"
                             )
 
-                        # Detailed Statistics Tab  
+                        # Detailed Statistics Tab
                         with gr.Tab("Detailed Statistics"):
                             gr.HTML('<div class="section-heading">Complete Analysis Data</div>')
-                            
+
                             with gr.Accordion("Processing Information", open=True):
                                 gr.HTML("""
                                     <div style="padding: 6px; background-color: #f8f9fa; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
@@ -574,7 +574,7 @@ class UIManager:
                                     label=None,
                                     elem_classes="video-stats-display"
                                 )
-                            
+
                             with gr.Accordion("Object Details", open=False):
                                 gr.HTML("""
                                     <div style="padding: 6px; background-color: #f8f9fa; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
@@ -735,7 +735,7 @@ class UIManager:
             ]
         )
 
-        # Video Process Button Click Handler 
+        # Video Process Button Click Handler
         video_components['video_process_btn'].click(
         fn=handle_video_upload_fn,
         inputs=[
@@ -750,6 +750,6 @@ class UIManager:
             video_components['video_output'],
             video_components['video_summary_text'],
             video_components['video_stats_json'],
-            video_components['video_object_details'] 
+            video_components['video_object_details']
             ]
         )

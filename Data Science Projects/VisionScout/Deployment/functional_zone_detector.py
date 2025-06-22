@@ -230,7 +230,14 @@ class FunctionalZoneDetector:
             region = zone_data.get("region", "")
             description = zone_data.get("description", "")
 
-            # 基於物件內容確定功能類型
+            # 確保只有在明確檢測到廚房設備時才產生 kitchen area
+            kitchen_objects = ["refrigerator", "microwave", "oven", "sink", "dishwasher", "stove"]
+            explicit_kitchen_detected = any(
+                any(kitchen_item in obj.lower() for kitchen_item in kitchen_objects)
+                for obj in objects
+            )
+
+            # 基於物件內容確定功能類型（保持原有順序，但加強廚房確認, 因為與dining room混淆）
             if any("dining" in obj.lower() or "table" in obj.lower() for obj in objects):
                 base_name = "dining area"
             elif any("chair" in obj.lower() or "sofa" in obj.lower() for obj in objects):
@@ -241,20 +248,52 @@ class FunctionalZoneDetector:
                 base_name = "workspace area"
             elif any("plant" in obj.lower() or "vase" in obj.lower() for obj in objects):
                 base_name = "decorative area"
-            elif any("refrigerator" in obj.lower() or "microwave" in obj.lower() for obj in objects):
+            elif explicit_kitchen_detected:
+                # 只有在明確檢測到廚房設備時才使用 kitchen area
                 base_name = "kitchen area"
             else:
-                # 基於描述內容推斷
-                if "dining" in description.lower():
+                # 基於描述內容推斷，但避免不當的 kitchen area 判斷
+                if "dining" in description.lower() and any("table" in obj.lower() for obj in objects):
+                    # 只有當描述中提到 dining 且確實有桌子時才使用 dining area
                     base_name = "dining area"
                 elif "seating" in description.lower() or "relaxation" in description.lower():
                     base_name = "seating area"
-                elif "work" in description.lower():
+                elif "work" in description.lower() and any("laptop" in obj.lower() or "keyboard" in obj.lower() for obj in objects):
+                    # 只有當描述中提到 work 且確實有工作設備時才使用 workspace area
                     base_name = "workspace area"
                 elif "decorative" in description.lower():
                     base_name = "decorative area"
                 else:
-                    base_name = "functional area"
+                    # 根據主要物件類型決定預設區域類型，避免使用 kitchen area
+                    if objects:
+                        # 根據最常見的物件類型決定區域名稱
+                        object_counts = {}
+                        for obj in objects:
+                            obj_lower = obj.lower()
+                            if "chair" in obj_lower:
+                                object_counts["seating"] = object_counts.get("seating", 0) + 1
+                            elif "table" in obj_lower:
+                                object_counts["dining"] = object_counts.get("dining", 0) + 1
+                            elif "person" in obj_lower:
+                                object_counts["activity"] = object_counts.get("activity", 0) + 1
+                            else:
+                                object_counts["general"] = object_counts.get("general", 0) + 1
+
+                        # 選擇最常見的類型
+                        if object_counts:
+                            most_common = max(object_counts, key=object_counts.get)
+                            if most_common == "seating":
+                                base_name = "seating area"
+                            elif most_common == "dining":
+                                base_name = "dining area"
+                            elif most_common == "activity":
+                                base_name = "activity area"
+                            else:
+                                base_name = "functional area"
+                        else:
+                            base_name = "functional area"
+                    else:
+                        base_name = "functional area"
 
             # 為次要區域添加位置標識以區分
             if priority_level == "secondary" and region:

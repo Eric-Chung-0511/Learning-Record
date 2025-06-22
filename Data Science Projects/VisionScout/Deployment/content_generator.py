@@ -15,7 +15,7 @@ class ContentGenerator:
         """初始化內容生成器"""
         self.logger = logging.getLogger(self.__class__.__name__)
 
-        # 預載入默認替換內容 
+        # 預載入默認替換內容
         self.default_replacements = self._generate_default_replacements()
 
         self.logger.debug("ContentGenerator initialized successfully")
@@ -238,7 +238,7 @@ class ContentGenerator:
             if not detected_objects:
                 return "various elements"
 
-            # 計算物件統計 
+            # 計算物件統計
             object_counts = {}
             total_confidence = 0
 
@@ -277,21 +277,40 @@ class ContentGenerator:
                 else:
                     descriptions.append(f"{count} {clean_name}s")
 
-            # 組合描述
-            if len(descriptions) == 1:
-                return descriptions[0]
-            elif len(descriptions) == 2:
-                return f"{descriptions[0]} and {descriptions[1]}"
+            # === 修正組合描述邏輯，增加驗證機制 ===
+            # 過濾掉空的或無效的描述
+            valid_descriptions = [desc.strip() for desc in descriptions if desc and desc.strip()]
+
+            # 確保有有效的描述項目
+            if not valid_descriptions:
+                return "various elements"
+
+            # 組合描述 - 修正邏輯以避免不完整的結尾
+            if len(valid_descriptions) == 1:
+                return valid_descriptions[0]
+            elif len(valid_descriptions) == 2:
+                return f"{valid_descriptions[0]} and {valid_descriptions[1]}"
             else:
-                return ", ".join(descriptions[:-1]) + f", and {descriptions[-1]}"
+                # 對於3個或以上的項目，確保正確的語法結構
+                main_items = ", ".join(valid_descriptions[:-1])
+                last_item = valid_descriptions[-1]
+                # 確保 main_items 和 last_item 都不為空
+                if main_items and last_item:
+                    return f"{main_items}, and {last_item}"
+                elif main_items:
+                    return main_items
+                elif last_item:
+                    return last_item
+                else:
+                    return "various elements"
 
         except Exception as e:
             self.logger.warning(f"Error generating objects summary: {str(e)}")
             return "various elements"
 
     def get_placeholder_replacement(self, placeholder: str, fillers: Dict,
-                                   all_replacements: Dict, detected_objects: List[Dict],
-                                   scene_type: str) -> str:
+                               all_replacements: Dict, detected_objects: List[Dict],
+                               scene_type: str) -> str:
         """
         獲取特定佔位符的替換內容，確保永遠不返回空值
 
@@ -306,16 +325,34 @@ class ContentGenerator:
             str: 替換內容
         """
         try:
-            # 優先處理動態內容生成的佔位符
-            dynamic_placeholders = [
-                'primary_objects', 'detected_objects_summary', 'main_objects',
-                'functional_area', 'functional_zones_description', 'scene_elements'
-            ]
+            # 動態佔位符的差異化處理策略
+            dynamic_placeholders_mapping = {
+                'primary_objects': 'full_summary',
+                'detected_objects_summary': 'full_summary',
+                'main_objects': 'simple_summary',
+                'functional_area': 'area_focus',
+                'functional_zones_description': 'zones_focus',
+                'scene_elements': 'elements_focus'
+            }
 
-            if placeholder in dynamic_placeholders:
-                dynamic_content = self.generate_objects_summary(detected_objects)
-                if dynamic_content and dynamic_content.strip():
-                    return dynamic_content.strip()
+            if placeholder in dynamic_placeholders_mapping:
+                content_type = dynamic_placeholders_mapping[placeholder]
+
+                # 根據內容類型和當前檢測物件生成不同的描述
+                if content_type == 'full_summary':
+                    return self.generate_objects_summary(detected_objects)
+                elif content_type == 'simple_summary':
+                    # 避免重複敘述
+                    return self._generate_simplified_objects_summary(detected_objects)
+                elif content_type == 'area_focus':
+                    # 以圖片中的area 作為重點描述
+                    return self._generate_area_focused_summary(detected_objects)
+                elif content_type == 'zones_focus':
+                    # 以圖片中的zones 作為重點描述
+                    return self._generate_zones_summary(detected_objects)
+                elif content_type == 'elements_focus':
+                    # 以圖片中物品作為重點描述
+                    return self._generate_elements_summary(detected_objects)
 
             # 檢查預定義替換內容
             if placeholder in all_replacements:
@@ -346,7 +383,7 @@ class ContentGenerator:
             if scene_specific_replacement and scene_specific_replacement.strip():
                 return scene_specific_replacement.strip()
 
-            # 通用備用字典 
+            # 通用備用字典
             fallback_replacements = {
                 # 交通和城市相關
                 "crossing_pattern": "pedestrian crosswalks",
@@ -405,7 +442,7 @@ class ContentGenerator:
             # 最終備用：將下劃線轉換為有意義的短語
             cleaned_placeholder = placeholder.replace('_', ' ')
 
-            # 對常見模式提供更好的默認值
+            # 對常見模式提供更全面的defualt value
             if placeholder.endswith('_pattern'):
                 return f"{cleaned_placeholder.replace(' pattern', '')} arrangement"
             elif placeholder.endswith('_behavior'):
@@ -421,8 +458,93 @@ class ContentGenerator:
 
         except Exception as e:
             self.logger.warning(f"Error getting replacement for placeholder '{placeholder}': {str(e)}")
-            # 確保即使在異常情況下也返回有意義的內容
             return placeholder.replace('_', ' ') if placeholder else "scene elements"
+
+    def _generate_simplified_objects_summary(self, detected_objects: List[Dict]) -> str:
+        """生成簡化的物件摘要，避免與詳細摘要重複"""
+        try:
+            if not detected_objects:
+                return "scene elements"
+
+            # 只取最重要的前3個物件
+            object_counts = {}
+            for obj in detected_objects:
+                class_name = obj.get("class_name", "unknown")
+                confidence = obj.get("confidence", 0.5)
+
+                if class_name not in object_counts:
+                    object_counts[class_name] = {"count": 0, "total_confidence": 0}
+
+                object_counts[class_name]["count"] += 1
+                object_counts[class_name]["total_confidence"] += confidence
+
+            # 排序並取前3個
+            sorted_objects = []
+            for class_name, stats in object_counts.items():
+                count = stats["count"]
+                avg_confidence = stats["total_confidence"] / count
+                importance = count * 0.6 + avg_confidence * 0.4
+                sorted_objects.append((class_name, count, importance))
+
+            sorted_objects.sort(key=lambda x: x[2], reverse=True)
+            top_objects = sorted_objects[:3]
+
+            if top_objects:
+                primary_object = top_objects[0]
+                clean_name = primary_object[0].replace('_', ' ')
+                count = primary_object[1]
+
+                if count == 1:
+                    article = "an" if clean_name[0].lower() in 'aeiou' else "a"
+                    return f"{article} {clean_name}"
+                else:
+                    return f"{count} {clean_name}s"
+
+            return "scene elements"
+
+        except Exception as e:
+            self.logger.warning(f"Error generating simplified summary: {str(e)}")
+            return "scene elements"
+
+    def _generate_area_focused_summary(self, detected_objects: List[Dict]) -> str:
+        """生成區域導向的摘要"""
+        try:
+            # 根據檢測到的物件推斷主要功能區域
+            furniture_objects = [obj for obj in detected_objects if obj.get("class_name") in ["chair", "dining table", "sofa", "bed"]]
+
+            if any(obj.get("class_name") == "dining table" for obj in furniture_objects):
+                return "dining area"
+            elif any(obj.get("class_name") == "sofa" for obj in furniture_objects):
+                return "seating area"
+            elif any(obj.get("class_name") == "bed" for obj in furniture_objects):
+                return "sleeping area"
+            elif furniture_objects:
+                return "furnished area"
+            else:
+                return "activity area"
+
+        except Exception as e:
+            self.logger.warning(f"Error generating area-focused summary: {str(e)}")
+            return "functional area"
+
+    def _generate_zones_summary(self, detected_objects: List[Dict]) -> str:
+        """生成區域描述摘要"""
+        try:
+            return "organized areas of activity"
+        except Exception as e:
+            return "functional zones"
+
+    def _generate_elements_summary(self, detected_objects: List[Dict]) -> str:
+        """生成元素導向的摘要"""
+        try:
+            if len(detected_objects) > 5:
+                return "diverse elements"
+            elif len(detected_objects) > 2:
+                return "multiple elements"
+            else:
+                return "key elements"
+        except Exception as e:
+            return "scene elements"
 
     def get_scene_based_default(self, placeholder: str, scene_type: str) -> Optional[str]:
         """

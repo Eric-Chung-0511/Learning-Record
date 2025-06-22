@@ -195,8 +195,8 @@ class ResponseProcessor:
             raise ResponseProcessingError("Empty response provided for cleaning")
 
         try:
-            # 調試：記錄清理前的原始回應
-            self.logger.info(f"DEBUG: Response before cleaning: {response}")
+            # 記錄清理前的最初回應
+            # self.logger.info(f"DEBUG: Response before cleaning: {response}")
 
             self.logger.debug(f"Starting response cleaning (original length: {len(response)})")
 
@@ -209,8 +209,8 @@ class ResponseProcessor:
             else:
                 cleaned_response = self._clean_general_response(response)
 
-            # 調試：記錄清理後的回應
-            self.logger.info(f"DEBUG: Response after cleaning: {cleaned_response}")
+            # 記錄清理後的回應
+            # self.logger.info(f"DEBUG: Response after cleaning: {cleaned_response}")
 
             # 如果清理後內容過短，嘗試從原始回應中恢復
             if len(cleaned_response.strip()) < 40:
@@ -691,37 +691,68 @@ class ResponseProcessor:
             for pattern, replacement in identical_cleanup_patterns:
                 processed_response = re.sub(pattern, replacement, processed_response, flags=re.IGNORECASE)
 
-            # 數字到文字
+            # 數字到文字轉換 - 優化版本支援不規則複數
             number_conversions = {
                 '2': 'two', '3': 'three', '4': 'four', '5': 'five', '6': 'six',
                 '7': 'seven', '8': 'eight', '9': 'nine', '10': 'ten',
                 '11': 'eleven', '12': 'twelve'
             }
 
+            # 不規則複數詞彙映射表(非s結尾)
+            irregular_plurals = {
+                'people': 'people',
+                'children': 'children',
+                'men': 'men',
+                'women': 'women',
+                'feet': 'feet',
+                'teeth': 'teeth',
+                'mice': 'mice',
+                'geese': 'geese',
+                'sheep': 'sheep',
+                'deer': 'deer',
+                'fish': 'fish',
+                'species': 'species',
+                'series': 'series'
+            }
+
             # 處理各種語法結構中的數字
             for digit, word in number_conversions.items():
-                # 模式1: 數字 + 單一複數詞 (如 "7 chairs")
+                # 1: 數字 + 規則複數詞 (以s結尾，如 "7 chairs")
                 pattern1 = rf'\b{digit}\s+([a-zA-Z]+s)\b'
                 processed_response = re.sub(pattern1, rf'{word} \1', processed_response)
 
-                # 模式2: 數字 + 修飾詞 + 複數詞 (如 "7 more chairs")
-                pattern2 = rf'\b{digit}\s+(more|additional|other|identical)\s+([a-zA-Z]+s)\b'
-                processed_response = re.sub(pattern2, rf'{word} \1 \2', processed_response, flags=re.IGNORECASE)
+                # 2: 數字 + 不規則複數詞 (如 "7 people")
+                for irregular_plural in irregular_plurals.keys():
+                    pattern_irregular = rf'\b{digit}\s+({irregular_plural})\b'
+                    processed_response = re.sub(pattern_irregular, rf'{word} \1', processed_response, flags=re.IGNORECASE)
 
-                # 模式3: 數字 + 形容詞 + 複數詞 (如 "2 dining tables")
-                pattern3 = rf'\b{digit}\s+([a-zA-Z]+)\s+([a-zA-Z]+s)\b'
+                # 3: 數字 + 修飾詞 + 規則複數詞 (如 "7 more chairs")
+                pattern3 = rf'\b{digit}\s+(more|additional|other|identical)\s+([a-zA-Z]+s)\b'
                 processed_response = re.sub(pattern3, rf'{word} \1 \2', processed_response)
 
-                # 模式4: 介詞片語中的數字 (如 "around 2 tables")
-                pattern4 = rf'\b(around|approximately|about)\s+{digit}\s+([a-zA-Z]+s)\b'
-                processed_response = re.sub(pattern4, rf'\1 {word} \2', processed_response, flags=re.IGNORECASE)
+                # 4: 數字 + 修飾詞 + 不規則複數詞 (如 "7 more people")
+                for irregular_plural in irregular_plurals.keys():
+                    pattern4 = rf'\b{digit}\s+(more|additional|other|identical)\s+({irregular_plural})\b'
+                    processed_response = re.sub(pattern4, rf'{word} \1 \2', processed_response, flags=re.IGNORECASE)
+
+                # 5: 數字 + 複合名詞結構 (如 "7 wine glasses")
+                compound_nouns = ['wine glasses', 'dining tables', 'coffee cups', 'traffic lights', 'cell phones']
+                for compound in compound_nouns:
+                    pattern_compound = rf'\b{digit}\s+({re.escape(compound)})\b'
+                    processed_response = re.sub(pattern_compound, rf'{word} \1', processed_response, flags=re.IGNORECASE)
+
+                # 6: 處理特殊單複數同形詞彙 (如 "7 deer", "7 sheep")
+                same_form_words = ['deer', 'sheep', 'fish', 'species', 'series', 'aircraft']
+                for same_word in same_form_words:
+                    pattern_same = rf'\b{digit}\s+({same_word})\b'
+                    processed_response = re.sub(pattern_same, rf'{word} \1', processed_response, flags=re.IGNORECASE)
 
             return processed_response
 
         except Exception as e:
             self.logger.error(f"Error in _handle_repetitive_vocabulary: {str(e)}")
             self.logger.error(traceback.format_exc())
-            return response # 發生錯誤時返回原始回應
+            return response  # 發生錯誤時返回原始回應
 
     def _ensure_grammatical_completeness(self, response: str) -> str:
         """

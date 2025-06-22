@@ -688,7 +688,7 @@ class FunctionalZoneIdentifier:
             if not high_conf_objects:
                 high_conf_objects = detected_objects  # 後備到所有物件
 
-            # 基於個別重要物件創建區域
+            # 根據個別重要物件創建區域
             processed_objects = set()  # 避免重複處理相同類型的物件
 
             for obj in high_conf_objects[:3]:  # 限制為前3個物件
@@ -788,7 +788,6 @@ class FunctionalZoneIdentifier:
             區域描述字串
         """
         try:
-            # 物件特定描述
             descriptions = {
                 "bed": "Sleeping and rest area",
                 "sofa": "Seating and relaxation area",
@@ -797,10 +796,42 @@ class FunctionalZoneIdentifier:
                 "tv": "Entertainment and media area",
                 "laptop": "Work and computing area",
                 "potted plant": "Decorative and green space area",
-                "refrigerator": "Food storage and kitchen area",
                 "car": "Vehicle and transportation area",
                 "person": "Activity and social area"
             }
+
+            # 只有在明確的廚房場景中才使用廚房描述
+            kitchen_related_objects = ["refrigerator", "microwave", "oven", "sink", "dishwasher", "stove"]
+
+            if class_name in kitchen_related_objects:
+                # 檢查場景類型是否真的是廚房相關
+                kitchen_scene_types = ["kitchen", "professional_kitchen", "cooking_area"]
+
+                if scene_type in kitchen_scene_types:
+                    # 只有在明確的廚房場景中才使用廚房描述
+                    if class_name == "refrigerator":
+                        descriptions[class_name] = "Food storage and kitchen area"
+                    elif class_name == "microwave":
+                        descriptions[class_name] = "Food preparation area"
+                    elif class_name == "oven":
+                        descriptions[class_name] = "Cooking area"
+                    elif class_name == "sink":
+                        descriptions[class_name] = "Washing and preparation area"
+                    else:
+                        descriptions[class_name] = "Kitchen appliance area"
+                else:
+                    # === 修正：非廚房場景中的廚房物件使用中性描述 ===
+                    # 在餐廳、客廳等場景中，即使檢測到這些物件也不使用廚房描述
+                    if class_name == "refrigerator":
+                        descriptions[class_name] = "Storage area"
+                    elif class_name == "microwave":
+                        descriptions[class_name] = "Appliance area"
+                    elif class_name == "oven":
+                        descriptions[class_name] = "Equipment area"
+                    elif class_name == "sink":
+                        descriptions[class_name] = "Utility area"
+                    else:
+                        descriptions[class_name] = "Equipment area"
 
             return descriptions.get(class_name, f"Functional area with {class_name}")
 
@@ -899,30 +930,36 @@ class FunctionalZoneIdentifier:
             "surfboard":     "sports area",
             "tennis racket": "sports area",
 
-            # 廚房與食品（Kitchen）
-            "bottle":        "kitchen area",
-            "wine glass":    "kitchen area",
-            "cup":           "kitchen area",
-            "fork":          "kitchen area",
-            "knife":         "kitchen area",
-            "spoon":         "kitchen area",
-            "bowl":          "kitchen area",
-            "banana":        "kitchen area",
-            "apple":         "kitchen area",
-            "sandwich":      "kitchen area",
-            "orange":        "kitchen area",
-            "broccoli":      "kitchen area",
-            "carrot":        "kitchen area",
-            "hot dog":       "kitchen area",
-            "pizza":         "kitchen area",
-            "donut":         "kitchen area",
-            "cake":          "kitchen area",
-            "dining table":  "furniture arrangement area",
-            "refrigerator":  "kitchen area",
-            "oven":          "kitchen area",
-            "microwave":     "kitchen area",
-            "toaster":       "kitchen area",
-            "sink":          "kitchen area",
+            # 餐具與用餐相關物品重新歸類為 dining area
+            "bottle":        "dining area",
+            "wine glass":    "dining area",
+            "cup":           "dining area",
+            "fork":          "dining area",
+            "knife":         "dining area",
+            "spoon":         "dining area",
+            "bowl":          "dining area",
+            "dining table":  "dining area",  # 確保 dining table 也歸類為 dining area
+
+            # 食品使用中性的 food area
+            "banana":        "food area",
+            "apple":         "food area",
+            "sandwich":      "food area",
+            "orange":        "food area",
+            "broccoli":      "food area",
+            "carrot":        "food area",
+            "hot dog":       "food area",
+            "pizza":         "food area",
+            "donut":         "food area",
+            "cake":          "food area",
+
+            # 只有在有明確的廚房設備才使用 kitchen area
+            "refrigerator":  "kitchen appliance area",
+            "oven":          "kitchen appliance area",
+            "microwave":     "kitchen appliance area",
+            "toaster":       "kitchen appliance area",
+            "sink":          "kitchen appliance area",
+
+            # 其他物品
             "book":          "miscellaneous area",
             "clock":         "miscellaneous area",
             "vase":          "decorative area",
