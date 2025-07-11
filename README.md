@@ -59,7 +59,7 @@ The project demonstrates advanced problem-solving by implementing **knowledge di
 
 * 🛰️ **[Vision Scout](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout)** – A sophisticated multi-modal computer vision system that orchestrates **YOLOv8, CLIP, Places365, and Llama 3.2** through intelligent fusion architecture. The system transcends traditional object detection by integrating environmental scene classification, semantic context analysis, and advanced natural language generation to transform visual data into comprehensive narrative descriptions. Vision Scout performs **spatial mapping, functional zone identification, lighting analysis, and activity inference** while maintaining factual accuracy through structured LLM enhancement processes. The platform supports both static image analysis with detailed scene interpretation and foundational video processing capabilities for temporal object tracking.
 
-  Currently, the project has accumulated **9k+ visits** and **3.7k+ GPU runs** on Hugging Face.
+  Currently, the project has accumulated **9.8k+ visits** and **3.9k+ GPU runs** on Hugging Face.
   Recognition as a featured project in Hugging Face's **"Spaces of the Week"** demonstrates its innovative approach to bridging computer vision and natural language understanding for practical applications.
 
 
