@@ -16,7 +16,7 @@ Follow these steps to get the application up and running.
 
 Open your terminal and clone the entire `Learning-Record` repository.
 ```bash
-git clone [https://github.com/Eric-Chung-0511/Learning-Record.git](https://github.com/Eric-Chung-0511/Learning-Record.git)
+git clone https://github.com/Eric-Chung-0511/Learning-Record.git
 ```
 
 Then, navigate into the correct project directory:
