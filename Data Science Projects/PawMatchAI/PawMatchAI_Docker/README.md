@@ -19,13 +19,22 @@ Open your terminal and clone the entire `Learning-Record` repository.
 git clone https://github.com/Eric-Chung-0511/Learning-Record.git
 ```
 
-Then, navigate into the correct project directory:
-```bash
-cd "Learning-Record/Data Science Projects/PawMatchAI"
-```
-*Note: All subsequent commands must be run from this directory.*
+**2. Navigate into the Project Directory ➡️**
 
-**2. Download the Model File 🧠**
+After cloning, you need to move into the correct project folder. The command is slightly different depending on your operating system.
+
+* **On macOS or Linux:**
+    ```bash
+    cd "Learning-Record/Data Science Projects/PawMatchAI"
+    ```
+
+* **On Windows (Command Prompt or PowerShell):**
+    ```bash
+    cd "Learning-Record\Data Science Projects\PawMatchAI"
+    ```
+***Note: All subsequent commands must be run from inside this `PawMatchAI` directory.***
+
+**3. Download the Model File 🧠**
 
 This project requires a pre-trained model file (`.pth`) that is hosted on Hugging Face Spaces.
 
@@ -35,7 +44,7 @@ This project requires a pre-trained model file (`.pth`) that is hosted on Huggin
     .../PawMatchAI/models/ConvNextV2Base_best_model.pth
     ```
 
-**3. Build the Docker Image 📦**
+**4. Build the Docker Image 📦**
 
 Now, let's build the Docker image. This command reads the `Dockerfile` and creates a self-contained environment for the app. It might take a few minutes as it downloads all the necessary dependencies.
 
@@ -43,7 +52,7 @@ Now, let's build the Docker image. This command reads the `Dockerfile` and creat
 docker-compose build
 ```
 
-**4. Run the Application ▶️**
+**5. Run the Application ▶️**
 
 Once the build is complete, start the application with this command:
 ```bash
