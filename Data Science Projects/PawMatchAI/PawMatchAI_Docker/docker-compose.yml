@@ -1,0 +1,22 @@
+services:
+  pawmatch-ai:
+    build: .
+    container_name: pawmatch-ai-app
+    ports:
+      - "7860:7860"
+    environment:
+      - MODEL_PATH=/app/models/ConvNextV2Base_best_model.pth
+      - ASSETS_PATH=/app/assets/example_images/
+      - PYTHONPATH=/app
+    volumes:
+      # 可選：將模型檔案作為 volume 掛載，便於模型更新
+      - ./models:/app/models:ro
+      - ./data:/app/data:ro
+      - ./assets:/app/assets:ro
+    restart: unless-stopped
+    networks:
+      - pawmatch-network
+
+networks:
+  pawmatch-network:
+    driver: bridge
