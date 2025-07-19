@@ -75,6 +75,7 @@ Vision Scout works like a team of AI specialists, each examining your image from
    This is where the magic starts. Your image gets sent down multiple analytical pathways in a carefully orchestrated sequence:
 
    * **Places365 Scene Classification** initiates the process with a ResNet50 model trained on 365 different scene categories. Think of it as the generalist who takes one look and says "this feels like a kitchen" or "looks like a park to me." It provides that crucial first impression along with a confidence score, plus an early assessment about whether we're looking at an indoor or outdoor scene.
+
    * **YOLOv8 Object Detection** operates in parallel, conducting detailed inventory work by scanning the image to identify specific objects and their exact locations, complete with bounding boxes and confidence levels for each detection. This provides the concrete "what's actually in this picture" foundation that everything else builds upon.
 
 3️⃣ **Feature Enhancement and Deep Analysis**
@@ -82,8 +83,11 @@ Vision Scout works like a team of AI specialists, each examining your image from
    Now the system layers on more sophisticated analysis through coordinated processing:
 
    * **Lighting Analysis** dives deep into visual characteristics, examining brightness levels, color distributions, and textures to determine lighting conditions. Is this a sunny day? A dimly lit indoor room? Night scene with artificial lighting? It intelligently incorporates the indoor/outdoor assessment from Places365 to refine its conclusions.
+
    * **Spatial Object Mapping** takes the object locations from YOLO and maps them onto a spatial grid, understanding how elements are arranged across different regions of the image. This spatial awareness becomes crucial for identifying functional zones later in the process.
-   * **Semantic Scene Analysis** employs CLIP to create a unique "fingerprint" of your image, then compares this against hundreds of text descriptions to understand overall meaning and context. This captures atmosphere, cultural context, and subtle visual cues that pure object detection might miss.
+
+   * **Semantic Scene Analysis** employs CLIP to create a unique "fingerprint" of your image through independent visual analysis, comparing this against hundreds of text descriptions to understand overall meaning and context. CLIP begins by performing autonomous image encoding to capture atmosphere, cultural context, and subtle visual cues that pure object detection might miss. **When Places365 achieves a confidence score above 0.4, the system activates an enhanced analysis mode where CLIP's semantic understanding is strategically guided by the scene classification results.** In this enhanced mode, CLIP adjusts its analytical focus areas and refines its prompt strategies based on the specific scene type identified by Places365, creating a more targeted and precise semantic interpretation while maintaining its core independent analytical capabilities.
+     
    * **Landmark Recognition**, an optional yet powerful feature that can be enabled by the user, uses CLIP's zero-shot classification capabilities to spot famous landmarks that might be missed by standard object detectors. When activated, it intelligently examines the entire image and specific regions where YOLO had low confidence or identified large, undefined structures, using multi-scale analysis to identify well-known global and regional points of interest.
 
 4️⃣ **Multi-Dimensional Scoring Engine**
