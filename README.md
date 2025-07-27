@@ -53,13 +53,13 @@ The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/ma
 
 Here are three highlighted projects that showcase different aspects of my skills:
 
-* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** – A deep learning project for dog breed classification with over **13k+ GPU Runs and 31k+ visits**, and was featured in Hugging Face's **"Spaces of the Week"** for its strong user engagement and real-world utility.
+* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** – A deep learning project for dog breed classification with over **13k+ GPU Runs and 32k+ visits**, and was featured in Hugging Face's **"Spaces of the Week"** for its strong user engagement and real-world utility.
 It combines **ConvNeXtV2**, **Multi-Head Attention**, and a **morphological feature extractor** to accurately classify 124 breeds, and uniquely offers a **sophisticated recommendation system** to suggest the most compatible match based on detailed lifestyle preferences and breed characteristics.
 The project demonstrates advanced problem-solving by implementing **knowledge distillation techniques** to address challenging breed distinctions and integrating **contrastive loss functions** to enhance model robustness against visually similar breeds.
 
 * 🛰️ **[Vision Scout](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout)** – A sophisticated multi-modal computer vision system that orchestrates **YOLOv8, CLIP, Places365, and Llama 3.2** through intelligent fusion architecture. The system transcends traditional object detection by integrating environmental scene classification, semantic context analysis, and advanced natural language generation to transform visual data into comprehensive narrative descriptions. Vision Scout performs **spatial mapping, functional zone identification, lighting analysis, and activity inference** while maintaining factual accuracy through structured LLM enhancement processes. The platform supports both static image analysis with detailed scene interpretation and foundational video processing capabilities for temporal object tracking.
 
-  Currently, the project has accumulated **9.8k+ visits** and **3.9k+ GPU runs** on Hugging Face.
+  The project has accumulated **10k+ visits** and **4k+ GPU runs** in three months on Hugging Face.
   Recognition as a featured project in Hugging Face's **"Spaces of the Week"** demonstrates its innovative approach to bridging computer vision and natural language understanding for practical applications.
 
 
