@@ -94,20 +94,30 @@ More broadly, I’ve found that **dimensionality reduction** techniques like PCA
 
 <h2 id="deep-learning">🤖 Deep Learning</h2>
 
-Deep learning has been the area I’ve spent the most time on, especially within computer vision. What keeps me interested is how these models can learn layered representations, starting from textures and edges, then building up to more abstract structures — all from raw pixel data.
+My focus in deep learning is on architecting and building robust, end-to-end systems that solve tangible problems. I believe in a full-stack approach: from designing novel architectures and advanced training strategies to deploying interactive, user-centric applications. This philosophy is best demonstrated by my two flagship projects.
 
-My main project in this area is [PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI), a dog breed classifier trained on over 21,000 images across 124 breeds. It reaches an **F1 score of 88.7%**, and is live on Hugging Face Spaces with features like breed comparison and personalized recommendations. This project has also been featured in Hugging Face’s “Spaces of the Week.”
+### Flagship Project: VisionScout — A Multi-Modal Scene Understanding System
 
-What sets this project apart is the model architecture. Instead of using a standard CNN, I built a hybrid system combining a modern backbone (ConvNeXtV2) with **multi-head attention** and a custom-designed **Morphological Feature Extractor**. The idea came from how humans often distinguish dog breeds — not just by color or size, but by shapes: ear structure, snout length, coat texture.
+My main system-level project, [**VisionScout**](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout), is designed not just to see objects, but to understand the entire story within an image. It orchestrates a **multi-modal fusion of YOLOv8, CLIP, Places365, and Llama 3.2** to generate a rich, human-like narrative of a scene, complete with spatial analysis and inferred activities. This novel architectural approach earned the project a feature in **Hugging Face’s “Spaces of the Week.”**
 
-The Morphological Feature Extractor works alongside convolutional and attention modules to emphasize these structural details. It doesn't replace conventional vision features, but complements them. I found this especially helpful when the model had to tell apart visually similar breeds like Shelties and Collies, or different coat variants of the same breed.
+### Deep-Dive Project: PawMatchAI — High-Accuracy Specialized Classification
 
-To support learning, I applied advanced data augmentation techniques like **RandAugment**, **ColorJitter**, and **RandomErasing**, along with training strategies such as **progressive layer unfreezing**, **Contrastive Loss**, **Focal Loss** and **OneCycleLR** scheduling. Together, these helped the model generalize better without overfitting.
+Complementing the system-level integration of VisionScout, [**PawMatchAI**](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI) showcases my expertise in developing highly specialized and accurate models. This dog breed classifier, trained on over 21,000 images, reaches an **F1 score of 88.7%** and was also featured in Hugging Face’s “Spaces of the Week.” More than just a classifier, it was developed into a full application with user-centric features like breed comparison and personalized recommendations.
 
-Working on PawMatchAI gave me hands-on experience across the full deep learning pipeline - from designing the architecture and training strategy, to optimizing inference and deploying it as a public-facing demo on Hugging Face Spaces. It wasn’t just about getting high accuracy, but about building something people could actually use and interact with.  
+### My Technical Approach
 
-Eventually, I’d like to expand this into a more complete application, potentially as a mobile app with real time camera input and offline capabilities. But before that, I want to test it further, refine the model’s edge cases, and explore additional features.
+My approach combines robust system architecture with innovative, domain-specific modeling to solve complex problems. This philosophy is reflected in the unique technical designs of my flagship projects.
 
+* **For VisionScout: System Architecture & Multi-Modal Fusion**
+    * The core of VisionScout is a **dynamic multi-modal fusion engine**. Instead of relying on a single model, it intelligently **orchestrates** insights from specialized models (YOLOv8 for objects, CLIP for context, Places365 for scenes).
+    * An **LLM (Llama 3.2)** is integrated at the final stage to synthesize the structured data into a coherent, human-like narrative, moving beyond simple tags to genuine understanding.
+    * The entire system is built on a **scalable, modular architecture** using the Facade Design Pattern, which allows for high maintainability and the ability to easily integrate new analytical components in the future.
+
+* **For PawMatchAI: Domain-Specific Model Innovation**
+    * To solve the fine-grained classification challenge, I designed a **custom Morphological Feature Extractor**. This hybrid architecture is inspired by how human experts identify breeds by structural traits (e.g., ear shape, snout length), allowing the model to learn beyond simple textures.
+    * High performance was achieved using **advanced training methodologies**, including a progressive unfreezing strategy for the ConvNeXtV2 backbone and a combination of specialized loss functions (like Contrastive and Focal Loss) to handle visually similar breeds.
+
+Through these projects, I've gained hands-on experience across the full deep learning pipeline. My primary goal is to build intuitive and useful AI applications that bridge the gap between complex models and real-world users, viewing high accuracy as a critical means to that end.
 
 **[⇧ back to top ⇧](#top)**
 
