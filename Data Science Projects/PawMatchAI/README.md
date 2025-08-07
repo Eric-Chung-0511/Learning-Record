@@ -202,6 +202,30 @@ You're not limited to dogs — users have experimented with everything from port
 
 ---
 
+## 📈 Business Intelligence Dashboard
+
+To demonstrate the practical business applications of the PawMatchAI dataset, I developed a comprehensive **Tableau Business Intelligence Dashboard** that transforms the breed classification data into actionable business insights for pet industry stakeholders.
+
+> **Explore the Interactive Dashboard**: [PawMatchAI Business Intelligence Dashboard](https://public.tableau.com/app/profile/eric.chung6319/viz/Visualization_Analysis/Insights)
+
+### Key Business Analysis Components
+
+**Product Portfolio Value Analysis (Upper Left):** This scatter plot reveals the strategic relationship between breed lifespan and care requirements, with different colors representing size categories. The visualization identifies high-value breeds that offer optimal longevity with manageable maintenance costs, providing crucial insights for product positioning and customer value propositions.
+
+**Market Segmentation Analysis (Upper Right):** The stacked bar chart analyzes breed distribution across size categories and child-friendly characteristics, with maintenance requirements shown through color coding. This analysis enables targeted marketing strategies by revealing market concentration patterns and care requirement distributions across different customer segments.
+
+**Overall Recommendation Score Methodology:** The scoring system employs a sophisticated multi-dimensional evaluation framework that quantifies breed suitability for family environments. The algorithm integrates four core assessment criteria: child-friendliness contributes 25% weighting (2.5 points for compatible breeds), exercise requirements provide 25% weighting (moderate activity levels receive optimal scoring), care complexity accounts for 25% weighting (lower maintenance demands score higher), and lifespan performance represents 25% weighting through standardized longevity calculations. This quantitative approach transforms subjective breed selection decisions into objective, data-driven recommendations that balance family safety considerations, daily maintenance practicality, long-term care costs, and emotional investment returns.
+
+**Comprehensive Breed Recommendation System (Bottom):** This horizontal bar chart presents breeds ranked by a sophisticated Overall Recommendation Score that integrates four critical decision factors: child-friendliness, exercise requirements, care complexity, and lifespan performance. The scoring algorithm provides data-driven breed recommendations for family-oriented customer segments.
+
+### Core Business Insights
+
+The analysis reveals that small breed categories demonstrate superior family suitability scores, combining extended lifespan potential with manageable care requirements. This finding supports targeted marketing strategies for family-oriented customer segments seeking long-term companion investments with controlled maintenance costs.
+
+The interactive dashboard enables dynamic exploration through integrated filters for size categories, child-friendliness, and recommendation scores, allowing stakeholders to conduct scenario-based analysis and derive specific insights for different market conditions and customer requirements.
+
+---
+
 ## 🧠 Technical Highlights
 
 ### 🦴 Model Backbone
