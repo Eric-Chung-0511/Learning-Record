@@ -286,7 +286,7 @@ graph TB
 
 ### **Why I Chose This Architecture**
 
-When building Vision Scout, I faced the challenge of coordinating multiple AI models (YOLO, CLIP, Places365, Llama) while keeping the codebase maintainable and extensible. Rather than creating a monolithic system, I implemented a three-layer facade pattern that transforms 34,000+ lines of code across 70 specialized classes into a cohesive, manageable system.
+When building Vision Scout, I faced the challenge of coordinating multiple AI models (YOLO, CLIP, Places365, Llama) while keeping the codebase maintainable and extensible. Rather than creating a monolithic system, I implemented a three-layer facade pattern that transforms 35,000+ lines of code across 70 specialized classes into a cohesive, manageable system.
 
 The data flow moves systematically from the utility layer through the module layer to the facade layer, where intelligent coordination occurs. Each layer has a clear purpose and well-defined boundaries, making it easier to understand how components interact and where to make changes when needed.
 
