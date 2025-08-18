@@ -30,6 +30,27 @@ The issue is being tracked by GitHub and will be resolved as soon as possible. T
 
 ---
 
+## 🔧 Service Dependencies & Current Status
+
+**Places365 Service Notice (August 2025)**
+
+Vision Scout currently relies on the Places365 model hosted by MIT CSAIL (`places2.csail.mit.edu`) for environmental scene classification. As of August 18, 2025, I am experiencing intermittent connectivity issues with the MIT CSAIL servers, which may affect the system's scene classification accuracy and indoor/outdoor detection capabilities.
+
+**Current Impact:**
+- Scene classification may fall back to YOLO and CLIP analysis only
+- Indoor/outdoor detection confidence may be reduced
+- Some scene types may be misclassified due to missing environmental context
+
+**Planned Resolution:**
+I am actively working on implementing backup scene classification models to reduce dependency on external services. The upcoming system enhancement will include:
+- Integration of Microsoft DiT-base-finetuned-ade-512-512 as a primary alternative
+- Enhanced CLIP-based scene classification capabilities
+- Improved fallback mechanisms for service unavailability
+
+**Timeline:** System resilience improvements are targeted for implementation within the next development cycle.
+
+---
+
 ## 🎯 What Vision Scout Offers
 
 Think of Vision Scout as your AI companion for analyzing images. Here's a glimpse of what it brings to the table:
@@ -342,6 +363,8 @@ The easiest way to try Vision Scout is via the deployed Hugging Face Space:
 
 ## 🌱 Future Directions
 There's always more to explore! Here are some ideas for where Vision Scout could go next:
+
+* **Service Resilience & Model Redundancy**: Implementing robust backup systems and alternative model architectures to eliminate single points of failure in external service dependencies. This includes developing local scene classification capabilities through Microsoft DiT models, enhanced CLIP semantic analysis pipelines, and intelligent fallback mechanisms that maintain system functionality during external service disruptions. The enhanced architecture will provide seamless operation regardless of third-party service availability while preserving analytical accuracy and user experience quality.
 
 * **Reinforcement Learning Integration**: Enhance Vision Scout's decision-making capabilities through advanced reinforcement learning mechanisms that enable intelligent dynamic weight adjustment, autonomous learning from environmental feedback, and self-correcting error detection. This integration would allow the system to continuously optimize detection thresholds, refine prompt strategies, and adapt analysis priorities based on real-world performance metrics. The reinforcement learning framework would implement reward-based optimization for scene classification accuracy, object detection precision, and user satisfaction scores, while incorporating feedback loops that automatically correct systematic errors and bias patterns in the analysis pipeline.
 
