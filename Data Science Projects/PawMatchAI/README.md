@@ -112,7 +112,6 @@ An innovative natural language approach that allows users to describe their idea
     - Multi-dimensional requirement extraction from natural language descriptions
     - Advanced constraint processing with penalty systems for incompatible combinations
     - Contextual understanding of lifestyle preferences, living situations, and activity levels
-    - Support for both English and Traditional Chinese language inputs
 
 - **Sophisticated Multi-Dimensional Matching System:**
   
@@ -361,7 +360,6 @@ The Description-Based Recommendation system represents a significant technical a
 3. **Advanced Query Understanding Engine:**
    - **Multi-Dimensional Extraction:** Automatic identification of space constraints, activity levels, noise preferences, and size requirements from natural language
    - **Contextual Processing:** Understanding of implicit requirements and lifestyle patterns
-   - **Cross-Language Support:** Robust handling of both English and Traditional Chinese inputs
    - **Synonym Recognition:** Comprehensive mapping of colloquial expressions to standardized preferences
 
 #### ⚙️ **Technical Implementation Details**
