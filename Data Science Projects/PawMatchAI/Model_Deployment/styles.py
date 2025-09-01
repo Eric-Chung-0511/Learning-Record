@@ -1,6 +1,134 @@
 
 def get_css_styles():
     return """
+        /* SBERT Natural Language Recommendation Styles */
+        button#find-match-btn {
+            background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%) !important;
+            border: none !important;
+            border-radius: 30px !important;
+            padding: 12px 24px !important;
+            color: white !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            width: 100% !important;
+            margin: 20px 0 !important;
+            font-size: 1.1em !important;
+        }
+        button#find-match-btn:hover {
+            background: linear-gradient(90deg, #ff4f5d 0%, #ffb361 100%) !important;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2) !important;
+            transform: translateY(-2px) !important;
+        }
+        button#find-match-btn:active {
+            transform: translateY(1px) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+        }
+        #search-status {
+            text-align: center;
+            padding: 15px;
+            font-size: 1.1em;
+            color: #666;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: rgba(200, 200, 200, 0.1);
+            transition: opacity 0.3s ease;
+        }
+
+        /* Natural Language Search Button Styles */
+        button#find-by-description-btn {
+            background: linear-gradient(90deg, #4299e1 0%, #48bb78 100%) !important;
+            border: none !important;
+            border-radius: 30px !important;
+            padding: 12px 24px !important;
+            color: white !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            width: 100% !important;
+            margin: 20px 0 !important;
+            font-size: 1.1em !important;
+        }
+        button#find-by-description-btn:hover {
+            background: linear-gradient(90deg, #3182ce 0%, #38a169 100%) !important;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2) !important;
+            transform: translateY(-2px) !important;
+        }
+        button#find-by-description-btn:active {
+            background: linear-gradient(90deg, #2c5aa0 0%, #2f7d32 100%) !important;
+            transform: translateY(0px) scale(0.98) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* Description Input Styles */
+        .description-input textarea {
+            border-radius: 10px !important;
+            border: 2px solid #e2e8f0 !important;
+            transition: all 0.3s ease !important;
+        }
+        .description-input textarea:focus {
+            border-color: #4299e1 !important;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+        }
+
+        /* Force override any other styles */
+        .gradio-button {
+            position: relative !important;
+            overflow: visible !important;
+        }
+
+        /* Progress bars for semantic recommendations */
+        .progress {
+            transition: all 0.3s ease-in-out;
+            border-radius: 4px;
+            height: 12px;
+        }
+        /* Ensure 100% progress bars fill completely */
+        .progress[style*="100%"] {
+            width: 100% !important;
+        }
+        .progress-bar {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 12px;
+        }
+        .score-item {
+            margin: 10px 0;
+        }
+        .percentage {
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        /* History display with colored tags */
+        .history-tag-criteria {
+            background: rgba(72, 187, 120, 0.1);
+            color: #48bb78;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .history-tag-description {
+            background: rgba(66, 153, 225, 0.1);
+            color: #4299e1;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         .dog-info-card {
             margin: 0 0 20px 0;
             padding: 0;
@@ -235,7 +363,7 @@ def get_css_styles():
         }
 
         .breed-name {
-            font-size: 1.2em !important;  # 從 1.5em 改為 1.2em
+            font-size: 1.2em !important;
             font-weight: bold;
             color: #2c3e50;
             flex-grow: 1;
@@ -313,28 +441,46 @@ def get_css_styles():
             cursor: help;
         }
         .tooltip .tooltip-icon {
-            font-size: 14px;
-            color: #666;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+            cursor: help;
+            box-shadow: 0 2px 4px rgba(100, 116, 139, 0.3);
+            transition: all 0.2s ease;
+        }
+        .tooltip .tooltip-icon:hover {
+            background: linear-gradient(135deg, #475569, #334155);
+            transform: scale(1.1);
+            box-shadow: 0 3px 6px rgba(100, 116, 139, 0.4);
         }
         .tooltip .tooltip-text {
             visibility: hidden;
-            width: 250px;
+            width: 280px;
             background-color: rgba(44, 62, 80, 0.95);
             color: white;
             text-align: left;
             border-radius: 8px;
-            padding: 8px 10px;
+            padding: 12px 15px;
             position: absolute;
-            z-index: 100;
-            bottom: 150%;
+            z-index: 1000;
+            bottom: calc(100% + 15px);
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
             transition: all 0.3s ease;
             font-size: 14px;
-            line-height: 1.3;
+            line-height: 1.4;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1)
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: normal;
             margin-bottom: 10px;
         }
         .tooltip.tooltip-left .tooltip-text {
@@ -372,9 +518,9 @@ def get_css_styles():
             content: "";
             position: absolute;
             top: 100%;
-            left: 20%;  /* 調整箭頭位置 */
-            margin-left: -5px;
-            border-width: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px;
             border-style: solid;
             border-color: rgba(44, 62, 80, 0.95) transparent transparent transparent;
         }
@@ -388,16 +534,6 @@ def get_css_styles():
         .tooltip:hover .tooltip-text {
             visibility: visible;
             opacity: 1;
-        }
-        .tooltip .tooltip-text::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 8px;
-            border-style: solid;
-            border-color: rgba(44, 62, 80, 0.95) transparent transparent transparent;
         }
         .uncertainty-mode .tooltip .tooltip-text {
             position: absolute;
@@ -448,11 +584,18 @@ def get_css_styles():
             border-radius: 6px;
             overflow: hidden;
             margin: 8px 0;
+            width: 100%;
+            position: relative;
         }
         .progress {
             height: 100%;
             border-radius: 6px;
             transition: width 0.6s ease;
+            min-width: 0;
+        }
+        .progress[style*="width: 100%"] {
+            width: 100% !important;
+            border-radius: 6px;
         }
         .percentage {
             float: right;

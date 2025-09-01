@@ -10,6 +10,11 @@ from torchvision.ops import nms, box_iou
 import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from sentence_transformers import SentenceTransformer
+from urllib.parse import quote
+from ultralytics import YOLO
+import asyncio
+import traceback
 from breed_health_info import breed_health_info
 from breed_noise_info import breed_noise_info
 from dog_database import get_dog_description
@@ -20,7 +25,7 @@ from search_history import create_history_tab, create_history_component
 from styles import get_css_styles
 from breed_detection import create_detection_tab
 from breed_comparison import create_comparison_tab
-from breed_recommendation import create_recommendation_tab
+from breed_recommendation_enhanced import create_recommendation_tab
 from breed_visualization import create_visualization_tab
 from style_transfer import DogStyleTransfer, create_style_transfer_tab
 from html_templates import (
@@ -36,23 +41,24 @@ from html_templates import (
     get_akc_breeds_link
 )
 from model_architecture import BaseModel, dog_breeds
-from urllib.parse import quote
-from ultralytics import YOLO
-import asyncio
-import traceback
+
 
 history_manager = UserHistoryManager()
 
 class ModelManager:
     """
-    Singleton class for managing model instances and device allocation
+    Enhanced Singleton class for managing model instances and device allocation
     specifically designed for Hugging Face Spaces deployment.
+    Includes support for multi-dimensional recommendation system.
     """
     _instance = None
     _initialized = False
     _yolo_model = None
     _breed_model = None
     _device = None
+    _sbert_model = None
+    _config_manager = None
+    _enhanced_system_initialized = False
 
     def __new__(cls):
         if cls._instance is None:
@@ -63,6 +69,9 @@ class ModelManager:
         if not ModelManager._initialized:
             self._device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             ModelManager._initialized = True
+
+            # Initialize enhanced recommendation system
+            self._initialize_enhanced_system()
 
     @property
     def device(self):
@@ -84,8 +93,6 @@ class ModelManager:
                 device=self.device
             ).to(self.device)
 
-            # ✅ torch.load is safe here since model checkpoint is locally saved and trusted.
-            # ⚠️ CVE-2025-32434 warning is not applicable in our case.
             checkpoint = torch.load(
                 'ConvNextV2Base_best_model.pth',
                 map_location=self.device
@@ -103,6 +110,89 @@ class ModelManager:
 
             self._breed_model.eval()
         return self._breed_model
+
+    def _initialize_enhanced_system(self):
+        """Initialize enhanced multi-dimensional recommendation system"""
+        if ModelManager._enhanced_system_initialized:
+            return
+
+        try:
+            # Defer SBERT model loading until needed in GPU context
+            # This prevents CUDA initialization issues in ZeroGPU environment
+            self._sbert_model = None  # Will be loaded lazily
+            self._sbert_loading_attempted = False
+            
+            ModelManager._enhanced_system_initialized = True
+            print("Enhanced recommendation system initialized (SBERT loading deferred)")
+
+        except ImportError as e:
+            print(f"Enhanced modules not available: {str(e)}")
+            ModelManager._enhanced_system_initialized = True  # Mark as attempted
+        except Exception as e:
+            print(f"Enhanced system initialization failed: {str(e)}")
+            print(traceback.format_exc())
+            ModelManager._enhanced_system_initialized = True  # Mark as attempted
+
+    def _load_sbert_model_if_needed(self):
+        """Load SBERT model in GPU context if not already loaded"""
+        if self._sbert_model is not None or self._sbert_loading_attempted:
+            return self._sbert_model
+            
+        try:
+            # Initialize SBERT model for semantic analysis
+            print("Loading SBERT model in GPU context...")
+            model_name = 'all-MiniLM-L6-v2'
+            fallback_models = ['all-mpnet-base-v2', 'all-MiniLM-L12-v2']
+
+            for model_name_attempt in [model_name] + fallback_models:
+                try:
+                    self._sbert_model = SentenceTransformer(model_name_attempt, device='cuda' if torch.cuda.is_available() else 'cpu')
+                    print(f"SBERT model {model_name_attempt} loaded successfully in GPU context")
+                    return self._sbert_model
+                except Exception as e:
+                    print(f"Failed to load SBERT model {model_name_attempt}: {str(e)}")
+                    continue
+
+            print("All SBERT models failed to load, enhanced system will use keyword-only analysis")
+            return None
+
+        except Exception as e:
+            print(f"SBERT initialization failed: {str(e)}")
+            return None
+        finally:
+            self._sbert_loading_attempted = True
+
+    @property
+    def sbert_model(self):
+        """Get SBERT model for semantic analysis"""
+        if not ModelManager._enhanced_system_initialized:
+            self._initialize_enhanced_system()
+        return self._load_sbert_model_if_needed()
+
+    @property
+    def config_manager(self):
+        """Get configuration manager (simplified)"""
+        if not ModelManager._enhanced_system_initialized:
+            self._initialize_enhanced_system()
+        return None  # Simplified - no config manager needed
+
+    @property
+    def enhanced_system_available(self):
+        """Check if enhanced recommendation system is available"""
+        return (ModelManager._enhanced_system_initialized and
+                self._sbert_model is not None)
+
+    def get_system_status(self):
+        """Get status of all managed models and systems"""
+        return {
+            'device': str(self.device),
+            'yolo_model_loaded': self._yolo_model is not None,
+            'breed_model_loaded': self._breed_model is not None,
+            'sbert_model_loaded': self._sbert_model is not None,
+            'config_manager_available': False,  # Simplified system
+            'enhanced_system_initialized': ModelManager._enhanced_system_initialized,
+            'enhanced_system_available': self.enhanced_system_available
+        }
 
 # Initialize model manager
 model_manager = ModelManager()
