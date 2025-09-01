@@ -49,100 +49,134 @@ The issue is being tracked by GitHub and will be resolved as soon as possible. T
   - **Health Considerations:** Lifespan and common health issues.
   - **Noise Behavior:** Vocalization levels and tendencies.
 
-### 3. 💡 **Breed Recommendation System**
-The intelligent matching system evaluates compatibility between potential dog owners and breeds through a sophisticated algorithm. The system consists of:
+### 3. 💡 **Intelligent Breed Recommendation System**
 
-- **Core Matching Process:**
-  - Processes comprehensive compatibility analysis through multiple dimensions
-  - Adapts scoring based on individual circumstances
-  - Employs dynamic evaluation mechanisms
+The PawMatchAI recommendation system features two distinct pathways designed to accommodate different user preferences and interaction styles, both powered by advanced machine learning algorithms to deliver highly accurate breed matching.
+
+#### 🎯 **Criteria-Based Recommendations**
+The traditional approach for users who prefer structured input and precise control over matching parameters.
+
+- **Multi-Dimensional Evaluation Framework:**
+  The system processes comprehensive compatibility analysis through a sophisticated algorithm that evaluates multiple dimensions simultaneously:
   
-- **Primary Evaluation Categories (Base Score):**
   - **Space Compatibility (25%):**
-    - Evaluates living environment suitability
-    - Assesses breed size compatibility
-    - Considers available outdoor space
+    - Evaluates living environment suitability (apartment vs. house)
+    - Assesses breed size compatibility with available space
+    - Considers yard access and outdoor space requirements
+    
   - **Exercise Requirements (25%):**
-    - Matches daily activity needs
+    - Matches daily activity needs with user availability
     - Evaluates exercise intensity compatibility
-    - Assesses energy level alignment
+    - Assesses energy level alignment and activity preferences
+    
   - **Experience Requirements (20%):**
-    - Considers owner expertise level
-    - Evaluates breed-specific training needs
-    - Assesses special care requirements
+    - Considers owner expertise level and training capability
+    - Evaluates breed-specific handling and care complexity
+    - Assesses special training or behavioral management needs
+    
   - **Grooming Considerations (10%):**
-    - Evaluates maintenance needs
-    - Assesses owner's time commitment
-    - Considers professional grooming requirements
+    - Evaluates maintenance time commitment requirements
+    - Assesses professional grooming needs and costs
+    - Considers coat care complexity and frequency
+    
   - **Health Factors (10%):**
-    - Reviews genetic health considerations
-    - Evaluates longevity factors
-    - Assesses care intensity requirements
+    - Reviews genetic health considerations and care requirements
+    - Evaluates longevity factors and veterinary needs
+    - Assesses potential health-related time and financial commitments
+    
   - **Noise Compatibility (10%):**
-    - Considers barking tendencies
-    - Evaluates environmental restrictions
-    - Assesses owner tolerance levels
+    - Considers barking tendencies and vocalization patterns
+    - Evaluates environmental restrictions and noise tolerance
+    - Assesses neighbor considerations and living situation constraints
 
-- **Enhancement Scoring System:**
-  - **Longevity Bonuses (up to +5%):**
-    - Above-average lifespan consideration
-    - Health resilience evaluation
-    - Quality of life assessment
-  - **Personality Trait Bonuses (up to +15%):**
-    - Friendly disposition (+5%)
-    - Gentle nature (+5%)
-    - Patient demeanor (+5%)
-    - Intelligence (+4%)
-    - Adaptability (+4%)
-    - Affectionate behavior (+4%)
-  - **Adaptability Bonuses (up to +10%):**
-    - Apartment suitability (+5%)
-    - Temperament flexibility (+5%)
-    - Climate adaptation (+5%)
-  - **Family Compatibility Bonuses (up to +10%):**
-    - Child-friendly characteristics (+6%)
-    - Patient temperament (+5%)
-    - Gentle nature (+5%)
-    - Tolerant personality (+4%)
+- **Advanced Scoring Enhancement System:**
+  Beyond the base compatibility assessment, the system applies intelligent bonus calculations:
+  
+  - **Longevity Bonuses (up to +5%):** Above-average lifespan breeds receive additional scoring
+  - **Personality Trait Bonuses (up to +15%):** Friendly, gentle, patient, intelligent, and adaptable temperaments
+  - **Family Compatibility Bonuses (up to +10%):** Child-friendly characteristics and tolerant personalities
+  - **Adaptability Bonuses (up to +10%):** Apartment suitability, climate adaptation, and temperament flexibility
 
-- **Final Score Interpretation:**
-  - **Outstanding Match (90-100):**
-    - Exceptional compatibility with significant breed advantages
-    - Represents top 4% of matches
-  - **Excellent Fit (80-89):**
-    - Strong overall compatibility with positive breed traits
-    - Represents top 15% of matches
-  - **Good Match (70-79):**
-    - Solid fundamental compatibility
-    - Represents 35% of matches
-  - **Acceptable Match (60-69):**
-    - Basic compatibility with some considerations
-    - Represents 30% of matches
-  - **Not Recommended (Below 60):**
-    - Significant compatibility concerns
-    - Represents 16% of matches
+#### 🤖 **SBERT-Powered Description-Based Recommendations**
+An innovative natural language approach that allows users to describe their ideal companion in their own words, powered by advanced semantic understanding technology.
 
-- **Special Considerations:**
-  - **Age-Specific Adjustments:**
-    - Enhanced evaluation for families with toddlers
-    - Standard assessment for school-age children
-    - Flexible criteria for teenagers
-  - **Environmental Factors:**
-    - Apartment living adaptability (+8%)
-    - Climate-specific considerations (+8%)
-    - General adaptability bonus (5-10%)
-  - **Special Abilities:**
-    - Working capabilities (+3%)
-    - Herding aptitude (+3%)
-    - Hunting proficiency (+3%)
-    - Tracking ability (+3%)
-    - Agility potential (+2%)
-     
+- **Advanced Semantic Processing Architecture:**
+  
+  - **SBERT (Sentence-BERT) Integration:**
+    - Utilizes `all-MiniLM-L6-v2` transformer model with fallback support for `all-mpnet-base-v2` and `all-MiniLM-L12-v2`
+    - Pre-computes comprehensive breed description embeddings combining database information with natural language characteristics
+    - Creates rich 384-dimensional vector representations for each of the 124 supported breeds
+    - Enables nuanced semantic similarity matching between user descriptions and breed characteristics
+  
+  - **Intelligent Query Understanding Engine:**
+    - Multi-dimensional requirement extraction from natural language descriptions
+    - Advanced constraint processing with penalty systems for incompatible combinations
+    - Contextual understanding of lifestyle preferences, living situations, and activity levels
+    - Support for both English and Traditional Chinese language inputs
+
+- **Sophisticated Multi-Dimensional Matching System:**
+  
+  The system employs weighted dimensional compatibility assessment with intelligent constraint handling:
+  
+  - **Space Compatibility Analysis (35% weight):**
+    - Apartment/house suitability evaluation against breed size requirements
+    - Automatic detection of spatial constraints from user descriptions
+    - Dynamic penalty application for mismatched living arrangements
+  
+  - **Exercise Requirement Matching (30% weight):**
+    - Activity level extraction and compatibility scoring
+    - Precise matching for low/moderate/high exercise preferences
+    - Intelligent recognition of lifestyle activity patterns
+  
+  - **Noise Compatibility Assessment (25% weight):**
+    - Quiet/moderate/tolerant preference processing
+    - Complex noise level classifications with breed vocal tendency analysis
+    - Environmental sensitivity consideration
+  
+  - **Size Preference Integration (10% weight):**
+    - Seamlessly integrated within space compatibility scoring
+    - Automatic size constraint detection from descriptions
+    - Flexible matching for size preference expressions
+
+- **Advanced Constraint Processing System:**
+  
+  - **Hard Constraint Penalties:** Automatic application of penalty scores for critical incompatibilities:
+    - Apartment living + large breed dogs (-40% penalty)
+    - Low exercise preference + high-energy breeds (-35% penalty)
+    - Quiet environment needs + high-vocal breeds (-30% penalty)
+    - Experience level mismatches (-25% penalty)
+  
+  - **Perfect Match Bonus Rewards (5-10%):** Additional scoring for breeds achieving excellent compatibility across multiple dimensions
+  
+  - **Intelligent Fallback Systems:** Text-matching capabilities when transformer models are unavailable, ensuring robust operation across deployment environments
+
+- **Final Score Calculation Framework:**
+  
+  The system combines multiple scoring components for comprehensive breed matching:
+  - **Lifestyle Compatibility (85%):** Weighted dimensional scoring with constraint penalties
+  - **Semantic Similarity (15%):** Pure language similarity between descriptions
+  - **Dynamic Score Calibration:** Ensures consistent scoring distribution with typical ranges of 85-95% for well-matched breeds
+
+#### 📊 **Unified Score Interpretation System**
+Both recommendation pathways utilize the same comprehensive scoring interpretation framework:
+
+- **Outstanding Match (90-100%):** Exceptional compatibility with significant breed advantages (top 4% of matches)
+- **Excellent Fit (80-89%):** Strong overall compatibility with positive breed traits (top 15% of matches)  
+- **Good Match (70-79%):** Solid fundamental compatibility (35% of matches)
+- **Acceptable Match (60-69%):** Basic compatibility with considerations (30% of matches)
+- **Not Recommended (Below 60%):** Significant compatibility concerns (16% of matches)
+
+#### 🔄 **Cross-Mode Integration**
+The system seamlessly allows users to explore both recommendation modes:
+- Switch between structured criteria input and natural language descriptions
+- Compare results across different approaches for comprehensive breed exploration
+- Maintain session context for enhanced user experience
+
 ---
 
 ### 4. 🧭 Visualization Analysis
 
-To enhance explainability and user experience, the recommendation system now includes **lifestyle-based radar charts** that visualize each breed’s characteristics across six dimensions:
+To enhance explainability and user experience, the recommendation system now includes **lifestyle-based radar charts** that visualize each breed's characteristics across six dimensions:
 
 - Space Requirements  
 - Exercise Needs  
@@ -177,10 +211,10 @@ Choose from five thoughtfully selected art styles, each offering a distinct visu
 
 #### ⚙️ Behind the Scenes
 
-Here’s how the Style Transfer feature works under the hood to make your images both creative and recognizable:
+Here's how the Style Transfer feature works under the hood to make your images both creative and recognizable:
 
 - **Stable Diffusion + Style-Aware Prompts**  
-  Each transformation is powered by Stable Diffusion's `img2img` pipeline, guided by carefully designed prompts that not only express artistic intent (like anime or cyberpunk) but also preserve your dog’s breed-specific traits and facial features.
+  Each transformation is powered by Stable Diffusion's `img2img` pipeline, guided by carefully designed prompts that not only express artistic intent (like anime or cyberpunk) but also preserve your dog's breed-specific traits and facial features.
 
 - **Smart Image Preprocessing**  
   Before generating the final result, your photo goes through automated enhancements such as contrast tuning, sharpening, and aspect-ratio-preserving resizing with padding — all to help the model focus on what matters most.
@@ -192,7 +226,7 @@ Here’s how the Style Transfer feature works under the hood to make your images
 
 Whether you're creating a framed artwork, a personalized greeting card, or simply exploring AI-powered creativity, this feature offers a fun and flexible playground for anyone with an image and imagination.
 
-You're not limited to dogs — users have experimented with everything from portraits to plush toys and even everyday objects. And while results may sometimes surprise you (in ways you didn’t expect!), that’s part of the charm. It’s all about creative discovery and letting the AI work its magic.
+You're not limited to dogs — users have experimented with everything from portraits to plush toys and even everyday objects. And while results may sometimes surprise you (in ways you didn't expect!), that's part of the charm. It's all about creative discovery and letting the AI work its magic.
 
 ---
 
@@ -307,6 +341,80 @@ The interactive dashboard enables dynamic exploration through integrated filters
 
 ---
 
+### 🤖 SBERT-Powered Semantic Recommendation Engine
+
+The Description-Based Recommendation system represents a significant technical achievement, implementing state-of-the-art natural language processing to understand user preferences expressed in natural language.
+
+#### 🏗️ **Core Architecture Components**
+
+1. **Sentence-BERT (SBERT) Integration:**
+   - **Primary Model:** `all-MiniLM-L6-v2` - Optimized for speed and efficiency with 384-dimensional embeddings
+   - **Fallback Models:** `all-mpnet-base-v2` and `all-MiniLM-L12-v2` for enhanced robustness
+   - **Pre-computed Embeddings:** Comprehensive breed description vectors combining structured database information with natural language characteristics
+   - **Vector Space Operations:** Cosine similarity calculations for semantic matching between user descriptions and breed profiles
+
+2. **Multi-Head Scoring Architecture:**
+   - **SemanticScoringHead:** Processes pure language similarity through transformer embeddings
+   - **AttributeScoringHead:** Evaluates lifestyle compatibility through structured attribute matching
+   - **Dynamic Weight Allocation:** Intelligent balancing between semantic understanding (15%) and lifestyle compatibility (85%)
+
+3. **Advanced Query Understanding Engine:**
+   - **Multi-Dimensional Extraction:** Automatic identification of space constraints, activity levels, noise preferences, and size requirements from natural language
+   - **Contextual Processing:** Understanding of implicit requirements and lifestyle patterns
+   - **Cross-Language Support:** Robust handling of both English and Traditional Chinese inputs
+   - **Synonym Recognition:** Comprehensive mapping of colloquial expressions to standardized preferences
+
+#### ⚙️ **Technical Implementation Details**
+
+1. **Embedding Generation Pipeline:**
+   ```python
+   # Core embedding process
+   breed_descriptions = self._generate_comprehensive_descriptions()
+   embeddings = sbert_model.encode(breed_descriptions, convert_to_tensor=True)
+   similarity_scores = util.pytorch_cos_sim(user_embedding, breed_embeddings)
+   ```
+
+2. **Constraint Processing System:**
+   - **Hierarchical Constraint Management:** Priority-based constraint application with configurable penalty systems
+   - **Intelligent Filtering:** Dynamic breed filtering based on hard constraints before scoring
+   - **Penalty Calculation:** Graduated penalty system (-10% to -40%) for lifestyle incompatibilities
+
+3. **Score Calibration Framework:**
+   - **Distribution Normalization:** Ensures consistent score ranges across different query types
+   - **Comparative Scoring:** Relative ranking preservation while maintaining absolute score interpretability
+   - **Quality Assurance:** Automated validation of score distributions and recommendation quality
+
+#### 🎯 **Advanced Features**
+
+1. **Lazy Loading Architecture:**
+   - **GPU-Optimized Loading:** SBERT models load only when needed within GPU contexts
+   - **Memory Management:** Efficient resource allocation for Hugging Face Spaces deployment
+   - **Fallback Mechanisms:** Graceful degradation to text-matching when transformer models unavailable
+
+2. **Multi-Modal Description Processing:**
+   - **Lifestyle Pattern Recognition:** Automatic extraction of living situations, family dynamics, and activity preferences
+   - **Constraint Detection:** Intelligent identification of hard constraints from casual descriptions
+   - **Preference Weighting:** Dynamic adjustment of scoring weights based on description emphasis
+
+3. **Robustness and Error Handling:**
+   - **Input Validation:** Comprehensive preprocessing and sanitization of user inputs
+   - **Model Availability Checks:** Automatic detection of model loading issues with fallback options
+   - **Performance Monitoring:** Built-in logging and performance tracking for optimization
+
+#### 📊 **Performance Optimizations**
+
+1. **Computational Efficiency:**
+   - **Batch Processing:** Efficient batch encoding of breed descriptions
+   - **Caching Systems:** Pre-computed embeddings and cached similarity calculations
+   - **Memory Optimization:** Strategic loading and unloading of models based on usage patterns
+
+2. **Deployment Considerations:**
+   - **ZeroGPU Compatibility:** Specialized initialization patterns for Hugging Face Spaces
+   - **Resource Management:** Careful GPU memory allocation and deallocation
+   - **Scalability Design:** Architecture supports horizontal scaling for increased user loads
+
+---
+
 ### 📈 Training and Optimization
 
 1. **Data Augmentation:**
@@ -414,7 +522,8 @@ The interactive dashboard enables dynamic exploration through integrated filters
 The model is deployed on **Hugging Face Space**, providing users with an intuitive interface for:
 1. **Breed Detection:** Upload an image for detailed classification results.
 2. **Breed Comparison:** Explore side-by-side comparisons of two breeds.
-3. **Breed Recommendation:** Receive personalized suggestions based on preferences.
+3. **Criteria-Based Recommendation:** Receive structured recommendations based on specific lifestyle preferences.
+4. **Description-Based Recommendation:** Get personalized suggestions through natural language descriptions powered by SBERT.
 
 > **Try it yourself**: [PawMatch AI](https://huggingface.co/spaces/DawnC/PawMatchAI)
 
@@ -425,6 +534,8 @@ The model is deployed on **Hugging Face Space**, providing users with an intuiti
 2. **Expanded Augmentation:** Introduce more complex data augmentations to cover edge cases.
 3. **Dynamic Weight Adjustment:** Allow users to customize recommendation weightings, such as prioritizing exercise needs.
 4. **Real-Time Inference:** Optimize the system for deployment on mobile or embedded devices.
+5. **Enhanced SBERT Fine-tuning:** Domain-specific fine-tuning of SBERT models on pet-related descriptions for improved semantic understanding.
+6. **Multi-Modal Integration:** Combine visual breed detection with natural language preferences for hybrid recommendation approaches.
 
 ---
 
@@ -432,7 +543,9 @@ The model is deployed on **Hugging Face Space**, providing users with an intuiti
 1. **Multi-Species Expansion:** Extend support to other species like cats or birds while maintaining accuracy.
 2. **Transfer Learning for Species:** Quickly adapt the model to classify new species with minimal retraining.
 3. **Interactive Feedback:** Incorporate user feedback to refine detection accuracy and recommendations dynamically.
-4. **Recommendation based on user description:** Using SBERT or other NLP models to analyze user needs and recommend suitable breeds tailored to their requirements.
+4. **Advanced NLP Integration:** Expand semantic understanding capabilities with larger language models and conversational AI.
+5. **Personalized Learning:** Implement user preference learning over time to improve recommendation accuracy.
+6. **Cross-Platform Deployment:** Mobile app development with optimized models for on-device inference.
 
 ---
 
