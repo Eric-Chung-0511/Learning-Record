@@ -98,7 +98,7 @@ Enhanced cultural awareness could improve caption appropriateness across diverse
 
 © 2025 Eric Chung. This project is licensed under the Apache License 2.0, a permissive open source license that enables broad usage while ensuring proper attribution to the original author.
 
-For detailed terms and conditions, please refer to the [LICENSE](./LICENSE.md) file.
+For detailed terms and conditions, please refer to the [LICENSE](https://github.com/Eric-Chung-0511/Learning-Record/blob/main/LICENSE.md) file.
 
 ---
 
