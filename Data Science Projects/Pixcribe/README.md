@@ -12,9 +12,9 @@ Creating compelling content consistently can be challenging in today's fast-pace
 
 ### What Makes Pixcribe Special?
 
-Pixcribe goes beyond simple object recognition. The system employs a sophisticated multi-stage pipeline that processes images through specialized neural networks, each contributing unique insights. The object detector identifies what's in your image. The semantic analyzer understands the context and atmosphere. The OCR engine extracts any text. The saliency detector highlights what matters most. Finally, a powerful vision-language model weaves everything together into compelling narratives.
+Pixcribe goes beyond simple object recognition by orchestrating six specialized AI models that work together to understand images comprehensively. **YOLOv11** identifies objects and their precise locations. **OpenCLIP** brings semantic understanding to grasp context and atmosphere. **Places365** classifies scenes to establish environmental context. **EasyOCR** extracts text in multiple languages. **U2-Net** highlights the most visually important regions. Finally, **Qwen2.5-VL-7B** synthesizes all these insights into compelling captions that tell your image's story.
 
-The result is a system that doesn't just describe what it sees—it understands the story your image tells and communicates it in a way that engages your audience. Pixcribe supports both Traditional Chinese and English, making it versatile for global content creators.
+This multi-model fusion approach creates a system that doesn't just describe what it sees—it understands the narrative your image conveys and communicates it in language that engages your audience. Pixcribe supports both Traditional Chinese and English, making it versatile for global content creators.
 
 ---
 
@@ -42,6 +42,8 @@ Pixcribe's architecture reflects a carefully designed processing pipeline where 
 
 **OpenCLIP Semantic Understanding** brings contextual intelligence to the analysis process. Using the Vision Transformer architecture with the huge variant, this component embeds images into a rich semantic space where visual concepts connect to language understanding. The system leverages extensive prompt libraries covering scenes, landmarks, brands, and objects to perform zero-shot classification and semantic reasoning. This capability allows Pixcribe to understand abstract concepts and contextual relationships that pure object detection might miss.
 
+**Places365 Scene Classification** establishes the environmental foundation for image understanding. This ResNet50-based model classifies scenes across 365 categories, from urban streets to natural landscapes, from indoor kitchens to outdoor parks. The scene classification provides crucial context that guides subsequent analysis, helping the system understand whether it's looking at a professional studio shot, a casual outdoor moment, or an intimate indoor scene. This environmental awareness enhances the accuracy of lighting analysis and semantic interpretation.
+
 **EasyOCR Text Recognition** adds linguistic dimension to visual analysis. Supporting both Traditional Chinese and English, the OCR engine detects text regions and performs character recognition with paragraph-level extraction. The system maintains spatial relationships between text elements, preserving reading order and context. GPU acceleration ensures fast processing, while confidence thresholding filters out uncertain detections.
 
 **U2-Net Saliency Detection** identifies regions that naturally draw human attention. The nested U-structure architecture produces pixel-level saliency maps that highlight focal areas within images. These saliency insights guide the caption generation process, ensuring that descriptions emphasize the most visually important elements.
@@ -52,7 +54,7 @@ Pixcribe's architecture reflects a carefully designed processing pipeline where 
 
 Pixcribe processes images through a sophisticated multi-stage pipeline. The system begins by preprocessing images to meet the specific requirements of each AI model—YOLO operates on original resolutions, CLIP requires normalized inputs, and Qwen handles dynamic image sizes. This intelligent preprocessing ensures optimal performance across the entire ensemble.
 
-Five specialized models work in parallel to extract different types of information. YOLOv11 identifies objects and their locations. OpenCLIP performs semantic understanding through zero-shot classification. EasyOCR extracts text in multiple languages. U2-Net generates saliency maps highlighting important regions. These parallel streams maximize efficiency while building comprehensive image understanding.
+Six specialized models work in parallel to extract different types of information. YOLOv11 identifies objects and their locations. OpenCLIP performs semantic understanding through zero-shot classification. Places365 classifies the scene to establish environmental context. EasyOCR extracts text in multiple languages. U2-Net generates saliency maps highlighting important regions. These parallel streams maximize efficiency while building comprehensive image understanding.
 
 The detection fusion mechanism intelligently combines results from multiple sources. When different models identify overlapping elements, the system reconciles findings through spatial analysis, confidence weighting, and semantic validation. Brand recognition particularly benefits from this multi-strategy approach—combining visual detection, semantic classification, OCR text extraction, and fuzzy matching to achieve high accuracy.
 
@@ -67,6 +69,16 @@ The system employs several optimizations for practical deployment. 4-bit quantiz
 Experience Pixcribe directly through the deployed Hugging Face Space without any installation required. Simply upload your images and let the AI analyze and generate captions instantly.
 
 ➡️ **[Try Pixcribe on Hugging Face Spaces](https://huggingface.co/spaces/DawnC/Pixcribe)**
+
+---
+
+## 💡 Use Cases
+
+**Content Creation** represents the primary application domain for Pixcribe. Social media managers generate consistent captions for brand posts while reducing manual workload. Influencers maintain high posting frequency without sacrificing content quality. E-commerce platforms create product descriptions automatically from catalog images, streamlining inventory management and improving searchability.
+
+**Marketing Analysis** leverages the brand recognition capabilities for competitive intelligence and campaign evaluation. Marketing teams analyze competitor content to track brand visibility and market positioning. Campaign managers assess visual assets to ensure proper brand representation across channels. Social listening applications incorporate Pixcribe to identify brand mentions in user-generated content, enabling rapid response to customer posts.
+
+**Accessibility Applications** extend Pixcribe's impact beyond commercial use cases. The system generates alternative text descriptions for visually impaired users, improving website accessibility compliance. Educational platforms create descriptive content for learning materials, supporting diverse learning styles. Digital archives employ the technology to catalog visual collections with searchable descriptions, making historical materials more discoverable.
 
 ---
 
@@ -94,12 +106,12 @@ For detailed terms and conditions, please refer to the [LICENSE](./LICENSE.md) f
 
 Gratitude to **Alibaba Cloud** for **Qwen2.5-VL**, the vision-language model powering Pixcribe's caption generation with sophisticated multimodal understanding. Learn more at the [Qwen Repository](https://github.com/QwenLM/Qwen).
 
-- Thanks to **Ultralytics** for **YOLOv11**, providing efficient object detection with exceptional speed and accuracy. Visit the [Ultralytics Repository](https://github.com/ultralytics/ultralytics).
+Thanks to **Ultralytics** for **YOLOv11**, providing efficient object detection with exceptional speed and accuracy. Visit the [Ultralytics Repository](https://github.com/ultralytics/ultralytics).
 
-- Appreciation to the **OpenCLIP** team for enabling semantic understanding through vision-language models. Explore more at the [OpenCLIP Repository](https://github.com/mlfoundations/open_clip).
+Appreciation to the **OpenCLIP** team for enabling semantic understanding through vision-language models. Explore more at the [OpenCLIP Repository](https://github.com/mlfoundations/open_clip).
 
-- Thanks to **JaidedAI** for **EasyOCR**, delivering reliable multilingual text extraction. Check out the [EasyOCR Repository](https://github.com/JaidedAI/EasyOCR).
+Thanks to **JaidedAI** for **EasyOCR**, delivering reliable multilingual text extraction. Check out the [EasyOCR Repository](https://github.com/JaidedAI/EasyOCR).
 
-- Recognition to **Xuebin Qin et al.** for **U2-Net**, enabling intelligent saliency detection to identify visually important regions.
+Recognition to **Xuebin Qin et al.** for **U2-Net**, enabling intelligent saliency detection to identify visually important regions.
 
-- Thanks to the **PyTorch** and **Gradio** teams for providing the foundational frameworks that make this project possible.
+Thanks to the **PyTorch** and **Gradio** teams for providing the foundational frameworks that make this project possible.
