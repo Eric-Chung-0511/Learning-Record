@@ -99,7 +99,7 @@ Cloud deployment on Hugging Face Spaces with ZeroGPU acceleration would make Sce
 - NumPy - Numerical processing
 
 **Interface & Deployment:**
-- Gradio 5.33.1 - Web interface
+- Gradio > 4.44.0, < 5.0.0 - Web interface
 - Hugging Face Diffusers - Model management
 - xformers - Memory optimization
 
