@@ -16,6 +16,10 @@ SceneWeaver addresses a critical challenge in image composition: achieving clean
 
 The system employs **BiRefNet** and **U²-Net** for precise foreground extraction, even handling difficult cases like dark clothing and cartoon characters that confound simpler approaches. **Stable Diffusion XL** generates high-quality, photorealistic backgrounds tailored to your creative vision. Custom Lab color space processing eliminates color contamination at edges through adaptive spill suppression and chroma correction. **OpenCLIP** provides intelligent image analysis that enhances prompt engineering for contextually appropriate backgrounds.
 
+### Latest Update: Advanced Inpainting Capabilities
+
+SceneWeaver has evolved beyond background replacement to offer comprehensive object-level editing capabilities. The new **Object Replacement** feature enables selective transformation of any element within your composition through natural language prompts while maintaining perfect visual consistency with surrounding content. The **Object Removal** function intelligently eliminates unwanted elements with context-aware generation that preserves natural lighting, shadows, and scene coherence. These advanced inpainting capabilities provide surgical precision for creative control, allowing you to refine compositions at the object level rather than treating images as monolithic units.
+
 This integrated approach creates a system that doesn't just swap backgrounds—it understands lighting, color harmony, and visual aesthetics to produce compositions that look naturally photographed rather than digitally assembled. SceneWeaver supports both automated processing with 24 curated scene templates and custom background generation through natural language descriptions.
 
 ---
@@ -27,6 +31,8 @@ This integrated approach creates a system that doesn't just swap backgrounds—i
 **Advanced Edge Processing** represents SceneWeaver's most sophisticated technical achievement. The system recognizes that edge quality determines whether composition appears professional or amateurish. Lab color space manipulation enables perceptual color correction that accounts for how humans actually perceive color relationships. Adaptive spill suppression removes contamination from original backgrounds without affecting genuine foreground colors. Multi-scale edge refinement processes boundaries at different resolutions to handle both fine details and broader transitions. Guided filtering preserves edge sharpness while smoothing artifacts. Alpha channel binarization eliminates semi-transparent halos that create visible seams. Core foreground protection prevents background influences from affecting faces and bodies.
 
 **AI Scene Generation** leverages Stable Diffusion XL to create photorealistic backgrounds that match your creative vision. The system goes beyond simple text-to-image generation by incorporating intelligent prompt enhancement. OpenCLIP analyzes uploaded images to understand color temperature, brightness levels, and subject types. This analysis automatically enriches user prompts with appropriate lighting descriptors, atmospheric elements, and quality modifiers. Twenty-four curated scene templates span professional offices, natural landscapes, urban environments, artistic styles, and seasonal themes. Each template includes optimized prompts, negative prompts, and guidance scale parameters tuned for specific aesthetic results. Users can also describe custom backgrounds in natural language for unlimited creative possibilities.
+
+**Intelligent Inpainting System** extends SceneWeaver's capabilities from background manipulation to precise object-level editing. The system employs ControlNet Inpainting to enable selective region regeneration based on natural language descriptions. Object replacement functionality analyzes context around selected regions to generate alternatives that match lighting conditions, perspective angles, and artistic style of the original composition. Object removal leverages diffusion-based inpainting that intelligently reconstructs obscured areas by understanding scene structure and texture patterns. The inpainting pipeline integrates with the existing edge processing system to ensure seamless boundaries between modified regions and surrounding content. This capability transforms SceneWeaver from a background replacement tool into a comprehensive image manipulation platform that offers creative control at multiple semantic levels.
 
 **Production-Grade Blending** ensures foreground and background integrate seamlessly through multiple processing stages. Mask erosion removes contaminated edge pixels where original background colors have bled into foreground boundaries. Chroma vector deprojection mathematically removes background color influence from semi-transparent edge regions. Luminance matching adapts foreground lighting to harmonize with background illumination. Multiple correction passes address stubborn color contamination that resists single-pass processing. Inpainting repair handles remaining artifacts through context-aware pixel reconstruction. The result is a composition where viewers cannot identify the join between foreground and background elements.
 
@@ -70,11 +76,15 @@ Experience SceneWeaver directly through the deployed Hugging Face Space without 
 
 **Personal Projects** benefit from the system's accessibility and ease of use. Families create holiday cards with seasonal backgrounds from casual snapshots. Pet owners generate adorable portraits of their animals in whimsical or elegant settings. Hobbyist photographers experiment with creative compositions without mastering complex editing software.
 
+**Creative Editing Workflows** benefit from SceneWeaver's object-level manipulation capabilities. Graphic designers refine compositions by replacing specific elements without affecting surrounding areas, accelerating iteration cycles that would traditionally require manual masking and painting. Photo editors remove distracting background elements from otherwise perfect shots, recovering images that would have been discarded. Digital artists experiment with alternative object placements and styles within completed compositions, exploring creative variations without starting from scratch. Content creators update existing visual assets by replacing outdated elements while preserving overall composition integrity.
+
 ---
 
 ## 🌱 Future Directions
 
-Several enhancement opportunities exist for extending SceneWeaver's capabilities while maintaining its core strengths. ControlNet Inpainting integration would enable context-aware background generation that respects composition guidelines. The system could analyze foreground pose and perspective to generate backgrounds with matching camera angles and lighting directions, producing more photorealistic results.
+SceneWeaver continues active development with several enhancement opportunities on the roadmap. The recently implemented ControlNet Inpainting integration has enabled object replacement and removal capabilities, marking a significant expansion beyond background generation. Current development focuses on refining edge quality for complex materials, expanding the background template library, and optimizing processing speed through more efficient memory management strategies.
+
+Looking ahead, multi-style batch generation would allow users to explore creative options efficiently. The system could produce multiple variations with different artistic styles, color palettes, or atmospheric conditions from a single input. Intelligent object addition represents the next frontier, where users could describe desired objects through natural language and have them automatically integrated with appropriate shadows, reflections, and perspective matching. Enhanced depth estimation would enable spatial-aware object placement that respects scene geometry and camera perspective.
 
 Multi-style batch generation would allow users to explore creative options efficiently. The system could produce multiple variations with different artistic styles, color palettes, or atmospheric conditions from a single input. This diversity mode would accelerate creative exploration by presenting a range of options rather than requiring iterative regeneration.
 
@@ -91,6 +101,7 @@ Cloud deployment on Hugging Face Spaces with ZeroGPU acceleration would make Sce
 - BiRefNet (ZhengPeng7/BiRefNet) - Precise foreground segmentation
 - U²-Net via rembg - Robust backup segmentation
 - OpenCLIP (ViT-B-32) - Image understanding and prompt enhancement
+- ControlNet Inpainting - Context-aware region regeneration for object manipulation
 
 **Processing Libraries:**
 - PyTorch 2.6.0 - Deep learning framework
