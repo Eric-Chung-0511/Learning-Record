@@ -1,3 +1,4 @@
+# %%writefile dimension_score_calculator.py
 import traceback
 from typing import Dict, Any
 from breed_health_info import breed_health_info
@@ -318,10 +319,11 @@ class DimensionScoreCalculator:
 
         return max(0.1, min(1.0, final_score))
 
-    def calculate_grooming_score(self, breed_needs: str, user_commitment: str, breed_size: str) -> float:
+    def calculate_grooming_score(self, breed_needs: str, user_commitment: str, breed_size: str, breed_name: str = "", temperament: str = "") -> float:
         """
         計算美容需求分數，強化美容維護需求與使用者承諾度的匹配評估。
         這個函數特別注意品種大小對美容工作的影響，以及不同程度的美容需求對時間投入的要求。
+        新增：考慮品種特殊護理需求（如敏感皮膚、需保暖等）
         """
         # 重新設計基礎分數矩陣，讓美容需求的差異更加明顯
         base_scores = {
@@ -436,7 +438,31 @@ class DimensionScoreCalculator:
         seasonal_adjustment = get_seasonal_adjustment("", user_commitment)
         professional_adjustment = get_professional_grooming_adjustment("", user_commitment)
 
-        final_score = current_score + coat_adjustment + seasonal_adjustment + professional_adjustment
+        # 新增：特殊護理需求評估（針對敏感品種、需保暖品種等）
+        special_care_adjustment = 0.0
+        temperament_lower = temperament.lower()
+        breed_name_lower = breed_name.lower()
+
+        # 對於低承諾使用者，敏感品種需要額外懲罰
+        if user_commitment == "low":
+            # 敏感性格需要更多細心照顧
+            if 'sensitive' in temperament_lower:
+                special_care_adjustment -= 0.15
+
+            # 某些品種需要特殊護理（保暖、皮膚護理等）
+            # Italian Greyhound, Whippet等細瘦品種需要保暖衣物
+            if any(keyword in breed_name_lower for keyword in ['italian', 'greyhound', 'whippet', 'hairless']):
+                special_care_adjustment -= 0.12
+
+            # 皺褶皮膚品種需要特殊清潔
+            if any(keyword in breed_name_lower for keyword in ['bulldog', 'pug', 'shar pei']):
+                special_care_adjustment -= 0.10
+
+            # 白色毛髮品種容易髒，需要更頻繁清潔
+            if 'white' in breed_name_lower or 'maltese' in breed_name_lower:
+                special_care_adjustment -= 0.08
+
+        final_score = current_score + coat_adjustment + seasonal_adjustment + professional_adjustment + special_care_adjustment
 
         # 確保分數在有意義的範圍內，但允許更大的差異
         return max(0.1, min(1.0, final_score))
@@ -486,16 +512,24 @@ class DimensionScoreCalculator:
                 'protective': -0.10,
                 'aloof': -0.08,
                 'energetic': -0.08,
-                'aggressive': -0.20        # 保持較高懲罰，因為安全考慮
+                'aggressive': -0.20,       # 保持較高懲罰，因為安全考慮
+                'sensitive': -0.18,        # 敏感品種對新手很具挑戰性（需小心對待、易受驚）
+                'alert': -0.05,            # 過度警覺可能導致過度吠叫
+                'nervous': -0.15,          # 緊張性格對新手困難
+                'shy': -0.12,              # 害羞需要耐心社會化
+                'timid': -0.12             # 膽小需要特殊處理
             }
 
             easy_traits = {
                 'gentle': 0.08,           # 提高獎勵以平衡
-                'friendly': 0.08,
-                'eager to please': 0.10,
-                'patient': 0.08,
-                'adaptable': 0.08,
-                'calm': 0.08
+                'friendly': 0.10,         # 友善對新手很重要
+                'eager to please': 0.12,  # 渴望取悅主人，容易訓練
+                'patient': 0.10,
+                'adaptable': 0.10,
+                'calm': 0.10,
+                'outgoing': 0.08,         # 外向性格easier for beginners
+                'confident': 0.08,        # 自信的狗對新手較友善
+                'tolerant': 0.10          # 容忍度高對新手很重要
             }
 
             # 計算特徵調整

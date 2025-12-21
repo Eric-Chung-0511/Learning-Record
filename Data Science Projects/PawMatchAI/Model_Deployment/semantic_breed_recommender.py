@@ -1,3 +1,4 @@
+# %%writefile semantic_breed_recommender.py
 import random
 import hashlib
 import numpy as np
@@ -21,6 +22,7 @@ from config_manager import get_config_manager, get_standardized_breed_data
 from semantic_vector_manager import SemanticVectorManager, BreedDescriptionVector
 from user_query_analyzer import UserQueryAnalyzer
 from matching_score_calculator import MatchingScoreCalculator
+from smart_breed_filter import apply_smart_filtering
 
 class SemanticBreedRecommender:
     """
@@ -49,17 +51,23 @@ class SemanticBreedRecommender:
         # 初始化增強系統組件（如果可用）
         try:
             self.query_engine = QueryUnderstandingEngine()
+            print("QueryUnderstandingEngine initialized")
             self.constraint_manager = ConstraintManager()
+            print("ConstraintManager initialized")
             self.multi_head_scorer = None
             self.score_calibrator = ScoreCalibrator()
+            print("ScoreCalibrator initialized")
             self.config_manager = get_config_manager()
 
             # 如果 SBERT 模型可用，初始化多頭評分器
             if self.sbert_model:
                 self.multi_head_scorer = MultiHeadScorer(self.sbert_model)
                 print("Multi-head scorer initialized with SBERT model")
-        except ImportError:
-            print("Enhanced system components not available, using basic functionality")
+            else:
+                print("WARNING: SBERT model not available, multi_head_scorer will be None")
+        except Exception as e:
+            print(f"Error initializing enhanced system components: {str(e)}")
+            print(traceback.format_exc())
             self.query_engine = None
             self.constraint_manager = None
             self.multi_head_scorer = None
@@ -107,6 +115,444 @@ class SemanticBreedRecommender:
         """當增強系統失敗時獲取備用推薦"""
         return self.score_calculator.get_fallback_recommendations(top_k)
 
+    def _get_fallback_scoring_with_constraints(self, user_input: str,
+                                               passed_breeds: set,
+                                               dimensions: 'QueryDimensions',
+                                               top_k: int = 15) -> List[Dict[str, Any]]:
+        """
+        當 multi_head_scorer 不可用時的回退評分方法
+        關鍵：仍然尊重 constraint_manager 的過濾結果，並產生自然分佈的分數
+        """
+        print(f"Fallback scoring for {len(passed_breeds)} filtered breeds")
+
+        recommendations = []
+        user_text = user_input.lower()
+
+        # 提取用戶需求關鍵詞
+        lifestyle_keywords = self._extract_lifestyle_keywords(user_input)
+
+        for breed in passed_breeds:
+            breed_info = get_dog_description(breed.replace(' ', '_')) or {}
+            if not breed_info:
+                continue
+
+            # 計算多維度匹配分數
+            dimension_scores = self._calculate_comprehensive_dimension_scores(
+                breed, breed_info, user_text, dimensions, lifestyle_keywords
+            )
+
+            # 基於維度分數計算加權總分
+            weights = self._get_dimension_weights_from_query(user_text, dimensions)
+            weighted_sum = sum(dimension_scores.get(dim, 0.7) * weights.get(dim, 1.0)
+                             for dim in dimension_scores)
+            total_weight = sum(weights.get(dim, 1.0) for dim in dimension_scores)
+            final_score = weighted_sum / total_weight if total_weight > 0 else 0.7
+
+            # 確保分數在合理範圍內（允許高分，非常契合的品種可超過 90%）
+            final_score = max(0.45, min(0.98, final_score))
+            dimension_scores['overall'] = final_score
+
+            recommendation = {
+                'breed': breed.replace('_', ' '),
+                'rank': 0,
+                'overall_score': final_score,
+                'final_score': final_score,
+                'scores': dimension_scores,
+                'size': breed_info.get('Size', 'Unknown'),
+                'temperament': breed_info.get('Temperament', ''),
+                'exercise_needs': breed_info.get('Exercise Needs', 'Moderate'),
+                'grooming_needs': breed_info.get('Grooming Needs', 'Moderate'),
+                'good_with_children': breed_info.get('Good with Children', 'Yes'),
+                'lifespan': breed_info.get('Lifespan', '10-12 years'),
+                'description': breed_info.get('Description', ''),
+                'search_type': 'fallback_with_constraints',
+            }
+
+            recommendations.append(recommendation)
+
+        # 按分數排序
+        recommendations.sort(key=lambda x: -x['final_score'])
+
+        # 更新排名
+        for i, rec in enumerate(recommendations[:top_k]):
+            rec['rank'] = i + 1
+
+        print(f"Generated {len(recommendations[:top_k])} fallback recommendations")
+        return recommendations[:top_k]
+
+    def _calculate_comprehensive_dimension_scores(self, breed: str, breed_info: Dict,
+                                                   user_text: str, dimensions,
+                                                   lifestyle_keywords: Dict) -> Dict[str, float]:
+        """
+        計算全面的維度分數，產生自然分佈的評分
+        """
+        scores = {}
+        temperament = breed_info.get('Temperament', '').lower()
+        size = breed_info.get('Size', 'Medium').lower()
+        exercise_needs = breed_info.get('Exercise Needs', 'Moderate').lower()
+        grooming_needs = breed_info.get('Grooming Needs', 'Moderate').lower()
+        good_with_children = breed_info.get('Good with Children', 'Yes')
+        care_level = breed_info.get('Care Level', 'Moderate').lower()
+        description = breed_info.get('Description', '').lower()
+
+        # 1. 空間相容性
+        space_score = 0.7
+        if 'apartment' in user_text or 'small space' in user_text:
+            if 'small' in size or 'toy' in size:
+                space_score = 0.96
+            elif 'medium' in size:
+                space_score = 0.78
+            elif 'large' in size:
+                space_score = 0.52
+            else:
+                space_score = 0.45
+        elif 'house' in user_text or 'yard' in user_text:
+            if 'large' in size:
+                space_score = 0.92
+            elif 'medium' in size:
+                space_score = 0.88
+            else:
+                space_score = 0.82
+        scores['space'] = space_score
+
+        # 2. 運動相容性
+        exercise_score = 0.7
+        user_wants_high = any(w in user_text for w in ['energetic', 'active', 'running', 'hiking', 'athletic'])
+        user_wants_low = any(w in user_text for w in ['low maintenance', 'relaxed', 'calm', 'couch'])
+
+        if user_wants_high:
+            if 'very high' in exercise_needs:
+                exercise_score = 0.98
+            elif 'high' in exercise_needs:
+                exercise_score = 0.92
+            elif 'moderate' in exercise_needs:
+                exercise_score = 0.68
+            else:
+                exercise_score = 0.48
+        elif user_wants_low:
+            if 'low' in exercise_needs:
+                exercise_score = 0.96
+            elif 'moderate' in exercise_needs:
+                exercise_score = 0.78
+            elif 'high' in exercise_needs:
+                exercise_score = 0.52
+            else:
+                exercise_score = 0.42
+        else:
+            # 中等運動需求
+            if 'moderate' in exercise_needs:
+                exercise_score = 0.88
+            elif 'low' in exercise_needs or 'high' in exercise_needs:
+                exercise_score = 0.72
+            else:
+                exercise_score = 0.65
+        scores['exercise'] = exercise_score
+
+        # 3. 美容需求相容性
+        grooming_score = 0.7
+        user_wants_low_maintenance = any(w in user_text for w in ['low maintenance', 'easy care', 'minimal grooming'])
+
+        if user_wants_low_maintenance:
+            if 'low' in grooming_needs or 'minimal' in grooming_needs:
+                grooming_score = 0.96
+            elif 'moderate' in grooming_needs:
+                grooming_score = 0.75
+            else:
+                grooming_score = 0.50
+        else:
+            if 'low' in grooming_needs:
+                grooming_score = 0.85
+            elif 'moderate' in grooming_needs:
+                grooming_score = 0.78
+            else:
+                grooming_score = 0.70
+        scores['grooming'] = grooming_score
+
+        # 4. 噪音相容性
+        noise_score = 0.7
+        user_wants_quiet = any(w in user_text for w in ['quiet', 'silent', 'noise', 'bark', 'neighbors'])
+
+        if user_wants_quiet:
+            # 從 breed_noise_info 獲取噪音資訊
+            noise_info = breed_noise_info.get(breed.replace(' ', '_'), {})
+            noise_level = noise_info.get('noise_level', 'Moderate').lower()
+
+            if 'low' in noise_level or 'quiet' in noise_level:
+                noise_score = 0.97
+            elif 'moderate' in noise_level:
+                noise_score = 0.72
+            elif 'high' in noise_level:
+                noise_score = 0.45
+            else:
+                # 根據性格推斷
+                if any(w in temperament for w in ['calm', 'quiet', 'gentle', 'reserved']):
+                    noise_score = 0.88
+                elif any(w in temperament for w in ['alert', 'vocal', 'energetic']):
+                    noise_score = 0.55
+                else:
+                    noise_score = 0.70
+        scores['noise'] = noise_score
+
+        # 5. 家庭相容性
+        family_score = 0.7
+        has_family_context = any(w in user_text for w in ['kids', 'children', 'family', 'child'])
+
+        if has_family_context:
+            if good_with_children == 'Yes':
+                family_score = 0.94
+                # 額外加分：溫和性格
+                if any(w in temperament for w in ['gentle', 'friendly', 'patient', 'loving']):
+                    family_score = min(0.98, family_score + 0.04)
+            elif good_with_children == 'No':
+                family_score = 0.32
+            else:
+                family_score = 0.62
+        else:
+            family_score = 0.76 if good_with_children == 'Yes' else 0.70
+        scores['family'] = family_score
+
+        # 6. 經驗相容性
+        experience_score = 0.7
+        is_beginner = any(w in user_text for w in ['first dog', 'first time', 'beginner', 'new owner', 'never had'])
+
+        if is_beginner:
+            # 評估品種對新手的友好程度
+            if 'low' in care_level or 'easy' in care_level:
+                experience_score = 0.94
+            elif 'moderate' in care_level:
+                experience_score = 0.78
+            else:
+                experience_score = 0.52
+
+            # 性格調整
+            if any(w in temperament for w in ['eager to please', 'trainable', 'intelligent', 'friendly']):
+                experience_score = min(0.98, experience_score + 0.08)
+            if any(w in temperament for w in ['stubborn', 'independent', 'strong-willed']):
+                experience_score = max(0.38, experience_score - 0.18)
+        else:
+            experience_score = 0.80
+        scores['experience'] = experience_score
+
+        # 7. 健康分數（基於壽命和品種特性）
+        health_score = 0.75
+        lifespan = breed_info.get('Lifespan', '10-12 years')
+        try:
+            # 解析壽命
+            years = [int(y) for y in lifespan.replace(' years', '').split('-') if y.strip().isdigit()]
+            if years:
+                avg_lifespan = sum(years) / len(years)
+                if avg_lifespan >= 14:
+                    health_score = 0.94
+                elif avg_lifespan >= 12:
+                    health_score = 0.85
+                elif avg_lifespan >= 10:
+                    health_score = 0.75
+                else:
+                    health_score = 0.62
+        except:
+            pass
+        scores['health'] = health_score
+
+        return scores
+
+    def _get_dimension_weights_from_query(self, user_text: str, dimensions) -> Dict[str, float]:
+        """
+        根據用戶查詢動態計算維度權重
+        """
+        weights = {
+            'space': 1.0,
+            'exercise': 1.0,
+            'grooming': 1.0,
+            'noise': 1.0,
+            'family': 1.0,
+            'experience': 1.0,
+            'health': 0.8
+        }
+
+        # 根據 dimensions 的 priority 調整權重
+        if hasattr(dimensions, 'dimension_priorities'):
+            priority_map = getattr(dimensions, 'dimension_priorities', {})
+            for dim, priority in priority_map.items():
+                if dim in weights:
+                    weights[dim] = priority
+                # 映射不同名稱
+                if dim == 'size':
+                    weights['space'] = max(weights['space'], priority)
+                if dim == 'family':
+                    weights['family'] = max(weights['family'], priority)
+
+        # 根據關鍵詞強化權重
+        if any(w in user_text for w in ['quiet', 'noise', 'bark', 'neighbors', 'thin walls']):
+            weights['noise'] = max(weights['noise'], 2.2)
+        if any(w in user_text for w in ['kids', 'children', 'family', 'child']):
+            weights['family'] = max(weights['family'], 2.0)
+        if any(w in user_text for w in ['first', 'beginner', 'new owner']):
+            weights['experience'] = max(weights['experience'], 2.0)
+        if any(w in user_text for w in ['apartment', 'small space', 'studio']):
+            weights['space'] = max(weights['space'], 1.8)
+        if any(w in user_text for w in ['energetic', 'active', 'running', 'hiking']):
+            weights['exercise'] = max(weights['exercise'], 2.0)
+        if any(w in user_text for w in ['low maintenance', 'easy care']):
+            weights['grooming'] = max(weights['grooming'], 1.8)
+
+        return weights
+
+    def _calculate_real_dimension_scores(self, breed: str, breed_info: Dict,
+                                        user_input: str, overall_score: float) -> Dict[str, float]:
+        """
+        計算真實的維度分數（基於品種特性和用戶需求）
+        這個方法取代了假分數生成器，提供真實的評分
+
+        Args:
+            breed: 品種名稱
+            breed_info: 品種資訊字典
+            user_input: 用戶輸入文字
+            overall_score: 總體分數
+
+        Returns:
+            Dict[str, float]: 維度分數字典
+        """
+        if not breed_info:
+            breed_info = {}
+
+        user_text = user_input.lower()
+        temperament = breed_info.get('Temperament', '').lower()
+        size = breed_info.get('Size', 'Medium').lower()
+        exercise_needs = breed_info.get('Exercise Needs', 'Moderate').lower()
+        grooming_needs = breed_info.get('Grooming Needs', 'Moderate').lower()
+        good_with_children = breed_info.get('Good with Children', 'Yes')
+        care_level = breed_info.get('Care Level', 'Moderate').lower()
+
+        scores = {}
+
+        # 1. Space Compatibility (空間相容性)
+        space_score = 0.7
+        if 'apartment' in user_text or 'small' in user_text:
+            if 'small' in size:
+                space_score = 0.9
+            elif 'medium' in size:
+                space_score = 0.7
+            elif 'large' in size:
+                space_score = 0.5
+            elif 'giant' in size:
+                space_score = 0.3
+        elif 'house' in user_text or 'yard' in user_text:
+            if 'large' in size or 'giant' in size:
+                space_score = 0.85
+            else:
+                space_score = 0.8
+        scores['space'] = space_score
+
+        # 2. Exercise Compatibility (運動相容性)
+        exercise_score = 0.7
+        if 'low' in exercise_needs or 'minimal' in exercise_needs:
+            if any(term in user_text for term in ['work full time', 'busy', 'low exercise', 'not much exercise']):
+                exercise_score = 0.9
+            else:
+                exercise_score = 0.75
+        elif 'high' in exercise_needs or 'very high' in exercise_needs:
+            if any(term in user_text for term in ['active', 'running', 'hiking', 'exercise']):
+                exercise_score = 0.9
+            elif any(term in user_text for term in ['work full time', 'busy']):
+                exercise_score = 0.5
+            else:
+                exercise_score = 0.65
+        else:  # moderate
+            exercise_score = 0.75
+        scores['exercise'] = exercise_score
+
+        # 3. Grooming/Maintenance Compatibility (美容/維護相容性)
+        grooming_score = 0.7
+        if 'low' in grooming_needs:
+            if any(term in user_text for term in ['low maintenance', 'low-maintenance', 'easy care', 'minimal grooming']):
+                grooming_score = 0.9
+            else:
+                grooming_score = 0.8
+        elif 'high' in grooming_needs:
+            if any(term in user_text for term in ['low maintenance', 'low-maintenance', 'easy care']):
+                grooming_score = 0.4
+            else:
+                grooming_score = 0.6
+
+        # 敏感品種需要額外照顧
+        if 'sensitive' in temperament:
+            grooming_score -= 0.1
+        # 特殊品種需要額外護理
+        breed_lower = breed.lower()
+        if any(term in breed_lower for term in ['italian', 'greyhound', 'whippet', 'hairless']):
+            if any(term in user_text for term in ['low maintenance', 'low-maintenance', 'easy']):
+                grooming_score -= 0.15
+        scores['grooming'] = max(0.2, grooming_score)
+
+        # 4. Experience Compatibility (經驗相容性) - 關鍵維度！
+        experience_score = 0.7
+        is_beginner = any(term in user_text for term in ['first dog', 'first time', 'beginner', 'new to dogs', 'never owned', 'never had'])
+
+        if is_beginner:
+            # 新手評估
+            if 'low' in care_level:
+                experience_score = 0.85
+            elif 'moderate' in care_level:
+                experience_score = 0.65
+            elif 'high' in care_level:
+                experience_score = 0.45
+
+            # 性格懲罰 - 對新手很重要
+            difficult_traits = ['sensitive', 'stubborn', 'independent', 'dominant', 'aggressive', 'nervous', 'shy', 'timid', 'alert']
+            for trait in difficult_traits:
+                if trait in temperament:
+                    if trait == 'sensitive':
+                        experience_score -= 0.15  # 敏感性格對新手很具挑戰
+                    elif trait == 'aggressive':
+                        experience_score -= 0.25
+                    elif trait in ['stubborn', 'independent', 'dominant']:
+                        experience_score -= 0.12
+                    else:
+                        experience_score -= 0.08
+
+            # 友善性格獎勵
+            easy_traits = ['friendly', 'gentle', 'eager to please', 'patient', 'calm', 'outgoing']
+            for trait in easy_traits:
+                if trait in temperament:
+                    experience_score += 0.08
+
+            # 易於訓練的加分
+            if any(term in user_text for term in ['easy to train', 'trainable']):
+                if any(term in temperament for term in ['eager to please', 'intelligent', 'trainable']):
+                    experience_score += 0.1
+                elif any(term in temperament for term in ['stubborn', 'independent']):
+                    experience_score -= 0.1
+        else:
+            # 有經驗的飼主
+            experience_score = 0.8
+
+        scores['experience'] = max(0.2, min(0.95, experience_score))
+
+        # 5. Noise Compatibility (噪音相容性)
+        noise_score = 0.75
+        if any(term in user_text for term in ['quiet', 'apartment', 'neighbors']):
+            if any(term in temperament for term in ['quiet', 'calm', 'gentle']):
+                noise_score = 0.9
+            elif any(term in temperament for term in ['alert', 'vocal', 'barking']):
+                noise_score = 0.5
+        scores['noise'] = noise_score
+
+        # 6. Family Compatibility (家庭相容性)
+        family_score = 0.7
+        if any(term in user_text for term in ['children', 'kids', 'family']):
+            if good_with_children == 'Yes' or good_with_children == True:
+                family_score = 0.9
+                if any(term in temperament for term in ['gentle', 'patient', 'friendly']):
+                    family_score = 0.95
+            else:
+                family_score = 0.35
+        scores['family'] = family_score
+
+        # 7. Overall
+        scores['overall'] = overall_score
+
+        return scores
+
     def get_enhanced_semantic_recommendations(self, user_input: str, top_k: int = 15) -> List[Dict[str, Any]]:
         """
         增強的多維度語義品種推薦
@@ -149,9 +595,16 @@ class SemanticBreedRecommender:
             if self.multi_head_scorer:
                 breed_scores = self.multi_head_scorer.score_breeds(filter_result.passed_breeds, dimensions)
                 print(f"Multi-head scoring completed for {len(breed_scores)} breeds")
+                # Debug: 顯示前5名的分數和維度breakdown
+                for bs in breed_scores[:5]:
+                    print(f"  {bs.breed_name}: final={bs.final_score:.3f}, breakdown={bs.dimensional_breakdown}")
             else:
-                print("Multi-head scorer not available, using fallback scoring")
-                return self.get_semantic_recommendations(user_input, top_k)
+                # 使用回退評分，但仍然尊重 constraint 過濾結果
+                print("Multi-head scorer not available, using fallback scoring with constraint filtering")
+                fallback_results = self._get_fallback_scoring_with_constraints(
+                    user_input, filter_result.passed_breeds, dimensions, top_k
+                )
+                return fallback_results
 
             # 階段 4: 分數校準
             if self.score_calibrator:
@@ -184,6 +637,19 @@ class SemanticBreedRecommender:
                 else:
                     breed_info = get_dog_description(breed_name.replace(' ', '_')) or {}
 
+                # 將 dimensional_breakdown 轉換為 UI 需要的 scores 格式
+                breakdown = breed_score.dimensional_breakdown or {}
+                ui_scores = {
+                    'space': breakdown.get('spatial_compatibility', 0.7),
+                    'exercise': breakdown.get('activity_compatibility', 0.7),
+                    'grooming': breakdown.get('maintenance_compatibility', 0.7),
+                    'experience': breakdown.get('experience_compatibility', 0.7),
+                    'noise': breakdown.get('noise_compatibility', 0.7),
+                    'family': breakdown.get('family_compatibility', 0.7),
+                    'health': breakdown.get('health_compatibility', 0.7),
+                    'overall': calibrated_score
+                }
+
                 recommendation = {
                     'breed': breed_name,
                     'rank': i + 1,
@@ -194,6 +660,7 @@ class SemanticBreedRecommender:
                     'bidirectional_bonus': breed_score.bidirectional_bonus,
                     'confidence_score': breed_score.confidence_score,
                     'dimensional_breakdown': breed_score.dimensional_breakdown,
+                    'scores': ui_scores,  # UI 需要的格式
                     'explanation': breed_score.explanation,
                     'size': breed_info.get('Size', 'Unknown'),
                     'temperament': breed_info.get('Temperament', ''),
@@ -417,15 +884,45 @@ class SemanticBreedRecommender:
                     'lifestyle_bonus': breed_data['lifestyle_bonus']
                 })
 
-            # 按顯示分數排序以確保排名一致性
-            breed_display_scores.sort(key=lambda x: x['display_score'], reverse=True)
+            # 計算真實維度分數並整合到排序中
+            for breed_data in breed_display_scores:
+                breed = breed_data['breed']
+                breed_info = get_dog_description(breed)
+                real_scores = self._calculate_real_dimension_scores(
+                    breed, breed_info, user_input, breed_data['display_score']
+                )
+                breed_data['real_scores'] = real_scores
+
+                # 計算加權的最終分數（考慮維度分數）
+                # 原始顯示分數權重 50%，維度分數平均權重 50%
+                dim_scores = [real_scores.get('space', 0.7), real_scores.get('exercise', 0.7),
+                             real_scores.get('grooming', 0.7), real_scores.get('experience', 0.7),
+                             real_scores.get('noise', 0.7)]
+                avg_dim_score = sum(dim_scores) / len(dim_scores)
+
+                # 對低維度分數施加懲罰
+                min_dim_score = min(dim_scores)
+                penalty = 0
+                if min_dim_score < 0.5:
+                    penalty = (0.5 - min_dim_score) * 0.3  # 最低分數懲罰
+
+                # 最終排序分數
+                breed_data['adjusted_score'] = (
+                    breed_data['display_score'] * 0.5 +
+                    avg_dim_score * 0.5 -
+                    penalty
+                )
+
+            # 按調整後的分數排序
+            breed_display_scores.sort(key=lambda x: x['adjusted_score'], reverse=True)
             top_breeds = breed_display_scores[:top_k]
 
             # 轉換為標準推薦格式
             recommendations = []
             for i, breed_data in enumerate(top_breeds):
                 breed = breed_data['breed']
-                display_score = breed_data['display_score']
+                adjusted_score = breed_data['adjusted_score']
+                real_scores = breed_data['real_scores']
 
                 # 獲取詳細信息
                 breed_info = get_dog_description(breed)
@@ -433,8 +930,8 @@ class SemanticBreedRecommender:
                 recommendation = {
                     'breed': breed.replace('_', ' '),
                     'rank': i + 1,
-                    'overall_score': display_score,  # 使用顯示分數以保持一致性
-                    'final_score': display_score,    # 確保 final_score 與 overall_score 匹配
+                    'overall_score': adjusted_score,  # 使用調整後的分數
+                    'final_score': adjusted_score,    # 確保 final_score 與 overall_score 匹配
                     'semantic_score': breed_data['semantic_score'],
                     'comparative_bonus': breed_data['comparative_bonus'],
                     'lifestyle_bonus': breed_data['lifestyle_bonus'],
@@ -445,7 +942,8 @@ class SemanticBreedRecommender:
                     'good_with_children': breed_info.get('Good with Children', 'Yes') if breed_info else 'Yes',
                     'lifespan': breed_info.get('Lifespan', '10-12 years') if breed_info else '10-12 years',
                     'description': breed_info.get('Description', '') if breed_info else '',
-                    'search_type': 'description'
+                    'search_type': 'description',
+                    'scores': real_scores  # 添加真實的維度分數
                 }
 
                 recommendations.append(recommendation)
@@ -459,12 +957,20 @@ class SemanticBreedRecommender:
             return []
 
     def get_enhanced_recommendations_with_unified_scoring(self, user_input: str, top_k: int = 15) -> List[Dict[str, Any]]:
-        """簡化的增強推薦方法"""
-        try:
-            print(f"Processing enhanced recommendation: {user_input[:50]}...")
+        """
+        增強推薦方法 - 使用完整的多頭評分系統
 
-            # 使用基本語意匹配
-            return self.get_semantic_recommendations(user_input, top_k)
+        這個方法使用:
+        - QueryUnderstandingEngine: 解析用戶意圖
+        - PriorityDetector: 檢測維度優先級
+        - MultiHeadScorer: 多維度評分
+        - DynamicWeightCalculator: 動態權重分配
+        """
+        try:
+            print(f"Processing enhanced recommendation with multi-head scoring: {user_input[:50]}...")
+
+            # 使用完整的增強語義推薦系統（包含 multi_head_scorer）
+            return self.get_enhanced_semantic_recommendations(user_input, top_k)
 
         except Exception as e:
             error_msg = f"Enhanced recommendation error: {str(e)}. Please check your description."
@@ -630,65 +1136,61 @@ def get_breed_recommendations_by_description(user_description: str,
 
 
 def get_enhanced_recommendations_with_unified_scoring(user_description: str, top_k: int = 15) -> List[Dict[str, Any]]:
-    """簡化版本：基本語意推薦功能"""
-    try:
-        print(f"Processing description-based recommendation: {user_description[:50]}...")
+    """
+    模組層級便利函數 - 使用完整的多頭評分系統
 
-        # 創建基本推薦器實例
+    這個函數呼叫 SemanticBreedRecommender 的增強推薦方法，使用:
+    - QueryUnderstandingEngine: 解析用戶意圖
+    - PriorityDetector: 檢測維度優先級
+    - MultiHeadScorer: 多維度評分
+    - DynamicWeightCalculator: 動態權重分配
+    - SmartBreedFilter: 智慧風險過濾（只對真正危害用戶的情況干預）
+
+    如果增強系統失敗，會自動回退到基本語義推薦
+    """
+    try:
+        print(f"Processing description-based recommendation with multi-head scoring: {user_description[:50]}...")
+
+        # 創建推薦器實例
         recommender = SemanticBreedRecommender()
 
+        # 檢查 SBERT 模型是否可用
         if not recommender.vector_manager.is_model_available():
             print("SBERT model not available, using basic text matching...")
-            # 使用基本文字匹配邏輯
-            return _get_basic_text_matching_recommendations(user_description, top_k, recommender)
+            results = _get_basic_text_matching_recommendations(user_description, top_k, recommender)
+            # 應用智慧過濾
+            results = apply_smart_filtering(results, user_description)
+            return results
 
-        # 使用語意相似度推薦
-        recommendations = []
-        user_embedding = recommender.vector_manager.encode_text(user_description)
+        # 嘗試使用完整的增強語義推薦系統
+        try:
+            results = recommender.get_enhanced_semantic_recommendations(user_description, top_k)
+            if results:
+                # 應用智慧過濾
+                results = apply_smart_filtering(results, user_description)
+                return results
+            else:
+                print("Enhanced recommendations returned empty, falling back to basic semantic...")
+        except Exception as enhanced_error:
+            print(f"Enhanced recommendation failed: {str(enhanced_error)}, falling back to basic semantic...")
+            print(traceback.format_exc())
 
-        # 計算所有品種的增強分數
-        all_breed_scores = []
-        for breed_name, breed_vector in recommender.breed_vectors.items():
-            breed_embedding = breed_vector.embedding
-            similarity = cosine_similarity([user_embedding], [breed_embedding])[0][0]
+        # 回退到基本語義推薦
+        try:
+            results = recommender.get_semantic_recommendations(user_description, top_k)
+            if results:
+                # 應用智慧過濾
+                results = apply_smart_filtering(results, user_description)
+                return results
+        except Exception as semantic_error:
+            print(f"Basic semantic recommendation also failed: {str(semantic_error)}")
 
-            # 獲取品種資料
-            breed_info = get_dog_description(breed_name) or {}
-
-            # 計算增強的匹配分數
-            enhanced_score = recommender.score_calculator.calculate_enhanced_matching_score(
-                breed_name, breed_info, user_description, similarity
-            )
-
-            all_breed_scores.append((breed_name, enhanced_score, breed_info, similarity))
-
-        # 按 final_score 排序（而不是語意相似度）
-        all_breed_scores.sort(key=lambda x: x[1]['final_score'], reverse=True)
-        top_breeds = all_breed_scores[:top_k]
-
-        for i, (breed, enhanced_score, breed_info, similarity) in enumerate(top_breeds):
-            recommendation = {
-                'breed': breed.replace('_', ' '),
-                'rank': i + 1,  # 正確的排名
-                'overall_score': enhanced_score['final_score'],
-                'final_score': enhanced_score['final_score'],
-                'semantic_score': similarity,
-                'comparative_bonus': enhanced_score['lifestyle_bonus'],
-                'lifestyle_bonus': enhanced_score['lifestyle_bonus'],
-                'size': breed_info.get('Size', 'Unknown'),
-                'temperament': breed_info.get('Temperament', 'Unknown'),
-                'exercise_needs': breed_info.get('Exercise Needs', 'Moderate'),
-                'grooming_needs': breed_info.get('Grooming Needs', 'Moderate'),
-                'good_with_children': breed_info.get('Good with Children', 'Unknown'),
-                'lifespan': breed_info.get('Lifespan', '10-12 years'),
-                'description': breed_info.get('Description', 'No description available'),
-                'search_type': 'description',
-                'scores': enhanced_score['dimension_scores']
-            }
-            recommendations.append(recommendation)
-
-        print(f"Generated {len(recommendations)} semantic recommendations")
-        return recommendations
+        # 最後回退到基本文字匹配
+        print("All semantic methods failed, using basic text matching as last resort...")
+        results = _get_basic_text_matching_recommendations(user_description, top_k, recommender)
+        # 應用智慧過濾
+        results = apply_smart_filtering(results, user_description)
+        return results
 
     except Exception as e:
         error_msg = f"Error in semantic recommendation system: {str(e)}. Please check your input and try again."
@@ -729,6 +1231,29 @@ def _get_basic_text_matching_recommendations(user_description: str, top_k: int =
                 'Maltese_Dog', 'Chihuahua', 'Cavalier_King_Charles_Spaniel', 'Boston_Terrier',
                 'Japanese_Spaniel', 'Toy_Terrier', 'Affenpinscher', 'Pekingese', 'Lhasa'
             ]
+
+        # 應用約束過濾 - 關鍵修復！
+        try:
+            from constraint_manager import ConstraintManager
+            from query_understanding import QueryUnderstandingEngine
+
+            query_engine = QueryUnderstandingEngine()
+            dimensions = query_engine.analyze_query(user_description)
+            constraint_manager = ConstraintManager()
+            filter_result = constraint_manager.apply_constraints(dimensions)
+
+            # 只保留通過約束的品種
+            allowed_breeds = filter_result.passed_breeds
+            filtered_count = len(basic_breeds)
+            basic_breeds = [b for b in basic_breeds if b in allowed_breeds]
+            print(f"Constraint filtering: {filtered_count} -> {len(basic_breeds)} breeds")
+
+            # 記錄被過濾的原因（用於調試）
+            for breed, reason in filter_result.filtered_breeds.items():
+                if breed in ['Italian_Greyhound', 'Rottweiler', 'Malinois']:
+                    print(f"  Filtered {breed}: {reason}")
+        except Exception as e:
+            print(f"Warning: Could not apply constraints: {str(e)}")
 
         for breed in basic_breeds:
             breed_info = get_dog_description(breed) or {}

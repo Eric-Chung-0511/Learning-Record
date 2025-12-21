@@ -1,3 +1,4 @@
+# %%writefile recommendation_formatter.py
 import sqlite3
 import traceback
 import random
@@ -293,33 +294,143 @@ def parse_health_information(health_info: dict) -> tuple:
     return health_considerations, health_screenings
 
 
-def generate_dimension_scores_for_display(base_score: float, rank: int, breed: str, 
+def generate_dimension_scores_for_display(base_score: float, rank: int, breed: str,
                                         semantic_score: float = 0.7,
                                         comparative_bonus: float = 0.0,
                                         lifestyle_bonus: float = 0.0,
-                                        is_description_search: bool = False) -> dict:
-    """為顯示生成維度分數"""
-    random.seed(hash(breed) + rank)  # 一致的隨機性
+                                        is_description_search: bool = False,
+                                        user_input: str = "") -> dict:
+    """
+    為顯示生成維度分數 - 基於真實品種特性
+
+    這個函數現在會考慮品種的實際特性來計算分數，
+    而不是僅僅基於總分生成假分數。
+    """
+    from dog_database import get_dog_description
+
+    # 獲取品種資訊
+    breed_name = breed.replace(' ', '_')
+    breed_info = get_dog_description(breed_name) or {}
+
+    temperament = breed_info.get('Temperament', '').lower()
+    size = breed_info.get('Size', 'Medium').lower()
+    exercise_needs = breed_info.get('Exercise Needs', 'Moderate').lower()
+    grooming_needs = breed_info.get('Grooming Needs', 'Moderate').lower()
+    good_with_children = breed_info.get('Good with Children', 'Yes')
+    care_level = breed_info.get('Care Level', 'Moderate').lower()
+
+    user_text = user_input.lower() if user_input else ""
 
     if is_description_search:
-        # Description search: 創建更自然的分數分佈在50%-95%範圍內
-        score_variance = 0.08 if base_score > 0.7 else 0.06
-        
+        # === 真實維度評分 ===
+
+        # 1. Space Compatibility
+        space_score = 0.75
+        if 'small' in size:
+            space_score = 0.85
+        elif 'medium' in size:
+            space_score = 0.75
+        elif 'large' in size:
+            space_score = 0.65
+        elif 'giant' in size:
+            space_score = 0.55
+
+        # 2. Exercise Compatibility
+        exercise_score = 0.75
+        if 'low' in exercise_needs:
+            exercise_score = 0.85
+        elif 'moderate' in exercise_needs:
+            exercise_score = 0.75
+        elif 'high' in exercise_needs:
+            exercise_score = 0.60
+        elif 'very high' in exercise_needs:
+            exercise_score = 0.50
+
+        # 3. Grooming/Maintenance
+        grooming_score = 0.75
+        if 'low' in grooming_needs:
+            grooming_score = 0.85
+        elif 'moderate' in grooming_needs:
+            grooming_score = 0.70
+        elif 'high' in grooming_needs:
+            grooming_score = 0.55
+
+        # 敏感品種需要額外照顧
+        if 'sensitive' in temperament:
+            grooming_score -= 0.10
+
+        # 4. Experience Compatibility - 關鍵！
+        # DEBUG: 如果這個函數被呼叫，experience 會基於真實品種特性計算
+        experience_score = 0.70
+
+        # 基於 care level 的基礎分數
+        if 'low' in care_level:
+            experience_score = 0.85
+        elif 'moderate' in care_level:
+            experience_score = 0.70
+        elif 'high' in care_level:
+            experience_score = 0.55
+
+        # DEBUG 標記：打印正在計算的品種
+        print(f"[REAL_SCORE] Calculating experience for {breed}: care_level={care_level}, temperament={temperament}")
+
+        # 性格對經驗的影響
+        difficult_traits = {
+            'sensitive': -0.15,
+            'stubborn': -0.12,
+            'independent': -0.10,
+            'dominant': -0.12,
+            'aggressive': -0.20,
+            'nervous': -0.12,
+            'alert': -0.05,
+            'shy': -0.08,
+            'timid': -0.08
+        }
+        for trait, penalty in difficult_traits.items():
+            if trait in temperament:
+                experience_score += penalty
+
+        easy_traits = {
+            'friendly': 0.08,
+            'gentle': 0.08,
+            'eager to please': 0.10,
+            'patient': 0.08,
+            'calm': 0.08,
+            'outgoing': 0.05,
+            'playful': 0.03
+        }
+        for trait, bonus in easy_traits.items():
+            if trait in temperament:
+                experience_score += bonus
+
+        # 5. Noise Compatibility
+        noise_score = 0.75
+        if any(term in temperament for term in ['quiet', 'calm', 'gentle']):
+            noise_score = 0.85
+        elif any(term in temperament for term in ['alert', 'vocal']):
+            noise_score = 0.60
+
+        # 6. Family Compatibility
+        family_score = 0.70
+        if good_with_children == 'Yes' or good_with_children == True:
+            family_score = 0.80
+            if any(term in temperament for term in ['gentle', 'patient', 'friendly']):
+                family_score = 0.90
+        elif good_with_children == 'No' or good_with_children == False:
+            family_score = 0.45
+
+        # 確保分數在合理範圍內
         scores = {
-            'space': max(0.50, min(0.95,
-                base_score * 0.92 + (lifestyle_bonus * 0.5) + random.uniform(-score_variance, score_variance))),
-            'exercise': max(0.50, min(0.95,
-                base_score * 0.88 + (lifestyle_bonus * 0.4) + random.uniform(-score_variance, score_variance))),
-            'grooming': max(0.50, min(0.95,
-                base_score * 0.85 + (comparative_bonus * 0.4) + random.uniform(-score_variance, score_variance))),
-            'experience': max(0.50, min(0.95,
-                base_score * 0.87 + (lifestyle_bonus * 0.3) + random.uniform(-score_variance, score_variance))),
-            'noise': max(0.50, min(0.95,
-                base_score * 0.83 + (lifestyle_bonus * 0.6) + random.uniform(-score_variance, score_variance))),
+            'space': max(0.30, min(0.95, space_score)),
+            'exercise': max(0.30, min(0.95, exercise_score)),
+            'grooming': max(0.30, min(0.95, grooming_score)),
+            'experience': max(0.30, min(0.95, experience_score)),
+            'noise': max(0.30, min(0.95, noise_score)),
+            'family': max(0.30, min(0.95, family_score)),
             'overall': base_score
         }
     else:
         # 傳統搜尋結果的分數結構會在呼叫處理中傳入
         scores = {'overall': base_score}
-    
+
     return scores

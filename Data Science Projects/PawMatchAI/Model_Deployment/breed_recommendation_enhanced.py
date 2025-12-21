@@ -1,3 +1,4 @@
+# %%writefile breed_recommendation_enhanced.py
 import gradio as gr
 from typing import Dict, List, Any, Optional
 import traceback
@@ -23,14 +24,12 @@ def create_description_examples():
                 font-size: 1.1em;
                 font-weight: 600;
             '>💡 Example Descriptions - Try These Expression Styles:</h4>
-
             <div style='
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 15px;
                 margin-top: 10px;
             '>
-
                 <!-- 左上：冷色（藍） -->
                 <div style='
                     background: white;
@@ -39,12 +38,11 @@ def create_description_examples():
                     border: 1px solid #e2e8f0;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 '>
-                    <strong style='color: #4299e1;'>🏡 Active Lifestyle & Space:</strong><br>
+                    <strong style='color: #4299e1;'>🏡 Priority: Quiet Environment</strong><br>
                     <span style='color: #4a5568; font-size: 0.9em;'>
-                        "I live in a large house with a big backyard, and I love hiking and outdoor activities. I don't mind if the dog is noisy, as long as it's active and playful."
+                        "Most importantly I need a quiet dog. I live in a small apartment with thin walls, and my neighbors are very noise sensitive."
                     </span>
                 </div>
-
                 <!-- 右上：暖色（橘） -->
                 <div style='
                     background: white;
@@ -53,12 +51,11 @@ def create_description_examples():
                     border: 1px solid #e2e8f0;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 '>
-                    <strong style='color: #ed8936;'>🎾 Activity Preferences:</strong><br>
+                    <strong style='color: #ed8936;'>🎾 Multiple Priorities:</strong><br>
                     <span style='color: #4a5568; font-size: 0.9em;'>
-                        "I want an active medium to large dog for hiking and outdoor activities"
+                        "First I need a dog that's good with kids, second prefer low maintenance grooming, and third would like an active breed for weekend hiking."
                     </span>
                 </div>
-
                 <!-- 左下：冷色（紫） -->
                 <div style='
                     background: white;
@@ -67,12 +64,11 @@ def create_description_examples():
                     border: 1px solid #e2e8f0;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 '>
-                    <strong style='color: #805ad5;'>🚶 Balanced Daily Routine:</strong><br>
+                    <strong style='color: #805ad5;'>🏠 Beginner Owner:</strong><br>
                     <span style='color: #4a5568; font-size: 0.9em;'>
-                        "I live in a medium-sized house, walk about 30 minutes every day, and I'm okay with a moderately vocal dog. Looking for a balanced companion."
+                        "This is my first dog. I live in a house with a small yard, work full time, and really want a low-maintenance breed that's easy to train."
                     </span>
                 </div>
-
                 <!-- 右下：暖色（琥珀橘） -->
                 <div style='
                     background: white;
@@ -81,13 +77,12 @@ def create_description_examples():
                     border: 1px solid #e2e8f0;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 '>
-                    <strong style='color: #276749;'>👥 Family Situation:</strong><br>
+                    <strong style='color: #276749;'>🤫 Active Lifestyle Priority:</strong><br>
                     <span style='color: #4a5568; font-size: 0.9em;'>
-                        "Looking for a calm, low-maintenance companion dog for elderly person"
+                        "I absolutely need an energetic dog for daily running and hiking. Size doesn't matter, but the dog must be able to keep up with intense exercise."
                     </span>
                 </div>
             </div>
-
             <div style='
                 margin-top: 15px;
                 padding: 12px;
@@ -126,7 +121,6 @@ def create_recommendation_tab(
                         background: linear-gradient(to right, rgba(66, 153, 225, 0.1), rgba(72, 187, 120, 0.1));
                         border-radius: 10px;
                     '>
-
                         <p style='
                             font-size: 1.2em;
                             margin: 0;

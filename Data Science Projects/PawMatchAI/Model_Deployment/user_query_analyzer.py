@@ -4,7 +4,7 @@ import numpy as np
 import sqlite3
 import re
 import traceback
-from typing import List, Dict, Tuple, Optional, Any
+from typing import List, Dict, Tuple, Optional, Any, Set
 from dataclasses import dataclass
 from sentence_transformers import SentenceTransformer
 import torch
@@ -18,6 +18,8 @@ from constraint_manager import ConstraintManager, apply_breed_constraints
 from multi_head_scorer import MultiHeadScorer, score_breed_candidates, BreedScore
 from score_calibrator import ScoreCalibrator, calibrate_breed_scores
 from config_manager import get_config_manager, get_standardized_breed_data
+from priority_detector import PriorityDetector, PriorityDetectionResult
+from inference_engine import BreedRecommendationInferenceEngine, InferenceResult
 
 class UserQueryAnalyzer:
     """
@@ -28,6 +30,8 @@ class UserQueryAnalyzer:
     def __init__(self, breed_list: List[str]):
         """初始化用戶查詢分析器"""
         self.breed_list = breed_list
+        self.priority_detector = PriorityDetector()
+        self.inference_engine = BreedRecommendationInferenceEngine()
         self.comparative_keywords = {
             'most': 1.0, 'love': 1.0, 'prefer': 0.9, 'like': 0.8,
             'then': 0.7, 'second': 0.7, 'followed': 0.6,
@@ -81,6 +85,34 @@ class UserQueryAnalyzer:
                 breed_scores[breed] = breed_score
 
         return breed_scores
+
+    def _merge_priorities(self,
+                         explicit_priorities: Dict[str, float],
+                         implicit_priorities: Dict[str, float]) -> Dict[str, float]:
+        """
+        合併顯式和隱式優先級
+
+        規則:
+        1. 明確提及的維度，使用明確優先級
+        2. 未明確提及但推斷出的維度，使用隱含優先級
+        3. 隱含優先級不會覆蓋明確優先級
+
+        Args:
+            explicit_priorities: 明確優先級
+            implicit_priorities: 隱含優先級
+
+        Returns:
+            Dict[str, float]: 合併後的優先級
+        """
+        merged = explicit_priorities.copy()
+
+        for dim, implicit_score in implicit_priorities.items():
+            if dim not in merged:
+                # 只添加未明確提及的隱含優先級
+                merged[dim] = implicit_score
+            # 如果已有明確優先級，保持不變
+
+        return merged
 
     def extract_lifestyle_keywords(self, user_input: str) -> Dict[str, List[str]]:
         """增強的生活方式關鍵字提取，具有更好的模式匹配"""
@@ -431,6 +463,35 @@ class UserQueryAnalyzer:
             'noise_sensitive': any(word in text for word in ['quiet', 'silent', '安靜']),
             'experience_level': 'beginner' if any(word in text for word in ['first time', 'beginner', '新手']) else 'intermediate'
         }
+
+        # 優先級檢測與推理
+        try:
+            # Step 1: 檢測明確優先級
+            priority_result = self.priority_detector.detect_priorities(user_description)
+            explicit_priorities = priority_result.dimension_priorities
+
+            # Step 2: 推斷隱含優先級
+            inference_result = self.inference_engine.infer_implicit_priorities(
+                user_description,
+                analysis['user_context']
+            )
+            implicit_priorities = inference_result.implicit_priorities
+
+            # Step 3: 合併優先級（明確優先級 > 隱含優先級）
+            final_priorities = self._merge_priorities(explicit_priorities, implicit_priorities)
+
+            # 添加到分析結果
+            analysis['dimension_priorities'] = final_priorities
+            analysis['explicit_priorities'] = explicit_priorities
+            analysis['implicit_priorities'] = implicit_priorities
+            analysis['priority_detection_confidence'] = priority_result.detection_confidence
+            analysis['inference_confidence'] = inference_result.confidence
+
+        except Exception as e:
+            print(f"Error in priority detection/inference: {str(e)}")
+            analysis['dimension_priorities'] = {}
+            analysis['explicit_priorities'] = {}
+            analysis['implicit_priorities'] = {}
 
         return analysis
 

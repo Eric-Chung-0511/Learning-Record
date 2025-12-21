@@ -1,3 +1,4 @@
+# %%writefile constraint_manager.py
 import sqlite3
 import json
 import numpy as np
@@ -135,6 +136,22 @@ class ConstraintManager:
                 priority=ConstraintPriority.CRITICAL,
                 description="Severe allergy restrictions",
                 filter_function="filter_severe_allergies",
+                relaxation_allowed=False,
+                safety_critical=True
+            ),
+            ConstraintRule(
+                name="beginner_critical_exclusion",
+                priority=ConstraintPriority.CRITICAL,
+                description="Exclude breeds absolutely unsuitable for beginners",
+                filter_function="filter_beginner_critical",
+                relaxation_allowed=False,
+                safety_critical=True
+            ),
+            ConstraintRule(
+                name="senior_friendly_constraint",
+                priority=ConstraintPriority.CRITICAL,
+                description="Exclude breeds unsuitable for senior owners",
+                filter_function="filter_senior_friendly",
                 relaxation_allowed=False,
                 safety_critical=True
             ),
@@ -309,6 +326,15 @@ class ConstraintManager:
         if rule.name == "severe_allergy_constraint":
             return 'hypoallergenic' in dimensions.special_requirements
 
+        # Beginner critical exclusion - applies when user is a beginner
+        if rule.name == "beginner_critical_exclusion":
+            return ('beginner' in dimensions.experience_level or
+                    'first_time' in dimensions.special_requirements)
+
+        # Senior friendly constraint - applies when user is elderly
+        if rule.name == "senior_friendly_constraint":
+            return 'senior' in dimensions.special_requirements
+
         # Low activity constraint
         if rule.name == "low_activity_constraint":
             return 'low' in dimensions.activity_level
@@ -452,19 +478,46 @@ class ConstraintManager:
 
     def filter_child_safety(self, candidates: Set[str],
                           dimensions: QueryDimensions) -> Dict[str, str]:
-        """Child safety filtering"""
+        """Child safety filtering - enhanced for young children"""
         filtered = {}
+
+        # 檢查是否有兒童相關需求
+        has_children = 'children' in dimensions.family_context
+
+        # 如果沒有偵測到，也不執行過濾
+        if not has_children:
+            return filtered
+
+        # 假設有提到 children/kids 就可能有幼童風險，對巨型犬保守處理
+        # 這是安全優先的設計
+        has_young_children = True  # 保守假設
 
         for breed in list(candidates):
             breed_info = self.breed_cache.get(breed, {})
             good_with_children = breed_info.get('good_with_children', 'Yes')
-            size = breed_info.get('size', '')
-            temperament = breed_info.get('temperament', '')
+            size = breed_info.get('size', '').lower()
+            temperament = breed_info.get('temperament', '').lower()
 
-            # Breeds explicitly not suitable for children
+            # 1. Breeds explicitly not suitable for children
             if good_with_children == 'No':
                 filtered[breed] = "Not suitable for children"
-            # Large breeds without clear child compatibility indicators should be cautious
+                continue
+
+            # 2. 對幼童家庭，排除巨型犬（體型風險）
+            if has_young_children:
+                if 'giant' in size:
+                    filtered[breed] = "Giant breed poses physical risk to young children"
+                    continue
+                # 大型犬需要額外檢查性格
+                if 'large' in size:
+                    # 如果沒有明確標示適合兒童，且沒有溫和性格特徵
+                    gentle_traits = ['gentle', 'patient', 'calm', 'friendly']
+                    has_gentle_trait = any(t in temperament for t in gentle_traits)
+                    if good_with_children != 'Yes' and not has_gentle_trait:
+                        filtered[breed] = "Large breed without confirmed child-friendly temperament"
+                        continue
+
+            # 3. Large breeds without clear child compatibility indicators should be cautious
             elif ('large' in size and good_with_children != 'Yes' and
                   any(trait in temperament for trait in ['aggressive', 'dominant', 'protective'])):
                 filtered[breed] = "Large breed with uncertain child compatibility"
@@ -563,6 +616,159 @@ class ConstraintManager:
                   'low' in grooming_needs):
                 # Usually don't filter out, as low maintenance is always good
                 pass
+
+        return filtered
+
+    def filter_beginner_critical(self, candidates: Set[str],
+                                dimensions: QueryDimensions) -> Dict[str, str]:
+        """
+        Critical filtering for beginner owners - absolute exclusion rules
+
+        This filter removes breeds that are absolutely unsuitable for first-time owners
+        based on temperament traits that require experienced handling.
+
+        通用性設計原則：
+        1. 基於品種特性（性格、照護需求），不針對特定品種名稱
+        2. 只排除有明確危險或極度不適合的品種
+        3. 同時考慮多個負面因素的組合效應
+        """
+        filtered = {}
+
+        # 定義對新手絕對危險或極度不適合的特徵
+        # 這些是基於行為學和犬隻專家共識的特徵
+        critical_negative_traits = {
+            'aggressive': 'Aggressive temperament requires experienced handling',
+            'dominant': 'Dominant personality requires firm, experienced leadership',
+        }
+
+        # 需要特殊技能的特徵組合
+        challenging_trait_combinations = [
+            # (特徵列表, 最少需要匹配數量, 排除原因)
+            (['sensitive', 'nervous', 'timid', 'shy'], 2,
+             'Multiple anxiety-related traits require experienced behavioral management'),
+            (['stubborn', 'independent', 'strong-willed'], 2,
+             'Strong-willed combination requires advanced training experience'),
+            (['protective', 'territorial', 'alert'], 2,
+             'Guard dog traits require experienced socialization and control'),
+        ]
+
+        # 絕對排除：高照護 + 敏感性格的組合（如 Italian Greyhound）
+        high_care_sensitive_exclusion = True
+
+        for breed in list(candidates):
+            breed_info = self.breed_cache.get(breed, {})
+            temperament = breed_info.get('temperament', '').lower()
+            care_level = breed_info.get('care_level', '').lower()
+            good_with_children = breed_info.get('good_with_children', 'Yes')
+
+            # 檢查 1: 單一致命特徵
+            for trait, reason in critical_negative_traits.items():
+                if trait in temperament:
+                    filtered[breed] = reason
+                    break
+
+            if breed in filtered:
+                continue
+
+            # 檢查 2: 危險特徵組合
+            for traits, min_count, reason in challenging_trait_combinations:
+                matched_count = sum(1 for t in traits if t in temperament)
+                if matched_count >= min_count:
+                    filtered[breed] = reason
+                    break
+
+            if breed in filtered:
+                continue
+
+            # 檢查 3: 敏感性格 + 其他負面因素的組合
+            # 這是針對如 Italian Greyhound 這類品種的通用規則
+            if 'sensitive' in temperament:
+                negative_factors = 0
+                exclusion_reasons = []
+
+                # 敏感 + 不適合兒童（暗示難以處理）
+                if good_with_children == 'No':
+                    negative_factors += 1
+                    exclusion_reasons.append('not child-friendly')
+
+                # 敏感 + 警覺性高（容易過度反應）
+                if 'alert' in temperament:
+                    negative_factors += 1
+                    exclusion_reasons.append('high alertness')
+
+                # 敏感 + 需要中高照護
+                if care_level in ['moderate', 'high']:
+                    negative_factors += 0.5
+
+                # 敏感 + 緊張/害羞
+                if any(t in temperament for t in ['nervous', 'shy', 'timid']):
+                    negative_factors += 1
+                    exclusion_reasons.append('anxiety tendencies')
+
+                # 累積超過閾值則排除
+                if negative_factors >= 1.5:
+                    reason = f"Sensitive breed with {', '.join(exclusion_reasons)} - challenging for beginners"
+                    filtered[breed] = reason
+                    continue
+
+            # 檢查 4: 需要專業訓練的工作犬
+            working_dog_indicators = ['working', 'herding', 'guard', 'protection']
+            if any(ind in temperament for ind in working_dog_indicators):
+                if care_level in ['high', 'expert']:
+                    filtered[breed] = "Working/guard breed with high care needs - requires experienced owner"
+
+        return filtered
+
+    def filter_senior_friendly(self, candidates: Set[str],
+                              dimensions: QueryDimensions) -> Dict[str, str]:
+        """
+        Filter breeds unsuitable for senior owners
+
+        通用性設計原則：
+        1. 基於品種體型、力量、運動需求等客觀特性
+        2. 考慮老年人的身體限制（力量、敏捷度、體力）
+        3. 優先推薦易於處理、低運動需求的品種
+        """
+        filtered = {}
+
+        for breed in list(candidates):
+            breed_info = self.breed_cache.get(breed, {})
+            size = breed_info.get('size', '').lower()
+            exercise_needs = breed_info.get('exercise_needs', '').lower()
+            temperament = breed_info.get('temperament', '').lower()
+            care_level = breed_info.get('care_level', '').lower()
+
+            # 1. 排除巨型犬 - 對老年人太難控制
+            if 'giant' in size:
+                filtered[breed] = "Giant breed too difficult for senior to handle physically"
+                continue
+
+            # 2. 排除大型犬 - 對老年人通常太難處理
+            if 'large' in size:
+                filtered[breed] = "Large breed may be difficult for senior to handle"
+                continue
+
+            # 3. 排除需要大量運動的品種
+            if 'very high' in exercise_needs or 'high' in exercise_needs:
+                filtered[breed] = "High exercise needs exceed typical senior lifestyle"
+                continue
+
+            # 4. 排除敏感/焦慮品種 - 對老年人心理負擔大
+            anxiety_traits = ['sensitive', 'nervous', 'anxious', 'timid', 'shy']
+            if any(t in temperament for t in anxiety_traits):
+                filtered[breed] = "Sensitive/anxious breed requires more emotional attention than ideal for senior"
+                continue
+
+            # 5. 排除需要專業訓練的難以控制品種
+            difficult_traits = ['dominant', 'stubborn', 'independent', 'strong-willed']
+            if any(t in temperament for t in difficult_traits):
+                filtered[breed] = "Strong-willed breed may be challenging for senior to manage"
+                continue
+
+            # 6. 排除高照護需求品種
+            if care_level in ['high', 'expert']:
+                filtered[breed] = "High care needs challenging for senior lifestyle"
+                continue
 
         return filtered
 

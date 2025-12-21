@@ -1,3 +1,4 @@
+# %%writefile matching_score_calculator.py
 import random
 import hashlib
 import numpy as np
@@ -483,7 +484,13 @@ class MatchingScoreCalculator:
             # 家庭相容性 (10% 權重)
             family_score = self._calculate_family_compatibility(family_requirements, breed_good_with_children, breed_temperament)
             dimension_scores['family'] = family_score
-            dimension_scores['experience'] = min(0.9, base_similarity + 0.05)  # 經驗需求基於語意相似度
+
+            # 經驗相容性 - 使用真實品種特性計算
+            experience_requirements = self._analyze_experience_requirements(user_desc)
+            experience_score = self._calculate_experience_compatibility(
+                experience_requirements, breed_info, breed_temperament
+            )
+            dimension_scores['experience'] = experience_score
 
             # 應用硬約束過濾
             constraint_penalty = self._apply_hard_constraints_enhanced(user_desc, breed_info)
@@ -786,6 +793,134 @@ class MatchingScoreCalculator:
 
         return 0.7
 
+    def _analyze_experience_requirements(self, user_desc: str) -> dict:
+        """分析用戶經驗水平需求"""
+        requirements = {'level': 'intermediate', 'importance': 0.5}
+
+        # 新手識別 - 關鍵詞匹配
+        beginner_terms = ['first dog', 'first time', 'beginner', 'new to dogs', 'inexperienced',
+                         'never owned', 'never had a dog', 'first-time owner', 'my first']
+        if any(term in user_desc for term in beginner_terms):
+            requirements['level'] = 'beginner'
+            requirements['importance'] = 0.95  # 對新手非常重要
+
+        # 高級用戶識別
+        advanced_terms = ['experienced', 'advanced', 'expert', 'breeder', 'trainer', 'many dogs']
+        if any(term in user_desc for term in advanced_terms):
+            requirements['level'] = 'advanced'
+            requirements['importance'] = 0.6
+
+        # 易於訓練需求
+        if any(term in user_desc for term in ['easy to train', 'trainable', 'obedient', 'well-behaved']):
+            requirements['needs_easy_training'] = True
+            requirements['importance'] = max(requirements['importance'], 0.85)
+
+        # 低維護需求通常暗示需要更易處理的品種
+        if any(term in user_desc for term in ['low maintenance', 'low-maintenance', 'easy care']):
+            requirements['needs_easy_care'] = True
+            if requirements['level'] == 'intermediate':
+                requirements['level'] = 'beginner'  # 低維護需求暗示初學者
+                requirements['importance'] = 0.85
+
+        return requirements
+
+    def _calculate_experience_compatibility(self, experience_req: dict, breed_info: dict, temperament: str) -> float:
+        """
+        計算經驗相容性分數 - 基於品種特性和用戶經驗水平
+
+        這是修復的關鍵函數！確保敏感/難以處理的品種對新手有低分數
+        """
+        care_level = breed_info.get('Care Level', 'Moderate').lower()
+        temperament_lower = temperament.lower()
+        user_level = experience_req.get('level', 'intermediate')
+
+        # 基礎分數矩陣
+        base_scores = {
+            'high': {
+                'beginner': 0.45,      # 高照護品種對新手困難
+                'intermediate': 0.75,
+                'advanced': 0.90
+            },
+            'moderate': {
+                'beginner': 0.65,
+                'intermediate': 0.85,
+                'advanced': 0.90
+            },
+            'low': {
+                'beginner': 0.85,      # 低照護品種對新手友善
+                'intermediate': 0.90,
+                'advanced': 0.90
+            }
+        }
+
+        # 獲取基礎分數
+        score = base_scores.get(care_level, base_scores['moderate']).get(user_level, 0.70)
+
+        # 性格特徵調整 - 對新手特別重要
+        if user_level == 'beginner':
+            # 困難性格懲罰
+            difficult_traits = {
+                'sensitive': -0.20,      # 敏感品種對新手非常困難（需要細心處理）
+                'stubborn': -0.15,
+                'independent': -0.12,
+                'dominant': -0.15,
+                'aggressive': -0.25,
+                'nervous': -0.15,
+                'alert': -0.08,          # 過度警覺可能導致吠叫問題
+                'shy': -0.12,
+                'timid': -0.12,
+                'strong-willed': -0.12,
+                'protective': -0.10
+            }
+
+            for trait, penalty in difficult_traits.items():
+                if trait in temperament_lower:
+                    score += penalty
+
+            # 友善性格獎勵
+            easy_traits = {
+                'gentle': 0.10,
+                'friendly': 0.12,
+                'eager to please': 0.15,
+                'patient': 0.10,
+                'calm': 0.10,
+                'outgoing': 0.08,
+                'affectionate': 0.08,
+                'playful': 0.05,       # 輕微加分（可能太活潑）
+                'loyal': 0.05
+            }
+
+            for trait, bonus in easy_traits.items():
+                if trait in temperament_lower:
+                    score += bonus
+
+            # 易於訓練需求額外懲罰/獎勵
+            if experience_req.get('needs_easy_training'):
+                if any(term in temperament_lower for term in ['stubborn', 'independent', 'strong-willed']):
+                    score -= 0.12
+                elif any(term in temperament_lower for term in ['eager to please', 'intelligent', 'trainable']):
+                    score += 0.10
+
+            # Good with Children = No 對新手也是警示
+            good_with_children = breed_info.get('Good with Children', 'Yes')
+            if good_with_children == 'No':
+                score -= 0.08  # 額外扣分：不適合兒童的狗通常對新手也更具挑戰
+
+        elif user_level == 'intermediate':
+            # 中級用戶的適度調整
+            if 'stubborn' in temperament_lower:
+                score -= 0.05
+            if 'independent' in temperament_lower:
+                score -= 0.03
+
+        elif user_level == 'advanced':
+            # 高級用戶可以處理具挑戰性的品種
+            if any(term in temperament_lower for term in ['intelligent', 'working', 'athletic']):
+                score += 0.05
+
+        # 確保分數在合理範圍內
+        return max(0.15, min(0.95, score))
+
     def _apply_hard_constraints_enhanced(self, user_desc: str, breed_info: dict) -> float:
         """應用品種特性感知的動態懲罰機制"""
         penalty = 0.0
@@ -869,12 +1004,15 @@ class MatchingScoreCalculator:
 
         # 添加特殊品種適應性補償機制
         # 對於邊界適配品種，給予適度補償
+        # 注意：僅補償真正對新手友善的品種
         boundary_adaptable_breeds = {
-            'Italian_Greyhound': 0.08,  # 安靜、低維護的小型犬
+            # 'Italian_Greyhound' 已移除：Sensitive 性格對新手不友好
             'Boston_Bull': 0.06,        # 適應性強的小型犬
             'Havanese': 0.05,           # 友好適應的小型犬
             'Silky_terrier': 0.04,      # 安靜的玩具犬
-            'Basset': 0.07              # 低能量但友好的中型犬
+            'Basset': 0.07,             # 低能量但友好的中型犬
+            'Cavalier_King_Charles_Spaniel': 0.08,  # 溫和友善，適合新手
+            'Bichon_Frise': 0.06        # 友善易訓練
         }
 
         if breed_name in boundary_adaptable_breeds:

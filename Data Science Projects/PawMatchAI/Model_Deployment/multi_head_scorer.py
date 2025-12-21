@@ -1,3 +1,4 @@
+# %%writefile multi_head_scorer.py 
 import numpy as np
 import json
 from typing import Dict, List, Tuple, Optional, Any, Set
@@ -11,6 +12,9 @@ from breed_health_info import breed_health_info
 from breed_noise_info import breed_noise_info
 from query_understanding import QueryDimensions
 from constraint_manager import FilterResult
+from dynamic_weight_calculator import DynamicWeightCalculator, WeightAllocationResult
+from adaptive_score_distribution import AdaptiveScoreDistribution, DistributionResult
+from dimension_score_calculator import DimensionScoreCalculator
 
 @dataclass
 class DimensionalScores:
@@ -142,165 +146,190 @@ class SemanticScoringHead(ScoringHead):
         return f"{breed_name} is a dog breed with various characteristics"
 
 class AttributeScoringHead(ScoringHead):
-    """屬性評分頭"""
+    """
+    屬性評分頭 - 使用DimensionScoreCalculator進行精確評分
+    這個類別整合了dimension_score_calculator.py中的精確評分邏輯
+    """
 
     def __init__(self):
-        self.scoring_matrices = self._initialize_scoring_matrices()
-
-    def _initialize_scoring_matrices(self) -> Dict[str, Dict[str, float]]:
-        """初始化評分矩陣"""
-        return {
-            'spatial_scoring': {
-                # (user_preference, breed_attribute) -> score
-                ('apartment', 'small'): 1.0,
-                ('apartment', 'medium'): 0.6,
-                ('apartment', 'large'): 0.2,
-                ('apartment', 'giant'): 0.0,
-                ('house', 'small'): 0.7,
-                ('house', 'medium'): 0.9,
-                ('house', 'large'): 1.0,
-                ('house', 'giant'): 1.0,
-            },
-            'activity_scoring': {
-                ('low', 'low'): 1.0,
-                ('low', 'moderate'): 0.7,
-                ('low', 'high'): 0.2,
-                ('low', 'very high'): 0.0,
-                ('moderate', 'low'): 0.8,
-                ('moderate', 'moderate'): 1.0,
-                ('moderate', 'high'): 0.8,
-                ('high', 'moderate'): 0.7,
-                ('high', 'high'): 1.0,
-                ('high', 'very high'): 1.0,
-            },
-            'noise_scoring': {
-                ('low', 'low'): 1.0,
-                ('low', 'moderate'): 0.6,
-                ('low', 'high'): 0.1,
-                ('moderate', 'low'): 0.8,
-                ('moderate', 'moderate'): 1.0,
-                ('moderate', 'high'): 0.7,
-                ('high', 'low'): 0.7,
-                ('high', 'moderate'): 0.9,
-                ('high', 'high'): 1.0,
-            },
-            'size_scoring': {
-                ('small', 'small'): 1.0,
-                ('small', 'medium'): 0.5,
-                ('small', 'large'): 0.2,
-                ('medium', 'small'): 0.6,
-                ('medium', 'medium'): 1.0,
-                ('medium', 'large'): 0.6,
-                ('large', 'medium'): 0.7,
-                ('large', 'large'): 1.0,
-                ('large', 'giant'): 0.9,
-            },
-            'maintenance_scoring': {
-                ('low', 'low'): 1.0,
-                ('low', 'moderate'): 0.6,
-                ('low', 'high'): 0.2,
-                ('moderate', 'low'): 0.8,
-                ('moderate', 'moderate'): 1.0,
-                ('moderate', 'high'): 0.7,
-                ('high', 'low'): 0.6,
-                ('high', 'moderate'): 0.8,
-                ('high', 'high'): 1.0,
-            }
-        }
+        self.dimension_calculator = DimensionScoreCalculator()
 
     def score_dimension(self, breed_info: Dict[str, Any],
                        dimensions: QueryDimensions,
                        dimension_type: str) -> float:
-        """屬性維度評分"""
+        """屬性維度評分 - 使用精確的DimensionScoreCalculator"""
         try:
-            if dimension_type.startswith('spatial_'):
+            if 'spatial' in dimension_type:
                 return self._score_spatial_compatibility(breed_info, dimensions)
-            elif dimension_type.startswith('activity_'):
+            elif 'activity' in dimension_type:
                 return self._score_activity_compatibility(breed_info, dimensions)
-            elif dimension_type.startswith('noise_'):
+            elif 'noise' in dimension_type:
                 return self._score_noise_compatibility(breed_info, dimensions)
-            elif dimension_type.startswith('size_'):
+            elif 'size' in dimension_type:
                 return self._score_size_compatibility(breed_info, dimensions)
-            elif dimension_type.startswith('family_'):
+            elif 'family' in dimension_type:
                 return self._score_family_compatibility(breed_info, dimensions)
-            elif dimension_type.startswith('maintenance_'):
+            elif 'maintenance' in dimension_type:
                 return self._score_maintenance_compatibility(breed_info, dimensions)
+            elif 'experience' in dimension_type:
+                return self._score_experience_compatibility(breed_info, dimensions)
+            elif 'health' in dimension_type:
+                return self._score_health_compatibility(breed_info, dimensions)
             else:
-                return 0.5  # 預設中性分數
+                return 0.5
 
         except Exception as e:
             print(f"Error in attribute scoring for {dimension_type}: {str(e)}")
             return 0.5
 
+    def _get_user_living_space(self, dimensions: QueryDimensions) -> str:
+        """從dimensions提取居住空間類型"""
+        if dimensions.spatial_constraints:
+            for constraint in dimensions.spatial_constraints:
+                if 'apartment' in constraint.lower():
+                    return 'apartment'
+                elif 'house' in constraint.lower():
+                    if 'small' in constraint.lower():
+                        return 'house_small'
+                    return 'house_large'
+        return 'house_small'
+
+    def _get_user_has_yard(self, dimensions: QueryDimensions) -> bool:
+        """從dimensions提取是否有院子"""
+        if dimensions.spatial_constraints:
+            for constraint in dimensions.spatial_constraints:
+                if 'yard' in constraint.lower():
+                    return True
+        return False
+
+    def _get_user_exercise_time(self, dimensions: QueryDimensions) -> int:
+        """從dimensions提取運動時間"""
+        if dimensions.activity_level:
+            for level in dimensions.activity_level:
+                if 'low' in level.lower():
+                    return 30
+                elif 'high' in level.lower():
+                    return 120
+        return 60
+
+    def _get_user_exercise_type(self, dimensions: QueryDimensions) -> str:
+        """從dimensions提取運動類型"""
+        if dimensions.activity_level:
+            for level in dimensions.activity_level:
+                if 'high' in level.lower() or 'active' in level.lower():
+                    return 'active_training'
+                elif 'low' in level.lower():
+                    return 'light_walks'
+        return 'moderate_activity'
+
+    def _get_user_grooming_commitment(self, dimensions: QueryDimensions) -> str:
+        """從dimensions提取美容承諾度"""
+        if dimensions.maintenance_level:
+            for level in dimensions.maintenance_level:
+                if 'low' in level.lower():
+                    return 'low'
+                elif 'high' in level.lower():
+                    return 'high'
+        return 'medium'
+
+    def _get_user_experience_level(self, dimensions: QueryDimensions) -> str:
+        """從dimensions提取經驗等級"""
+        if dimensions.experience_level:
+            for level in dimensions.experience_level:
+                if 'beginner' in level.lower() or 'first' in level.lower():
+                    return 'beginner'
+                elif 'advanced' in level.lower() or 'expert' in level.lower():
+                    return 'advanced'
+        return 'intermediate'
+
     def _score_spatial_compatibility(self, breed_info: Dict[str, Any],
                                    dimensions: QueryDimensions) -> float:
-        """空間相容性評分"""
-        if not dimensions.spatial_constraints:
-            return 0.5
+        """空間相容性評分 - 使用DimensionScoreCalculator"""
+        breed_size = breed_info.get('size', 'medium').capitalize()
+        if breed_size.lower() in ['small', 'medium', 'large', 'giant']:
+            breed_size = breed_size.capitalize()
+        else:
+            breed_size = 'Medium'
 
-        breed_size = breed_info.get('size', 'medium').lower()
-        total_score = 0.0
+        living_space = self._get_user_living_space(dimensions)
+        has_yard = self._get_user_has_yard(dimensions)
+        exercise_needs = breed_info.get('exercise_needs', 'Moderate').capitalize()
 
-        for spatial_constraint in dimensions.spatial_constraints:
-            key = (spatial_constraint, breed_size)
-            score = self.scoring_matrices['spatial_scoring'].get(key, 0.5)
-            total_score += score
-
-        return total_score / len(dimensions.spatial_constraints)
+        return self.dimension_calculator.calculate_space_score(
+            size=breed_size,
+            living_space=living_space,
+            has_yard=has_yard,
+            exercise_needs=exercise_needs
+        )
 
     def _score_activity_compatibility(self, breed_info: Dict[str, Any],
                                     dimensions: QueryDimensions) -> float:
-        """活動相容性評分"""
-        if not dimensions.activity_level:
-            return 0.5
+        """活動相容性評分 - 使用DimensionScoreCalculator"""
+        breed_exercise = breed_info.get('exercise_needs', 'Moderate').capitalize()
+        exercise_time = self._get_user_exercise_time(dimensions)
+        exercise_type = self._get_user_exercise_type(dimensions)
+        breed_size = breed_info.get('size', 'Medium').capitalize()
+        living_space = self._get_user_living_space(dimensions)
 
-        breed_exercise = breed_info.get('exercise_needs', 'moderate').lower()
-        # 清理品種運動需求字串
-        if 'very high' in breed_exercise:
-            breed_exercise = 'very high'
-        elif 'high' in breed_exercise:
-            breed_exercise = 'high'
-        elif 'low' in breed_exercise:
-            breed_exercise = 'low'
-        else:
-            breed_exercise = 'moderate'
-
-        total_score = 0.0
-        for activity_level in dimensions.activity_level:
-            key = (activity_level, breed_exercise)
-            score = self.scoring_matrices['activity_scoring'].get(key, 0.5)
-            total_score += score
-
-        return total_score / len(dimensions.activity_level)
+        return self.dimension_calculator.calculate_exercise_score(
+            breed_needs=breed_exercise,
+            exercise_time=exercise_time,
+            exercise_type=exercise_type,
+            breed_size=breed_size,
+            living_space=living_space
+        )
 
     def _score_noise_compatibility(self, breed_info: Dict[str, Any],
                                  dimensions: QueryDimensions) -> float:
-        """噪音相容性評分"""
-        if not dimensions.noise_preferences:
-            return 0.5
+        """噪音相容性評分 - 使用DimensionScoreCalculator"""
+        breed_name = breed_info.get('breed_name', '')
+        noise_tolerance = 'medium'
+        if dimensions.noise_preferences:
+            for pref in dimensions.noise_preferences:
+                if 'low' in pref.lower() or 'quiet' in pref.lower():
+                    noise_tolerance = 'low'
+                elif 'high' in pref.lower():
+                    noise_tolerance = 'high'
 
-        breed_noise = breed_info.get('noise_level', 'moderate').lower()
-        total_score = 0.0
+        living_space = self._get_user_living_space(dimensions)
+        has_children = 'children' in str(dimensions.family_context).lower()
+        children_age = 'school_age'
 
-        for noise_pref in dimensions.noise_preferences:
-            key = (noise_pref, breed_noise)
-            score = self.scoring_matrices['noise_scoring'].get(key, 0.5)
-            total_score += score
-
-        return total_score / len(dimensions.noise_preferences)
+        return self.dimension_calculator.calculate_noise_score(
+            breed_name=breed_name,
+            noise_tolerance=noise_tolerance,
+            living_space=living_space,
+            has_children=has_children,
+            children_age=children_age
+        )
 
     def _score_size_compatibility(self, breed_info: Dict[str, Any],
                                 dimensions: QueryDimensions) -> float:
         """尺寸相容性評分"""
         if not dimensions.size_preferences:
-            return 0.5
+            return 0.7
 
         breed_size = breed_info.get('size', 'medium').lower()
         total_score = 0.0
 
+        size_compatibility = {
+            ('small', 'small'): 1.0,
+            ('small', 'medium'): 0.5,
+            ('small', 'large'): 0.2,
+            ('small', 'giant'): 0.1,
+            ('medium', 'small'): 0.6,
+            ('medium', 'medium'): 1.0,
+            ('medium', 'large'): 0.7,
+            ('medium', 'giant'): 0.4,
+            ('large', 'small'): 0.3,
+            ('large', 'medium'): 0.7,
+            ('large', 'large'): 1.0,
+            ('large', 'giant'): 0.9,
+        }
+
         for size_pref in dimensions.size_preferences:
-            key = (size_pref, breed_size)
-            score = self.scoring_matrices['size_scoring'].get(key, 0.5)
+            key = (size_pref.lower(), breed_size)
+            score = size_compatibility.get(key, 0.5)
             total_score += score
 
         return total_score / len(dimensions.size_preferences)
@@ -309,7 +338,7 @@ class AttributeScoringHead(ScoringHead):
                                   dimensions: QueryDimensions) -> float:
         """家庭相容性評分"""
         if not dimensions.family_context:
-            return 0.5
+            return 0.7
 
         good_with_children = breed_info.get('good_with_children', 'Yes')
         temperament = breed_info.get('temperament', '').lower()
@@ -319,15 +348,18 @@ class AttributeScoringHead(ScoringHead):
 
         for family_context in dimensions.family_context:
             if family_context == 'children':
-                if good_with_children == 'Yes':
-                    total_score += 1.0
-                elif good_with_children == 'No':
-                    total_score += 0.1
+                if good_with_children == 'Yes' or good_with_children == True:
+                    # 進一步檢查temperament
+                    if any(trait in temperament for trait in ['gentle', 'friendly', 'patient']):
+                        total_score += 1.0
+                    else:
+                        total_score += 0.85
+                elif good_with_children == 'No' or good_with_children == False:
+                    total_score += 0.15
                 else:
-                    total_score += 0.6
+                    total_score += 0.5
                 score_count += 1
             elif family_context == 'elderly':
-                # 溫和、冷靜的品種適合老年人
                 if any(trait in temperament for trait in ['gentle', 'calm', 'docile']):
                     total_score += 1.0
                 elif any(trait in temperament for trait in ['energetic', 'hyperactive']):
@@ -336,7 +368,6 @@ class AttributeScoringHead(ScoringHead):
                     total_score += 0.7
                 score_count += 1
             elif family_context == 'single':
-                # 大多數品種都適合單身人士
                 total_score += 0.8
                 score_count += 1
 
@@ -344,19 +375,44 @@ class AttributeScoringHead(ScoringHead):
 
     def _score_maintenance_compatibility(self, breed_info: Dict[str, Any],
                                        dimensions: QueryDimensions) -> float:
-        """維護相容性評分"""
-        if not dimensions.maintenance_level:
-            return 0.5
+        """維護相容性評分 - 使用DimensionScoreCalculator"""
+        breed_grooming = breed_info.get('grooming_needs', 'Moderate').capitalize()
+        user_commitment = self._get_user_grooming_commitment(dimensions)
+        breed_size = breed_info.get('size', 'Medium').capitalize()
+        breed_name = breed_info.get('breed_name', '')
+        temperament = breed_info.get('temperament', '')
 
-        breed_grooming = breed_info.get('grooming_needs', 'moderate').lower()
-        total_score = 0.0
+        return self.dimension_calculator.calculate_grooming_score(
+            breed_needs=breed_grooming,
+            user_commitment=user_commitment,
+            breed_size=breed_size,
+            breed_name=breed_name,
+            temperament=temperament
+        )
 
-        for maintenance_level in dimensions.maintenance_level:
-            key = (maintenance_level, breed_grooming)
-            score = self.scoring_matrices['maintenance_scoring'].get(key, 0.5)
-            total_score += score
+    def _score_experience_compatibility(self, breed_info: Dict[str, Any],
+                                       dimensions: QueryDimensions) -> float:
+        """經驗相容性評分 - 使用DimensionScoreCalculator"""
+        care_level = breed_info.get('care_level', 'Moderate').capitalize()
+        user_experience = self._get_user_experience_level(dimensions)
+        temperament = breed_info.get('temperament', '')
 
-        return total_score / len(dimensions.maintenance_level)
+        return self.dimension_calculator.calculate_experience_score(
+            care_level=care_level,
+            user_experience=user_experience,
+            temperament=temperament
+        )
+
+    def _score_health_compatibility(self, breed_info: Dict[str, Any],
+                                   dimensions: QueryDimensions) -> float:
+        """健康相容性評分 - 使用DimensionScoreCalculator"""
+        breed_name = breed_info.get('breed_name', '')
+        health_sensitivity = 'medium'
+
+        return self.dimension_calculator.calculate_health_score(
+            breed_name=breed_name,
+            health_sensitivity=health_sensitivity
+        )
 
 class MultiHeadScorer:
     """
@@ -370,26 +426,31 @@ class MultiHeadScorer:
         self.attribute_head = AttributeScoringHead()
         self.dimension_weights = self._initialize_dimension_weights()
         self.head_fusion_weights = self._initialize_head_fusion_weights()
+        self.weight_calculator = DynamicWeightCalculator()
+        self.score_distributor = AdaptiveScoreDistribution()
 
     def _initialize_dimension_weights(self) -> Dict[str, float]:
         """初始化維度權重"""
         return {
-            'activity_compatibility': 0.35,    # 最高優先級：生活方式匹配
-            'noise_compatibility': 0.25,       # 關鍵：居住和諧
-            'spatial_compatibility': 0.15,     # 基本：物理約束
-            'family_compatibility': 0.10,      # 重要：社交相容性
-            'maintenance_compatibility': 0.10,  # 實際：持續護理評估
-            'size_compatibility': 0.05         # 基本：偏好匹配
+            'activity_compatibility': 0.20,     # 生活方式匹配
+            'noise_compatibility': 0.15,        # 居住和諧
+            'spatial_compatibility': 0.12,      # 物理約束
+            'family_compatibility': 0.12,       # 社交相容性
+            'maintenance_compatibility': 0.15,  # 持續護理評估
+            'experience_compatibility': 0.18,   # 經驗匹配（對新手非常重要）
+            'health_compatibility': 0.08        # 健康考量
         }
 
     def _initialize_head_fusion_weights(self) -> Dict[str, Dict[str, float]]:
         """初始化頭融合權重"""
         return {
-            'activity_compatibility': {'semantic': 0.4, 'attribute': 0.6},
-            'noise_compatibility': {'semantic': 0.3, 'attribute': 0.7},
-            'spatial_compatibility': {'semantic': 0.3, 'attribute': 0.7},
-            'family_compatibility': {'semantic': 0.5, 'attribute': 0.5},
-            'maintenance_compatibility': {'semantic': 0.4, 'attribute': 0.6},
+            'activity_compatibility': {'semantic': 0.3, 'attribute': 0.7},
+            'noise_compatibility': {'semantic': 0.2, 'attribute': 0.8},
+            'spatial_compatibility': {'semantic': 0.2, 'attribute': 0.8},
+            'family_compatibility': {'semantic': 0.4, 'attribute': 0.6},
+            'maintenance_compatibility': {'semantic': 0.2, 'attribute': 0.8},
+            'experience_compatibility': {'semantic': 0.2, 'attribute': 0.8},  # 經驗主要看attribute
+            'health_compatibility': {'semantic': 0.3, 'attribute': 0.7},
             'size_compatibility': {'semantic': 0.2, 'attribute': 0.8}
         }
 
@@ -415,6 +476,19 @@ class MultiHeadScorer:
                 breed_scores.append(score_result)
 
             # 按最終分數排序
+            breed_scores.sort(key=lambda x: x.final_score, reverse=True)
+
+            # 應用自適應分數分佈
+            raw_scores = [(bs.breed_name, bs.final_score) for bs in breed_scores]
+            distribution_result = self.score_distributor.distribute_scores(raw_scores)
+
+            # 更新品種分數
+            score_mapping = {breed: score for breed, score in distribution_result.final_scores}
+            for breed_score in breed_scores:
+                if breed_score.breed_name in score_mapping:
+                    breed_score.final_score = score_mapping[breed_score.breed_name]
+
+            # 重新排序
             breed_scores.sort(key=lambda x: x.final_score, reverse=True)
 
             return breed_scores
@@ -468,9 +542,20 @@ class MultiHeadScorer:
             semantic_total = 0.0
             attribute_total = 0.0
 
-            # 動態權重分配（基於用戶表達的維度）
-            active_dimensions = self._get_active_dimensions(dimensions)
-            adjusted_weights = self._adjust_dimension_weights(active_dimensions)
+            # 動態權重分配（優先使用dimension_priorities）
+            if dimensions.dimension_priorities:
+                # 使用動態權重計算器
+                user_mentions = self._extract_user_mentions(dimensions)
+                weight_result = self.weight_calculator.calculate_dynamic_weights(
+                    dimensions.dimension_priorities,
+                    user_mentions,
+                    use_contextual=True
+                )
+                adjusted_weights = weight_result.dynamic_weights
+            else:
+                # 降級到原有邏輯
+                active_dimensions = self._get_active_dimensions(dimensions)
+                adjusted_weights = self._adjust_dimension_weights(active_dimensions)
 
             # 為每個活躍維度評分
             for dimension, weight in adjusted_weights.items():
@@ -508,8 +593,14 @@ class MultiHeadScorer:
             base_score = sum(score * adjusted_weights[dim]
                            for dim, score in dimensional_scores.items())
 
+            # 關鍵維度低分懲罰機制
+            # 當用戶明確提到某維度且該維度分數很低時，施加額外懲罰
+            critical_penalty = self._calculate_critical_dimension_penalty(
+                dimensional_scores, dimensions, adjusted_weights
+            )
+
             # Apply corrections
-            final_score = max(0.0, min(1.0, base_score + bidirectional_bonus + bias_correction))
+            final_score = max(0.0, min(1.0, base_score + bidirectional_bonus + bias_correction + critical_penalty))
 
             # 信心度評估
             confidence_score = self._calculate_confidence(dimensions)
@@ -549,8 +640,39 @@ class MultiHeadScorer:
             active.add('family_compatibility')
         if dimensions.maintenance_level:
             active.add('maintenance_compatibility')
+        if hasattr(dimensions, 'experience_level') and dimensions.experience_level:
+            active.add('experience_compatibility')
 
         return active
+
+    def _extract_user_mentions(self, dimensions: QueryDimensions) -> Set[str]:
+        """
+        提取使用者明確提到的維度
+
+        Args:
+            dimensions: 查詢維度
+
+        Returns:
+            Set[str]: 使用者提到的維度集合
+        """
+        mentioned = set()
+
+        if dimensions.spatial_constraints:
+            mentioned.add('spatial_compatibility')
+        if dimensions.activity_level:
+            mentioned.add('activity_compatibility')
+        if dimensions.noise_preferences:
+            mentioned.add('noise_compatibility')
+        if dimensions.size_preferences:
+            mentioned.add('size_compatibility')
+        if dimensions.family_context:
+            mentioned.add('family_compatibility')
+        if dimensions.maintenance_level:
+            mentioned.add('maintenance_compatibility')
+        if hasattr(dimensions, 'experience_level') and dimensions.experience_level:
+            mentioned.add('experience_compatibility')
+
+        return mentioned
 
     def _adjust_dimension_weights(self, active_dimensions: Set[str]) -> Dict[str, float]:
         """調整維度權重"""
@@ -568,6 +690,90 @@ class MultiHeadScorer:
                             for dim, weight in active_weights.items()}
 
         return active_weights
+
+    def _calculate_critical_dimension_penalty(self,
+                                             dimensional_scores: Dict[str, float],
+                                             dimensions: QueryDimensions,
+                                             weights: Dict[str, float]) -> float:
+        """
+        計算關鍵維度低分懲罰
+
+        當用戶明確提到某維度（通過 dimension_priorities 或活躍維度）
+        且該維度的分數低於閾值時，施加額外懲罰。
+
+        這確保了「不合適」的品種不會因為其他維度的高分而排名過高。
+
+        Args:
+            dimensional_scores: 各維度的分數
+            dimensions: 查詢維度
+            weights: 當前使用的維度權重
+
+        Returns:
+            float: 懲罰值（負數）
+        """
+        total_penalty = 0.0
+
+        # 定義低分閾值和懲罰係數
+        LOW_SCORE_THRESHOLD = 0.55  # 低於此分數視為不匹配
+        VERY_LOW_THRESHOLD = 0.40   # 極低分數
+        PENALTY_MULTIPLIER = 0.25   # 基礎懲罰乘數（提高以增強效果）
+
+        # 檢測用戶關心的維度
+        user_priorities = {}
+
+        # 從 dimension_priorities 獲取優先級
+        if dimensions.dimension_priorities:
+            for dim, priority in dimensions.dimension_priorities.items():
+                # 映射維度名稱
+                mapped_dim = self._map_priority_dimension(dim)
+                if mapped_dim:
+                    user_priorities[mapped_dim] = priority
+
+        # 從活躍維度補充（確保提到的維度都被考慮）
+        active_dims = self._get_active_dimensions(dimensions)
+        for dim in active_dims:
+            if dim not in user_priorities:
+                user_priorities[dim] = 1.2  # 給予基本優先級
+
+        # 對用戶關心的維度檢查低分情況
+        for dim, priority in user_priorities.items():
+            if dim in dimensional_scores:
+                score = dimensional_scores[dim]
+
+                # 只對低分維度施加懲罰
+                if score < LOW_SCORE_THRESHOLD:
+                    # 懲罰程度與以下因素成正比：
+                    # 1. 分數有多低（距離閾值的差距）
+                    # 2. 用戶對該維度的優先級
+                    score_gap = LOW_SCORE_THRESHOLD - score
+                    priority_factor = min(2.0, priority)  # 限制優先級影響
+
+                    penalty = -score_gap * priority_factor * PENALTY_MULTIPLIER
+
+                    # 極低分數額外懲罰
+                    if score < VERY_LOW_THRESHOLD:
+                        penalty *= 1.5
+
+                    total_penalty += penalty
+
+        return total_penalty
+
+    def _map_priority_dimension(self, dim: str) -> str:
+        """將 priority_detector 的維度名稱映射到 multi_head_scorer 使用的名稱"""
+        mapping = {
+            'noise': 'noise_compatibility',
+            'size': 'spatial_compatibility',
+            'exercise': 'activity_compatibility',
+            'activity': 'activity_compatibility',
+            'grooming': 'maintenance_compatibility',
+            'maintenance': 'maintenance_compatibility',
+            'family': 'family_compatibility',
+            'experience': 'experience_compatibility',
+            'health': 'health_compatibility',
+            'spatial': 'spatial_compatibility',
+            'space': 'spatial_compatibility'
+        }
+        return mapping.get(dim, dim if dim.endswith('_compatibility') else None)
 
     def _calculate_bidirectional_bonus(self, breed_info: Dict[str, Any],
                                      dimensions: QueryDimensions) -> float:

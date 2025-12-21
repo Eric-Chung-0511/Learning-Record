@@ -1,3 +1,4 @@
+# %%writefile query_understanding.py
 import re
 import json
 import numpy as np
@@ -9,6 +10,7 @@ from sentence_transformers import SentenceTransformer
 from dog_database import get_dog_description
 from breed_health_info import breed_health_info
 from breed_noise_info import breed_noise_info
+from priority_detector import PriorityDetector
 
 @dataclass
 class QueryDimensions:
@@ -19,9 +21,11 @@ class QueryDimensions:
     size_preferences: List[str] = field(default_factory=list)
     family_context: List[str] = field(default_factory=list)
     maintenance_level: List[str] = field(default_factory=list)
+    experience_level: List[str] = field(default_factory=list)  # 用戶經驗等級
     special_requirements: List[str] = field(default_factory=list)
     breed_mentions: List[str] = field(default_factory=list)
     confidence_scores: Dict[str, float] = field(default_factory=dict)
+    dimension_priorities: Dict[str, float] = field(default_factory=dict)
 
 @dataclass
 class DimensionalSynonyms:
@@ -47,6 +51,7 @@ class QueryUnderstandingEngine:
         self.breed_list = self._load_breed_list()
         self.synonyms = self._initialize_synonyms()
         self.semantic_templates = {}
+        self.priority_detector = PriorityDetector()  # 初始化優先級檢測器
         # 延遲SBERT載入直到需要時才在GPU環境中進行
         print("QueryUnderstandingEngine initialized (SBERT loading deferred)")
 
@@ -129,9 +134,12 @@ class QueryUnderstandingEngine:
             },
             family={
                 'children': ['children', 'kids', 'family', 'child-friendly', 'toddler',
-                           'baby', 'school age'],
-                'elderly': ['elderly', 'senior', 'old people', 'retirement', 'aged'],
-                'single': ['single', 'alone', 'individual', 'solo', 'myself']
+                           'baby', 'school age', 'young kids', 'young children',
+                           'aged 1', 'aged 2', 'aged 3', 'aged 4', 'aged 5',
+                           '1 year', '2 year', '3 year', '4 year', '5 year',
+                           'infant', 'preschool'],
+                'elderly': ['elderly', 'senior', 'old people', 'retirement', 'aged', 'retired'],
+                'single': ['single', 'alone', 'individual', 'solo', 'myself', 'living alone']
             },
             maintenance={
                 'low': ['low maintenance', 'easy care', 'simple', 'minimal grooming',
@@ -148,7 +156,9 @@ class QueryUnderstandingEngine:
                 'hypoallergenic': ['hypoallergenic', 'allergies', 'non-shedding',
                                  'allergy-friendly', 'no shed'],
                 'first_time': ['first time', 'beginner', 'new to dogs', 'inexperienced',
-                              'never owned']
+                              'never owned'],
+                'senior': ['senior', 'elderly', 'retired', 'older person', 'old age',
+                          'aging', 'older adult', 'golden years', 'retirement']
             }
         )
 
@@ -209,7 +219,7 @@ class QueryUnderstandingEngine:
             # 如果 SBERT 可用，進行語義分析增強
             if self.sbert_model is None:
                 self._initialize_sbert_model()
-                
+
             if self.sbert_model:
                 semantic_dimensions = self._extract_semantic_dimensions(user_input)
                 dimensions = self._merge_dimensions(dimensions, semantic_dimensions)
@@ -219,6 +229,18 @@ class QueryUnderstandingEngine:
 
             # 計算信心分數
             dimensions.confidence_scores = self._calculate_confidence_scores(dimensions, user_input)
+
+            # **關鍵修復：使用 PriorityDetector 檢測維度優先級**
+            priority_result = self.priority_detector.detect_priorities(user_input)
+            dimensions.dimension_priorities = priority_result.dimension_priorities
+
+            # Debug 輸出
+            print(f"=== Query Analysis Debug ===")
+            print(f"  experience_level: {dimensions.experience_level}")
+            print(f"  maintenance_level: {dimensions.maintenance_level}")
+            print(f"  spatial_constraints: {dimensions.spatial_constraints}")
+            print(f"  dimension_priorities: {dimensions.dimension_priorities}")
+            print(f"============================")
 
             return dimensions
 
@@ -266,6 +288,22 @@ class QueryUnderstandingEngine:
         for requirement, keywords in self.synonyms.special.items():
             if any(keyword in text for keyword in keywords):
                 dimensions.special_requirements.append(requirement)
+                # 如果檢測到first_time，同時設置experience_level
+                if requirement == 'first_time':
+                    dimensions.experience_level.append('beginner')
+
+        # 額外的經驗等級檢測
+        experience_keywords = {
+            'beginner': ['first dog', 'first time', 'beginner', 'new to dogs', 'inexperienced',
+                        'never owned', 'never had a dog', 'first-time owner', 'first-time dog owner',
+                        'first time owner', 'first time dog owner', 'new dog owner', 'new owner'],
+            'intermediate': ['some experience', 'had dogs before', 'owned dogs'],
+            'advanced': ['experienced', 'expert', 'professional', 'breeder', 'dog trainer']
+        }
+        for level, keywords in experience_keywords.items():
+            if any(keyword in text for keyword in keywords):
+                if level not in dimensions.experience_level:
+                    dimensions.experience_level.append(level)
 
         return dimensions
 
@@ -374,6 +412,9 @@ class QueryUnderstandingEngine:
         ))
         merged.maintenance_level = list(set(
             keyword_dims.maintenance_level + semantic_dims.maintenance_level
+        ))
+        merged.experience_level = list(set(
+            keyword_dims.experience_level + semantic_dims.experience_level
         ))
         merged.special_requirements = list(set(
             keyword_dims.special_requirements + semantic_dims.special_requirements

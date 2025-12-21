@@ -1,3 +1,4 @@
+# %%writefile recommendation_html_format.py
 import random
 from typing import List, Dict
 from breed_health_info import breed_health_info, default_health_note
@@ -259,7 +260,7 @@ def format_recommendation_html(recommendations: List[Dict], is_description_searc
 
 def format_unified_recommendation_html(recommendations: List[Dict], is_description_search: bool = False) -> str:
     """統一推薦HTML格式化主函數，確保視覺呈現與數值計算完全一致"""
-    
+
     # 創建HTML格式器實例
     formatter = RecommendationHTMLFormatter()
 
@@ -272,21 +273,33 @@ def format_unified_recommendation_html(recommendations: List[Dict], is_descripti
         </div>
         '''
 
+    # 確保按分數降序排序，並更新排名
+    sorted_recommendations = sorted(
+        recommendations,
+        key=lambda x: x.get('final_score', x.get('overall_score', 0)),
+        reverse=True
+    )
+    for i, rec in enumerate(sorted_recommendations):
+        rec['rank'] = i + 1
+
     # 使用格式器的統一CSS樣式
     html_content = formatter.unified_css + "<div class='unified-recommendations'>"
 
-    for rec in recommendations:
+    for rec in sorted_recommendations:
         breed = rec['breed']
         rank = rec.get('rank', 0)
 
-        # 統一分數處理
-        overall_score = rec.get('overall_score', rec.get('final_score', 0.7))
+        # 統一分數處理 - 優先使用 final_score（經過風險調整後的分數）
+        overall_score = rec.get('final_score', rec.get('overall_score', 0.7))
         scores = rec.get('scores', {})
 
         # 如果沒有維度分數，基於總分生成一致的維度分數
         if not scores:
             scores = generate_dimension_scores_for_display(
-                overall_score, rank, breed, is_description_search=is_description_search
+                base_score=overall_score,
+                rank=rank,
+                breed=breed,
+                is_description_search=is_description_search
             )
 
         # 獲取品種資訊
