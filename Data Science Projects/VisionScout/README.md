@@ -52,10 +52,52 @@ Think of Vision Scout as your AI companion for analyzing images. Here's a glimps
 
 Vision Scout works like a team of AI specialists, each examining your image from their unique perspective before coming together to tell the complete story. It's a collaborative process where different components analyze in parallel, then intelligently combine their insights. The flowchart below shows how this all unfolds, followed by a detailed walkthrough:
 
-<p align="center">
-  <img src="https://github.com/Eric-Chung-0511/Learning-Record/blob/main/Data%20Science%20Projects/VisionScout/Project_FlowChart.svg" width="800">
-</p>
+```mermaid
+flowchart TD
+    A["1️⃣ 🖼️ Image Input<br/>PIL Image / Numpy"] ==> B["1️⃣ 🔄 Image Preprocessing<br/>Format Conversion &<br/>Storage"]
+    
+    B ==> C["2️⃣ 🏛️ Places365 Scene<br/>Classification<br/>ResNet50 • 365 Categories"]
+    B ==> D["2️⃣ 🎯 YOLO Object<br/>Detection<br/>Instance Segmentation"]
+    
+    C ==> E["3️⃣ 💡 Lighting Analysis<br/>Places365 Guided<br/>Enhancement"]
+    D ==> F["3️⃣ 📍 Spatial Object<br/>Mapping<br/>Grid-Based Analysis"]
+    
+    E ==> G["3️⃣ 🧠 Semantic Scene<br/>Analysis<br/>CLIP Multi-Modal"]
+    F ==> H["3️⃣ 🏛️ Landmark Recognition<br/>CLIP Zero-Shot<br/>Classification"]
+    
+    C ==> I["4️⃣ 📊 Places365 Scene<br/>Scoring"]
+    G ==> J["4️⃣ 🎯 CLIP Scene Scoring<br/>Semantic-Based"]
+    F ==> K["4️⃣ 🔍 YOLO Scene<br/>Scoring<br/>Object-Based"]
+    H ==> K
+    
+    I ==> L["5️⃣ ⚖️ Dynamic Weight<br/>Fusion<br/>Adaptive Scene<br/>Assessment"]
+    J ==> L
+    K ==> L
+    
+    L ==> M["6️⃣ 🗺️ Functional Zone<br/>Identification<br/>Spatial Layout Analysis"]
+    L ==> N["6️⃣ 🏃 Activity & Safety<br/>Inference<br/>Behavioral Pattern<br/>Recognition"]
+    L ==> O["7️⃣ 📝 Template-Based Scene<br/>Description<br/>Initial Narrative Generation"]
+    
+    M ==> P["7️⃣ 🤖 LLM Enhancement<br/>Process<br/>Llama 3.2 Refinement<br/>with Factual Verification"]
+    N ==> P
+    O ==> P
+    
+    P ==> Q["8️⃣ 📋 Structured Output<br/>Assembly<br/>Multi-Format Result<br/>Integration"]
+    
+    Q ==> R["8️⃣ 💻 Gradio Interface<br/>Display<br/>Interactive Multi-Tab<br/>Presentation"]
 
+    classDef inputOutput fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    classDef processing fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef analysis fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef fusion fill:#fff3e0,stroke:#e65100,stroke-width:3px
+    classDef generation fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    
+    class A,R inputOutput
+    class B,P,Q processing
+    class C,D,E,F,G,H analysis
+    class I,J,K,L fusion
+    class M,N,O generation
+```
 
 1️⃣ **Image Input and Preprocessing**
 
