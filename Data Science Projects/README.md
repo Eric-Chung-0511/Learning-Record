@@ -98,7 +98,7 @@ My focus in deep learning is on architecting and building robust, end-to-end sys
 
 ### Flagship Project: VisionScout — A Multi-Modal Scene Understanding System
 
-My main system-level project, [**VisionScout**](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout), is designed not just to see objects, but to understand the entire story within an image. It orchestrates a **multi-modal fusion of YOLOv8, CLIP, Places365, and Llama 3.2** to generate a rich, human-like narrative of a scene, complete with spatial analysis and inferred activities. This novel architectural approach earned the project a feature in **Hugging Face’s “Spaces of the Week.”**
+My main system-level project, [**VisionScout**](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/VisionScout), is designed not just to see objects, but to understand the entire story within an image. It orchestrates a **multi-modal fusion of YOLO11, CLIP, Places365, and Llama 3.2** to generate a rich, human-like narrative of a scene, complete with spatial analysis and inferred activities. This novel architectural approach earned the project a feature in **Hugging Face’s “Spaces of the Week.”**
 
 ### Deep-Dive Project: PawMatchAI — High-Accuracy Specialized Classification
 
