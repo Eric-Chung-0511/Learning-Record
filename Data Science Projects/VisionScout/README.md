@@ -1,19 +1,20 @@
 # 🛰️ Vision Scout 🔍
 
-Welcome aboard **Vision Scout**! 🚀 This isn't just another tool that spots objects in pictures. Vision Scout digs deeper, aiming to **understand the whole story an image tells**. I blend the sharp eyes of **YOLOv8** for object detection, the contextual smarts of **OpenAI's CLIP** for semantic understanding, the scene classification power of **Places365**, and the advanced narrative capabilities of **Meta's Llama 3.2** to bring it all together. The result? A system that can figure out the scene type (is it a crossroads or a quiet bedroom?), gauge the lighting, map out how things are arranged, guess what might be happening, and even point out things to watch out for, all presented in a cohesive, human-like story. It's all wrapped up in a friendly Gradio web app.
+Welcome aboard **Vision Scout**! 🚀 This isn't just another tool that spots objects in pictures. Vision Scout digs deeper, aiming to **understand the whole story an image tells**. I blend the sharp eyes of **YOLO 11** for object detection, the contextual smarts of **OpenAI's CLIP** for semantic understanding, the scene classification power of **Places365**, and the advanced narrative capabilities of **Meta's Llama 3.2** to bring it all together. The result? A system that can figure out the scene type (is it a crossroads or a quiet bedroom?), gauge the lighting, map out how things are arranged, guess what might be happening, and even point out things to watch out for, all presented in a cohesive, human-like story. It's all wrapped up in a friendly Gradio web app.
 
 **Why Vision Scout?**
 
 While many tools detect objects, Vision Scout offers more:
-* **Multi-Modal Intelligent Fusion:** It doesn't just *see* objects (YOLOv8), it understands the *context* and *vibe* (CLIP), establishes environmental baseline with comprehensive scene classification (Places365), and smartly combines all three perspectives for superior scene identification. This triple-layer approach ensures robust understanding whether the scene is defined by specific objects, overall atmosphere, or fundamental environmental characteristics.
+* **Multi-Modal Intelligent Fusion:** It doesn't just *see* objects (YOLO 11), it understands the *context* and *vibe* (CLIP), establishes environmental baseline with comprehensive scene classification (Places365), and smartly combines all three perspectives for superior scene identification. This triple-layer approach ensures robust understanding whether the scene is defined by specific objects, overall atmosphere, or fundamental environmental characteristics.
 * **Rich Narratives, Elevated by LLM:** Forget simple tags. Vision Scout, enhanced by **Llama 3.2**, crafts detailed, human-like descriptions that truly tell the story of the scene, making complex visual information accessible and engaging.
 * **Spatial Smarts:** It figures out where things are in relation to each other, identifying functional zones like 'dining areas' or 'workspaces'.
 * **From Snapshots to Statistical Intelligence**: VisionScout now extends beyond single image analysis to provide comprehensive video processing capabilities. The system performs temporal object detection with sophisticated duplicate elimination algorithms, generating detailed statistical reports including object counts, appearance timelines, and quality metrics. Rather than traditional tracking, VisionScout applies spatial clustering techniques to ensure accurate counting and provides timeline analysis showing when objects first appear and their duration in the video. 
 
 ---
 
-## 📊 Project Impact
-**This project has achieved:**
+## 📊 Project Impact & Recent Updates
+
+**Latest Enhancement:** Successfully upgraded from YOLOv8 to YOLO11, achieving improved detection accuracy and faster inference speed while maintaining system stability.
 
 > ![Visits](https://img.shields.io/badge/Total%20Visits-10k+-blue)
 ![Model Runs](https://img.shields.io/badge/Model%20Runs-4k+-green)
@@ -24,7 +25,7 @@ While many tools detect objects, Vision Scout offers more:
 
 Think of Vision Scout as your AI companion for analyzing images. Here's a glimpse of what it brings to the table:
 
-* **Sharp Object Spotting:** Uses **YOLOv8** (pick 'n', 'm', or 'x' for speed vs. accuracy) to find objects quickly and reliably. Furthermore, you can control the confidence threshold and filter *for* specific object types (like people or vehicles), meaning *only* those selected objects will be displayed in the results. This filtering can be helpful when focusing on particular elements in a scene.
+* **Sharp Object Spotting:** Uses **YOLO 11** (pick 'n', 'm', or 'x' for speed vs. accuracy) to find objects quickly and reliably. Furthermore, you can control the confidence threshold and filter *for* specific object types (like people or vehicles), meaning *only* those selected objects will be displayed in the results. This filtering can be helpful when focusing on particular elements in a scene.
 
 * **Clear Statistics & Visualization:** Provides clear statistics and a visual bar chart summarizing what objects were detected and how many of each type were found.
 
@@ -32,7 +33,7 @@ Think of Vision Scout as your AI companion for analyzing images. Here's a glimps
 
 * **Understanding the Vibe with CLIP:** This is where Vision Scout truly shines. **CLIP** grasps the image's overall meaning by comparing it to descriptions covering everything from 'city street' vs 'living room' to 'daytime clear' vs 'neon night', understanding context objects alone can't provide. It's also employed for zero-shot landmark recognition, identifying famous locations and architectural features that might not be caught by standard object detection.
 
-* **Smarter Scene Classification (Multi-Modal Fusion):** Vision Scout intelligently **combines** YOLOv8's object data, CLIP's contextual understanding, and Places365's scene classification through dynamic weight fusion. This *hybrid scoring* improves scene identification by cleverly weighting evidence—leaning more on YOLO for object-defined scenes (like kitchens) and more on CLIP for atmosphere-defined scenes (like night markets), while using Places365 as the foundational environmental context.
+* **Smarter Scene Classification (Multi-Modal Fusion):** Vision Scout intelligently **combines** YOLO 11's object data, CLIP's contextual understanding, and Places365's scene classification through dynamic weight fusion. This *hybrid scoring* improves scene identification by cleverly weighting evidence—leaning more on YOLO for object-defined scenes (like kitchens) and more on CLIP for atmosphere-defined scenes (like night markets), while using Places365 as the foundational environmental context.
 
 * **Telling the Story - Rich & Refined Descriptions with LLM:** Instead of just a list, the `EnhancedSceneDescriber` crafts an initial detailed narrative. Then, the **`LLMEnhancer` (powered by Llama 3.2)** takes this further, refining the story for superior fluency and contextual depth. It weaves together the scene type, objects, lighting, viewpoint, functional zones, and even cultural hints into a highly readable and insightful paragraph, ensuring factual consistency with the visual evidence.
 
@@ -66,7 +67,7 @@ Vision Scout works like a team of AI specialists, each examining your image from
 
    * **Places365 Scene Classification** initiates the process with a ResNet50 model trained on 365 different scene categories. Think of it as the generalist who takes one look and says "this feels like a kitchen" or "looks like a park to me." It provides that crucial first impression along with a confidence score, plus an early assessment about whether we're looking at an indoor or outdoor scene.
 
-   * **YOLOv8 Object Detection** operates in parallel, conducting detailed inventory work by scanning the image to identify specific objects and their exact locations, complete with bounding boxes and confidence levels for each detection. This provides the concrete "what's actually in this picture" foundation that everything else builds upon.
+   * **YOLO 11 Object Detection** operates in parallel, conducting detailed inventory work by scanning the image to identify specific objects and their exact locations, complete with bounding boxes and confidence levels for each detection. This provides the concrete "what's actually in this picture" foundation that everything else builds upon.
 
 3️⃣ **Feature Enhancement and Deep Analysis**
 
@@ -118,7 +119,7 @@ The beauty of this system lies in how all these components work together through
 
 This project relies on a sophisticated ensemble of cutting-edge models and custom logic components working in coordinated harmony:
 
-**YOLOv8 (Ultralytics):** Our object detection powerhouse, renowned for its optimal speed-accuracy balance. It identifies objects with precise localization, draws bounding boxes, assigns COCO class labels, and provides confidence scores for each detection. The `DetectionModel` class manages this functionality, serving as the foundation for concrete object-based scene understanding that feeds into spatial analysis and functional zone identification.
+**YOLO11 (Ultralytics):** Our object detection powerhouse, representing the latest evolution in the YOLO architecture with enhanced accuracy and improved inference speed. Built upon the advanced architecture improvements introduced in YOLOv8, YOLO11 delivers superior performance in object localization, precise bounding box generation, COCO class label assignment, and confidence score estimation. The model incorporates architectural refinements including optimized C3k2 blocks replacing traditional C2f modules, enhanced attention mechanisms through Spatial Pyramid Pooling Fast (SPPF) layers, and improved feature fusion strategies that enable better handling of complex scenes with multiple overlapping objects.
 
 **Places365 (MIT):** The environmental foundation and contextual anchor of our entire system, employing a ResNet50 model trained on 365 distinct scene categories. This component provides crucial baseline scene classification that guides all subsequent analytical processes. The `Places365Model` delivers initial scene labels with confidence scores and indoor/outdoor probability estimates, functioning as the environmental context provider that helps refine lighting analysis, influences dynamic weight fusion decisions, and provides contextual guidance for CLIP semantic analysis throughout the processing pipeline.
 
@@ -379,7 +380,7 @@ For detailed terms and conditions, please refer to the [LICENSE](https://github.
 
 ## 🙏 Acknowledgements
 
-* Thanks to **Ultralytics** for the powerful and easy-to-use **YOLOv8** object detection model. More information and the implementation can be found at the [Ultralytics YOLOv8 Repository](https://github.com/ultralytics/ultralytics).
+* Thanks to **Ultralytics** for the powerful and easy-to-use **YOLO11** object detection model. More information and the implementation can be found at the [Ultralytics YOLOv8 Repository](https://github.com/ultralytics/ultralytics).
 
 * Appreciation to **OpenAI** for the groundbreaking **CLIP** model and methodology. The work by Radford et al., [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020), established the foundational principles of contrastive language-image learning that enables the sophisticated semantic understanding and zero-shot classification capabilities in this project.
 
