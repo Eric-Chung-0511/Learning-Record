@@ -57,7 +57,7 @@ flowchart TD
     A["1️⃣ 🖼️ Image Input<br/>PIL Image / Numpy"] ==> B["1️⃣ 🔄 Image Preprocessing<br/>Format Conversion &<br/>Storage"]
     
     B ==> C["2️⃣ 🏛️ Places365 Scene<br/>Classification<br/>ResNet50 • 365 Categories"]
-    B ==> D["2️⃣ 🎯 YOLO Object<br/>Detection<br/>Instance Segmentation"]
+    B ==> D["2️⃣ 🎯 YOLO11 Object<br/>Detection<br/>Instance Segmentation"]
     
     C ==> E["3️⃣ 💡 Lighting Analysis<br/>Places365 Guided<br/>Enhancement"]
     D ==> F["3️⃣ 📍 Spatial Object<br/>Mapping<br/>Grid-Based Analysis"]
@@ -67,7 +67,7 @@ flowchart TD
     
     C ==> I["4️⃣ 📊 Places365 Scene<br/>Scoring"]
     G ==> J["4️⃣ 🎯 CLIP Scene Scoring<br/>Semantic-Based"]
-    F ==> K["4️⃣ 🔍 YOLO Scene<br/>Scoring<br/>Object-Based"]
+    F ==> K["4️⃣ 🔍 YOLO11 Scene<br/>Scoring<br/>Object-Based"]
     H ==> K
     
     I ==> L["5️⃣ ⚖️ Dynamic Weight<br/>Fusion<br/>Adaptive Scene<br/>Assessment"]
