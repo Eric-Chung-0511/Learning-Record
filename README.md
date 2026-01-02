@@ -53,7 +53,7 @@ The [Projects folder](https://github.com/Eric-Chung-0511/Learning-Record/tree/ma
 
 Here are three highlighted projects that showcase different aspects of my skills:
 
-* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** – A deep learning project for dog breed classification with over **13k+ GPU Runs and 33k+ visits**, and was featured in Hugging Face's **"Spaces of the Week"** for its strong user engagement and real-world utility.
+* 🐾 **[PawMatchAI](https://github.com/Eric-Chung-0511/Learning-Record/tree/main/Data%20Science%20Projects/PawMatchAI)** – A deep learning project for dog breed classification with over **14k+ GPU Runs and 34k+ visits**, and was featured in Hugging Face's **"Spaces of the Week"** for its strong user engagement and real-world utility.
 It combines **ConvNeXtV2**, **Multi-Head Attention**, and a **morphological feature extractor** to accurately classify 124 breeds, and uniquely offers a **sophisticated recommendation system** to suggest the most compatible match based on detailed lifestyle preferences and breed characteristics.
 The project demonstrates advanced problem-solving by implementing **knowledge distillation techniques** to address challenging breed distinctions and integrating **contrastive loss functions** to enhance model robustness against visually similar breeds.
 
