@@ -129,7 +129,7 @@ For any questions or suggestions about my project, please feel free to contact m
 
 <h2 id="license">📜 License</h2>
 
-© 2025 Eric Chung. This project is licensed under the Apache License 2.0, a permissive open source license that enables broad usage while ensuring proper attribution to the original author.
+© 2026 Eric Chung. This project is licensed under the Apache License 2.0, a permissive open source license that enables broad usage while ensuring proper attribution to the original author.
 
 For detailed terms and conditions, please refer to the [LICENSE](./LICENSE.md) file.
 
