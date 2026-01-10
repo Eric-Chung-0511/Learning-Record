@@ -2,13 +2,25 @@
 
 ## ✨ Project Overview
 
-**VividFlow** is an optimized AI-powered image-to-video generation system that transforms static images into cinematic videos with professional motion quality. Built on the Wan2.2-I2V-A14B foundation model enhanced with Lightning LoRA distillation and FP8 quantization, VividFlow delivers smooth, artifact-free animations from any image type, including portraits, artwork, products, and landscapes.
+**VividFlow** is an integrated AI image processing platform offering two core capabilities: transforming static images into cinematic videos and generating photorealistic AI backgrounds with intelligent subject blending. Built on the Wan2.2-I2V-A14B foundation model for video generation and Stable Diffusion XL for background synthesis, VividFlow delivers professional-grade outputs suitable for content creators, marketers, and digital artists.
 
 The system features an intelligent prompt categorization framework with eight curated motion template libraries, each specifically designed to prevent common generation artifacts while maximizing output quality. Whether creating fashion editorials with dramatic hair dynamics or bringing digital artwork to life with fluid transformations, VividFlow provides the tools for professional-grade video content creation.
+
+The background generation system leverages BiRefNet for precise subject segmentation and employs advanced Lab color space blending techniques to eliminate common edge artifacts. With twenty-four curated scene templates spanning professional studios to seasonal landscapes, users can transform ordinary portraits and product photos into compelling visual compositions. The dual-tab interface architecture ensures both features operate independently without resource conflicts, maintaining optimal performance across the platform.
 
 ---
 
 ## 🎯 Key Features
+
+### 0. 🎨 Dual Creative Workflow
+
+VividFlow provides two independent yet complementary creative tools accessible through a streamlined dual-tab interface:
+
+**Image to Video Generation** transforms static images into dynamic videos with durations ranging from half a second to five seconds. The system supports comprehensive motion control through eight curated template categories and custom natural language prompts, enabling users to specify camera movements, subject actions, and atmospheric effects with precision.
+
+**Background Generation and Replacement** intelligently extracts foreground subjects and synthesizes photorealistic backgrounds tailored to user specifications. The feature combines semantic segmentation, scene understanding, and advanced compositing techniques to produce seamless results that preserve subject integrity while replacing entire environmental contexts.
+
+This architectural separation ensures each workflow maintains dedicated computational resources and optimized processing pipelines, preventing performance degradation when switching between creative tasks.
 
 ### 1. 🎭 Intelligent Motion Template Library
 
@@ -77,6 +89,19 @@ VividFlow maintains high visual fidelity through several technical approaches:
 - Lightning LoRA distillation enables four-step generation with quality comparable to traditional fifty-step processes
 - Automatic image preprocessing handles aspect ratios and ensures dimensions meet model requirements without distortion
 
+### 6. 🖼️ Intelligent Background Generation
+
+Background generation system provides professional-grade environmental replacement with artifact-free blending:
+
+#### 6.1 Curated Scene Template Library
+Twenty-four professionally designed templates organized across five categories deliver instant creative options. The Professional category includes modern offices, executive suites, and photography studios. Nature templates span tropical beaches, enchanted forests, and mountain vistas. Urban scenes feature city skylines, European streets, and rooftop terraces. Artistic options provide soft gradients, abstract compositions, and watercolor aesthetics. Seasonal templates capture the atmosphere of spring meadows, summer tropics, autumn foliage, and winter wonderlands.
+
+#### 6.2 AI-Powered Prompt Enhancement
+The system analyzes uploaded images using OpenCLIP to understand subject type, lighting conditions, and color temperature. This analysis automatically enriches user-provided background descriptions with appropriate lighting terms, atmospheric descriptors, and quality modifiers. Enhanced prompts ensure generated backgrounds harmonize with foreground subjects while maintaining photorealistic coherence.
+
+#### 6.3 Flexible Composition Control
+Users select from multiple composition modes including center-weighted smart placement, left-half and right-half positioning for asymmetric subjects, and full-image replacement. Focus mode toggles between person-centric tight cropping and scene-inclusive environmental preservation. Adjustable feather radius enables edge softening from zero pixels for sharp boundaries to twenty pixels for complex subjects like hair or fur. Real-time mask preview provides diagnostic feedback, displaying exactly which regions will be preserved versus replaced before final generation.
+
 ---
 
 ## ⚙️ Technical Architecture
@@ -122,6 +147,20 @@ The preprocessed image enters the dual-transformer pipeline where motion pattern
 #### 3.3 Video Export Stage
 Generated frame sequences undergo VAE decoding to produce final output. The system automatically applies temporal smoothing and uses H.264 encoding with optimized bitrate settings for quality and file size balance.
 
+### 4. 🎨 Background Generation Architecture
+
+#### 4.1 SDXL Pipeline Integration
+VividFlow incorporates Stable Diffusion XL Base 1.0 for background synthesis, utilizing the model's superior photorealistic rendering capabilities and scene understanding. The pipeline employs DPM Solver multistep scheduling for efficient convergence with minimal inference steps. FP16 precision balances memory efficiency with generation quality across diverse scene types.
+
+#### 4.2 Semantic Analysis Layer
+OpenCLIP ViT-B-32 provides image understanding capabilities that inform prompt enhancement decisions. The system analyzes uploaded images to classify subject types as persons, animals, objects, nature scenes, or architectural elements. Color temperature analysis determines warm versus cool lighting characteristics. Brightness evaluation identifies appropriate atmospheric descriptors. This semantic information automatically enriches user prompts with contextually appropriate scene descriptions.
+
+#### 4.3 Segmentation Model Hierarchy
+BiRefNet serves as the primary segmentation model, offering state-of-the-art accuracy for complex subjects including fine hair detail, transparent objects, and challenging edge cases. When BiRefNet is unavailable due to resource constraints, the system automatically falls back to rembg's U-Net implementation with specialized cartoon character detection and enhancement. Traditional gradient-based segmentation using Sobel operators and Laplacian edge detection provides the final fallback option, ensuring consistent functionality.
+
+#### 4.4 Advanced Compositing Engine
+The image blending system operates in CIE Lab color space where Euclidean distances correspond to perceptual color differences. Edge erosion removes contaminated boundary pixels before blending. Alpha channel binarization eliminates semi-transparent artifacts that cause color bleeding. Adaptive strength mapping applies variable correction intensity based on proximity to original background colors. Core foreground protection ensures faces and primary subjects retain original coloration without influence from generated backgrounds.
+
 ---
 
 ## 🔧 Current Performance Status
@@ -138,6 +177,9 @@ Once models are loaded and cached, generation times are expected to decrease to 
 
 #### 1.3 Quality Priority
 The current implementation prioritizes output stability and visual quality over maximum speed. Results demonstrate smooth motion flow, artifact-free rendering, and consistent quality across diverse content types.
+
+### 1.4 Background Generation Performance
+Background synthesis completes substantially faster than video generation due to the single-image nature of the task. First-time generation including model loading requires approximately two to three minutes as the system loads SDXL pipeline components, OpenCLIP analyzers, and segmentation models. Subsequent generations complete in thirty to forty seconds once models are cached in memory. The independent dual-tab architecture ensures background generation workloads do not interfere with video generation resources and vice versa.
 
 ### 2. 🚀 Active Development & Optimization
 
@@ -163,6 +205,9 @@ Generate engaging product showcase videos from standard product photography. The
 #### 1.3 Digital Art Animation
 Bring illustrations, concept art, and digital paintings to life with fluid motion and dramatic transformations. The abstract and artistic templates support experimental approaches that enhance creative portfolios.
 
+#### 1.4 Portrait Enhancement and Recontextualization
+Transform standard portrait photography by placing subjects in aspirational or thematic environments. Professional headshots gain executive office backgrounds. Casual portraits receive artistic or seasonal atmospheres. Product photography acquires studio-quality settings. 
+
 ### 2. Content Marketing & Social Media
 
 #### 2.1 Social Media Content
@@ -170,6 +215,9 @@ Create attention-grabbing video posts from existing photo libraries. The quick g
 
 #### 2.2 Brand Storytelling
 Develop cohesive visual narratives by animating key brand imagery with consistent motion styles. The template system ensures brand consistency across multiple content pieces.
+
+#### 2.3 E-Commerce Visual Optimization
+Elevate product listings by generating consistent, professional backgrounds across entire product catalogs. Remove distracting original environments and replace them with clean studio settings or contextually appropriate scenes. The twenty-four template library provides immediate options for various product categories. Custom prompt capabilities enable brand-specific environmental styling that aligns with visual identity guidelines.
 
 ### 3. Creative Exploration
 
@@ -198,6 +246,8 @@ The interface provides intuitive controls for image upload, prompt selection or 
 - **Performance Optimization**: Continue refinement of the inference pipeline to achieve consistent sub-ninety-second generation times
 - **Batch Generation Mode**: Implement multi-prompt processing for generating several motion variations in one session
 - **Extended Duration Support**: Evaluate feasibility of longer video outputs beyond the current five-second maximum
+- **Expanded Scene Template Library**: Develop additional background templates based on community feedback and usage analytics, focusing on vertical market needs such as professional services, hospitality, and retail contexts
+- **Advanced Mask Editing Tools**: Implement manual mask refinement capabilities for precise control over subject boundaries in complex scenarios
 
 ### 2. Medium-Term Goals
 
@@ -221,6 +271,10 @@ VividFlow builds upon the foundational work of multiple research teams and open-
 - **Charles Bensimon's optimized transformer weights** enable efficient deployment on modern GPU architectures
 - **Lightx2v Lightning LoRA** by Kijai dramatically reduces inference time while maintaining output quality
 - **Qwen2.5-0.5B** from Alibaba Cloud powers the optional prompt enhancement system
+- **Stable Diffusion XL** from Stability AI enables high-quality background generation with photorealistic rendering
+- **BiRefNet** from ZhengPeng7 provides state-of-the-art subject segmentation with exceptional edge precision
+- **OpenCLIP** from the open-source community delivers robust image understanding for intelligent prompt enhancement
+- **rembg** from danielgatis offers reliable background removal capabilities as a fallback segmentation option
 
 Technical implementation relies on the Diffusers library from Hugging Face, PyTorch for deep learning infrastructure, and Gradio for the web interface.
 
@@ -230,7 +284,7 @@ Technical implementation relies on the Diffusers library from Hugging Face, PyTo
 
 ![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-lightgray)
 
-© 2025 Dawn Chung. This project is licensed under the Apache License 2.0, which permits both commercial and non-commercial use while ensuring proper attribution to the original author and contributors.
+This project is licensed under the Apache License 2.0, which permits both commercial and non-commercial use while ensuring proper attribution to the original author and contributors.
 
 ---
 
