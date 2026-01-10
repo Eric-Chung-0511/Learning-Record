@@ -1,0 +1,93 @@
+PROMPT_EXAMPLES = {
+    "💃 Fashion / Beauty (Facial Only)": [
+        "Hair flows elegantly, model gazes confidently at camera, studio lighting highlights facial features, high-fashion editorial",
+        "Dramatic hair whip in slow motion, fierce eye contact with camera, wind effect, hair flies dynamically across frame",
+        "Model's head tilts back with confidence, hair cascades like waterfall, powerful gaze intensifies, editorial vogue style",
+        "Explosive hair toss left to right, eyes lock onto camera seductively, strobe lighting flashes, high-energy fashion film",
+        "Subtle wink emerges slowly, one eye closes playfully, lips curve into flirty smile, head tilts coyly, seductive charm",
+        "Radiant smile spreads across face, eyes sparkle with joy, cheeks lift naturally, warm genuine happiness radiates",
+        "Seductive gaze intensifies, eyes narrow alluringly, lips part slightly, slow blink follows, smoldering fashion intensity",
+        "Natural playful wink, gentle smile, eyes sparkle with warm charm",
+    ],
+
+    "🎭 Portrait - Subtle Expressions": [
+        "Subject turns head sharply to camera, eyes widen with surprise, hair swings dramatically, emotional close-up",
+        "Person laughs heartily, head tilts back, genuine joy radiates, natural lighting shifts warmly",
+        "Character looks around curiously, head movements follow unseen object, eyes track motion, engaging storytelling",
+        "Subject's expression transforms from neutral to big smile, eyebrows raise, head nods enthusiastically, vibrant energy",
+        "Gentle nod and smile, eyes close briefly then open, warm expression emerges, peaceful moment",
+        "Person takes deep breath, slight head tilt, eyes sparkle with realization, cinematic character moment",
+        "Soft smile appears gradually, eyes crinkle with warmth, gentle head tilt follows, peaceful happiness",
+        "Quick wink and friendly smile, eyebrows lift playfully, natural cheerful expression, approachable energy",
+    ],
+
+    "🙌 Portrait - Dynamic (Hands Visible Required)": [
+        "Hair flows elegantly, hand gracefully sweeps through strands, fingers run softly, sultry gaze follows movement, beauty close-up",
+        "Model touches hair delicately, hand brushes cheek softly, eyes sparkle with emotion, romantic intimate shot",
+        "Dramatic hair flip to side, hand catches falling strands, confident smile emerges, dynamic fashion energy",
+        "Slow-motion head turn reveals profile, hand tucks hair behind ear elegantly, studio lights create dramatic shadows",
+        "Hand waves enthusiastically in front of camera, fingers spread wide, big smile accompanies gesture, friendly greeting",
+        "Subject raises hand to forehead dramatically, gasps in realization, eyes widen, theatrical reaction shot",
+        "Hand brushes hair back confidently, head tilts to side, playful wink follows, charismatic personality shines",
+        "Person covers mouth while laughing, shoulders shake, hand gestures expressively, genuine candid moment",
+        "Subject points at camera playfully, leans forward, grin widens, interactive engaging energy",
+        "Hand touches chin thoughtfully, eyes look upward pondering, subtle head tilt, contemplative character study",
+        "Dramatic hand through hair motion, head turns following movement, intense gaze locks camera, powerful presence",
+        "Person adjusts glasses with one hand, smirks confidently, eyebrow raises, smart intellectual vibe",
+    ],
+
+    "🐾 Animals - Lively": [
+        "Dog's head tilts adorably, ears perk up alert, tail wags enthusiastically, playful curious energy",
+        "Cat stretches luxuriously, yawns showing teeth, blinks slowly then gazes directly at camera, feline grace",
+        "Bird fluffs feathers, hops energetically, head bobs rhythmically, chirping motion implied, vibrant life",
+        "Puppy's tongue lolls out happily, panting motion, ears flap gently, joyful innocent expression",
+        "Horse tosses mane dramatically, nostrils flare, ears swivel attentively, majestic powerful presence",
+        "Rabbit's nose twitches rapidly, ears rotate independently, whiskers quiver, alert cautious awareness",
+        "Kitten paws at camera playfully, body wiggles preparing to pounce, eyes dilate with excitement, pure mischief",
+        "Squirrel's cheeks puff while chewing, tiny paws hold food, tail flicks nervously, adorable wild moment",
+    ],
+
+    "🌄 Landscape / Nature": [
+        "Camera swoops down from sky to ground, clouds race overhead, wind rushes through trees violently, epic establishing shot",
+        "Waves crash powerfully against rocks, water explodes upward in slow motion, dramatic sunset colors intensify",
+        "Time-lapse effect: clouds rush across sky rapidly, shadows race across landscape, day transforms to golden hour",
+        "Camera spins 360 degrees, panoramic mountain view rotates, eagle soars past lens, breathtaking nature documentary",
+        "Waterfall flows forcefully, mist rises dynamically, rainbow appears and intensifies, camera tilts up majestically",
+        "Lightning strikes in distance, storm clouds swirl ominously, rain begins to fall, dramatic weather transformation",
+        "Autumn leaves swirl in wind vortex, colors blur beautifully, gentle spiral motion, seasonal poetry",
+        "Ocean tide rushes in, foam spreads across sand, seagulls take flight, peaceful coastal rhythm",
+    ],
+
+    "✨ Animation / Cartoon": [
+        "Character jumps high with exaggerated stretch, lands with bouncy squash, eyes pop out comically, cartoony physics",
+        "Magical transformation sequence, sparkles explode everywhere, character spins rapidly, colors shift vibrantly, anime style",
+        "Character does double-take, eyes bulge hugely, jaw drops to floor, classic cartoon reaction shot",
+        "Superpower activation: energy aura explodes outward, hair stands up dramatically, eyes glow intensely, epic anime moment",
+        "Character runs in place before zooming off-screen, dust cloud left behind, speed lines streak across frame",
+        "Dance animation: character moves rhythmically, strikes multiple poses, background pulses to beat, music video style",
+        "Chibi transformation: character shrinks adorably, sparkles surround, big eyes blink, kawaii energy overload",
+        "Fighting pose sequence: character winds up punch, muscles flex, impact lines radiate, shonen battle energy",
+    ],
+
+    "📦 Product / Object": [
+        "Product explodes into component parts, pieces float and rotate individually, reassembles dramatically, technical showcase",
+        "360-degree rotation accelerates into fast spin, dramatic lighting sweeps across surface, particle effects add premium feel",
+        "Camera dive-bombs toward product, extreme close-up reveals texture details, pulls back to reveal full item dramatically",
+        "Product levitates and rotates, holographic interface elements appear around it, futuristic tech reveal",
+        "Liquid splashes around product in slow motion, droplets freeze mid-air, dramatic color-changing backlight",
+        "Product unfolds or opens mechanically, internal mechanisms visible, precision engineering showcased, satisfying transformation",
+        "Spotlight beam sweeps across product, reflections dance elegantly, luxury presentation unfolds, premium commercial",
+        "Product materializes from particles, glowing assembly process, high-tech materialization effect, sci-fi showcase",
+    ],
+
+    "🎨 Abstract / Artistic": [
+        "Explosion of colors radiates from center, patterns fractal outward infinitely, hypnotic kaleidoscope effect intensifies",
+        "Liquid paint flows and swirls violently, colors blend and separate, organic fluid simulation, mesmerizing motion",
+        "Geometric shapes shatter and reform, pieces scatter then snap back together, glitch art aesthetic",
+        "Camera plunges through tunnel of shifting patterns, colors strobe rapidly, psychedelic journey effect",
+        "Ink drops in water, tendrils expand and dance, colors bleed beautifully, organic abstract motion",
+        "Particles swarm and form shapes, disperse into chaos, reform into new patterns, digital art visualization",
+        "Mandala patterns rotate and morph, symmetry breaks then restores, spiritual geometric meditation",
+        "Light rays pierce through fog, volumetric beams sweep dramatically, ethereal atmosphere intensifies, divine ambiance",
+    ],
+}

@@ -1,0 +1,25 @@
+# VividFlow I2V Dependencies
+git+https://github.com/linoytsaban/diffusers.git@wan22-loras
+gradio
+transformers>=4.46.0
+accelerate>=1.1.1
+safetensors
+sentencepiece
+peft
+ftfy
+imageio-ffmpeg
+opencv-python
+pillow
+spaces
+torchao
+
+# Background Generation Dependencies (SceneWeaver)
+open_clip_torch
+sentence-transformers
+rembg[gpu]
+scipy
+opencv-contrib-python
+
+# Core Dependencies
+torch>=2.5.0
+numpy
