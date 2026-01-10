@@ -10,6 +10,13 @@ The background generation system leverages BiRefNet for precise subject segmenta
 
 ---
 
+## 📊 Project Impact
+**This project has achieved:**
+
+> ![Visits](https://img.shields.io/badge/Total%20Visits-12k+-blue)
+
+---
+
 ## 🎯 Key Features
 
 ### 0. 🎨 Dual Creative Workflow
