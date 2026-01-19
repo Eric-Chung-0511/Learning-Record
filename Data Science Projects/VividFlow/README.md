@@ -13,19 +13,21 @@ The background generation system leverages BiRefNet for precise subject segmenta
 ## 📊 Project Impact
 **This project has achieved:**
 
-> ![Visits](https://img.shields.io/badge/Total%20Visits-21k+-blue)
+> ![Visits](https://img.shields.io/badge/Total%20Visits-22k+-blue)
 
 ---
 
 ## 🎯 Key Features
 
-### 0. 🎨 Dual Creative Workflow
+### 0. 🎨 Triple Creative Workflow
 
-VividFlow provides two independent yet complementary creative tools accessible through a streamlined dual-tab interface:
+VividFlow provides three independent yet complementary creative tools accessible through a streamlined three-tab interface:
 
 **Image to Video Generation** transforms static images into dynamic videos with durations ranging from half a second to five seconds. The system supports comprehensive motion control through eight curated template categories and custom natural language prompts, enabling users to specify camera movements, subject actions, and atmospheric effects with precision.
 
-**Background Generation and Replacement** intelligently extracts foreground subjects and synthesizes photorealistic backgrounds tailored to user specifications. The feature combines semantic segmentation, scene understanding, and advanced compositing techniques to produce seamless results that preserve subject integrity while replacing entire environmental contexts.
+**Background Generation and Replacement** intelligently extracts foreground subjects and synthesizes photorealistic backgrounds tailored to user specifications. The feature combines semantic segmentation, scene understanding, and advanced compositing techniques to produce seamless results that preserve subject integrity while replacing entire environmental contexts. An integrated Touch Up tool enables precise artifact removal through AI-powered inpainting, allowing users to manually refine problematic edge regions for pixel-perfect results.
+
+**Artistic Style Transfer** converts photographs into distinctive artistic interpretations through six curated style presets and five balanced style blend combinations. The system applies specialized artistic rendering techniques ranging from 3D cartoon aesthetics to classical oil painting, anime illustration to watercolor rendering, while maintaining optional identity preservation to prevent unwanted alterations to facial features and subject characteristics during transformation.
 
 This architectural separation ensures each workflow maintains dedicated computational resources and optimized processing pipelines, preventing performance degradation when switching between creative tasks.
 
@@ -109,6 +111,22 @@ The system analyzes uploaded images using OpenCLIP to understand subject type, l
 #### 6.3 Flexible Composition Control
 Users select from multiple composition modes including center-weighted smart placement, left-half and right-half positioning for asymmetric subjects, and full-image replacement. Focus mode toggles between person-centric tight cropping and scene-inclusive environmental preservation. Adjustable feather radius enables edge softening from zero pixels for sharp boundaries to twenty pixels for complex subjects like hair or fur. Real-time mask preview provides diagnostic feedback, displaying exactly which regions will be preserved versus replaced before final generation.
 
+### 7. 🎨 Artistic Style Transfer System
+
+The style transfer engine transforms photographic content into distinctive artistic interpretations while maintaining compositional structure and optional identity preservation. The system leverages Stable Diffusion XL with specialized LoRA adaptations trained on specific artistic traditions, enabling authentic rendering across multiple aesthetic approaches.
+
+#### 7.1 Foundational Style Presets
+
+Six core artistic styles provide comprehensive coverage of popular visual traditions. The 3D Cartoon style generates smooth, rounded character features with soft ambient lighting and contemporary CGI rendering quality suitable for animation-style content. Anime Illustration produces characteristic Japanese animation aesthetics with delicate linework, expressive eyes, cel-shaded color application, and vibrant palette choices. Illustrated Fantasy channels Studio Ghibli visual language through hand-painted textures, dreamy atmospheric effects, soft watercolor-like color transitions, and storybook composition approaches. Watercolor Art simulates traditional wet-on-wet painting techniques with transparent color washes, natural paper texture simulation, feathered edge characteristics, and organic color bleeding effects. Classic Oil Painting recreates traditional impasto techniques with visible palette knife strokes, thick paint application appearance, canvas texture integration, and rich saturated pigment rendering. Pixel Art delivers authentic retro game aesthetics with crisp blocky pixels, limited color palette constraints, period-appropriate dithering patterns, and sixteen-bit visual charm.
+
+#### 7.2 Style Blend Combinations
+
+Five professionally balanced preset combinations merge complementary artistic approaches to create unique hybrid aesthetics. 3D Anime Fusion applies seventy percent 3D cartoon smoothness with thirty percent anime linework precision, combining rounded character forms with sharp graphic details. Dreamy Watercolor blends sixty percent illustrated fantasy atmospheres with forty percent watercolor fluidity, creating ethereal compositions with soft color transitions. Anime Storybook merges equal parts anime character rendering and fantasy illustration environmental treatment for cohesive narrative visual language. Renaissance Portrait emphasizes classical oil painting techniques with chiaroscuro lighting, traditional portraiture composition, and museum-quality rendering standards. Retro Game Art enhances core pixel art foundations with period-specific color grading, enhanced dithering patterns, and authentic arcade aesthetic refinement.
+
+#### 7.3 Identity Preservation Technology
+
+Optional Face Restore functionality addresses the common challenge of unwanted subject alterations during artistic transformation. The system integrates IP-Adapter technology, which embeds reference image visual features directly into the generation guidance mechanism rather than relying solely on text prompt descriptions. This approach maintains facial structure integrity, preserves ethnic characteristics, retains age-appropriate features, and prevents identity drift that commonly occurs with strong stylistic transformations. Style-specific strength reduction automatically limits transformation intensity when Face Restore is enabled, ensuring artistic rendering affects technique and aesthetic presentation while preserving fundamental subject attributes. The system applies weighted prompt construction with numerical emphasis values that strengthen identity preservation directives during the diffusion process.
+
 ---
 
 ## ⚙️ Technical Architecture
@@ -166,7 +184,7 @@ OpenCLIP ViT-B-32 provides image understanding capabilities that inform prompt e
 BiRefNet serves as the primary segmentation model, offering state-of-the-art accuracy for complex subjects including fine hair detail, transparent objects, and challenging edge cases. When BiRefNet is unavailable due to resource constraints, the system automatically falls back to rembg's U-Net implementation with specialized cartoon character detection and enhancement. Traditional gradient-based segmentation using Sobel operators and Laplacian edge detection provides the final fallback option, ensuring consistent functionality.
 
 #### 4.4 Advanced Compositing Engine
-The image blending system operates in CIE Lab color space where Euclidean distances correspond to perceptual color differences. Edge erosion removes contaminated boundary pixels before blending. Alpha channel binarization eliminates semi-transparent artifacts that cause color bleeding. Adaptive strength mapping applies variable correction intensity based on proximity to original background colors. Core foreground protection ensures faces and primary subjects retain original coloration without influence from generated backgrounds.
+The image blending system operates in CIE Lab color space where Euclidean distances correspond to perceptual color differences. Edge erosion removes contaminated boundary pixels before blending. Alpha channel binarization eliminates semi-transparent artifacts that cause color bleeding. Adaptive strength mapping applies variable correction intensity based on proximity to original background colors. Core foreground protection ensures faces and primary subjects retain original coloration without influence from generated backgrounds. The Touch Up refinement system provides targeted artifact removal capabilities for edge regions that require manual intervention. Users employ an intuitive brush-based interface to paint directly over problematic areas including gray edge halos, residual background elements, color contamination artifacts, or compositional inconsistencies. The marked regions undergo AI-powered inpainting through SDXL Inpainting pipeline, which analyzes surrounding background context to generate seamless replacement content that maintains photographic coherence. Adjustable strength parameters control replacement completeness, ranging from eighty to one hundred percent influence over marked pixels. When SDXL Inpainting proves unavailable due to resource constraints, the system automatically falls back to OpenCV Telea algorithm, which employs traditional image processing techniques to fill marked regions through pixel propagation from surrounding areas. 
 
 ---
 
@@ -187,6 +205,9 @@ The current implementation prioritizes output stability and visual quality over 
 
 ### 1.4 Background Generation Performance
 Background synthesis completes substantially faster than video generation due to the single-image nature of the task. First-time generation including model loading requires approximately two to three minutes as the system loads SDXL pipeline components, OpenCLIP analyzers, and segmentation models. Subsequent generations complete in thirty to forty seconds once models are cached in memory. The independent dual-tab architecture ensures background generation workloads do not interfere with video generation resources and vice versa.
+
+#### 1.5 Style Transfer Performance
+Artistic style transformation completes substantially faster than both video generation and background replacement due to single-pass image-to-image operation characteristics. First-time generation including SDXL pipeline initialization, LoRA weight loading, and model compilation requires approximately thirty to sixty seconds depending on selected style complexity. Subsequent transformations using identical style parameters complete in twenty to thirty seconds once models achieve cached status in GPU memory. Style switching operations requiring different LoRA weight loading introduce approximately ten to fifteen seconds overhead for weight swapping and adapter fusion. IP-Adapter loading for Face Restore functionality adds marginal overhead during initial activation but maintains negligible impact on subsequent generations.
 
 ### 2. 🚀 Active Development & Optimization
 
@@ -226,6 +247,9 @@ Develop cohesive visual narratives by animating key brand imagery with consisten
 #### 2.3 E-Commerce Visual Optimization
 Elevate product listings by generating consistent, professional backgrounds across entire product catalogs. Remove distracting original environments and replace them with clean studio settings or contextually appropriate scenes. The twenty-four template library provides immediate options for various product categories. Custom prompt capabilities enable brand-specific environmental styling that aligns with visual identity guidelines.
 
+#### 2.4 Multi-Platform Content Adaptation
+Generate platform-specific visual variations from single source photographs through consistent artistic style application. Social media content strategies benefit from cohesive aesthetic presentation across Instagram posts, Pinterest boards, and Facebook campaigns through unified style treatment. Brand visual identity development leverages style presets to explore signature aesthetic directions before committing to comprehensive rebranding initiatives. Client presentation portfolios demonstrate creative range by showcasing identical compositions across multiple artistic interpretations, enabling stakeholders to evaluate aesthetic options before final selection.
+
 ### 3. Creative Exploration
 
 #### 3.1 Artistic Experimentation
@@ -233,6 +257,9 @@ Explore motion possibilities for artistic projects without traditional animation
 
 #### 3.2 Style Studies
 Iterate rapidly on motion concepts by generating multiple variations of the same source image with different prompts. Seed-based reproducibility enables systematic exploration of motion parameters.
+
+#### 3.3 Digital Art Reference Generation
+Professional illustrators and digital painters utilize style transfer to explore how photographic reference material translates into target artistic styles before beginning manual creation work. Face Restore functionality demonstrates identity preservation requirements when adapting photographic likenesses into illustrated character designs, helping artists understand which facial features require careful retention versus areas permitting creative interpretation.
 
 ---
 
@@ -255,6 +282,8 @@ The interface provides intuitive controls for image upload, prompt selection or 
 - **Extended Duration Support**: Evaluate feasibility of longer video outputs beyond the current five-second maximum
 - **Expanded Scene Template Library**: Develop additional background templates based on community feedback and usage analytics, focusing on vertical market needs such as professional services, hospitality, and retail contexts
 - **Advanced Mask Editing Tools**: Implement manual mask refinement capabilities for precise control over subject boundaries in complex scenarios
+- **Custom Style Training**: Enable users to upload reference artworks and train personalized LoRA adaptations capturing specific artistic signatures beyond standard preset library
+- **Style Intensity Mixing**: Implement multi-style blending with granular percentage control across three or more simultaneous style influences for unique hybrid aesthetics
 
 ### 2. Medium-Term Goals
 
@@ -282,6 +311,8 @@ VividFlow builds upon the foundational work of multiple research teams and open-
 - **BiRefNet** from ZhengPeng7 provides state-of-the-art subject segmentation with exceptional edge precision
 - **OpenCLIP** from the open-source community delivers robust image understanding for intelligent prompt enhancement
 - **rembg** from danielgatis offers reliable background removal capabilities as a fallback segmentation option
+- **Specialized LoRA models** from imagepipeline, ntc-ai, ostris, EldritchAdam, and nerijs provide authentic artistic rendering capabilities across diverse aesthetic traditions
+- **IP-Adapter** from h94 enables robust identity preservation during artistic transformation through visual embedding integration
 
 Technical implementation relies on the Diffusers library from Hugging Face, PyTorch for deep learning infrastructure, and Gradio for the web interface.
 
