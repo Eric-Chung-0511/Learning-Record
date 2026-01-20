@@ -20,6 +20,10 @@ rembg[gpu]
 scipy
 opencv-contrib-python
 
+# 3D Cartoon Style Dependencies (SDXL + Pixar LoRA)
+# Note: diffusers is already included above for I2V
+# SDXL uses the same diffusers library
+
 # Core Dependencies
 torch>=2.5.0
 numpy

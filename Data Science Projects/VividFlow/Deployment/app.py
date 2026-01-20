@@ -16,6 +16,7 @@ import sentencepiece
 
 from FlowFacade import FlowFacade
 from BackgroundEngine import BackgroundEngine
+from style_transfer import StyleTransferEngine
 from ui_manager import UIManager
 
 
@@ -126,7 +127,8 @@ def main():
     try:
         facade = FlowFacade()
         background_engine = BackgroundEngine()
-        ui_manager = UIManager(facade, background_engine)
+        style_engine = StyleTransferEngine()
+        ui_manager = UIManager(facade, background_engine, style_engine)
         interface = ui_manager.create_interface()
         is_colab = 'google.colab' in sys.modules
 

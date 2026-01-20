@@ -10,7 +10,7 @@ from typing import Optional, Dict, Any, Callable
 import warnings
 warnings.filterwarnings("ignore")
 
-from diffusers import StableDiffusionXLPipeline, DPMSolverMultistepScheduler
+from diffusers import StableDiffusionXLPipeline, StableDiffusionXLInpaintPipeline, DPMSolverMultistepScheduler
 import open_clip
 from mask_generator import MaskGenerator
 from image_blender import ImageBlender
@@ -39,10 +39,12 @@ class BackgroundEngine:
         self.clip_pretrained = "openai"
 
         self.pipeline = None
+        self.inpaint_pipeline = None
         self.clip_model = None
         self.clip_preprocess = None
         self.clip_tokenizer = None
         self.is_initialized = False
+        self.inpaint_initialized = False
 
         self.max_image_size = 1024
         self.default_steps = 25
@@ -336,13 +338,15 @@ class BackgroundEngine:
         guidance_scale: float = 7.5,
         progress_callback: Optional[Callable] = None,
         enable_prompt_enhancement: bool = True,
-        feather_radius: int = 0
+        feather_radius: int = 0,
+        enhance_dark_edges: bool = False
     ) -> Dict[str, Any]:
         """
         Generate background and combine with foreground.
 
         Args:
             feather_radius: Gaussian blur radius for mask edge softening (0-20, default 0)
+            enhance_dark_edges: Enhance mask edges for dark background images (default False)
 
         Returns dict with: combined_image, generated_scene, original_image, mask, success
         """
@@ -391,7 +395,8 @@ class BackgroundEngine:
             combination_mask = self.mask_generator.create_gradient_based_mask(
                 processed_original,
                 combination_mode,
-                focus_mode
+                focus_mode,
+                enhance_dark_edges=enhance_dark_edges
             )
 
             if progress_callback:
@@ -430,3 +435,200 @@ class BackgroundEngine:
                 "success": False,
                 "error": str(e)
             }
+
+    def _load_inpaint_pipeline(self) -> bool:
+        """Lazy load SDXL inpainting pipeline"""
+        if self.inpaint_initialized:
+            return True
+
+        try:
+            logger.info("Loading SDXL inpainting pipeline...")
+            actual_device = "cuda" if torch.cuda.is_available() else self.device
+
+            self.inpaint_pipeline = StableDiffusionXLInpaintPipeline.from_pretrained(
+                "diffusers/stable-diffusion-xl-1.0-inpainting-0.1",
+                torch_dtype=torch.float16 if actual_device == "cuda" else torch.float32,
+                variant="fp16" if actual_device == "cuda" else None,
+                use_safetensors=True
+            )
+            self.inpaint_pipeline.to(actual_device)
+
+            # Use fast scheduler
+            self.inpaint_pipeline.scheduler = DPMSolverMultistepScheduler.from_config(
+                self.inpaint_pipeline.scheduler.config
+            )
+
+            # Memory optimization
+            if actual_device == "cuda":
+                try:
+                    self.inpaint_pipeline.enable_xformers_memory_efficient_attention()
+                except Exception:
+                    pass
+
+            self.inpaint_initialized = True
+            logger.info("✓ SDXL inpainting pipeline loaded")
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to load inpainting pipeline: {e}")
+            self.inpaint_initialized = False
+            return False
+
+    def inpaint_region(
+        self,
+        image: Image.Image,
+        mask: Image.Image,
+        prompt: str,
+        negative_prompt: str = "blurry, low quality, artifacts, seams",
+        num_inference_steps: int = 20,
+        guidance_scale: float = 7.5,
+        strength: float = 0.99
+    ) -> Dict[str, Any]:
+        """
+        Inpaint marked regions with background content.
+
+        Args:
+            image: The combined image with artifacts to fix
+            mask: Binary mask where white = areas to inpaint
+            prompt: Background description for inpainting
+            negative_prompt: What to avoid
+            num_inference_steps: Denoising steps (20 is usually enough)
+            guidance_scale: How closely to follow prompt
+            strength: How much to change masked area (0.99 = almost complete replacement)
+
+        Returns:
+            Dict with inpainted_image, success, error
+        """
+        try:
+            # Load inpainting pipeline if not already loaded
+            if not self._load_inpaint_pipeline():
+                # Fallback to OpenCV inpainting
+                return self._opencv_inpaint_fallback(image, mask)
+
+            logger.info("Starting region inpainting...")
+
+            # Prepare images
+            image = self._prepare_image(image)
+            mask = mask.resize(image.size, Image.LANCZOS).convert('L')
+
+            # Ensure mask is properly binarized
+            mask_array = np.array(mask)
+            mask_array = (mask_array > 127).astype(np.uint8) * 255
+            mask = Image.fromarray(mask_array, mode='L')
+
+            # Dilate mask slightly for better blending
+            kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+            mask_dilated = cv2.dilate(mask_array, kernel, iterations=1)
+            mask = Image.fromarray(mask_dilated, mode='L')
+
+            actual_device = "cuda" if torch.cuda.is_available() else self.device
+
+            with torch.inference_mode():
+                result = self.inpaint_pipeline(
+                    prompt=prompt,
+                    negative_prompt=negative_prompt,
+                    image=image,
+                    mask_image=mask,
+                    width=image.size[0],
+                    height=image.size[1],
+                    num_inference_steps=num_inference_steps,
+                    guidance_scale=guidance_scale,
+                    strength=strength,
+                    generator=torch.Generator(device=actual_device).manual_seed(42)
+                )
+
+                inpainted = result.images[0]
+
+            # Blend edges for smoother transition
+            inpainted = self._blend_inpaint_edges(image, inpainted, mask)
+
+            self._memory_cleanup()
+
+            logger.info("✓ Region inpainting completed")
+            return {
+                "inpainted_image": inpainted,
+                "success": True
+            }
+
+        except Exception as e:
+            logger.error(f"Inpainting failed: {e}")
+            self._memory_cleanup()
+            return {
+                "success": False,
+                "error": str(e)
+            }
+
+    def _opencv_inpaint_fallback(
+        self,
+        image: Image.Image,
+        mask: Image.Image
+    ) -> Dict[str, Any]:
+        """Fallback to OpenCV inpainting for small areas or when SDXL unavailable"""
+        try:
+            logger.info("Using OpenCV inpainting fallback...")
+
+            img_array = np.array(image.convert('RGB'))
+            mask_array = np.array(mask.convert('L'))
+
+            # Binarize mask
+            mask_binary = (mask_array > 127).astype(np.uint8) * 255
+
+            # Use Telea algorithm for natural results
+            inpainted = cv2.inpaint(
+                img_array,
+                mask_binary,
+                inpaintRadius=5,
+                flags=cv2.INPAINT_TELEA
+            )
+
+            result = Image.fromarray(inpainted)
+
+            logger.info("✓ OpenCV inpainting completed")
+            return {
+                "inpainted_image": result,
+                "success": True
+            }
+
+        except Exception as e:
+            logger.error(f"OpenCV inpainting failed: {e}")
+            return {
+                "success": False,
+                "error": str(e)
+            }
+
+    def _blend_inpaint_edges(
+        self,
+        original: Image.Image,
+        inpainted: Image.Image,
+        mask: Image.Image,
+        feather_pixels: int = 8
+    ) -> Image.Image:
+        """Blend inpainted region edges for seamless transition"""
+        try:
+            orig_array = np.array(original).astype(np.float32)
+            inpaint_array = np.array(inpainted).astype(np.float32)
+            mask_array = np.array(mask.convert('L')).astype(np.float32) / 255.0
+
+            # Create feathered mask for smooth blending
+            if feather_pixels > 0:
+                kernel_size = feather_pixels * 2 + 1
+                mask_feathered = cv2.GaussianBlur(
+                    mask_array,
+                    (kernel_size, kernel_size),
+                    feather_pixels / 2
+                )
+            else:
+                mask_feathered = mask_array
+
+            # Expand mask to 3 channels
+            mask_3d = mask_feathered[:, :, np.newaxis]
+
+            # Blend: inpainted in masked area, original elsewhere
+            blended = inpaint_array * mask_3d + orig_array * (1 - mask_3d)
+            blended = np.clip(blended, 0, 255).astype(np.uint8)
+
+            return Image.fromarray(blended)
+
+        except Exception as e:
+            logger.warning(f"Edge blending failed: {e}, returning inpainted directly")
+            return inpainted

@@ -15,6 +15,13 @@ from rembg import remove, new_session
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+# Dark background detection thresholds
+DARK_BG_LUMINANCE_THRESHOLD = 50  # Average luminance below this = dark background
+DARK_BG_EDGE_SAMPLE_WIDTH = 20    # Pixels from edge to sample for background detection
+DARK_BG_DILATION_PIXELS = 5       # Default dilation for dark backgrounds
+DARK_BG_ENHANCED_DILATION = 8     # Enhanced dilation when user enables option
+
+
 class MaskGenerator:
     """
     Intelligent mask generation using deep learning models with traditional fallback.
@@ -91,6 +98,146 @@ class MaskGenerator:
                 torch.cuda.empty_cache()
             gc.collect()
             logger.info("🧹 BiRefNet model unloaded")
+
+    def detect_dark_background(self, image: Image.Image, mask: Optional[np.ndarray] = None) -> Tuple[bool, float]:
+        """
+        Detect if the image has a dark background.
+
+        Analyzes the edge regions of the image (where background is likely) to determine
+        if the background is predominantly dark, which can cause mask detection issues.
+
+        Args:
+            image: Input PIL Image
+            mask: Optional existing mask to exclude foreground from analysis
+
+        Returns:
+            Tuple of (is_dark_background: bool, avg_luminance: float)
+        """
+        try:
+            img_array = np.array(image.convert('RGB'))
+            height, width = img_array.shape[:2]
+
+            # Convert to grayscale for luminance analysis
+            gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+
+            # Sample from edge regions (likely background)
+            edge_width = min(DARK_BG_EDGE_SAMPLE_WIDTH, width // 10, height // 10)
+
+            # Create edge sampling mask
+            edge_sample_mask = np.zeros((height, width), dtype=bool)
+            edge_sample_mask[:edge_width, :] = True  # Top
+            edge_sample_mask[-edge_width:, :] = True  # Bottom
+            edge_sample_mask[:, :edge_width] = True  # Left
+            edge_sample_mask[:, -edge_width:] = True  # Right
+
+            # Exclude foreground if mask is provided
+            if mask is not None:
+                foreground_mask = mask > 127
+                edge_sample_mask = edge_sample_mask & (~foreground_mask)
+
+            if not np.any(edge_sample_mask):
+                # Fallback: use corners only
+                corner_pixels = np.array([
+                    gray[0, 0], gray[0, -1],
+                    gray[-1, 0], gray[-1, -1]
+                ])
+                avg_luminance = np.mean(corner_pixels)
+            else:
+                avg_luminance = np.mean(gray[edge_sample_mask])
+
+            is_dark = avg_luminance < DARK_BG_LUMINANCE_THRESHOLD
+
+            logger.info(f"🔍 Background analysis - Avg luminance: {avg_luminance:.1f}, Dark: {is_dark}")
+
+            return is_dark, avg_luminance
+
+        except Exception as e:
+            logger.error(f"❌ Dark background detection failed: {e}")
+            return False, 128.0  # Default: not dark
+
+    def enhance_mask_for_dark_background(
+        self,
+        mask: Image.Image,
+        original_image: Image.Image,
+        dilation_pixels: int = DARK_BG_DILATION_PIXELS,
+        enhance_gray_areas: bool = True
+    ) -> Image.Image:
+        """
+        Enhance mask for images with dark backgrounds.
+
+        Applies dilation and gray area enhancement to capture foreground elements
+        that may have been missed due to low contrast with dark backgrounds.
+
+        Args:
+            mask: Input mask PIL Image (L mode)
+            original_image: Original image for reference
+            dilation_pixels: Number of pixels to dilate the mask
+            enhance_gray_areas: Whether to boost gray (uncertain) areas
+
+        Returns:
+            Enhanced mask PIL Image
+        """
+        try:
+            mask_array = np.array(mask)
+            orig_array = np.array(original_image.convert('RGB'))
+
+            logger.info(f"🔧 Enhancing mask for dark background (dilation: {dilation_pixels}px)")
+
+            # Step 1: Identify gray (uncertain) areas in the mask
+            if enhance_gray_areas:
+                gray_areas = (mask_array > 30) & (mask_array < 200)
+
+                if np.any(gray_areas):
+                    # For gray areas, check if they're near high-confidence foreground
+                    high_conf = mask_array >= 200
+
+                    # Dilate high confidence area to find nearby gray pixels
+                    kernel_check = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
+                    high_conf_dilated = cv2.dilate(high_conf.astype(np.uint8), kernel_check, iterations=2)
+
+                    # Gray pixels near high confidence foreground -> boost them
+                    boost_candidates = gray_areas & (high_conf_dilated > 0)
+
+                    # Boost gray areas near foreground
+                    mask_array[boost_candidates] = np.clip(
+                        mask_array[boost_candidates] * 1.5 + 50,
+                        0, 255
+                    ).astype(np.uint8)
+
+                    logger.info(f"📈 Boosted {np.sum(boost_candidates)} gray pixels near foreground")
+
+            # Step 2: Apply dilation to expand foreground coverage
+            if dilation_pixels > 0:
+                kernel = cv2.getStructuringElement(
+                    cv2.MORPH_ELLIPSE,
+                    (dilation_pixels * 2 + 1, dilation_pixels * 2 + 1)
+                )
+
+                # Threshold to get foreground region for dilation
+                fg_binary = (mask_array > 50).astype(np.uint8) * 255
+                fg_dilated = cv2.dilate(fg_binary, kernel, iterations=1)
+
+                # Blend: keep original high values, expand into new areas
+                # New areas from dilation get moderate confidence
+                new_areas = (fg_dilated > 0) & (mask_array < 50)
+                mask_array[new_areas] = 180  # Moderate confidence for expanded areas
+
+                logger.info(f"📐 Dilated mask by {dilation_pixels}px, added {np.sum(new_areas)} pixels")
+
+            # Step 3: Smooth the transitions
+            mask_array = cv2.GaussianBlur(mask_array, (3, 3), 0.8)
+
+            # Step 4: Re-strengthen core foreground
+            core_fg = np.array(mask) >= 220
+            mask_array[core_fg] = 255
+
+            logger.info(f"✅ Dark background enhancement complete - Final mean: {mask_array.mean():.1f}")
+
+            return Image.fromarray(mask_array, mode='L')
+
+        except Exception as e:
+            logger.error(f"❌ Mask enhancement failed: {e}")
+            return mask
 
     def apply_guided_filter(
         self,
@@ -481,13 +628,25 @@ class MaskGenerator:
             logger.error(f"❌ Scene focus adjustment failed: {e}")
             return mask
 
-    def create_gradient_based_mask(self, original_image: Image.Image, mode: str = "center", focus_mode: str = "person") -> Image.Image:
+    def create_gradient_based_mask(
+        self,
+        original_image: Image.Image,
+        mode: str = "center",
+        focus_mode: str = "person",
+        enhance_dark_edges: bool = False
+    ) -> Image.Image:
         """
         Intelligent foreground extraction: prioritize deep learning models, fallback to traditional methods
         Focus mode: 'person' for tight crop around person, 'scene' for including nearby objects
+
+        Args:
+            original_image: Input PIL Image
+            mode: Composition mode (center, left_half, right_half, full)
+            focus_mode: 'person' for tight crop, 'scene' for including nearby objects
+            enhance_dark_edges: User toggle to enhance mask for dark backgrounds
         """
         width, height = original_image.size
-        logger.info(f"🎯 Creating mask for {width}x{height} image, mode: {mode}, focus: {focus_mode}")
+        logger.info(f"🎯 Creating mask for {width}x{height} image, mode: {mode}, focus: {focus_mode}, enhance_dark: {enhance_dark_edges}")
 
         if mode == "center":
             # Try using deep learning models for intelligent foreground extraction
@@ -495,9 +654,33 @@ class MaskGenerator:
             dl_mask = self.try_deep_learning_mask(original_image)
             if dl_mask is not None:
                 logger.info("✅ Using deep learning generated mask")
+
                 # Apply focus mode adjustments to deep learning mask
                 if focus_mode == "scene":
                     dl_mask = self._adjust_mask_for_scene_focus(dl_mask, original_image)
+
+                # === Dark background detection and enhancement ===
+                mask_array = np.array(dl_mask)
+                is_dark_bg, avg_luminance = self.detect_dark_background(original_image, mask_array)
+
+                if is_dark_bg or enhance_dark_edges:
+                    # Determine dilation amount
+                    if enhance_dark_edges:
+                        # User explicitly enabled - use stronger dilation
+                        dilation = DARK_BG_ENHANCED_DILATION
+                        logger.info(f"🌙 User enabled dark edge enhancement (dilation: {dilation}px)")
+                    else:
+                        # Auto-detected dark background - use moderate dilation
+                        dilation = DARK_BG_DILATION_PIXELS
+                        logger.info(f"🌙 Auto-detected dark background (luminance: {avg_luminance:.1f}), applying enhancement")
+
+                    dl_mask = self.enhance_mask_for_dark_background(
+                        dl_mask,
+                        original_image,
+                        dilation_pixels=dilation,
+                        enhance_gray_areas=True
+                    )
+
                 return dl_mask
 
             # Fallback to traditional method
