@@ -16,7 +16,7 @@ While many tools detect objects, Vision Scout offers more:
 
 **Latest Enhancement:** Successfully upgraded from YOLOv8 to YOLO11, achieving improved detection accuracy and faster inference speed while maintaining system stability.
 
-> ![Visits](https://img.shields.io/badge/Total%20Visits-10k+-blue)
+> ![Visits](https://img.shields.io/badge/Total%20Visits-11k+-blue)
 ![Model Runs](https://img.shields.io/badge/Model%20Runs-4k+-green)
 
 ---
