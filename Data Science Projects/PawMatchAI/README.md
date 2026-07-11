@@ -10,7 +10,7 @@ As an extension of its core classification capabilities, PawMatchAI includes a *
 ## 📊 Project Impact
 **This project has achieved:**
 
-> ![Visits](https://img.shields.io/badge/Total%20Visits-34k+-blue)
+> ![Visits](https://img.shields.io/badge/Total%20Visits-35k+-blue)
 ![Model Runs](https://img.shields.io/badge/Model%20Runs-14k+-green)
 
 ---
